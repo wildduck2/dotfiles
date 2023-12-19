@@ -2,9 +2,9 @@
 vim.g.tmux_navigator_no_mappings = 1
 
 -- Define the mappings
-vim.api.nvim_set_keymap('n', '<silent>{Left-Mapping}', ':<C-U>TmuxNavigateLeft<cr>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<silent>{Down-Mapping}', ':<C-U>TmuxNavigateDown<cr>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<silent>{Up-Mapping}', ':<C-U>TmuxNavigateUp<cr>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<silent>{Right-Mapping}', ':<C-U>TmuxNavigateRight<cr>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<silent>{Previous-Mapping}', ':<C-U>TmuxNavigatePrevious<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<S-h>', ':<C-U>TmuxNavigateLeft<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<S-j>', ':<C-U>TmuxNavigateDown<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<S-k>', ':<C-U>TmuxNavigateUp<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<S-l>', ':<C-U>TmuxNavigateRight<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<S-p>', ':<C-U>TmuxNavigatePrevious<cr>', { noremap = true, silent = true })
 
