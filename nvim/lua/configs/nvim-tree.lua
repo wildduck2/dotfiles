@@ -56,7 +56,7 @@ require("nvim-tree").setup({
                 file = true,
                 folder = true,
                 folder_arrow = true,
-                git = false,
+                git = true,
             },
 
             glyphs = {

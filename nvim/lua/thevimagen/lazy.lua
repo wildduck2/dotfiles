@@ -66,21 +66,29 @@ local plugins = {
         branch = "harpoon2",
         dependencies = { { "nvim-lua/plenary.nvim" } }
     },
-    --[[     {
+    {
         -- Catppuccin theme
         'catppuccin/nvim',
         priority = 1000,
         config = function()
             vim.cmd.colorscheme 'catppuccin-mocha'
         end,
-    }, ]]
-    {
+    },
+    --[[ {
         'rose-pine/neovim',
         as = 'rose-pine',
         config = function()
             vim.cmd('colorscheme rose-pine')
         end
-    },
+    }, ]]
+
+    --[[     {
+        'navarasu/onedark.nvim',
+        as = 'onedark',
+        config = function()
+            vim.cmd('colorscheme onedark')
+        end
+    }, ]]
 
     ---- Undotree
     { "mbbill/undotree" },
