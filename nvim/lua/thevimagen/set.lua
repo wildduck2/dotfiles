@@ -38,7 +38,7 @@ vim.opt.listchars:append("eol:↴")
 -- Folding stuff
 vim.opt.foldmethod = "indent"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldlevel = 2
+vim.opt.foldlevel = 8
 
 --[[ That's it. The most useful commands for working with folds are:
 

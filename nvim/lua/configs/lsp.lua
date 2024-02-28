@@ -16,6 +16,13 @@ lsp.ensure_installed({
     'cssmodules_ls',
     'quick_lint_js',
     'tailwindcss',
+    "clangd",
+    "bashls",
+    "prismals",
+    "graphql",
+    "htmx",
+    -- "golangci_lint_ls",
+    -- "pkgbuild_language_server"
 })
 
 -- Fix Undefined global 'vim'
