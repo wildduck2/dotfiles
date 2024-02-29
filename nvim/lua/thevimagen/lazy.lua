@@ -200,6 +200,20 @@ local plugins = {
         cmd = { "NvimTreeToggle", "NvimTreeFocus" },
     },
 
+    -- floke todo
+    {
+        "folke/todo-comments.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = require("configs.todo-comments")
+    },
+
+    -- trouble
+    {
+        "folke/trouble.nvim",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+       --opts = require("configs.trouble")
+    }
+
 }
 
 require('lazy').setup(plugins, {})
