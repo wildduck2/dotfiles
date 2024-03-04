@@ -38,7 +38,7 @@ vim.opt.listchars:append("eol:↴")
 -- Folding stuff
 vim.opt.foldmethod = "indent"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldlevel = 8
+vim.opt.foldlevel = 23
 
 --[[ That's it. The most useful commands for working with folds are:
 
@@ -50,7 +50,6 @@ vim.opt.foldlevel = 8
     zr decreases the foldlevel by one.
     zShift+r decreases the foldlevel to zero -- all folds will be open.
 ]]
-
 
 --[[ indent is kind of folding, you can see more from :help foldmethod
 

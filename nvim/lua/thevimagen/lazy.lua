@@ -14,48 +14,45 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-
 local plugins = {
     ---- NOTE: First, some plugins that don't require any configuration
 
     ---- Git related plugins
-    { 'tpope/vim-fugitive' },
+    { "tpope/vim-fugitive" },
 
     ---- Detect tabstop and shiftwidth automatically
     { "theprimeagen/refactoring.nvim" },
     {
         -- Set lualine as statusline
-        'nvim-lualine/lualine.nvim',
+        "nvim-lualine/lualine.nvim",
         -- See `:help lualine.txt`
-        opts = require('configs.lualine')
+        opts = require("configs.lualine"),
     },
 
     {
         -- Add indentation guides even on blank lines
-        'lukas-reineke/indent-blankline.nvim',
+        "lukas-reineke/indent-blankline.nvim",
         -- Enable `lukas-reineke/indent-blankline.nvim`
         -- See `:help ibl`
-        main = 'ibl',
-        opts = require('configs.iblconf'),
+        main = "ibl",
+        opts = require("configs.iblconf"),
         config = function()
             require("ibl").setup()
         end,
-
     },
-
 
     {
         -- Zen mode
         "folke/zen-mode.nvim",
-        opts = require('configs.zenmode')
+        opts = require("configs.zenmode"),
     },
 
     -- "gc" to comment visual regions/lines
     {
-        'numToStr/Comment.nvim',
-        opts = require('configs.comment'),
+        "numToStr/Comment.nvim",
+        opts = require("configs.comment"),
         config = function()
-            require('Comment').setup()
+            require("Comment").setup()
         end,
     },
 
@@ -64,14 +61,14 @@ local plugins = {
     {
         "ThePrimeagen/harpoon",
         branch = "harpoon2",
-        dependencies = { { "nvim-lua/plenary.nvim" } }
+        dependencies = { { "nvim-lua/plenary.nvim" } },
     },
     {
         -- Catppuccin theme
-        'catppuccin/nvim',
+        "catppuccin/nvim",
         priority = 1000,
         config = function()
-            vim.cmd.colorscheme 'catppuccin-mocha'
+            vim.cmd.colorscheme("catppuccin-mocha")
         end,
     },
     --[[ {
@@ -94,55 +91,59 @@ local plugins = {
     { "mbbill/undotree" },
 
     {
-        -- Fuzzy Finder (files, lsp, etc)
-        'nvim-telescope/telescope.nvim',
-        branch = '0.1.x',
+        "nvim-telescope/telescope.nvim",
+        event = "VimEnter",
+        branch = "0.1.x",
         dependencies = {
-            'nvim-lua/plenary.nvim',
-            -- Fuzzy Finder Algorithm which requires local dependencies to be built.
-            -- Only load if `make` is available. Make sure you have the system
-            -- requirements installed.
+            "nvim-lua/plenary.nvim",
             {
-                'nvim-telescope/telescope-fzf-native.nvim',
+                "nvim-telescope/telescope-fzf-native.nvim",
                 -- NOTE: If you are having trouble with this installation,
                 --       refer to the README for telescope-fzf-native for more instructions.
-                build = 'make',
+                build = "make",
                 cond = function()
-                    return vim.fn.executable 'make' == 1
+                    return vim.fn.executable("make") == 1
                 end,
             },
+            { "nvim-telescope/telescope-ui-select.nvim" },
         },
+        config = require("configs.telescope"),
     },
-
 
     {
         -- Highlight, edit, and navigate code
-        'nvim-treesitter/nvim-treesitter',
+        "nvim-treesitter/nvim-treesitter",
         dependencies = {
-            'nvim-treesitter/nvim-treesitter-textobjects',
+            "nvim-treesitter/nvim-treesitter-textobjects",
             "nvim-treesitter/playground",
-            "nvim-treesitter/nvim-treesitter-context"
+            "nvim-treesitter/nvim-treesitter-context",
         },
-        build = ':TSUpdate',
     },
 
     -- Codeium completion
     {
-        'Exafunction/codeium.vim',
+        "Exafunction/codeium.vim",
         config = function()
             -- Change '<C-g>' here to any keycode you like.
-            vim.keymap.set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end, { expr = true })
-            vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
-            vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
-            vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
-        end
+            vim.keymap.set("i", "<C-g>", function()
+                return vim.fn["codeium#Accept"]()
+            end, { expr = true })
+            vim.keymap.set("i", "<c-;>", function()
+                return vim.fn["codeium#CycleCompletions"](1)
+            end, { expr = true })
+            vim.keymap.set("i", "<c-,>", function()
+                return vim.fn["codeium#CycleCompletions"](-1)
+            end, { expr = true })
+            vim.keymap.set("i", "<c-x>", function()
+                return vim.fn["codeium#Clear"]()
+            end, { expr = true })
+        end,
     },
-
 
     -- Other plugins
     {
         "eandrju/cellular-automaton.nvim",
-        "laytan/cloak.nvim"
+        "laytan/cloak.nvim",
     },
     --Null-ls
     {
@@ -153,46 +154,112 @@ local plugins = {
 
     -- LSP Zero
     {
-        'VonHeikemen/lsp-zero.nvim',
-        branch = 'v1.x',
+        "neovim/nvim-lspconfig",
         dependencies = {
+            -- Automatically install LSPs and related tools to stdpath for neovim
+            "williamboman/mason.nvim",
+            "williamboman/mason-lspconfig.nvim",
+            "WhoIsSethDaniel/mason-tool-installer.nvim",
+
+            -- Useful status updates for LSP.
+            -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
+            { "j-hui/fidget.nvim", opts = {} },
+        },
+        config = require("configs.lsp"),
+    },
+    -- { -- Autoformat
+    --     "stevearc/conform.nvim",
+    --     opts = {
+    --         notify_on_error = false,
+    --         format_on_save = {
+    --             timeout_ms = 500,
+    --             lsp_fallback = true,
+    --         },
+    --         formatters_by_ft = {
+    --             -- lua = { "stylua" },
+    --             -- Conform can also run multiple formatters sequentially
+    --             -- python = { "isort", "black" },
+    --             --
+    --             -- You can use a sub-list to tell conform to run *until* a formatter
+    --             -- is found.
+    --             -- javascript = { { "prettierd", "prettier" } },
+    --         },
+    --     },
+    -- },
+
+    { -- Autocompletion
+        "hrsh7th/nvim-cmp",
+        event = "InsertEnter",
+        dependencies = {
+            -- Snippet Engine & its associated nvim-cmp source
+            {
+                "L3MON4D3/LuaSnip",
+                build = (function()
+                    -- Build Step is needed for regex support in snippets
+                    -- This step is not supported in many windows environments
+                    -- Remove the below condition to re-enable on windows
+                    if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
+                        return
+                    end
+                    return "make install_jsregexp"
+                end)(),
+            },
             -- LSP Support
-            { 'neovim/nvim-lspconfig' },
-            { 'williamboman/mason.nvim' },
-            { 'williamboman/mason-lspconfig.nvim' },
+            { "neovim/nvim-lspconfig" },
+            { "williamboman/mason.nvim" },
+            { "williamboman/mason-lspconfig.nvim" },
 
             -- Autocompletion
-            { 'hrsh7th/nvim-cmp' },
-            { 'hrsh7th/cmp-buffer' },
-            { 'hrsh7th/cmp-path' },
-            { 'hrsh7th/cmp-cmdline' },
-            { 'saadparwaiz1/cmp_luasnip' },
-            { 'hrsh7th/cmp-nvim-lsp' },
-            { 'hrsh7th/cmp-nvim-lua' },
+            { "hrsh7th/cmp-buffer" },
+            { "hrsh7th/cmp-path" },
+            { "hrsh7th/cmp-cmdline" },
+            { "saadparwaiz1/cmp_luasnip" },
+            { "hrsh7th/cmp-nvim-lsp" },
+            { "hrsh7th/cmp-nvim-lua" },
 
             -- Snippets
-            { 'L3MON4D3/LuaSnip' },
-            { 'rafamadriz/friendly-snippets' },
-
-        }
+            { "L3MON4D3/LuaSnip" },
+            { "rafamadriz/friendly-snippets" },
+        },
     },
+
+    { -- Collection of various small independent plugins/modules
+        "echasnovski/mini.nvim",
+        configs = require("configs.mini"),
+    },
+    {                        -- Useful plugin to show you pending keybinds.
+        "folke/which-key.nvim",
+        event = "VimEnter",  -- Sets the loading event to 'VimEnter'
+        configs = function() -- This is the function that runs, AFTER loading
+            require("which-key").setup()
+
+            -- Document existing key chains
+            require("which-key").register({
+                ["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
+                ["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
+                ["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
+                ["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
+                ["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
+            })
+        end,
+    },
+
     -- Auto pairs
     {
-        'windwp/nvim-autopairs',
+        "windwp/nvim-autopairs",
         event = "InsertEnter",
-        opts = {} -- this is equalent to setup({}) function
+        opts = {}, -- this is equalent to setup({}) function
     },
 
     -- Auto tag
     "windwp/nvim-ts-autotag",
-    'tmsvg/pear-tree',
+    "tmsvg/pear-tree",
 
     -- Tmux navigate
     {
-        'christoomey/vim-tmux-navigator',
-        lazy = false
-    }
-    ,
+        "christoomey/vim-tmux-navigator",
+        lazy = false,
+    },
     -- file managing , picker etc
     {
         "nvim-tree/nvim-tree.lua",
@@ -204,16 +271,15 @@ local plugins = {
     {
         "folke/todo-comments.nvim",
         dependencies = { "nvim-lua/plenary.nvim" },
-        opts = require("configs.todo-comments")
+        opts = require("configs.todo-comments"),
     },
 
     -- trouble
     {
         "folke/trouble.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
-       --opts = require("configs.trouble")
-    }
-
+        --opts = require("configs.trouble")
+    },
 }
 
-require('lazy').setup(plugins, {})
+require("lazy").setup(plugins, {})
