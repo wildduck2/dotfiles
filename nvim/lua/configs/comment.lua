@@ -42,9 +42,6 @@ local commentOpts = {
     post_hook = nil,
 }
 
-
-
-
 return commentOpts
 
 

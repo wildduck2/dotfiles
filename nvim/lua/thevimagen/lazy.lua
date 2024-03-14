@@ -17,79 +17,87 @@ vim.opt.rtp:prepend(lazypath)
 local plugins = {
     ---- NOTE: First, some plugins that don't require any configuration
 
-    ---- Git related plugins
-    { "tpope/vim-fugitive" },
-
-    ---- Detect tabstop and shiftwidth automatically
-    { "theprimeagen/refactoring.nvim" },
+    -- Lualine
     {
-        -- Set lualine as statusline
         "nvim-lualine/lualine.nvim",
         -- See `:help lualine.txt`
         opts = require("configs.lualine"),
     },
 
+    -- Cloak
     {
-        -- Add indentation guides even on blank lines
-        "lukas-reineke/indent-blankline.nvim",
-        -- Enable `lukas-reineke/indent-blankline.nvim`
-        -- See `:help ibl`
-        main = "ibl",
-        opts = require("configs.iblconf"),
-        config = function()
-            require("ibl").setup()
-        end,
-    },
-
-    {
-        -- Zen mode
-        "folke/zen-mode.nvim",
-        opts = require("configs.zenmode"),
-    },
-
-    -- "gc" to comment visual regions/lines
-    {
-        "numToStr/Comment.nvim",
-        opts = require("configs.comment"),
-        config = function()
-            require("Comment").setup()
-        end,
+        "laytan/cloak.nvim",
+        -- opts = require("configs.cloak"),
     },
 
     -- Harpoon
-    { "nvim-lua/plenary.nvim" },
     {
         "ThePrimeagen/harpoon",
         branch = "harpoon2",
         dependencies = { { "nvim-lua/plenary.nvim" } },
     },
+
+    -- Color scheme
     {
-        -- Catppuccin theme
         "catppuccin/nvim",
         priority = 1000,
-        config = function()
-            vim.cmd.colorscheme("catppuccin-mocha")
-        end,
     },
+
     --[[ {
         'rose-pine/neovim',
         as = 'rose-pine',
-        config = function()
-            vim.cmd('colorscheme rose-pine')
-        end
     }, ]]
 
     --[[     {
         'navarasu/onedark.nvim',
         as = 'onedark',
-        config = function()
-            vim.cmd('colorscheme onedark')
-        end
     }, ]]
 
-    ---- Undotree
+    -- Zen mode
+    {
+        "folke/zen-mode.nvim",
+        opts = require("configs.zenmode"),
+    },
+
+    -- Comment
+    {
+        "numToStr/Comment.nvim",
+        opts = require("configs.comment"),
+        lazy = false,
+    },
+
+    -- Plenary
+    { "nvim-lua/plenary.nvim" },
+
+    -- Undotree
     { "mbbill/undotree" },
 
+    -- floke todo
+    {
+        "folke/todo-comments.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = require("configs.todo-comments"),
+    },
+
+    -- trouble
+    {
+        "folke/trouble.nvim",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        --opts = require("configs.trouble")
+    },
+
+    -- Treesitter
+    {
+        -- Highlight, edit, and navigate code
+        "nvim-treesitter/nvim-treesitter",
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter-textobjects",
+            "nvim-treesitter/playground",
+            "nvim-treesitter/nvim-treesitter-context",
+        },
+    },
+
+    -- Telescope
     {
         "nvim-telescope/telescope.nvim",
         event = "VimEnter",
@@ -110,49 +118,74 @@ local plugins = {
         config = require("configs.telescope"),
     },
 
-    {
-        -- Highlight, edit, and navigate code
-        "nvim-treesitter/nvim-treesitter",
-        dependencies = {
-            "nvim-treesitter/nvim-treesitter-textobjects",
-            "nvim-treesitter/playground",
-            "nvim-treesitter/nvim-treesitter-context",
-        },
-    },
-
     -- Codeium completion
     {
         "Exafunction/codeium.vim",
-        config = function()
-            -- Change '<C-g>' here to any keycode you like.
-            vim.keymap.set("i", "<C-g>", function()
-                return vim.fn["codeium#Accept"]()
-            end, { expr = true })
-            vim.keymap.set("i", "<c-;>", function()
-                return vim.fn["codeium#CycleCompletions"](1)
-            end, { expr = true })
-            vim.keymap.set("i", "<c-,>", function()
-                return vim.fn["codeium#CycleCompletions"](-1)
-            end, { expr = true })
-            vim.keymap.set("i", "<c-x>", function()
-                return vim.fn["codeium#Clear"]()
-            end, { expr = true })
-        end,
+        config = require("configs.codeium"),
     },
 
-    -- Other plugins
-    {
-        "eandrju/cellular-automaton.nvim",
-        "laytan/cloak.nvim",
-    },
     --Null-ls
     {
         "jose-elias-alvarez/null-ls.nvim",
         event = "VeryLazy",
-        --opts =  require("configs.null-ls")
     },
 
-    -- LSP Zero
+    -- Git related plugins
+    { "tpope/vim-fugitive" },
+
+    -- Nvim tree
+    {
+        "nvim-tree/nvim-tree.lua",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+    },
+
+
+
+
+
+
+
+
+    -- Detect tabstop and shiftwidth automatically
+    {
+        "ThePrimeagen/refactoring.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+        },
+    },
+
+
+
+
+    -- {
+    --     -- Add indentation guides even on blank lines
+    --     "lukas-reineke/indent-blankline.nvim",
+    --     -- Enable `lukas-reineke/indent-blankline.nvim`
+    --     -- See `:help ibl`
+    --     main = "ibl",
+    --     opts = require("configs.iblconf"),
+    --     config = function()
+    --         require("ibl").setup()
+    --     end,
+    -- },
+
+
+
+
+
+
+
+
+
+    -- Other plugins
+    {
+        "eandrju/cellular-automaton.nvim",
+    },
+
+
+    -- LSP
     {
         "neovim/nvim-lspconfig",
         dependencies = {
@@ -222,14 +255,13 @@ local plugins = {
             { "rafamadriz/friendly-snippets" },
         },
     },
-
     { -- Collection of various small independent plugins/modules
         "echasnovski/mini.nvim",
         configs = require("configs.mini"),
     },
-    {                        -- Useful plugin to show you pending keybinds.
+    {                       -- Useful plugin to show you pending keybinds.
         "folke/which-key.nvim",
-        event = "VimEnter",  -- Sets the loading event to 'VimEnter'
+        event = "VimEnter", -- Sets the loading event to 'VimEnter'
         configs = function() -- This is the function that runs, AFTER loading
             require("which-key").setup()
 
@@ -260,26 +292,7 @@ local plugins = {
         "christoomey/vim-tmux-navigator",
         lazy = false,
     },
-    -- file managing , picker etc
-    {
-        "nvim-tree/nvim-tree.lua",
-        dependencies = { "nvim-tree/nvim-web-devicons" },
-        cmd = { "NvimTreeToggle", "NvimTreeFocus" },
-    },
 
-    -- floke todo
-    {
-        "folke/todo-comments.nvim",
-        dependencies = { "nvim-lua/plenary.nvim" },
-        opts = require("configs.todo-comments"),
-    },
-
-    -- trouble
-    {
-        "folke/trouble.nvim",
-        dependencies = { "nvim-tree/nvim-web-devicons" },
-        --opts = require("configs.trouble")
-    },
 }
 
 require("lazy").setup(plugins, {})
