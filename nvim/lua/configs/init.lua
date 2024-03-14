@@ -14,7 +14,7 @@ require('configs.fugitive')
 
 --require('configs.refactoring')
 -- require('configs.iblconf')
--- require('configs.lsp')
+require('configs.lsp')
 -- require('configs.null-ls')
 -- require('configs.autopairs')
 -- require('configs.autotag')

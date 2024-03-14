@@ -140,7 +140,10 @@ local plugins = {
         cmd = { "NvimTreeToggle", "NvimTreeFocus" },
     },
 
-
+    -- Fancey vim
+    {
+        "eandrju/cellular-automaton.nvim",
+    },
 
 
 
@@ -156,9 +159,6 @@ local plugins = {
         },
     },
 
-
-
-
     -- {
     --     -- Add indentation guides even on blank lines
     --     "lukas-reineke/indent-blankline.nvim",
@@ -170,20 +170,6 @@ local plugins = {
     --         require("ibl").setup()
     --     end,
     -- },
-
-
-
-
-
-
-
-
-
-    -- Other plugins
-    {
-        "eandrju/cellular-automaton.nvim",
-    },
-
 
     -- LSP
     {
@@ -200,6 +186,8 @@ local plugins = {
         },
         config = require("configs.lsp"),
     },
+
+
     -- { -- Autoformat
     --     "stevearc/conform.nvim",
     --     opts = {
@@ -255,13 +243,15 @@ local plugins = {
             { "rafamadriz/friendly-snippets" },
         },
     },
+    
     { -- Collection of various small independent plugins/modules
         "echasnovski/mini.nvim",
         configs = require("configs.mini"),
     },
-    {                       -- Useful plugin to show you pending keybinds.
+
+    {                        -- Useful plugin to show you pending keybinds.
         "folke/which-key.nvim",
-        event = "VimEnter", -- Sets the loading event to 'VimEnter'
+        event = "VimEnter",  -- Sets the loading event to 'VimEnter'
         configs = function() -- This is the function that runs, AFTER loading
             require("which-key").setup()
 
@@ -287,11 +277,11 @@ local plugins = {
     "windwp/nvim-ts-autotag",
     "tmsvg/pear-tree",
 
-    -- Tmux navigate
-    {
-        "christoomey/vim-tmux-navigator",
-        lazy = false,
-    },
+    -- -- Tmux navigate
+    -- {
+    --     "christoomey/vim-tmux-navigator",
+    --     lazy = false,
+    -- },
 
 }
 

@@ -1,5 +1,5 @@
--- Set g:tmux_navigator_no_mappings to 1
--- vim.g.tmux_navigator_no_mappings = 1
+Set g:tmux_navigator_no_mappings to 1
+vim.g.tmux_navigator_no_mappings = 1
 
 -- Define the mappings
 -- vim.api.nvim_set_keymap('n', '<S-h>', ':<C-U>TmuxNavigateLeft<cr>', { noremap = true, silent = true })
