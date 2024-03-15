@@ -267,22 +267,21 @@ local plugins = {
     },
 
     -- Auto pairs
-    {
-        "windwp/nvim-autopairs",
-        event = "InsertEnter",
-        opts = {}, -- this is equalent to setup({}) function
-    },
+    -- {
+    --     "windwp/nvim-autopairs",
+    --     event = "InsertEnter",
+    --     opts = {}, -- this is equalent to setup({}) function
+    -- },
 
     -- Auto tag
-    "windwp/nvim-ts-autotag",
-    "tmsvg/pear-tree",
+    -- "windwp/nvim-ts-autotag",
+    -- "tmsvg/pear-tree",
 
     -- -- Tmux navigate
     -- {
     --     "christoomey/vim-tmux-navigator",
     --     lazy = false,
     -- },
-
 }
 
 require("lazy").setup(plugins, {})

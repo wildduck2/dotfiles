@@ -11,14 +11,19 @@ require('configs.nvim-tree')
 require('configs.todo-comments')
 require('configs.telescope')
 require('configs.fugitive')
-
---require('configs.refactoring')
--- require('configs.iblconf')
+require('configs.null-ls')
 require('configs.lsp')
--- require('configs.null-ls')
+require('configs.cmp')
+
+
+require('configs.refactoring')
+require('configs.mini')
+
+
+
+
 -- require('configs.autopairs')
 -- require('configs.autotag')
 -- require('configs.tmux-navigate')
--- require('configs.cmp')
--- require('configs.mini')
+-- require('configs.iblconf')
 -- require('configs.wich-key')
