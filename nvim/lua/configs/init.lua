@@ -1,3 +1,5 @@
+
+require('configs.catppuccin')
 require('configs.lualine')
 require('configs.cloak')
 require('configs.harpoon')
@@ -16,6 +18,8 @@ require('configs.lsp')
 require('configs.cmp')
 
 
+require('configs.tmux-navigate')
+require('configs.presence')
 require('configs.refactoring')
 require('configs.mini')
 
@@ -24,6 +28,5 @@ require('configs.mini')
 
 -- require('configs.autopairs')
 -- require('configs.autotag')
--- require('configs.tmux-navigate')
 -- require('configs.iblconf')
 -- require('configs.wich-key')

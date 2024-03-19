@@ -145,31 +145,11 @@ local plugins = {
         "eandrju/cellular-automaton.nvim",
     },
 
-
-
-
-
-
-    -- Detect tabstop and shiftwidth automatically
+    -- presence
     {
-        "ThePrimeagen/refactoring.nvim",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "nvim-treesitter/nvim-treesitter",
-        },
+        "andweeb/presence.nvim",
+        --opts = require("configs.presence"),
     },
-
-    -- {
-    --     -- Add indentation guides even on blank lines
-    --     "lukas-reineke/indent-blankline.nvim",
-    --     -- Enable `lukas-reineke/indent-blankline.nvim`
-    --     -- See `:help ibl`
-    --     main = "ibl",
-    --     opts = require("configs.iblconf"),
-    --     config = function()
-    --         require("ibl").setup()
-    --     end,
-    -- },
 
     -- LSP
     {
@@ -187,28 +167,8 @@ local plugins = {
         config = require("configs.lsp"),
     },
 
-
-    -- { -- Autoformat
-    --     "stevearc/conform.nvim",
-    --     opts = {
-    --         notify_on_error = false,
-    --         format_on_save = {
-    --             timeout_ms = 500,
-    --             lsp_fallback = true,
-    --         },
-    --         formatters_by_ft = {
-    --             -- lua = { "stylua" },
-    --             -- Conform can also run multiple formatters sequentially
-    --             -- python = { "isort", "black" },
-    --             --
-    --             -- You can use a sub-list to tell conform to run *until* a formatter
-    --             -- is found.
-    --             -- javascript = { { "prettierd", "prettier" } },
-    --         },
-    --     },
-    -- },
-
-    { -- Autocompletion
+    -- Autocompletion
+    {
         "hrsh7th/nvim-cmp",
         event = "InsertEnter",
         dependencies = {
@@ -243,6 +203,60 @@ local plugins = {
             { "rafamadriz/friendly-snippets" },
         },
     },
+
+    -- Tmux navigate
+    {
+        "christoomey/vim-tmux-navigator",
+        lazy = false,
+    },
+
+
+
+
+
+    -- Detect tabstop and shiftwidth automatically
+    {
+        "ThePrimeagen/refactoring.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+        },
+    },
+
+    -- {
+    --     -- Add indentation guides even on blank lines
+    --     "lukas-reineke/indent-blankline.nvim",
+    --     -- Enable `lukas-reineke/indent-blankline.nvim`
+    --     -- See `:help ibl`
+    --     main = "ibl",
+    --     opts = require("configs.iblconf"),
+    --     config = function()
+    --         require("ibl").setup()
+    --     end,
+    -- },
+
+
+
+    -- { -- Autoformat
+    --     "stevearc/conform.nvim",
+    --     opts = {
+    --         notify_on_error = false,
+    --         format_on_save = {
+    --             timeout_ms = 500,
+    --             lsp_fallback = true,
+    --         },
+    --         formatters_by_ft = {
+    --             -- lua = { "stylua" },
+    --             -- Conform can also run multiple formatters sequentially
+    --             -- python = { "isort", "black" },
+    --             --
+    --             -- You can use a sub-list to tell conform to run *until* a formatter
+    --             -- is found.
+    --             -- javascript = { { "prettierd", "prettier" } },
+    --         },
+    --     },
+    -- },
+
     
     { -- Collection of various small independent plugins/modules
         "echasnovski/mini.nvim",
@@ -277,11 +291,6 @@ local plugins = {
     -- "windwp/nvim-ts-autotag",
     -- "tmsvg/pear-tree",
 
-    -- -- Tmux navigate
-    -- {
-    --     "christoomey/vim-tmux-navigator",
-    --     lazy = false,
-    -- },
 }
 
 require("lazy").setup(plugins, {})
