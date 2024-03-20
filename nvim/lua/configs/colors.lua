@@ -1,4 +1,3 @@
-vim.cmd.colorscheme("catppuccin-mocha")
 --[[ require('catppuccin').setup({
     disable_background = true
 })

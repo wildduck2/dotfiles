@@ -20,14 +20,11 @@ local plugins = {
     -- Lualine
     {
         "nvim-lualine/lualine.nvim",
-        -- See `:help lualine.txt`
-        opts = require("configs.lualine"),
     },
 
     -- Cloak
     {
         "laytan/cloak.nvim",
-        -- opts = require("configs.cloak"),
     },
 
     -- Harpoon
@@ -37,16 +34,16 @@ local plugins = {
         dependencies = { { "nvim-lua/plenary.nvim" } },
     },
 
-     -- Color scheme
-     {
-         "catppuccin/nvim",
-         priority = 1000,
-     },
+    -- Color scheme
+    {
+        "catppuccin/nvim",
+        priority = 1000,
+    },
 
---    {
---        'rose-pine/neovim',
---        as = 'rose-pine',
---    },
+    --[[ {
+           'rose-pine/neovim',
+           as = 'rose-pine',
+    }, ]]
 
     --[[     {
         'navarasu/onedark.nvim',
@@ -56,13 +53,11 @@ local plugins = {
     -- Zen mode
     {
         "folke/zen-mode.nvim",
-        opts = require("configs.zenmode"),
-    },
+   },
 
     -- Comment
     {
         "numToStr/Comment.nvim",
-        opts = require("configs.comment"),
         lazy = false,
     },
 
@@ -76,14 +71,12 @@ local plugins = {
     {
         "folke/todo-comments.nvim",
         dependencies = { "nvim-lua/plenary.nvim" },
-        opts = require("configs.todo-comments"),
     },
 
     -- trouble
     {
         "folke/trouble.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
-        --opts = require("configs.trouble")
     },
 
     -- Treesitter
@@ -115,13 +108,11 @@ local plugins = {
             },
             { "nvim-telescope/telescope-ui-select.nvim" },
         },
-        config = require("configs.telescope"),
     },
 
     -- Codeium completion
     {
         "Exafunction/codeium.vim",
-        config = require("configs.codeium"),
     },
 
     --Null-ls
@@ -164,7 +155,6 @@ local plugins = {
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
             -- { "j-hui/fidget.nvim", opts = {} },
         },
-        config = require("configs.lsp"),
     },
 
     -- Autocompletion

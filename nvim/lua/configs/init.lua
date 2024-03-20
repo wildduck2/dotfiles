@@ -1,6 +1,6 @@
-
-require('configs.catppuccin')
+-- NOTE: importing files
 require('configs.lualine')
+require('configs.catppuccin')
 require('configs.cloak')
 require('configs.harpoon')
 require('configs.colors')
@@ -23,6 +23,7 @@ require('configs.presence')
 require('configs.refactoring')
 require('configs.mini')
 -- require('configs.transparent')
+-- require('configs.airline')
 
 
 
