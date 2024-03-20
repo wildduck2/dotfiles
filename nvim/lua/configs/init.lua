@@ -22,6 +22,7 @@ require('configs.tmux-navigate')
 require('configs.presence')
 require('configs.refactoring')
 require('configs.mini')
+-- require('configs.transparent')
 
 
 

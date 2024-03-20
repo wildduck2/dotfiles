@@ -250,7 +250,11 @@ bindsym Ctrl+Shift+Print exec --no-startup-id maim --select | xclip -selection c
 #exec --no-startup-id compton
 
 
-# Apply transparency to terminal emulator
+# Apply transparency to terminal
 for_window [class="x-terminal-emulator"] floating enable, resize set 1000 500, move position 0px 0px, border pixel 0, opacity 0.8
 
+# Setting bg 
+exec feh --bg-scale ~/Downloads/1347028.jpeg
+exec xrandr --output DisplayPort-0 --mode 1920x1080 --rate 165.00
 
+# exec_always --no-startup-id compton

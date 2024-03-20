@@ -37,16 +37,16 @@ local plugins = {
         dependencies = { { "nvim-lua/plenary.nvim" } },
     },
 
-    -- Color scheme
-    {
-        "catppuccin/nvim",
-        priority = 1000,
-    },
+     -- Color scheme
+     {
+         "catppuccin/nvim",
+         priority = 1000,
+     },
 
-    --[[ {
-        'rose-pine/neovim',
-        as = 'rose-pine',
-    }, ]]
+--    {
+--        'rose-pine/neovim',
+--        as = 'rose-pine',
+--    },
 
     --[[     {
         'navarasu/onedark.nvim',
@@ -93,7 +93,7 @@ local plugins = {
         dependencies = {
             "nvim-treesitter/nvim-treesitter-textobjects",
             "nvim-treesitter/playground",
-            "nvim-treesitter/nvim-treesitter-context",
+            -- "nvim-treesitter/nvim-treesitter-context",
         },
     },
 
@@ -162,7 +162,7 @@ local plugins = {
 
             -- Useful status updates for LSP.
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-            { "j-hui/fidget.nvim", opts = {} },
+            -- { "j-hui/fidget.nvim", opts = {} },
         },
         config = require("configs.lsp"),
     },
@@ -257,7 +257,7 @@ local plugins = {
     --     },
     -- },
 
-    
+
     { -- Collection of various small independent plugins/modules
         "echasnovski/mini.nvim",
         configs = require("configs.mini"),
@@ -279,6 +279,10 @@ local plugins = {
             })
         end,
     },
+
+    -- {
+    --     "xiyaowong/transparent.nvim"
+    -- }
 
     -- Auto pairs
     -- {
