@@ -35,15 +35,15 @@ local plugins = {
     },
 
     -- Color scheme
-    {
+    --[[ {
         "catppuccin/nvim",
         priority = 1000,
-    },
-
-    --[[ {
-           'rose-pine/neovim',
-           as = 'rose-pine',
     }, ]]
+
+    {
+        'rose-pine/neovim',
+        as = 'rose-pine',
+    },
 
     --[[     {
         'navarasu/onedark.nvim',
@@ -53,7 +53,7 @@ local plugins = {
     -- Zen mode
     {
         "folke/zen-mode.nvim",
-   },
+    },
 
     -- Comment
     {
@@ -153,7 +153,7 @@ local plugins = {
 
             -- Useful status updates for LSP.
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-            { "j-hui/fidget.nvim", opts = {} },
+            -- { "j-hui/fidget.nvim", opts = {} },
         },
     },
 
@@ -270,10 +270,17 @@ local plugins = {
         end,
     },
 
-    -- {
-    --     "xiyaowong/transparent.nvim"
-    -- }
+    {
+        "xiyaowong/transparent.nvim"
+    },
 
+    {
+        "letieu/hacker.nvim",
+    },
+    {
+        "ty-labs/randiverse.nvim",
+        version = "*", -- Use for stability; omit to use `main` branch for the latest features
+    },
     -- Auto pairs
     -- {
     --     "windwp/nvim-autopairs",
@@ -282,6 +289,9 @@ local plugins = {
     -- },
 
     -- Auto tag
+    {
+        'windwp/nvim-ts-autotag'
+    }
     -- "windwp/nvim-ts-autotag",
     -- "tmsvg/pear-tree",
 

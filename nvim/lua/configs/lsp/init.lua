@@ -10,6 +10,18 @@ vim.api.nvim_create_autocmd("LspAttach", {
     callback = callback
 })
 
+vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics,
+    {
+        underline = true,
+        virtual_text = {
+            spacing = 5,
+            severity_limit = 'Warning',
+        },
+        update_in_insert = true,
+    }
+)
+
 -- LSP servers and clients are able to communicate to each other what features they support.
 --  By default, Neovim doesn't support everything that is in the LSP Specification.
 --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
