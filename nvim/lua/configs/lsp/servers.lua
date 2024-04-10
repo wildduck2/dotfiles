@@ -29,7 +29,7 @@ M.servers = {
     --
     -- But for many setups, the LSP (`tsserver`) will work just fine
     tsserver = {
-        capabilities = M.capabilities_fianl,
+        capabilities = M.capabilities_final,
         formatting = {
             format_opts = {
                 async = true,
@@ -41,7 +41,6 @@ M.servers = {
             },
         },
     },
-    --
 
     lua_ls = {
         -- cmd = {...},
@@ -69,6 +68,19 @@ M.servers = {
             },
         },
     },
+    elixir = {
+        -- // here we specify the path we built our elixir-ls,
+        -- // here we setup this in home directory,
+        -- //make sure you are pointing to right path
+        -- cmd = { "/home/nishanth/.elixir-ls/release/language_server.sh" },
+        cmd = { "elixir-ls", "--stdio" },
+        settings = {
+            elixirLS = {
+                dialyzerEnabled = true,
+                fetchDeps = true,
+            }
+        }
+    }
 }
 
 return M

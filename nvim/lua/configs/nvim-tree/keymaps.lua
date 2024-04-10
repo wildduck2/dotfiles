@@ -10,8 +10,3 @@ vim.keymap.set("n", "<leader>l", vim.cmd.NvimTreeFocus)
 -- " :hi link NvimTreeImageFile   Title
 -- ]])
 
-vim.cmd([[
-    :hi      NvimTreeExecFile    gui=none
-    hi NvimTreeNormal guibg=none
-    hi NvimTreeExecFile gui=none
-]])

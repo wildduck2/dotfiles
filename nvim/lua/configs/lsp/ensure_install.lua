@@ -1,4 +1,4 @@
-local servers= require('configs.lsp.servers')
+local servers = require('configs.lsp.servers')
 
 local M = {}
 
@@ -11,6 +11,8 @@ M.ensure_installed = vim.tbl_keys(servers or {
     "tsserver",
     "rust_analyzer",
     "lua_ls",
+    "elixirls",
+    "typos_lsp",
     "rust_analyzer",
     "cssls",
     "bashls",

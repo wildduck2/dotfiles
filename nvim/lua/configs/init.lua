@@ -18,7 +18,7 @@ require('configs.lsp')
 require('configs.cmp')
 
 
-require('configs.tmux-navigate')
+require('configs.tmux-naviagate')
 require('configs.presence')
 require('configs.refactoring')
 require('configs.mini')

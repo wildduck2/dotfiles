@@ -35,10 +35,10 @@ local plugins = {
     },
 
     -- Color scheme
-    --[[ {
-        "catppuccin/nvim",
-        priority = 1000,
-    }, ]]
+    -- {
+    --     "catppuccin/nvim",
+    --     priority = 1000,
+    -- },
 
     {
         'rose-pine/neovim',
