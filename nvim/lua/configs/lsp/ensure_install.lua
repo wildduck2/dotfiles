@@ -1,4 +1,4 @@
-local servers = require('configs.lsp.servers')
+local servers = require('configs.lsp.servers').servers
 
 local M = {}
 
@@ -7,7 +7,7 @@ local M = {}
 --  other tools, you can run
 --    :Mason
 
-M.ensure_installed = vim.tbl_keys(servers or {
+M.ensure_installed =  {
     "tsserver",
     "rust_analyzer",
     "lua_ls",
@@ -28,8 +28,8 @@ M.ensure_installed = vim.tbl_keys(servers or {
     "prismals",
     "graphql",
     "htmx",
-    "prettier",
-})
+    "prettierd",
+}
 
 
 return M

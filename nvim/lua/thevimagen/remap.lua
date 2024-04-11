@@ -15,7 +15,7 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagn
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
-
+-- vim.api.nvim_set_keymap('n', '<leader>r', ':terminal ~/.config/tmux/fzf-tmux-wild-duck.sh<CR>', { noremap = true, silent = true })
 
 
 --  See `:help wincmd` for a list of all window commands

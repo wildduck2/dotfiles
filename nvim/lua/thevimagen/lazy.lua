@@ -35,10 +35,10 @@ local plugins = {
     },
 
     -- Color scheme
-    -- {
-    --     "catppuccin/nvim",
-    --     priority = 1000,
-    -- },
+    {
+        "catppuccin/nvim",
+        priority = 1000,
+    },
 
     {
         'rose-pine/neovim',
@@ -153,7 +153,7 @@ local plugins = {
 
             -- Useful status updates for LSP.
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-            -- { "j-hui/fidget.nvim", opts = {} },
+            { "j-hui/fidget.nvim", opts = {} },
         },
     },
 
@@ -213,17 +213,17 @@ local plugins = {
         },
     },
 
-    -- {
-    --     -- Add indentation guides even on blank lines
-    --     "lukas-reineke/indent-blankline.nvim",
-    --     -- Enable `lukas-reineke/indent-blankline.nvim`
-    --     -- See `:help ibl`
-    --     main = "ibl",
-    --     opts = require("configs.iblconf"),
-    --     config = function()
-    --         require("ibl").setup()
-    --     end,
-    -- },
+    {
+        -- Add indentation guides even on blank lines
+        "lukas-reineke/indent-blankline.nvim",
+        -- Enable `lukas-reineke/indent-blankline.nvim`
+        -- See `:help ibl`
+        main = "ibl",
+        opts = require("configs.iblconf"),
+        config = function()
+            require("ibl").setup()
+        end,
+    },
 
 
 
@@ -256,18 +256,7 @@ local plugins = {
     {                        -- Useful plugin to show you pending keybinds.
         "folke/which-key.nvim",
         event = "VimEnter",  -- Sets the loading event to 'VimEnter'
-        configs = function() -- This is the function that runs, AFTER loading
-            require("which-key").setup()
-
-            -- Document existing key chains
-            require("which-key").register({
-                ["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
-                ["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
-                ["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
-                ["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
-                ["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
-            })
-        end,
+        configs =require('configs.which-key') -- This is the function that runs, AFTER loading
     },
 
     {

@@ -1,8 +1,7 @@
 local callback = require("configs.lsp.callback").callback
 local servers = require('configs.lsp.servers').servers
-local ensure_installed = require('configs.lsp.ensure_install')
+local ensure_installed = require('configs.lsp.ensure_install').ensure_installed
 
-local capabilities = require('configs.lsp.servers').capabilities
 
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -55,4 +54,3 @@ require("mason-lspconfig").setup({
         end,
     },
 })
-

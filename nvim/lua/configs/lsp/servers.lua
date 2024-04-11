@@ -80,6 +80,14 @@ M.servers = {
                 fetchDeps = true,
             }
         }
+    },
+    eslint_d ={
+        settings = {
+            -- helps eslint find the correct project root
+            workingDirectory = {
+                mode = 'root',
+            },
+        },
     }
 }
 

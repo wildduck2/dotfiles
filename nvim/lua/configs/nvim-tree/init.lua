@@ -97,3 +97,5 @@ vim.cmd([[
     :hi     NvimTreeNormal      guibg=none
     :hi     NvimTreeExecFile    gui=none
 ]])
+
+
