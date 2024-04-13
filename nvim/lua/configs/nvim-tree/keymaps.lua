@@ -10,8 +10,8 @@ vim.cmd([[
     :hi link NvimTreeImageFile   Title
 ]])
 
-vim.cmd([[
-    :hi     NvimTreeExecFile    gui=none
-    :hi     NvimTreeNormal      guibg=none
-    :hi     NvimTreeExecFile    gui=none
-]])
+-- vim.cmd([[
+--     :hi     NvimTreeExecFile    gui=none
+--     :hi     NvimTreeNormal      guibg=none
+--     :hi     NvimTreeExecFile    gui=none
+-- ]])

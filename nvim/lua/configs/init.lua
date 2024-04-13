@@ -23,8 +23,9 @@ require('configs.presence')
 require('configs.refactoring')
 require('configs.mini')
 require('configs.hacker')
--- require('configs.randiverse')
+require('configs.randiverse')
 require('configs.nvim-ts-autotag')
+require('configs.silicon')
 -- require('configs.transparent')
 -- require('configs.airline')
 
@@ -34,4 +35,21 @@ require('configs.nvim-ts-autotag')
 -- require('configs.autopairs')
 -- require('configs.autotag')
 -- require('configs.iblconf')
--- require('configs.wich-key')
+-- require('configs.which-key')
+--
+
+
+
+-- Setup language servers.
+local lspconfig = require('lspconfig')
+lspconfig.lua_ls.setup {}
+lspconfig.tailwindcss.setup {}
+lspconfig.rust_analyzer.setup {
+    -- Server-specific settings. See `:help lspconfig-setup`
+    settings = {
+        ['rust-analyzer'] = {},
+    },
+}
+
+
+

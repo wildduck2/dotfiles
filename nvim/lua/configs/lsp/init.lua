@@ -1,7 +1,7 @@
 local callback = require("configs.lsp.callback").callback
 local servers = require('configs.lsp.servers').servers
 local ensure_installed = require('configs.lsp.ensure_install').ensure_installed
-
+local capabilities = require('configs.lsp.servers').capabilities
 
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -54,3 +54,18 @@ require("mason-lspconfig").setup({
         end,
     },
 })
+     require('mason-lspconfig').setup {
+        handlers = {
+          function(server_name)
+            local server = servers[server_name] or {}
+            -- This handles overriding only values explicitly passed
+            -- by the server configuration above. Useful when disabling
+            -- certain features of an LSP (for example, turning off formatting for tsserver)
+            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+            require('lspconfig')[server_name].setup(server)
+          end,
+        },
+      }
+
+
+

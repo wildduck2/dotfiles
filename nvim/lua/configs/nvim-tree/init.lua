@@ -90,12 +90,3 @@ require("nvim-tree").setup({
         },
     },
 })
-
-
-vim.cmd([[
-    :hi     NvimTreeExecFile    gui=none
-    :hi     NvimTreeNormal      guibg=none
-    :hi     NvimTreeExecFile    gui=none
-]])
-
-

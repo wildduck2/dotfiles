@@ -2,6 +2,12 @@ local M = {}
 
 
 M.ensure_installed = {
+    "eex",
+    "elixir",
+    "erlang",
+    "heex",
+    "html",
+    "surface",
     "vimdoc",
     "javascript",
     "typescript",

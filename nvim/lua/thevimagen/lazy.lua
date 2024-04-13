@@ -200,10 +200,6 @@ local plugins = {
         lazy = false,
     },
 
-
-
-
-
     -- Detect tabstop and shiftwidth automatically
     {
         "ThePrimeagen/refactoring.nvim",
@@ -253,10 +249,10 @@ local plugins = {
         configs = require("configs.mini"),
     },
 
-    {                        -- Useful plugin to show you pending keybinds.
+    {                                         -- Useful plugin to show you pending keybinds.
         "folke/which-key.nvim",
-        event = "VimEnter",  -- Sets the loading event to 'VimEnter'
-        configs =require('configs.which-key') -- This is the function that runs, AFTER loading
+        event = "VimEnter",                   -- Sets the loading event to 'VimEnter'
+        configs = require('configs.which-key') -- This is the function that runs, AFTER loading
     },
 
     {
@@ -280,9 +276,16 @@ local plugins = {
     -- Auto tag
     {
         'windwp/nvim-ts-autotag'
-    }
-    -- "windwp/nvim-ts-autotag",
+    },
     -- "tmsvg/pear-tree",
+
+
+    -- selicon snap
+    {
+        "michaelrommel/nvim-silicon",
+        lazy = true,
+        cmd = "Silicon",
+    }
 
 }
 

@@ -68,27 +68,54 @@ M.servers = {
             },
         },
     },
-    elixir = {
-        -- // here we specify the path we built our elixir-ls,
-        -- // here we setup this in home directory,
-        -- //make sure you are pointing to right path
-        -- cmd = { "/home/nishanth/.elixir-ls/release/language_server.sh" },
+    elixirls = {
         cmd = { "elixir-ls", "--stdio" },
-        settings = {
-            elixirLS = {
-                dialyzerEnabled = true,
-                fetchDeps = true,
-            }
-        }
+        -- on_attach = custom_attach, -- this may be required for extended functionalities of the LSP
+        -- capabilities = capabilities,
+        flags = {
+            debounce_text_changes = 150,
+        },
+        elixirLS = {
+            dialyzerEnabled = false,
+            fetchDeps = false,
+        },
     },
-    eslint_d ={
+    eslint_d = {
         settings = {
             -- helps eslint find the correct project root
             workingDirectory = {
                 mode = 'root',
             },
         },
-    }
+    },
+    -- tailwindcss = {
+    --     -- cmd = { "tailwindcss-language-server", "--stdio" },
+    --     cmd = {
+    --         "/home/wild_duck/.local/share/nvim/lsp_servers/vscode-eslint/node_modules/vscode-langservers-extracted/bin/vscode-eslint-language-server",
+    --         "--stdio",
+    --     },
+    --     -- filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
+    --     root_dir = require('lspconfig').util.root_pattern("tailwind.config.js", "package.json"),
+    --     settings = {},
+    -- }
+    tailwindcss = {
+        init_options = {
+            userLanguages = {
+                heex = "html-eex",
+                elixir = "html-eex",
+            },
+        },
+        settings = {
+            tailwindCSS = {
+                experimental = {
+                    classRegex = {
+                        'class[:]\\s*"([^"]*)"',
+                    },
+                },
+            },
+        },
+    },
 }
+
 
 return M
