@@ -1,12 +1,2 @@
 require("thevimagen")
 require("configs")
-
-
-
-
-
-
-
-
-
-

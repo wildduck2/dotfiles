@@ -115,6 +115,10 @@ M.servers = {
             },
         },
     },
+    cssls = {
+        settings = {
+        }
+    }
 }
 
 

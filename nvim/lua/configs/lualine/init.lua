@@ -1,11 +1,11 @@
 --NOTE: those are the files for the lau line conf there is other file not included if your
 --  want to configer them down in this file you gonna find the other commponents and tips to add
 --  FOR MORE INFO ABOUT THIS :help lualine
-local mode = require('configs.lualine.mode')
+local mode        = require('configs.lualine.mode')
 local diagnostics = require('configs.lualine.diagnostics')
-local filename = require('configs.lualine.filename')
-local filetype = require('configs.lualine.filetype')
-local diff     = require('configs.lualine.diff')
+local filename    = require('configs.lualine.filename')
+local filetype    = require('configs.lualine.filetype')
+local diff        = require('configs.lualine.diff')
 
 
 
@@ -16,7 +16,8 @@ require('lualine').setup({
         -- component_separators = '|',
         -- section_separators = '',
         component_separators = "|",
-        section_separators = { left = "", right = "" },
+        -- section_separators = { left = "", right = "" },
+        section_separators = { left = "", right = "" },
     },
     sections = {
         lualine_a = {

@@ -41,7 +41,7 @@ M.mode_map = {
 
 M.mode_default = {
     'mode',
-    icons_enabled = true,   -- Enables the display of icons alongside the component.
+    icons_enabled = true, -- Enables the display of icons alongside the component.
     -- Defines the icon to be displayed in front of the component.
     -- Can be string|table
     -- As table it must contain the icon as first entry and can use
@@ -53,7 +53,7 @@ M.mode_default = {
     -- {'branch', icon = {'', align='right', color={fg='green'}}}
     icon = '●',
 
-    separator = { left = '', right = ''},   -- Determines what separator to use for the component.
+    separator = { left = '', right = '' }, -- Determines what separator to use for the component.
     -- Note:
     --  When a string is provided it's treated as component_separator.
     --  When a table is provided it's treated as section_separator.
@@ -69,9 +69,9 @@ M.mode_default = {
     -- and right will be placed on its right.
     --
 
-    cond = nil,           -- Condition function, the component is loaded when the function returns `true`.
+    cond = nil,         -- Condition function, the component is loaded when the function returns `true`.
 
-    draw_empty = false,   -- Whether to draw component even if it's empty.
+    draw_empty = false, -- Whether to draw component even if it's empty.
     -- Might be useful if you want just the separator.
 
     -- Defines a custom color for the component:
@@ -89,7 +89,7 @@ M.mode_default = {
     --   color = function(section)
     --      return { fg = vim.bo.modified and '#aa3355' or '#33aa88' }
     --   end,
-    color = nil,   -- The default is your theme's color for that section and mode.
+    color = nil, -- The default is your theme's color for that section and mode.
 
     -- Specify what type a component is, if omitted, lualine will guess it for you.
     --
@@ -102,17 +102,17 @@ M.mode_default = {
     -- lua_expr is short for lua-expression and vim_fun is short for vim-function.
     type = nil,
 
-    padding = 1,   -- Adds padding to the left and right of components.
+    padding = 1, -- Adds padding to the left and right of components.
     -- Padding can be specified to left or right independently, e.g.:
     --   padding = { left = left_padding, right = right_padding }
 
-    fmt = nil,   -- Format function, formats the component's output.
+    fmt = nil, -- Format function, formats the component's output.
     -- This function receives two arguments:
     -- - string that is going to be displayed and
     --   that can be changed, enhanced and etc.
     -- - context object with information you might
     --   need. E.g. tabnr if used with tabs.
-    on_click = nil,   -- takes a function that is called when component is clicked with mouse.
+    on_click = nil, -- takes a function that is called when component is clicked with mouse.
     -- the function receives several arguments
     -- - number of clicks in case of multiple clicks
     -- - mouse button used (l(left)/r(right)/m(middle)/...)

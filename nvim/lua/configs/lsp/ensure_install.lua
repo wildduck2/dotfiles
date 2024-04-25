@@ -12,7 +12,6 @@ M.ensure_installed =  {
     "rust_analyzer",
     "lua_ls",
     "elixirls",
-    "typos_lsp",
     "rust_analyzer",
     "cssls",
     "bashls",

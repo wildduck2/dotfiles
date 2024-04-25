@@ -1,6 +1,8 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = ' '
 
+vim.g.have_nerd_font = true
+
 -- open the file menu
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
@@ -13,6 +15,7 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
 -- vim.api.nvim_set_keymap('n', '<leader>r', ':terminal ~/.config/tmux/fzf-tmux-wild-duck.sh<CR>', { noremap = true, silent = true })

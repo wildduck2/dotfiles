@@ -18,7 +18,7 @@ font pango:monospace 15px
 # GET DEM BORDERS OUT OF HEREc:w
 #
 # Thanks Childz
-for_window [class="^.*"] border pixel 2
+for_window [class="^.*"] border pixel 1
                           # class                 border  backgr. text    indicator child_border
 for_window [class="^.*"] client.focused          #77dd77 #285577 #ffffff #2e9ef4   #285577
 
@@ -42,8 +42,8 @@ bindsym $mod+Return exec i3-sensible-terminal
 
 # kill focused window
 # bindsym $mod+space exec "/home/theprimeagen/dotfiles/awesome-streamerrc/ThePrimeagen/tmux2"
-
-bindsym $mod+Shift+q kill
+# by deafult it has shift i have removed it 
+bindsym $mod+q kill
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
@@ -212,7 +212,7 @@ bar {
 # ------------------------------------------
 exec --no-startup-id nm-applet
 
-bindsym $mod+Shift+s exec --no-startup-id ~/.config/NODE_JS_LEARNING
+bindsym $mod+Shift+m exec --no-startup-id ~/.config/NODE_JS_LEARNING
 bindsym $mod+Shift+n exec --no-startup-id ~/dotfiles/bin/resolution
 
 # FKeys
@@ -236,9 +236,9 @@ bindsym $mod+Shift+period exec systemctl suspend
 
 
 ## Screenshots
-bindsym Print exec --no-startup-id maim "/home/$USER/Pictures/$(date)"
-bindsym $mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) "/home/$USER/Pictures/$(date)"
-bindsym Shift+Print exec --no-startup-id maim --select "/home/$USER/Pictures/$(date)"
+bindsym Print exec --no-startup-id maim "/home/$USER/Pictures/$(date).png"
+bindsym $mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) "/home/$USER/Pictures/$(date).png"
+bindsym Shift+Print exec --no-startup-id maim --select "/home/$USER/Pictures/$(date).png"
 
 ## Clipboard Screenshots
 bindsym Ctrl+Print exec --no-startup-id maim | xclip -selection clipboard -t image/png
@@ -246,15 +246,12 @@ bindsym Ctrl+$mod+Print exec --no-startup-id maim --window $(xdotool getactivewi
 bindsym Ctrl+Shift+Print exec --no-startup-id maim --select | xclip -selection clipboard -t image/png
 
 
-
-#exec --no-startup-id compton
-
-
 # Apply transparency to terminal
 for_window [class="x-terminal-emulator"] floating enable, resize set 1000 500, move position 0px 0px, border pixel 0, opacity 0.8
 
 # Setting bg 
-exec feh --bg-scale ~/Downloads/1347028.jpeg
+exec feh --bg-scale /mnt/drive1/widnows/discord/arch.jpg
 exec xrandr --output DisplayPort-0 --mode 1920x1080 --rate 165.00
+exec componit -b
 
 # exec_always --no-startup-id compton
