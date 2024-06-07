@@ -118,6 +118,11 @@ M.servers = {
     cssls = {
         settings = {
         }
+    },
+    prettier = {
+        settings = {},
+        init_options = {
+        }
     }
 }
 

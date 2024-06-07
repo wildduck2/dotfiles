@@ -13,7 +13,7 @@ set $mod Mod1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 15px
+font pango:Berkeley Mono Trial 15px
 
 # GET DEM BORDERS OUT OF HEREc:w
 #
@@ -38,7 +38,7 @@ floating_modifier $mod
 
 # start a terminal
 # bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec terminator 
 
 # kill focused window
 # bindsym $mod+space exec "/home/theprimeagen/dotfiles/awesome-streamerrc/ThePrimeagen/tmux2"
@@ -206,7 +206,6 @@ bar {
         status_command i3status
         tray_output primary
 }
-
 # ------------------------------------------
 # CUSTOM KEYS START
 # ------------------------------------------
@@ -252,6 +251,45 @@ for_window [class="x-terminal-emulator"] floating enable, resize set 1000 500, m
 # Setting bg 
 exec feh --bg-scale /mnt/drive1/widnows/discord/arch.jpg
 exec xrandr --output DisplayPort-0 --mode 1920x1080 --rate 165.00
-exec componit -b
+# exec_always --no-startup-id polybar
+# exec componit -b
+# exec compton
 
 # exec_always --no-startup-id compton
+
+
+set $rosewater #f5e0dc
+set $flamingo  #f2cdcd
+set $pink      #f5c2e7
+set $mauve     #cba6f7
+set $red       #f38ba8
+set $maroon    #eba0ac
+set $peach     #fab387
+set $yellow    #f9e2af
+set $green     #a6e3a1
+set $teal      #94e2d5
+set $sky       #89dceb
+set $sapphire  #74c7ec
+set $blue      #89b4fa
+set $lavender  #b4befe
+set $text      #cdd6f4
+set $subtext1  #bac2de
+set $subtext0  #a6adc8
+set $overlay2  #9399b2
+set $overlay1  #7f849c
+set $overlay0  #6c7086
+set $surface2  #585b70
+set $surface1  #45475a
+set $surface0  #313244
+set $base      #1e1e2e
+set $mantle    #181825
+set $crust     #11111b
+
+# target                 title     bg    text      indicator    border
+client.focused           $mantle   $mauve $mantle  $rosewater $mauve
+client.focused_inactive  $overlay0 $base  $text    $rosewater $overlay0
+client.unfocused         $overlay0 $base  $text    $rosewater $overlay0
+client.urgent            $peach    $base  $peach   $overlay0  $peach
+client.placeholder       $overlay0 $base  $text    $overlay0  $overlay0
+client.background        $base
+

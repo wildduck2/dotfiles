@@ -1,5 +1,3 @@
-local servers = require('configs.lsp.servers').servers
-
 local M = {}
 
 -- Ensure the servers and tools above are installed
@@ -7,7 +5,7 @@ local M = {}
 --  other tools, you can run
 --    :Mason
 
-M.ensure_installed =  {
+M.ensure_installed = {
     "tsserver",
     "rust_analyzer",
     "lua_ls",

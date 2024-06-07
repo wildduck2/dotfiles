@@ -4,7 +4,7 @@ require("hacker").setup {
     filetype = "lua",                      -- filetype of code snippet
     speed = {                              -- characters insert each time, random from min -> max
         min = 2,
-        max = 10,
+        max = 2,
     },
     is_popup = false, -- show random float window when typing
     popup_after = 5,
@@ -13,4 +13,3 @@ require("hacker").setup {
 
 vim.keymap.set('n', '<leader>ha', '<cmd>:HackFollowAuto<cr>', { desc = '[H]ackerFollowAuto' })
 vim.keymap.set('n', '<leader>h', '<cmd>:Hack<cr>', { desc = '[H]acker' })
-

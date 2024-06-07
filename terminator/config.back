@@ -1,0 +1,46 @@
+[global_config]
+  borderless = True
+  inactive_color_offset = 0.9047619047619048
+  suppress_multiple_term_dialog = True
+[keybindings]
+  close_term = <Alt>asciicircum
+  close_window = <Alt>ampersand
+[profiles]
+  [[default]]
+    allow_bold = False
+    visible_bell = True
+    background_color = "#1e1e2e"
+    background_darkness = 0.95
+    background_image = /home/wild_duck/Downloads/1347028.jpeg
+    cursor_fg_color = "#0b0400"
+    cursor_bg_color = "#cdd6f4"
+    font = Berkeley Mono Trial Bold 13
+    foreground_color = "#cdd6f4"
+    show_titlebar = False
+    scrollbar_position = hidden
+    scroll_on_keystroke = False
+    palette = "#45475a:#f38ba8:#a6e3a1:#f9e2af:#89b4fa:#f5c2e7:#94e2d5:#bac2de:#585b70:#f38ba8:#a6e3a1:#f9e2af:#89b4fa:#f5c2e7:#94e2d5:#a6adc8"
+    use_system_font = False
+    title_use_system_font = False
+    title_font = Berkeley Mono Trial Bold 9
+  [[New Profile]]
+    background_darkness = 0.96
+    background_type = transparent
+    cursor_blink = False
+    cursor_fg_color = "#0b0400"
+    cursor_bg_color = "#cdd6f4"
+    cursor_color_default = False
+    font = JetBrainsMono Nerd Font Semi-Bold 12
+    scrollbar_position = hidden
+    scroll_on_keystroke = False
+    use_system_font = False
+[layouts]
+  [[default]]
+    [[[window0]]]
+      type = Window
+      parent = ""
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+      profile = default
+[plugins]

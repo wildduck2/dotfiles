@@ -7,24 +7,19 @@ local filename    = require('configs.lualine.filename')
 local filetype    = require('configs.lualine.filetype')
 local diff        = require('configs.lualine.diff')
 
-
-
 require('lualine').setup({
     options = {
         icons_enabled = false,
         theme = 'auto',
-        -- component_separators = '|',
-        -- section_separators = '',
         component_separators = "|",
-        -- section_separators = { left = "", right = "" },
         section_separators = { left = "", right = "" },
     },
     sections = {
         lualine_a = {
-            -- { 'mode', fmt = mode.get_mode_name }
+            -- { 'mode', fmt = mode.get_mode_name },
             mode.mode_default
         },
-        lualine_b = { 'branch', diff, diagnostics.n, },
+        lualine_b = { 'branch', diff.n, diagnostics.n, },
         lualine_c = { filename.n },
         lualine_x = { filetype.n },
         lualine_y = { 'progress' },

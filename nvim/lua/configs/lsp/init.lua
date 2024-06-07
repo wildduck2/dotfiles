@@ -1,8 +1,6 @@
 local callback = require("configs.lsp.callback").callback
 local servers = require('configs.lsp.servers').servers
 local ensure_installed = require('configs.lsp.ensure_install').ensure_installed
-local capabilities = require('configs.lsp.servers').capabilities
-
 
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
@@ -28,10 +26,6 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-
---
-
-
 --  You can press `g?` for help in this menu
 require("mason").setup()
 
@@ -54,4 +48,6 @@ require("mason-lspconfig").setup({
             require("lspconfig")[server_name].setup(server)
         end,
     },
+
 })
+

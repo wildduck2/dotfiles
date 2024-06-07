@@ -1,6 +1,6 @@
 -- NOTE: importing files
 require('configs.lualine')
-require('configs.catppuccin')
+-- require('configs.catppuccin')
 require('configs.cloak')
 require('configs.harpoon')
 require('configs.colors')
@@ -26,7 +26,8 @@ require('configs.hacker')
 require('configs.randiverse')
 require('configs.nvim-ts-autotag')
 require('configs.silicon')
--- require('configs.transparent')
+require('configs.transparent')
+require('configs.conform-formate')
 -- require('configs.airline')
 
 
@@ -34,6 +35,5 @@ require('configs.silicon')
 
 -- require('configs.autopairs')
 -- require('configs.autotag')
--- require('configs.iblconf')
+require('configs.iblconf')
 -- require('configs.which-key')
---

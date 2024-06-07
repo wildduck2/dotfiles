@@ -40,15 +40,24 @@ local plugins = {
         priority = 1000,
     },
 
+    -- Tokyonight
+    {
+        "folke/tokyonight.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {},
+    },
+
     {
         'rose-pine/neovim',
         as = 'rose-pine',
     },
 
-    --[[     {
+    -- onedark
+    {
         'navarasu/onedark.nvim',
         as = 'onedark',
-    }, ]]
+    },
 
     -- Zen mode
     {
@@ -139,7 +148,6 @@ local plugins = {
     -- presence
     {
         "andweeb/presence.nvim",
-        --opts = require("configs.presence"),
     },
 
     -- LSP
@@ -221,38 +229,20 @@ local plugins = {
         end,
     },
 
-
-
-    -- { -- Autoformat
-    --     "stevearc/conform.nvim",
-    --     opts = {
-    --         notify_on_error = false,
-    --         format_on_save = {
-    --             timeout_ms = 500,
-    --             lsp_fallback = true,
-    --         },
-    --         formatters_by_ft = {
-    --             -- lua = { "stylua" },
-    --             -- Conform can also run multiple formatters sequentially
-    --             -- python = { "isort", "black" },
-    --             --
-    --             -- You can use a sub-list to tell conform to run *until* a formatter
-    --             -- is found.
-    --             -- javascript = { { "prettierd", "prettier" } },
-    --         },
-    --     },
-    -- },
-
+    { -- Autoformat
+        "stevearc/conform.nvim",
+        opts = {},
+    },
 
     { -- Collection of various small independent plugins/modules
         "echasnovski/mini.nvim",
         configs = require("configs.mini"),
     },
 
-    {                                         -- Useful plugin to show you pending keybinds.
+    {                       -- Useful plugin to show you pending keybinds.
         "folke/which-key.nvim",
-        event = "VimEnter",                   -- Sets the loading event to 'VimEnter'
-        configs = require('configs.which-key') -- This is the function that runs, AFTER loading
+        event = "VimEnter", -- Sets the loading event to 'VimEnter'
+        -- configs = require('configs.which-key') -- This is the function that runs, AFTER loading
     },
 
     {
@@ -272,12 +262,12 @@ local plugins = {
     --     event = "InsertEnter",
     --     opts = {}, -- this is equalent to setup({}) function
     -- },
+    -- "tmsvg/pear-tree",
 
     -- Auto tag
     {
         'windwp/nvim-ts-autotag'
     },
-    -- "tmsvg/pear-tree",
 
 
     -- selicon snap
