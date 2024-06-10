@@ -249,8 +249,9 @@ bindsym Ctrl+Shift+Print exec --no-startup-id maim --select | xclip -selection c
 for_window [class="x-terminal-emulator"] floating enable, resize set 1000 500, move position 0px 0px, border pixel 0, opacity 0.8
 
 # Setting bg 
-exec feh --bg-scale /mnt/drive1/widnows/discord/arch.jpg
-exec xrandr --output DisplayPort-0 --mode 1920x1080 --rate 165.00
+exec feh --bg-scale /mnt/drive2/widnows/discord/arch.jpg
+exec xrandr --output DP-1 --mode 1920x1080 --rate 165.00
+exec screenkey -p fixed -g 12%x5%+85%-20%
 # exec_always --no-startup-id polybar
 # exec componit -b
 # exec compton

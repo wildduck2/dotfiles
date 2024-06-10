@@ -8,7 +8,7 @@ require('configs.zenmode')
 require('configs.comment')
 require('configs.undotree')
 require('configs.treesitter')
-require('configs.trouble')
+-- require('configs.trouble')
 require('configs.nvim-tree')
 require('configs.todo-comments')
 require('configs.telescope')
@@ -27,13 +27,14 @@ require('configs.randiverse')
 require('configs.nvim-ts-autotag')
 require('configs.silicon')
 require('configs.transparent')
-require('configs.conform-formate')
+
+
+
+
 -- require('configs.airline')
-
-
-
-
+-- require('configs.conform-formate')
 -- require('configs.autopairs')
 -- require('configs.autotag')
 require('configs.iblconf')
+require('configs.dap')
 -- require('configs.which-key')

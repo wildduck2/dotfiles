@@ -1,4 +1,3 @@
-require('configs.trouble.keymaps')
 local values = require('configs.trouble.values')
 
 require("trouble").setup({
@@ -26,4 +25,3 @@ require("trouble").setup({
     signs = values.signs,
     use_diagnostic_signs = false,
 })
-

@@ -20,8 +20,8 @@ vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find exis
 
 
 
-    -- require("trouble").toggle("workspace_diagnostics")
-    -- require("trouble").toggle("document_diagnostics")
+-- require("trouble").toggle("workspace_diagnostics")
+-- require("trouble").toggle("document_diagnostics")
 
 -- Slightly advanced example of overriding default behavior and theme
 vim.keymap.set('n', '<leader>/', function()

@@ -1,22 +1,16 @@
 -- Enable telescope extensions, if they are installed
 pcall(require('telescope').load_extension, 'fzf')
 pcall(require('telescope').load_extension, 'ui-select')
-local trouble = require("trouble.providers.telescope")
+
 require('configs.telescope.keymaps')
 local live_grep_git_root = require('configs.telescope.functions').live_grep_git_root
+local open_with_trouble = require("trouble.sources.telescope").open
+local telescope = require("telescope")
 
-
-require('telescope').setup {
+telescope.setup({
     -- You can put your default mappings / updates / etc. in here
     --  All the info you're looking for is in `:help telescope.setup()`
     --
-    defaults = {
-        mappings = {
-            i = { ["<C-enter>"] = trouble.open_with_trouble },
-            n = { ["<leader>s"] = trouble.open_with_trouble },
-            -- i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        },
-    },
     pickers = {
         -- Default configuration for builtin pickers goes here:
         -- picker_name = {
@@ -25,6 +19,15 @@ require('telescope').setup {
         -- }
         -- Now the picker_config_key will be applied every time you call this
         -- builtin picker
+    },
+    defaults = {
+        mappings = {
+            -- i = { ["<C-enter>"] = trouble.open_with_trouble },
+            -- n = { ["<leader>s"] = trouble.open_with_trouble },
+            -- i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+            i = { ["<leader>n"] = open_with_trouble },
+            n = { ["<c-t>"] = open_with_trouble },
+        },
     },
     extensions = {
         -- Your extension configuration goes here:
@@ -36,6 +39,6 @@ require('telescope').setup {
             require('telescope.themes').get_dropdown(),
         },
     },
-}
+})
 
 vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
