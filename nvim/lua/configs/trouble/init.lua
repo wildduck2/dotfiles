@@ -1,10 +1,10 @@
+require('configs.trouble.keymaps')
 local values = require('configs.trouble.values')
 
 require("trouble").setup({
     position = "bottom",
     height = 10,
     width = 50,
-    icons = true,
     mode = "workspace_diagnostics",
     severity = nil,
     fold_open = "",
@@ -25,3 +25,4 @@ require("trouble").setup({
     signs = values.signs,
     use_diagnostic_signs = false,
 })
+
