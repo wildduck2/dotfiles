@@ -27,7 +27,7 @@ require('configs.randiverse')
 require('configs.nvim-ts-autotag')
 require('configs.silicon')
 require('configs.transparent')
-
+require('configs.mason')
 
 
 
