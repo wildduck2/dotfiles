@@ -1,5 +1,8 @@
 {
-    "diagnostics.disable": [
-        "undefined-field"
-    ]
+  "diagnostics.disable": [
+    "undefined-field",
+    "redundant-parameter",
+    "undefined-global"
+  ],
+  "diagnostics.globals": ["vim"]
 }

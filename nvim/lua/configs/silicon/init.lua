@@ -20,7 +20,7 @@ require("silicon").setup({
     -- a path to a background image
     no_line_number = false,
     -- with which number the line numbering shall start
-    background_image = '/home/wild_duck/Downloads/arch.jpg',
+    -- background_image = '/home/wild_duck/Downloads/arch.jpg',
     -- the paddings to either side
     pad_horiz = 100,
     pad_vert = 80,

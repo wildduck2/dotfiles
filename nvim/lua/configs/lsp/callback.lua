@@ -1,4 +1,3 @@
-local builtin = require('telescope.builtin')
 local M = {}
 
 M.callback = function(event)
@@ -54,6 +53,7 @@ M.callback = function(event)
     map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
     -- Formate the file
+    --vim.lsp.buf.formatting_seq_sync()
     vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
     -- The following two autocommands are used to highlight references of the

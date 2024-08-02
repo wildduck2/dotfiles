@@ -73,7 +73,7 @@ local plugins = {
     -- Plenary
     { "nvim-lua/plenary.nvim" },
 
-    -- Undotree
+    -- -- Undotree
     { "mbbill/undotree" },
 
     -- floke todo
@@ -188,6 +188,13 @@ local plugins = {
         "andweeb/presence.nvim",
     },
 
+    {
+        'vyfor/cord.nvim',
+        build = './build',
+        event = 'VeryLazy',
+        opts = {},
+    },
+
     -- LSP
     {
         "neovim/nvim-lspconfig",
@@ -196,6 +203,7 @@ local plugins = {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
             "WhoIsSethDaniel/mason-tool-installer.nvim",
+            'MunifTanjim/prettier.nvim',
 
             -- Useful status updates for LSP.
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
@@ -321,6 +329,12 @@ local plugins = {
             "nvim-neotest/nvim-nio",
         },
     },
+    {
+        "iamcco/markdown-preview.nvim",
+        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        ft = { "markdown" },
+        build = function() vim.fn["mkdp#util#install"]() end,
+    }
 }
 
 require("lazy").setup(plugins, {})

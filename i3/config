@@ -235,23 +235,29 @@ bindsym $mod+Shift+period exec systemctl suspend
 
 
 ## Screenshots
-bindsym Print exec --no-startup-id maim "/home/$USER/Pictures/$(date).png"
-bindsym $mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) "/home/$USER/Pictures/$(date).png"
-bindsym Shift+Print exec --no-startup-id maim --select "/home/$USER/Pictures/$(date).png"
+# bindsym Print exec --no-startup-id maim "/home/$USER/Pictures/$(date).png"
+# bindsym $mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) "/home/$USER/Pictures/$(date).png"
+# bindsym Shift+Print exec --no-startup-id maim --select "/home/$USER/Pictures/$(date).png"
+bindsym Ctrl+Print exec  --no-startup-id flameshot gui
+
+# Screenshot/Screencapture
+#bindsym  Ctrl+Print exec /home/wild-duck/.config/dotfiles/screenshot.sh s # partial screenshot capture
+#bindsym  Crtrl+Shift+Print exec /home/wild-duck/.config/dotfiles/screenshot.sh screenshot capture (frozen screen)
+#bindsym  Ctrl+Alt+Print exec /home/wild-duck/.config/dotfiles/screenshot.sh m # monitor screenshot capture
 
 ## Clipboard Screenshots
-bindsym Ctrl+Print exec --no-startup-id maim | xclip -selection clipboard -t image/png
-bindsym Ctrl+$mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
-bindsym Ctrl+Shift+Print exec --no-startup-id maim --select | xclip -selection clipboard -t image/png
+# bindsym Ctrl+Print exec --no-startup-id maim | xclip -selection clipboard -t image/png
+# bindsym Ctrl+$mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
+# bindsym Ctrl+Shift+Print exec --no-startup-id maim --select | xclip -selection clipboard -t image/png
 
 
 # Apply transparency to terminal
 for_window [class="x-terminal-emulator"] floating enable, resize set 1000 500, move position 0px 0px, border pixel 0, opacity 0.8
 
 # Setting bg 
-exec feh --bg-scale /mnt/drive2/widnows/discord/arch.jpg
-exec xrandr --output DP-1 --mode 1920x1080 --rate 165.00
-exec screenkey -p fixed -g 12%x5%+85%-20%
+exec feh --bg-scale /mnt/drive2/Front-end/anime_pics/night.jpg
+exec xrandr --output DisplayPort-0 --mode 1920x1080 --rate 165
+exec_always screenkey -p fixed -g 12%x5%+85%-15%
 # exec_always --no-startup-id polybar
 # exec componit -b
 # exec compton

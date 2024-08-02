@@ -1,5 +1,4 @@
-local conform = require('conform')
-
+local conform = require("conform")
 
 conform.setup({
     notify_on_error = false,
@@ -15,6 +14,5 @@ conform.setup({
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         javascript = { { "prettierd", "prettier" } },
-    }
-}
-)
+    },
+})
