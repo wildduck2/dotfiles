@@ -2,7 +2,8 @@
   "diagnostics.disable": [
     "undefined-field",
     "redundant-parameter",
-    "undefined-global"
+    "undefined-global",
+        "undefined-doc-name"
   ],
   "diagnostics.globals": ["vim"]
 }

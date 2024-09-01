@@ -27,6 +27,16 @@ The `lua` directory is unique because it contains Lua modules, unlike other dire
 
 In the past, Lua scripts could only be sourced from the `lua` directory, necessitating a Lua module and a small amount of Vimscript to execute the Lua code. This limitation led to the widespread use of setup functions in Lua plugins, a practice rooted in the era of manually requiring Lua modules.
 
+## Installation
+
+this is for arch linux if you use any distro find how to install these packages by your own.
+
+- if you're a windows user you should touch some grass and install arch linux, cause i use arch BTW.
+
+```bash
+sudo pacman -S --noconfirm --needed gcc make git ripgrep fd unzip neovim
+```
+
 ## Conclusion
 
 Understanding the structure and purpose of Vim's configuration subdirectories, especially the `lua` directory, is essential for efficient Vim customization and plugin development. By organizing scripts appropriately, Vim users can leverage the power of Lua for creating modular, reusable components, thereby enhancing their workflow and extending Vim's capabilities.

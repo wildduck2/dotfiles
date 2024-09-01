@@ -53,7 +53,7 @@ M.mode_default = {
     -- {'branch', icon = {'', align='right', color={fg='green'}}}
     -- icon = '●',
 
-    separator = { left = '', right = '' }, -- Determines what separator to use for the component.
+    separator = { left = '', right = '' }, -- Determines what separator to use for the component.
     -- Note:
     --  When a string is provided it's treated as component_separator.
     --  When a table is provided it's treated as section_separator.

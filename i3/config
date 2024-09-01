@@ -255,12 +255,14 @@ bindsym Ctrl+Print exec  --no-startup-id flameshot gui
 for_window [class="x-terminal-emulator"] floating enable, resize set 1000 500, move position 0px 0px, border pixel 0, opacity 0.8
 
 # Setting bg 
-exec feh --bg-scale /mnt/drive2/Front-end/anime_pics/night.jpg
+exec_always feh --bg-scale /mnt/drive2/Front-end/anime_pics/1316292.jpeg
 exec xrandr --output DisplayPort-0 --mode 1920x1080 --rate 165
 exec_always screenkey -p fixed -g 12%x5%+85%-15%
 # exec_always --no-startup-id polybar
 # exec componit -b
 # exec compton
+exec_always --no-startup-id picom
+
 
 # exec_always --no-startup-id compton
 
