@@ -1,5 +1,5 @@
 --NOTE: disable guicursor
-vim.opt.guicursor = ""
+vim.opt.guicursor = ''
 
 --NOTE: line numbers
 vim.opt.number = true
@@ -12,7 +12,7 @@ vim.opt.showmode = false
 
 --NOTE: global clipboard for system clipboard
 vim.schedule(function()
-    vim.opt.clipboard = 'unnamedplus'
+  vim.opt.clipboard = 'unnamedplus'
 end)
 
 -- Enable break indent
@@ -44,20 +44,16 @@ vim.opt.splitbelow = true
 --  and `:help 'listchars'`
 vim.opt.list = true
 -- vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
-vim.opt.listchars:append("eol:↴")
+vim.opt.listchars:append 'eol:↴'
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
 
 -- Show which line your cursor is on
-vim.opt.cursorline = true
+-- vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
-
-
-
-
 
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
@@ -73,17 +69,17 @@ vim.opt.incsearch = true
 
 vim.opt.termguicolors = true
 
-vim.opt.isfname:append("@-@")
+vim.opt.isfname:append '@-@'
 vim.opt.scrolljump = 1
 
 vim.opt.textwidth = 100
-vim.opt.colorcolumn = "100"
+vim.opt.colorcolumn = '100'
 vim.opt.wrap = true
 vim.opt.linebreak = true
 
 -- Folding stuff
-vim.opt.foldmethod = "indent"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldmethod = 'indent'
+vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.opt.foldlevel = 23
 
 --[[ That's it. The most useful commands for working with folds are:

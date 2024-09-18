@@ -1,6 +1,6 @@
 local M = {}
 
-M.n = {
+M = {
   'diagnostics',
 
   -- Table of diagnostic sources, available sources are:

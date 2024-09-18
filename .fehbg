@@ -1,0 +1,2 @@
+#!/bin/sh
+feh --no-fehbg --bg-scale '/mnt/drive2/Front-end/anime_pics/1316292.jpeg' 
