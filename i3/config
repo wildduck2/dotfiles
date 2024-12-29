@@ -219,8 +219,8 @@ bindsym $mod+Shift+n exec --no-startup-id ~/dotfiles/bin/resolution
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
-#
-# # Sreen brightness controls
+
+# Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
 
@@ -239,6 +239,11 @@ bindsym $mod+Shift+period exec systemctl suspend
 # bindsym $mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) "/home/$USER/Pictures/$(date).png"
 # bindsym Shift+Print exec --no-startup-id maim --select "/home/$USER/Pictures/$(date).png"
 bindsym Ctrl+Print exec  --no-startup-id flameshot gui
+bindsym $mod+Ctrl+l exec --no-startup-id i3lock
+# convert /path/to/your/image.png -blur 0x8 /path/to/your/blurred_image.png
+
+# Shortcut for Lockscreen
+bindsym $mod+x exec /home/$USER/.config/duck-configs/i3-block.sh
 
 # Screenshot/Screencapture
 #bindsym  Ctrl+Print exec /home/wild-duck/.config/dotfiles/screenshot.sh s # partial screenshot capture
@@ -254,8 +259,16 @@ bindsym Ctrl+Print exec  --no-startup-id flameshot gui
 # Apply transparency to terminal
 for_window [class="x-terminal-emulator"] floating enable, resize set 1000 500, move position 0px 0px, border pixel 0, opacity 0.8
 
+# Gnome
+exec --no-startup-id gnome-settings-daemon &
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+exec --no-startup-id nm-applet &
+exec --no-startup-id gnome-keyring-daemon --start --components=pkcs11,secrets,ssh &
+exec --no-startup-id blueman-applet
+
+
 # Setting bg 
-exec_always feh --bg-scale /mnt/drive2/Front-end/anime_pics/1316292.jpeg
+exec_always feh --bg-scale /home/wildduck/Pictures/bg.jpg
 exec xrandr --output DisplayPort-0 --mode 1920x1080 --rate 165
 exec_always screenkey -p fixed -g 12%x5%+85%-15%
 # exec_always --no-startup-id polybar

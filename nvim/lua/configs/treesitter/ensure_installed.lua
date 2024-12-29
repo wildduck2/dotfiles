@@ -36,6 +36,7 @@ M.ensure_installed = {
     "lua",
     "rust",
     "prisma",
+    "sql"
 }
 
 return M

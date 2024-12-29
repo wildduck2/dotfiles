@@ -34,7 +34,9 @@ M.servers = {
     --    https://github.com/pmizio/typescript-tools.nvim
     --
     -- But for many setups, the LSP (`tsserver`) will work just fine
-    tsserver = {
+    ts_ls = {
+        root_dir = require("lspconfig").util.root_pattern("package.json", "tsconfig.json", "jsconfig.json"),
+        single_file_support = false,
         -- capabilities = capabilities,
         -- formatting = {
         --     format_opts = {
@@ -94,16 +96,6 @@ M.servers = {
         --     },
         -- },
     },
-    -- tailwindcss = {
-    --     -- cmd = { "tailwindcss-language-server", "--stdio" },
-    --     cmd = {
-    --         "/home/wild_duck/.local/share/nvim/lsp_servers/vscode-eslint/node_modules/vscode-langservers-extracted/bin/vscode-eslint-language-server",
-    --         "--stdio",
-    --     },
-    --     -- filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
-    --     root_dir = require('lspconfig').util.root_pattern("tailwind.config.js", "package.json"),
-    --     settings = {},
-    -- }
     tailwindcss = {
         -- init_options = {
         --     userLanguages = {
@@ -158,17 +150,38 @@ M.servers = {
     typos_lsp = {},
     prettierd = {},
     svelte = {
-
         cmd = { "/home/wild-duck/.local/share/nvim/mason/bin/svelteserver", "--stdio" },
     },
-    biome = {},
+    -- biome = {},
     bashls = {},
     dockerls = {},
     docformatter = {},
     cpptools = {},
-    sqlfmt = {},
+    -- sqlfmt = {},
     sqlls = {},
+    -- sqls = {},
     mdx_analyzer = {},
+    denols = {
+        cmd = { "deno", "lsp" },
+        root_dir = require("lspconfig").util.root_pattern("deno.json", "deno.jsonc"),
+        filetype = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "svelte" },
+        init_options = {
+            config = {
+                enable = true,
+                lint = true,
+                unstable = true,
+                suggest = {
+                    imports = {
+                        hosts = {
+                            ["https://deno.land"] = true,
+                            ["https://cdn.nest.land"] = true,
+                            ["https://crux.land"] = true,
+                        },
+                    },
+                },
+            },
+        },
+    },
 
 }
 
