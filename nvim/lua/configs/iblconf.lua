@@ -1,5 +1,3 @@
 local blacklineOpts = {}
 
-
-
 return blacklineOpts

@@ -12,7 +12,7 @@ vim.opt.showmode = false
 
 --NOTE: global clipboard for system clipboard
 vim.schedule(function()
-  vim.opt.clipboard = 'unnamedplus'
+  vim.opt.clipboard = ''
 end)
 
 -- Enable break indent
@@ -66,6 +66,7 @@ vim.opt.backup = false
 
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
+vim.opt.cursorline = true
 
 vim.opt.termguicolors = true
 

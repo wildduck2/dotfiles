@@ -1,2 +1,2 @@
-require("wild-duck")
-require("configs")
+require 'wild-duck'
+require 'configs'

@@ -11,7 +11,7 @@ M.n = {
   },
   symbols = { added = '+', modified = '~', removed = '-' }, -- Changes the symbols used by the diff.
 
-  separator = { left = '', right = '' }, -- Determines what separator to use for the component.
+  separator = { left = '', right = '' }, -- Determines what separator to use for the component.
   source = nil, -- A function that works as a data source for diff.
   -- It must return a table as such:
   --   { added = add_count, modified = modified_count, removed = removed_count }

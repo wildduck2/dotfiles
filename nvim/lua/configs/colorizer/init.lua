@@ -1,5 +1,5 @@
-require('colorizer').setup({
-    css = {
-        rgb_fn = true
-    }
-})
+require('colorizer').setup {
+  css = {
+    rgb_fn = true,
+  },
+}

@@ -1,6 +1,6 @@
 local M = {}
 
-M = {
+M.n = {
   'diagnostics',
 
   -- Table of diagnostic sources, available sources are:
@@ -21,6 +21,8 @@ M = {
   --     hint  = 'DiagnosticHint',  -- Changes diagnostics' hint color.
   -- },
   symbols = { error = 'E', warn = 'W', info = 'I', hint = 'H' },
+
+  separator = { left = '', right = '' }, -- Determines what separator to use for the component.
   colored = true, -- Displays diagnostics status in color if set to true.
   update_in_insert = false, -- Update diagnostics in insert mode.
   always_visible = false, -- Show diagnostics even if there are none.

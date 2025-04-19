@@ -1,6 +1,7 @@
 --NOTE: those are the files for the lau line conf there is other file not included if your
 --  want to configure them down in this file you gonna find the other components and tips to add
 --  FOR MORE INFO ABOUT THIS :help lualine
+local branch = require 'configs.lualine.branch'
 local mode = require 'configs.lualine.mode'
 local diagnostics = require 'configs.lualine.diagnostics'
 local filename = require 'configs.lualine.filename'
@@ -12,14 +13,14 @@ require('lualine').setup {
     icons_enabled = false,
     theme = 'auto',
     -- component_separators = "",
-    section_separators = { left = '', right = '' },
+    section_separators = { left = '', right = '' },
   },
   sections = {
     lualine_a = {
-      -- { 'mode', fmt = mode.get_mode_name },
-      mode.mode_default,
+      { 'mode', fmt = mode.get_mode_name },
+      -- mode.mode_default,
     },
-    lualine_b = { diagnostics },
+    lualine_b = { branch.n, diagnostics.n },
     lualine_c = { diff.n, filename.n },
     lualine_x = { filetype.n },
     lualine_y = { 'progress' },

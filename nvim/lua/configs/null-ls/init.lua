@@ -1,48 +1,45 @@
-local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-local null_ls = require("null-ls")
-
--- -- Here is the formatting config
--- local lSsources = {
---     null_ls.builtins.formatting.prettier.with({
---         filetypes = {
---             "javascript",
---             "typescript",
---             "css",
---             "scss",
---             "html",
---             "json",
---             "yaml",
---             "markdown",
---             "graphql",
---             "md",
---             "txt",
---         },
---     }),
---     null_ls.builtins.formatting.stylua,
+-- local null_ls = require 'none-ls'
+-- local formatting = null_ls.builtins.formatting
+--
+-- -- Define Biome custom formatter
+-- local biome = {
+--     method = null_ls.methods.FORMATTING,
+--     filetypes = { 'javascript', 'typescript', 'json', 'tsx', 'jsx' },
+--     generator = null_ls.generator {
+--         command = 'biome',
+--         args = { 'format', '--stdin-file-path', '$FILENAME' },
+--         to_stdin = true,
+--     },
 -- }
--- null_ls.setup({
---     sources = lSsources,
--- })
--- vim.cmd("autocmd BufWritePost * lua vim.lsp.buf.formatting_seq_sync()")
-
-local opts = {
-    sources = {
-        null_ls.builtins.formatting.prettierd,
-    },
-    on_attach = function(client, bufnr)
-        if client.supports_method("textDocument/formatting") then
-            vim.api.nvim_clear_autocmds({
-                group = augroup,
-                buffer = bufnr,
-            })
-            vim.api.nvim_create_autocmd("BufWritePre", {
-                group = augroup,
-                buffer = bufnr,
-                callback = function()
-                    vim.lsp.buf.format({ bufnr = bufnr })
-                end,
-            })
-        end
-    end,
-}
-null_ls.setup(opts)
+--
+-- -- Create augroup for formatting
+-- local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
+--
+-- null_ls.setup {
+--     sources = {
+--         biome,
+--         formatting.stylua,
+--     },
+--     on_attach = function(client, bufnr)
+--         -- Set up hover (K key)
+--         vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr })
+--
+--         -- Set up format on save with confirmation
+--         if client.supports_method 'textDocument/formatting' then
+--             vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
+--             vim.api.nvim_create_autocmd('BufWritePre', {
+--                 group = augroup,
+--                 buffer = bufnr,
+--                 callback = function()
+--                     vim.ui.select({ 'Yes', 'No' }, {
+--                         prompt = 'Format this file?',
+--                     }, function(choice)
+--                         if choice == 'Yes' then
+--                             vim.lsp.buf.format { bufnr = bufnr }
+--                         end
+--                     end)
+--                 end,
+--             })
+--         end
+--     end,
+-- }

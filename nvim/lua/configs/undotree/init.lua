@@ -1,1 +1,1 @@
-require("configs.undotree.keymaps")
+require 'configs.undotree.keymaps'
