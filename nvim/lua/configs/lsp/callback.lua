@@ -50,7 +50,7 @@ M.callback = function(event)
 
   -- Opens a popup that displays documentation about the word under your cursor
   --  See `:help K` for why this keymap
-  map('<leader>b', vim.lsp.buf.hover, 'Hover Documentation')
+  map('K', vim.lsp.buf.hover, 'Hover Documentation')
 
   -- Format the file
   --vim.lsp.buf.formatting_seq_sync()

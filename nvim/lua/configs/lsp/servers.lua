@@ -25,7 +25,6 @@ capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp'
 
 M.servers = {
   clangd = {},
-  gopls = {},
   pyright = {},
   rust_analyzer = {},
   -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -130,6 +129,20 @@ M.servers = {
     },
   },
   grammarly = {},
+  -- gofumpt = {},
+  -- goimports = {},
+  -- goimports_reviser = {},
+  gopls = {
+    settings = {
+      gopls = {
+        gofumpt = true, -- stricter formatting than gofmt
+        usePlaceholders = true,
+        completeUnimported = true,
+      },
+    },
+  },
+  golines = {},
+  gotests = {},
 }
 
 return M

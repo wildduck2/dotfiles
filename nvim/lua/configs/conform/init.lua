@@ -7,6 +7,10 @@ conform.setup {
     -- Conform can also run multiple formatters sequentially
     python = { 'isort', 'black' },
 
+    go = { 'goimports', 'gofmt' },
+    -- You can also customize some of the format options for the filetype
+    rust = { 'rustfmt', lsp_format = 'fallback' },
+
     -- You can use a sub-list to tell conform to run *until* a formatter
     -- is found.
     javascript = { 'biome', 'prettierd', 'prettier' },

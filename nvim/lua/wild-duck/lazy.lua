@@ -134,11 +134,12 @@ local plugins = {
     'Exafunction/codeium.vim',
   },
 
-  --None-ls
+  --Null-ls
   {
-    'nvimtools/none-ls.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    'jose-elias-alvarez/null-ls.nvim',
+    event = 'VeryLazy',
   },
+
   -- Git related plugins
   { 'tpope/vim-fugitive' },
 
