@@ -1,6 +1,5 @@
-local callback = require('configs.lsp.callback').callback
-local servers = require('configs.lsp.servers').servers
-local ensure__installedF = require 'configs.lsp.ensure_install'
+local callback = require 'configs.lsp.callback'.callback
+local servers = require 'configs.lsp.servers'.servers
 
 -- Brief aside: **What is LSP?**
 --
@@ -79,7 +78,6 @@ require('mason').setup()
 -- for you, so that they are available from within Neovim.
 
 local ensure__installed = vim.tbl_keys(servers or {})
-vim.list_extend(ensure__installed, ensure__installedF)
 
 require('mason-tool-installer').setup { ensure_installed = ensure__installed }
 

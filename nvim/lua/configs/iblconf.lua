@@ -1,3 +1,0 @@
-local blacklineOpts = {}
-
-return blacklineOpts

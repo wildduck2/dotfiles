@@ -21,34 +21,20 @@ require('cmp').setup {
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+capabilities =
+    vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
 M.servers = {
-  clangd = {},
   pyright = {},
-  rust_analyzer = {},
   -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-  --
-  -- Some languages (like typescript) have entire language plugins that can be useful:
-  --    https://github.com/pmizio/typescript-tools.nvim
-  --
-  -- But for many setups, the LSP (`tsserver`) will work just fine
-  ts_ls = {
-    root_dir = require('lspconfig').util.root_pattern('package.json', 'tsconfig.json', 'jsconfig.json'),
-    single_file_support = false,
-    capabilities = capabilities,
-    formatting = {
-      format_opts = {
-        async = true,
-      },
-    },
-    init_options = {
-      preferences = {
-        disableSuggestions = true,
-      },
-    },
-  },
 
+  -- C/C++
+  clangd = {},
+  -- WARN: you will need to install this manuanlly by `:MasonInstall clang-format`
+  -- clang_format = {},
+
+  -- LAU
+  luacheck = {},
   lua_ls = {
     settings = {
       Lua = {
@@ -72,6 +58,57 @@ M.servers = {
       },
     },
   },
+
+  -- RUST
+  rust_analyzer = {},
+  rustfmt = {},
+
+  -- TYPESCRIPT
+  -- Some languages (like typescript) have entire language plugins that can be useful:
+  --    https://github.com/pmizio/typescript-tools.nvim
+  --
+  -- But for many setups, the LSP (`tsserver`) will work just fine
+  ts_ls = {
+    root_dir = require('lspconfig').util.root_pattern(
+      'package.json',
+      'tsconfig.json',
+      'jsconfig.json'
+    ),
+    single_file_support = false,
+    capabilities = capabilities,
+    formatting = {
+      format_opts = {
+        async = true,
+      },
+    },
+    init_options = {
+      preferences = {
+        disableSuggestions = true,
+      },
+    },
+  },
+  denols = {
+    cmd = { 'deno', 'lsp' },
+    root_dir = require('lspconfig').util.root_pattern('deno.json', 'deno.jsonc'),
+    filetype = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'svelte' },
+    init_options = {
+      config = {
+        enable = true,
+        lint = true,
+        unstable = true,
+        suggest = {
+          imports = {
+            hosts = {
+              ['https://deno.land'] = true,
+              ['https://cdn.nest.land'] = true,
+              ['https://crux.land'] = true,
+            },
+          },
+        },
+      },
+    },
+  },
+
   --[[ elixirls = {
         cmd = { "elixir-ls", "--stdio" },
         -- on_attach = custom_attach, -- this may be required for extended functionalities of the LSP
@@ -94,7 +131,6 @@ M.servers = {
   graphql = {},
   lexical = {},
   typos_lsp = {},
-  prettierd = {},
   svelte = {
     cmd = { '/home/wild-duck/.local/share/nvim/mason/bin/svelteserver', '--stdio' },
   },
@@ -107,31 +143,9 @@ M.servers = {
   sqlls = {},
   -- sqls = {},
   mdx_analyzer = {},
-  denols = {
-    cmd = { 'deno', 'lsp' },
-    root_dir = require('lspconfig').util.root_pattern('deno.json', 'deno.jsonc'),
-    filetype = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'svelte' },
-    init_options = {
-      config = {
-        enable = true,
-        lint = true,
-        unstable = true,
-        suggest = {
-          imports = {
-            hosts = {
-              ['https://deno.land'] = true,
-              ['https://cdn.nest.land'] = true,
-              ['https://crux.land'] = true,
-            },
-          },
-        },
-      },
-    },
-  },
   grammarly = {},
-  -- gofumpt = {},
-  -- goimports = {},
-  -- goimports_reviser = {},
+
+  -- GO
   gopls = {
     settings = {
       gopls = {
@@ -141,6 +155,7 @@ M.servers = {
       },
     },
   },
+  goimports = {},
   golines = {},
   gotests = {},
 }

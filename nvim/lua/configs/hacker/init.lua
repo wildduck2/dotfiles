@@ -1,8 +1,8 @@
 -- default config
 require('hacker').setup {
   content = [[ Code want to show.... ]], -- The code snippet that show when typing
-  filetype = 'lua', -- filetype of code snippet
-  speed = { -- characters insert each time, random from min -> max
+  filetype = 'lua',                      -- filetype of code snippet
+  speed = {                              -- characters insert each time, random from min -> max
     min = 2,
     max = 2,
   },

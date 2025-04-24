@@ -1,7 +1,9 @@
 {
-  "diagnostics.disable": [
-    "undefined-field",
-    "redundant-parameter"
-  ],
-  "diagnostics.globals": ["vim"]
+  "runtime": {
+    "version": "LuaJIT",
+    "pathStrict": true
+  },
+  "type": {
+    "checkTableShape": true
+  }
 }

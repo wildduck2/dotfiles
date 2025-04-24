@@ -1,4 +1,3 @@
--- NOTE: importing files
 require 'configs.lualine'
 require 'configs.catppuccin'
 require 'configs.cloak'
@@ -16,6 +15,7 @@ require 'configs.fugitive'
 require 'configs.lsp'
 require 'configs.null-ls'
 require 'configs.cmp'
+require 'configs.luasnip'
 
 require 'configs.tmux-navigate'
 require 'configs.presence'
@@ -28,12 +28,12 @@ require 'configs.silicon'
 require 'configs.transparent'
 require 'configs.gitsigns'
 require 'configs.conform'
+require 'configs.ibl'
 require 'configs.which-key'
 
 -- require('configs.airline')
 -- require('configs.autopairs')
 -- require('configs.autotag')
-require 'configs.iblconf'
 require 'configs.dap'
 -- require 'configs.obsidian'
 require 'configs.dbee'

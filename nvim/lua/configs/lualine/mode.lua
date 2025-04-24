@@ -68,7 +68,7 @@ M.mode_default = {
   -- and right will be placed on its right.
   --
 
-  cond = nil, -- Condition function, the component is loaded when the function returns `true`.
+  cond = nil,         -- Condition function, the component is loaded when the function returns `true`.
 
   draw_empty = false, -- Whether to draw component even if it's empty.
   -- Might be useful if you want just the separator.
