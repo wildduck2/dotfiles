@@ -11,9 +11,9 @@ require('silicon').setup {
   debug = false,
   -- most of them could be overridden with other
   -- the font settings with size and fallback font
-  font = 'JetBrainsMono NF=34;Noto Emoji=34',
+  font = 'JetBrainsMono NF=34;',
   -- the theme to use, depends on themes available to silicon
-  theme = 'gruvbox-dark',
+  theme = 'TwoDark',
   -- the background color outside the rendered os window
   -- (in hexcode string e.g "#076678")
   background = nil,
@@ -38,7 +38,7 @@ require('silicon').setup {
   -- the distance between lines of code
   line_pad = 0,
   -- the rendering of tab characters as so many space characters
-  tab_width = 4,
+  tab_width = 2,
   -- with which language the syntax highlighting shall be done, should be
   -- a function that returns either a language name or an extension like "js"
   language = function()
@@ -75,6 +75,6 @@ require('silicon').setup {
   command = 'silicon',
   -- a string or function that defines the path to the output image
   output = function()
-    return './' .. os.date '!%Y-%m-%dT%H-%M-%S' .. '_code.png'
+    return '~/Pictures/Silicon/' .. os.date '!%Y-%m-%dT%H-%M-%S' .. '_code.png'
   end,
 }

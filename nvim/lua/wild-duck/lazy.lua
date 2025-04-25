@@ -36,24 +36,26 @@ local plugins = {
 
   -- Color scheme
   {
+    "tjdevries/colorbuddy.nvim",
+    priority = 1001,
+    config = function()
+      vim.cmd.colorscheme "gruvbuddy"
+    end,
+  },
+  {
     'catppuccin/nvim',
     priority = 1000,
   },
-
-  -- Tokyonight
   {
     'folke/tokyonight.nvim',
     lazy = false,
     priority = 1000,
     opts = {},
   },
-
   {
     'rose-pine/neovim',
     as = 'rose-pine',
   },
-
-  -- onedark
   {
     'navarasu/onedark.nvim',
     as = 'onedark',

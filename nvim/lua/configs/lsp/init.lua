@@ -1,5 +1,5 @@
-local callback = require 'configs.lsp.callback'.callback
-local servers = require 'configs.lsp.servers'.servers
+local callback = require('configs.lsp.callback').callback
+local servers = require('configs.lsp.servers').servers
 
 -- Brief aside: **What is LSP?**
 --
@@ -37,7 +37,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 -- Diagnostic Config
 -- See :help vim.diagnostic.Opts
-vim.diagnostic.config {
+vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
   severity_sort = true,
   float = { border = 'rounded', source = 'if_many' },
   underline = { severity = vim.diagnostic.severity.ERROR },
@@ -48,6 +48,8 @@ vim.diagnostic.config {
       [vim.diagnostic.severity.INFO] = '󰋽 ',
       [vim.diagnostic.severity.HINT] = '󰌶 ',
     },
+    -- Use the new syntax for specifying severity
+    severity = { min = vim.diagnostic.severity.Warning },
   } or {},
   virtual_text = {
     source = 'if_many',
@@ -61,8 +63,10 @@ vim.diagnostic.config {
       }
       return diagnostic_message[diagnostic.severity]
     end,
+    severity = { min = vim.diagnostic.severity.Warning },
   },
-}
+  update_in_insert = false,
+})
 
 -- LSP servers and clients are able to communicate to each other what features they support.
 --  By default, Neovim doesn't support everything that is in the LSP specification.
@@ -105,7 +109,7 @@ require('mason-lspconfig').setup {
   },
   init_options = {
     preferences = {
-      disableSuggestions = true,
+      disableSuggestions = false,
     },
   },
   settings = {},
