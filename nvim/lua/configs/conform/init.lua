@@ -13,6 +13,8 @@ conform.setup {
     rust = { 'rustfmt', lsp_format = 'fallback' },
     javascript = { 'biome' },
     typescript = { 'biome' },
+    javascriptreact = { 'biome' },
+    typescriptreact = { 'biome' },
   },
   format_on_save = {
     lsp_fallback = true,

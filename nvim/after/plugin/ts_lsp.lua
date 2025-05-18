@@ -1,0 +1,16 @@
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = "markdown",
+--   callback = function()
+--     local client = vim.lsp.start({
+--       name = "wildduck_lsp",
+--       cmd = { "/run/media/wildduck/duck/wildduck/GENTELDUCK/main" },
+--       on_attach = function(client, bufnr)
+--         print("Attached to buffer: " .. bufnr)
+--       end,
+--     })
+--
+--     if not client then
+--       vim.notify("WildDuck LSP failed to start", vim.log.levels.ERROR)
+--     end
+--   end,
+-- })

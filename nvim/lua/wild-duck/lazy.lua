@@ -322,14 +322,15 @@ local plugins = {
     lazy = true,
     cmd = 'Silicon',
   },
-  -- {
-  --   'iamcco/markdown-preview.nvim',
-  --   cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
-  --   ft = { 'markdown' },
-  --   build = function()
-  --     vim.fn['mkdp#util#install']()
-  --   end,
-  -- },
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = "cd app && pnpm i",
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = { "markdown" },
+  },
   {
     'davidmh/mdx.nvim',
     config = true,
@@ -361,6 +362,23 @@ local plugins = {
     init = function()
       vim.g.rustfmt_autosave = 1
     end,
+  },
+  {
+    'simrat39/rust-tools.nvim',
+    config = function()
+      local rt = require("rust-tools")
+
+      rt.setup({
+        server = {
+          on_attach = function(_, bufnr)
+            -- Hover actions
+            vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+            -- Code action groups
+            vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+          end,
+        },
+      })
+    end
   },
 
   -- Here is a more advanced example where we pass configuration
@@ -427,6 +445,7 @@ local plugins = {
   -- },
 }
 
+---@diagnostic disable-next-line: missing-fields
 require('lazy').setup(plugins, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the

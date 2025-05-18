@@ -36,8 +36,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 -- Diagnostic Config
--- See :help vim.diagnostic.Opts
-vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+-- See :help vim.diagnostic.config
+vim.diagnostic.config {
+  update_in_insert = false,
   severity_sort = true,
   float = { border = 'rounded', source = 'if_many' },
   underline = { severity = vim.diagnostic.severity.ERROR },
@@ -48,8 +49,6 @@ vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
       [vim.diagnostic.severity.INFO] = '󰋽 ',
       [vim.diagnostic.severity.HINT] = '󰌶 ',
     },
-    -- Use the new syntax for specifying severity
-    severity = { min = vim.diagnostic.severity.Warning },
   } or {},
   virtual_text = {
     source = 'if_many',
@@ -63,10 +62,8 @@ vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
       }
       return diagnostic_message[diagnostic.severity]
     end,
-    severity = { min = vim.diagnostic.severity.Warning },
   },
-  update_in_insert = false,
-})
+}
 
 -- LSP servers and clients are able to communicate to each other what features they support.
 --  By default, Neovim doesn't support everything that is in the LSP specification.

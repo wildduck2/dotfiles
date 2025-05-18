@@ -61,7 +61,11 @@ M.servers = {
 
   -- RUST
   rust_analyzer = {},
-  rustfmt = {},
+  -- NOTE: this is deprecated and it should be installed via `rustup`.
+  -- ```sh
+  -- rustup component add rustfmt --toolchain nightly
+  -- ```
+  -- rustfmt = {},
 
   -- TYPESCRIPT
   -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -126,7 +130,7 @@ M.servers = {
   html = {},
   jsonls = {},
   yamlls = {},
-  htmx = {},
+  -- htmx = {},
   prismals = {},
   graphql = {},
   lexical = {},
@@ -139,9 +143,9 @@ M.servers = {
   dockerls = {},
   docformatter = {},
   cpptools = {},
-  -- sqlfmt = {},
+  sqlfmt = {},
   sqlls = {},
-  -- sqls = {},
+  sqls = {},
   mdx_analyzer = {},
   grammarly = {},
 
@@ -158,6 +162,8 @@ M.servers = {
   goimports = {},
   golines = {},
   gotests = {},
+  -- css_variables = {},
+  -- cssmodules_ls = {}
 }
 
 return M

@@ -52,7 +52,7 @@ qrencode -o "$TEMP_QR" -s 60 -m 4 "$TEXT"
 
 # Resize the input image to fit the QR code center (20% of QR code size)
 QR_SIZE=$(identify -format "%w" "$TEMP_QR")
-RESIZE_SIZE=$((QR_SIZE / 7))
+RESIZE_SIZE=$((QR_SIZE / 4))
 convert "$IMAGE" -resize "${RESIZE_SIZE}x${RESIZE_SIZE}" "$TEMP_RESIZED"
 
 # Overlay the resized image on the QR code

@@ -9,11 +9,11 @@
     allow_bold = False
     visible_bell = True
     background_color = "#1a1b26"
-    background_darkness = 1.0
+    background_darkness = 0.95
     background_image = /home/wild_duck/Downloads/1347028.jpeg
     cursor_fg_color = "#0b0400"
     cursor_bg_color = "#cdd6f4"
-    font = Berkeley Mono Trial Bold 13
+    font = JetBrains Mono Semi-Bold 13
     foreground_color = "#cdd6f4"
     show_titlebar = False
     scrollbar_position = hidden

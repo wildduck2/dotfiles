@@ -5,5 +5,9 @@
   },
   "type": {
     "checkTableShape": true
-  }
+  },
+  "diagnostics.globals": [
+    "require",
+    "vim"
+  ]
 }
