@@ -171,6 +171,18 @@ local plugins = {
 
   -- LSP
   {
+    -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
+    -- used for completion, annotations and signatures of Neovim apis
+    'folke/lazydev.nvim',
+    ft = 'lua',
+    opts = {
+      library = {
+        -- Load luvit types when the `vim.uv` word is found
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+      },
+    },
+  },
+  {
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
@@ -323,13 +335,14 @@ local plugins = {
     cmd = 'Silicon',
   },
   {
-    "iamcco/markdown-preview.nvim",
-    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-    build = "cd app && pnpm i",
-    init = function()
-      vim.g.mkdp_filetypes = { "markdown" }
+    "toppair/peek.nvim",
+    event = { "VeryLazy" },
+    build = "deno task --quiet build:fast",
+    config = function()
+      require("peek").setup()
+      vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+      vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
     end,
-    ft = { "markdown" },
   },
   {
     'davidmh/mdx.nvim',

@@ -25,9 +25,6 @@ capabilities =
     vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
 M.servers = {
-  pyright = {},
-  -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-
   -- C/C++
   clangd = {},
   -- WARN: you will need to install this manuanlly by `:MasonInstall clang-format`
@@ -91,27 +88,27 @@ M.servers = {
       },
     },
   },
-  denols = {
-    cmd = { 'deno', 'lsp' },
-    root_dir = require('lspconfig').util.root_pattern('deno.json', 'deno.jsonc'),
-    filetype = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'svelte' },
-    init_options = {
-      config = {
-        enable = true,
-        lint = true,
-        unstable = true,
-        suggest = {
-          imports = {
-            hosts = {
-              ['https://deno.land'] = true,
-              ['https://cdn.nest.land'] = true,
-              ['https://crux.land'] = true,
-            },
-          },
-        },
-      },
-    },
-  },
+  -- denols = {
+  --   cmd = { 'deno', 'lsp' },
+  --   root_dir = require('lspconfig').util.root_pattern('deno.json', 'deno.jsonc'),
+  --   filetype = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'svelte' },
+  --   init_options = {
+  --     config = {
+  --       enable = true,
+  --       lint = true,
+  --       unstable = true,
+  --       suggest = {
+  --         imports = {
+  --           hosts = {
+  --             ['https://deno.land'] = true,
+  --             ['https://cdn.nest.land'] = true,
+  --             ['https://crux.land'] = true,
+  --           },
+  --         },
+  --       },
+  --     },
+  --   },
+  -- },
 
   --[[ elixirls = {
         cmd = { "elixir-ls", "--stdio" },
@@ -145,7 +142,6 @@ M.servers = {
   cpptools = {},
   sqlfmt = {},
   sqlls = {},
-  sqls = {},
   mdx_analyzer = {},
   grammarly = {},
 
@@ -162,6 +158,8 @@ M.servers = {
   goimports = {},
   golines = {},
   gotests = {},
+  ruff = {},
+  docker_compose_language_service = {}
   -- css_variables = {},
   -- cssmodules_ls = {}
 }

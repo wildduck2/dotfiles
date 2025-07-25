@@ -41,7 +41,7 @@ vim.diagnostic.config {
   update_in_insert = false,
   severity_sort = true,
   float = { border = 'rounded', source = 'if_many' },
-  underline = { severity = vim.diagnostic.severity.ERROR },
+  underline = true,
   signs = vim.g.have_nerd_font and {
     text = {
       [vim.diagnostic.severity.ERROR] = '󰅚 ',
@@ -49,6 +49,7 @@ vim.diagnostic.config {
       [vim.diagnostic.severity.INFO] = '󰋽 ',
       [vim.diagnostic.severity.HINT] = '󰌶 ',
     },
+    severity = { min = vim.diagnostic.severity.HINT },
   } or {},
   virtual_text = {
     source = 'if_many',
@@ -62,6 +63,7 @@ vim.diagnostic.config {
       }
       return diagnostic_message[diagnostic.severity]
     end,
+    severity = { min = vim.diagnostic.severity.HINT },
   },
 }
 
@@ -94,10 +96,6 @@ require('mason-lspconfig').setup {
       require('lspconfig')[server_name].setup(server)
     end,
   },
-}
-
----@diagnostic disable-next-line: missing-fields
-require('mason-lspconfig').setup {
   capabilities = capabilities,
   formatting = {
     format_opts = {

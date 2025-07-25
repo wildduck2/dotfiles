@@ -1,34 +1,31 @@
 [global_config]
-  focus = mouse
-  window_state = maximise
-  borderless = True
-  extra_styling = False
-  inactive_color_offset = 0.9047619047619048
 [keybindings]
-  zoom_in = <Primary><Shift>plus
-  close_term = <Alt>asciicircum
-  close_window = <Alt>ampersand
 [profiles]
   [[default]]
-    icon_bell = False
-    background_color = "#1a1b26"
-    background_darkness = 0.18
-    font = Berkeley Mono Trial Bold 13
-    foreground_color = "#a9b1d6"
+    allow_bold = False
+    visible_bell = True
+    background_color = "#060101"
+    background_darkness = 0.9
+    background_type = image
+    cursor_fg_color = "#0b0400"
+    cursor_bg_color = "#cdd6f4"
+    cursor_color_default = False
+    font = JetBrains Mono Semi-Bold 13
+    foreground_color = "#ffffff"
     show_titlebar = False
     scrollbar_position = hidden
     scroll_on_keystroke = False
-    scrollback_infinite = True
-    palette = "#000000:#f7768e:#9ece6a:#e0af68:#7aa2f7:#9a7ecc:#4abaaf:#acb0d0:#4e5173:#f7768e:#9ece6a:#e0af68:#7aa2f7:#9a7ecc:#4abaaf:#acb0d0"
+    palette = "#403c58:#ea6f91:#9bced7:#f1ca93:#34738e:#c3a5e6:#eabbb9:#faebd7:#6f6e85:#ea6f91:#9bced7:#f1ca93:#34738e:#c3a5e6:#eabbb9:#ffffff"
     use_system_font = False
-    split_to_group = True
+    title_use_system_font = False
+    title_font = Berkeley Mono Trial Bold 9
 [layouts]
   [[default]]
-    [[[window0]]]
-      type = Window
-      parent = ""
     [[[child1]]]
       type = Terminal
       parent = window0
       profile = default
+    [[[window0]]]
+      type = Window
+      parent = ""
 [plugins]
