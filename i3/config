@@ -42,7 +42,7 @@ bindsym $mod+Return exec terminator
 
 # kill focused window
 # bindsym $mod+space exec "/home/theprimeagen/dotfiles/awesome-streamerrc/ThePrimeagen/tmux2"
-# by deafult it has shift i have removed it 
+# by default it has shift i have removed it 
 bindsym $mod+q kill
 
 # start dmenu (a program launcher)
@@ -220,7 +220,7 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #i
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
 
-# Sreen brightness controls
+# Screen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
 
@@ -233,6 +233,8 @@ bindsym $mod+m move workspace to output left
 # Suspend
 bindsym $mod+Shift+period exec systemctl suspend
 
+bindsym $mod+b exec ~/.config/zen/zen
+
 
 ## Screenshots
 # bindsym Print exec --no-startup-id maim "/home/$USER/Pictures/$(date).png"
@@ -243,7 +245,7 @@ bindsym $mod+Ctrl+l exec --no-startup-id i3lock
 # convert /path/to/your/image.png -blur 0x8 /path/to/your/blurred_image.png
 
 # Shortcut for Lockscreen
-bindsym $mod+x exec /home/$USER/.config/duck-configs/i3-block.sh
+bindsym $mod+x exec /home/$USER/.config/i3/i3-blocks.sh
 
 # Screenshot/Screencapture
 #bindsym  Ctrl+Print exec /home/wild-duck/.config/dotfiles/screenshot.sh s # partial screenshot capture
@@ -275,7 +277,7 @@ exec_always screenkey -p fixed -g 12%x5%+85%-15%
 # exec componit -b
 # exec compton
 exec_always --no-startup-id picom
-
+exec xrandr --output HDMI-0 --auto --left-of DP-2 --rate 120.00
 
 # exec_always --no-startup-id compton
 
@@ -314,4 +316,5 @@ client.unfocused         $overlay0 $base  $text    $rosewater $overlay0
 client.urgent            $peach    $base  $peach   $overlay0  $peach
 client.placeholder       $overlay0 $base  $text    $overlay0  $overlay0
 client.background        $base
+
 
