@@ -9,7 +9,8 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
 
-PATH=~/.console-ninja/.bin:$PATHexport JAVA_HOME=/usr/lib/jvm/java-22-openjdk
+PATH=~/.console-ninja/.bin:$PATH
+export JAVA_HOME=/usr/lib/jvm/java-22-openjdk
 export PATH=$JAVA_HOME/bin:$PATH
 export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
