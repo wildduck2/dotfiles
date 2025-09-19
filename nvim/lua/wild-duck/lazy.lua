@@ -43,6 +43,9 @@ local plugins = {
     end,
   },
   {
+    'tjdevries/gruvbuddy.nvim',
+  },
+  {
     'catppuccin/nvim',
     priority = 1000,
   },
@@ -82,18 +85,13 @@ local plugins = {
   {
     'folke/todo-comments.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
-    opts = { sings = false },
+    opts = { signs = false },
   },
 
   -- trouble
   {
     'folke/trouble.nvim',
     opts = {},
-    cmd = 'Trouble',
-  },
-  {
-    'folke/trouble.nvim',
-    opts = {}, -- for default options, refer to the configuration section for custom setup.
     cmd = 'Trouble',
   },
 
@@ -136,12 +134,6 @@ local plugins = {
     'Exafunction/codeium.vim',
   },
 
-  --Null-ls
-  {
-    'jose-elias-alvarez/null-ls.nvim',
-    event = 'VeryLazy',
-  },
-
   -- Git related plugins
   { 'tpope/vim-fugitive' },
 
@@ -170,18 +162,7 @@ local plugins = {
   },
 
   -- LSP
-  {
-    -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
-    -- used for completion, annotations and signatures of Neovim apis
-    'folke/lazydev.nvim',
-    ft = 'lua',
-    opts = {
-      library = {
-        -- Load luvit types when the `vim.uv` word is found
-        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-      },
-    },
-  },
+  
   {
     'neovim/nvim-lspconfig',
     dependencies = {
@@ -295,10 +276,7 @@ local plugins = {
     },
   },
 
-  { -- Collection of various small independent plugins/modules
-    'echasnovski/mini.nvim',
-    configs = require 'configs.mini',
-  },
+  
   {                     -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'

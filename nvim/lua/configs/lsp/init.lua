@@ -93,22 +93,12 @@ require('mason-lspconfig').setup {
       -- by the server configuration above. Useful when disabling
       -- certain features of an LSP (for example, turning off formatting for tsserver)
       server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-      require('lspconfig')[server_name].setup(server)
+      -- Migrate to new API: define the config and enable it
+      vim.lsp.config(server_name, server)
+      vim.lsp.enable(server_name)
     end,
   },
-  capabilities = capabilities,
-  formatting = {
-    format_opts = {
-      async = true,
-    },
-  },
-  init_options = {
-    preferences = {
-      disableSuggestions = false,
-    },
-  },
-  settings = {},
-  cli_options = {
-    config_precedence = 'prefer-file', -- or "cli-override" or "file-override"
-  },
+  -- mason-lspconfig.setup accepts options like ensure_installed/handlers.
+  -- Server-specific options are configured via vim.lsp.config above.
 }
+

@@ -29,7 +29,7 @@ require('nvim-tree').setup {
   view = {
     adaptive_size = false,
     side = 'left',
-    width = 34,
+    width = 45,
     preserve_window_proportions = true,
   },
   git = {

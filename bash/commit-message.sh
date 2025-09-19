@@ -1,29 +1,37 @@
 #!/usr/bin/env bash
-# powerful-free-ai-commit.sh — generate long, structured conventional commit messages
-# Fully free, uses Hugging Face instruction-tuned Flan-T5 model
+# commit-message-hf.sh — generate structured conventional commit messages using Hugging Face free API
 
 set -e
 
-# -----------------------------
-# 1. Check staged changes
-# -----------------------------
 DIFF=$(git diff --cached)
 if [ -z "$DIFF" ]; then
   echo "❌ No staged changes. Run 'git add' first."
   exit 1
 fi
 
-# -----------------------------
-# 2. Choose model
-# -----------------------------
-MODEL="google/flan-t5-large" # Instruction-tuned, better for long structured output
+KEY_FILE="$HOME/.config/huggingface/api_key"
+mkdir -p "$(dirname "$KEY_FILE")"
+
+get_hf_key() {
+  if [ -f "$KEY_FILE" ]; then
+    cat "$KEY_FILE"
+  else
+    read -p "🔹 Enter your Hugging Face API key: " HF_KEY
+    echo "$HF_KEY" > "$KEY_FILE"
+    chmod 600 "$KEY_FILE"
+    echo "✅ Key saved to $KEY_FILE"
+    echo "$HF_KEY"
+  fi
+}
+
+HF_KEY=$(get_hf_key)
+
+# Use a model that supports text generation over HF free API
+MODEL="tiiuae/falcon-7b-instruct" # works with free API for text generation
 echo "🔹 Generating commit message using $MODEL..."
 
-# -----------------------------
-# 3. Build prompt for multi-line commit
-# -----------------------------
-PROMPT="You are an AI that writes conventional commit messages. 
-Given the following staged git diff, generate a long, detailed commit message 
+PROMPT="You are an AI that writes conventional commit messages.
+Given the following staged git diff, generate a long, detailed commit message
 with a proper header (type(scope): summary) and multiple bullet points explaining the changes.
 
 Format:
@@ -39,34 +47,37 @@ $DIFF
 
 Commit message:"
 
-# -----------------------------
-# 4. Call Hugging Face free inference API
-# -----------------------------
-RESPONSE=$(curl -s -X POST \
-  -H "Content-Type: application/json" \
-  -d "{\"inputs\": \"$PROMPT\"}" \
-  https://api-inference.huggingface.co/models/$MODEL)
+call_hf_api() {
+  curl -s -X POST \
+    -H "Authorization: Bearer $HF_KEY" \
+    -H "Content-Type: application/json" \
+    -d "{\"inputs\": \"$PROMPT\"}" \
+    "https://api-inference.huggingface.co/models/$MODEL"
+}
 
-# -----------------------------
-# 5. Parse response
-# -----------------------------
-# Flan-T5 returns a JSON array
-MSG=$(echo "$RESPONSE" | jq -r '
-  if type=="array" then .[0].generated_text
-  else .generated_text
-  end
-')
+while true; do
+  RESPONSE=$(call_hf_api)
 
-# -----------------------------
-# 6. Fallback
-# -----------------------------
-if [ -z "$MSG" ] || [ "$MSG" == "null" ]; then
+  # Debug output
+  echo "📝 Raw response from Hugging Face:"
+  echo "$RESPONSE"
+
+  if echo "$RESPONSE" | grep -iq "error"; then
+    echo "❌ Authentication failed or insufficient permissions."
+    rm -f "$KEY_FILE"
+    HF_KEY=$(get_hf_key)
+  else
+    break
+  fi
+done
+
+# Falcon models return JSON with "generated_text"
+MSG=$(echo "$RESPONSE" | jq -r '.generated_text // empty')
+
+if [ -z "$MSG" ]; then
   MSG="chore: update code (automatic commit message)"
 fi
 
-# -----------------------------
-# 7. Show suggestion & confirm
-# -----------------------------
 echo ""
 echo "💡 Suggested commit message:"
 echo "------------------------------------"

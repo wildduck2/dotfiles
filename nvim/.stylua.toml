@@ -1,55 +1,21 @@
-# .stylua.toml
-# Configuration file for the Stylua Lua code formatter.
 
-# Line ending style, can be either "Unix" or "Windows".
+# .stylua.toml
+# Configuration file for the StyLua Lua code formatter.
+
+# Line ending style: "Unix" (LF) or "Windows" (CRLF)
 line_endings = "Unix"
 
-# Indentation settings.
-indent_type = "Spaces"   # "Spaces" or "Tabs". You can set it to "Tabs" if you prefer tab characters.
-indent_width = 2         # Number of spaces per indentation level.
-column_width = 100       # Max number of characters per line before wrapping.
+# Indentation settings
+indent_type = "Spaces"   # or "Tabs"
+indent_width = 2
+column_width = 100       # Max line length
 
-# Quote style setting, can be "AutoPreferSingle" or "AlwaysSingle".
-quote_style = "AutoPreferSingle"  # Automatically prefer single quotes, otherwise use double quotes.
+# Quote style
+quote_style = "AutoPreferSingle"  # or AutoPreferDouble, AlwaysSingle, AlwaysDouble
 
-# Function call parentheses style, can be "None", "Always", or "Prefer".
-call_parentheses = "None"  # Don't include parentheses in function calls.
+# Function call parentheses
+call_parentheses = "None"  # or Always, PreferNone, PreferAlways
 
-# Enable or disable sorting `require` statements (like imports in JavaScript/TypeScript).
+# Automatically sort `require` statements
 [sort_requires]
-enabled = true  # Set to true to enable sorting of 'require' statements in Lua.
-
-# Whether or not to align assignments.
-align_assignments = true  # Align `=` in assignments.
-
-# Whether or not to use spaces after keywords such as `if`, `for`, `while`, etc.
-space_after_keywords = true  # Add space after keywords like `if`, `for`, etc.
-
-# Whether to allow lines longer than column_width.
-wrap_lines = true  # If true, it will wrap lines longer than the specified column_width.
-
-# Whether or not to preserve trailing whitespace.
-trim_trailing_whitespace = true  # Remove trailing whitespace at the end of lines.
-
-# Enable or disable table formatting for Lua tables.
-format_tables = true  # If true, formats tables in a consistent style.
-
-# Maximum number of items per line when formatting tables. Adjust as needed.
-table_width = 80  # Max number of items per line in tables.
-
-# Enable or disable formatting for long comments (multi-line comments).
-format_long_comments = true  # If true, formats long comments by wrapping them.
-
-# Enable or disable the insertion of a newline between `end` and the previous line.
-new_line_before_end = true  # If true, adds a newline before `end` in loops and conditionals.
-
-# Enable or disable the use of shorthand syntax for table initialization.
-shorthand_table = false  # If true, use shorthand table initialization (e.g., `{x = 1, y = 2}`).
-
-# Additional options for function and table formatting.
-[format_functions]
-param_spacing = "none"  # Controls the spacing around function parameters. Options: "none", "always", "never".
-
-# Additional file types to format.
-additional_filetypes = ["lua"]
-
+enabled = true

@@ -22,7 +22,7 @@ require('cmp').setup {
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities =
-    vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+  vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
 M.servers = {
   -- C/C++
@@ -133,7 +133,7 @@ M.servers = {
   lexical = {},
   typos_lsp = {},
   svelte = {
-    cmd = { '/home/wild-duck/.local/share/nvim/mason/bin/svelteserver', '--stdio' },
+    cmd = { vim.fn.stdpath('data') .. '/mason/bin/svelteserver', '--stdio' },
   },
   biome = {},
   bashls = {},
@@ -159,7 +159,7 @@ M.servers = {
   golines = {},
   gotests = {},
   ruff = {},
-  docker_compose_language_service = {}
+  docker_compose_language_service = {},
   -- css_variables = {},
   -- cssmodules_ls = {}
 }

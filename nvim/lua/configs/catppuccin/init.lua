@@ -1,6 +1,10 @@
 require 'catppuccin.utils.lualine' 'mocha'
 
 require('catppuccin').setup {
+  float = {
+    solid = true,
+    transparent = false,
+  },
   flavour = 'mocha', -- latte, frappe, macchiato, mocha
   background = { -- :h background
     light = 'mocha',
