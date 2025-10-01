@@ -13,10 +13,28 @@ vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch curren
 vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
-vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+vim.keymap.set(
+  'n',
+  '<leader>s.',
+  builtin.oldfiles,
+  { desc = '[S]earch Recent Files ("." for repeat)' }
+)
 vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
--- vim.keymap.set('n', '<leader>st', { desc = '[S]earch trouble' },  require("trouble").toggle("workspace_diagnostics"))
+-- NOTE: these for the telescope-ast-grep plugin
+vim.keymap.set('n', '<leader>sa', '<cmd>Telescope ast_grep<CR>', { desc = '[S]earch AST' })
+vim.keymap.set('n', '<leader>sj', '<cmd>Telescope dumb_jump<CR>', { desc = '[S]earch Jump' })
+
+vim.keymap.set('n', '<leader>su', function()
+  require('trouble').toggle { mode = 'document_diagnostics' }
+end, { desc = '[S]earch trouble' })
+
+vim.keymap.set('n', '<leader>snd', '<cmd>Telescope diagnostics<cr>', {
+  desc = 'Search diagnostics with Telescope',
+})
+vim.keymap.set('n', '<leader>sd', function()
+  require('telescope.builtin').diagnostics { bufnr = 0 }
+end, { desc = 'Search document diagnostics (Telescope)' })
 
 -- require("trouble").toggle("workspace_diagnostics")
 -- require("trouble").toggle("document_diagnostics")
@@ -40,9 +58,9 @@ vim.keymap.set('n', '<leader>s/', function()
 end, { desc = '[S]earch [/] in Open Files' })
 
 -- Shortcut for searching your neovim configuration files
-vim.keymap.set('n', '<leader>sn', function()
-  builtin.find_files { cwd = vim.fn.stdpath 'config' }
-end, { desc = '[S]earch [N]eovim files' })
+-- vim.keymap.set('n', '<leader>sn', function()
+--   builtin.find_files { cwd = vim.fn.stdpath 'config' }
+-- end, { desc = '[S]earch [N]eovim files' })
 
 --NOTE: this is some default keymaps
 -- Mappings are fully customizable. Many familiar mapping patterns are set up as defaults.

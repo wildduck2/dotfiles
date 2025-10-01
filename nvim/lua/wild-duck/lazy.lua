@@ -7,7 +7,7 @@ if not vim.loop.fs_stat(lazypath) then
     'git',
     'clone',
     '--filter=blob:none',
-    'https://github.com/folke/lazy.nvim.git',
+    'https://github.com/folke/lazy.nvim',
     '--branch=stable', -- latest stable release
     lazypath,
   }
@@ -15,96 +15,58 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
-  ---- NOTE: First, some plugins that don't require any configuration
+  -- NOTE: First, some plugins that don't require any configuration
+  ----------------------------------------------------------------------
+  --                      Aesthetic & UI Plugins                    --
+  ----------------------------------------------------------------------
 
-  -- Lualine
+  -- Color schemes
   {
-    'nvim-lualine/lualine.nvim',
-  },
-
-  -- Cloak
-  {
-    'laytan/cloak.nvim',
-  },
-
-  -- Harpoon
-  {
-    'ThePrimeagen/harpoon',
-    branch = 'harpoon2',
-    dependencies = { { 'nvim-lua/plenary.nvim' } },
-  },
-
-  -- Color scheme
-  {
-    "tjdevries/colorbuddy.nvim",
+    'tjdevries/colorbuddy.nvim',
     priority = 1001,
     config = function()
-      vim.cmd.colorscheme "gruvbuddy"
+      vim.cmd.colorscheme 'gruvbuddy'
     end,
   },
-  {
-    'tjdevries/gruvbuddy.nvim',
-  },
-  {
-    'catppuccin/nvim',
-    priority = 1000,
-  },
-  {
-    'folke/tokyonight.nvim',
-    lazy = false,
-    priority = 1000,
-    opts = {},
-  },
-  {
-    'rose-pine/neovim',
-    as = 'rose-pine',
-  },
-  {
-    'navarasu/onedark.nvim',
-    as = 'onedark',
+  { 'tjdevries/gruvbuddy.nvim' },
+  { 'catppuccin/nvim', priority = 1000 },
+  { 'folke/tokyonight.nvim', lazy = false, priority = 1000, opts = {} },
+  { 'rose-pine/neovim', as = 'rose-pine' },
+  { 'navarasu/onedark.nvim', as = 'onedark' },
+
+  -- UI Components & Enhancements
+  { 'nvim-lualine/lualine.nvim' }, -- Lualine
+  { 'nvim-tree/nvim-web-devicons' }, -- Useful for getting pretty icons, but requires a Nerd Font.
+  -- Terminal tab
+  { 'akinsho/toggleterm.nvim', version = '*', opts = { direction = 'tab' } },
+
+  -- Visual Modes
+  { 'folke/zen-mode.nvim' }, -- Zen mode
+  { 'xiyaowong/transparent.nvim' },
+  { 'letieu/hacker.nvim' },
+  { 'ty-labs/randiverse.nvim', version = '*' },
+  { 'eandrju/cellular-automaton.nvim' }, -- Fancey vim
+
+  -- Indentation
+  { -- Add indentation guides even on blank lines
+    'lukas-reineke/indent-blankline.nvim',
+    -- Enable `lukas-reineke/indent-blankline.nvim`
+    -- See `:help ibl`
+    main = 'ibl',
   },
 
-  -- Zen mode
-  {
-    'folke/zen-mode.nvim',
-  },
+  ----------------------------------------------------------------------
+  --                          Core Utilities                       --
+  ----------------------------------------------------------------------
 
-  -- Comment
-  {
-    'numToStr/Comment.nvim',
-    lazy = false,
-  },
+  { 'nvim-lua/plenary.nvim' }, -- Plenary (Dependency for many plugins)
+  { 'mbbill/undotree' }, -- Undotree
+  { 'tpope/vim-fugitive' }, -- Git related plugins
+  { 'christoomey/vim-tmux-navigator', lazy = false }, -- Tmux navigate
 
-  -- Plenary
-  { 'nvim-lua/plenary.nvim' },
-
-  -- -- Undotree
-  { 'mbbill/undotree' },
-
-  -- floke todo
-  {
-    'folke/todo-comments.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    opts = { signs = false },
-  },
-
-  -- trouble
-  {
-    'folke/trouble.nvim',
-    opts = {},
-    cmd = 'Trouble',
-  },
-
-  -- Treesitter
-  {
-    -- Highlight, edit, and navigate code
-    'nvim-treesitter/nvim-treesitter',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
-      'nvim-treesitter/playground',
-      -- "nvim-treesitter/nvim-treesitter-context",
-    },
-  },
+  ----------------------------------------------------------------------
+  --                          Search & File Tree                   --
+  ----------------------------------------------------------------------
 
   -- Telescope
   {
@@ -123,19 +85,10 @@ local plugins = {
         end,
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
-
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
   },
-
-  -- Codeium completion
-  {
-    'Exafunction/codeium.vim',
-  },
-
-  -- Git related plugins
-  { 'tpope/vim-fugitive' },
 
   -- Nvim tree
   {
@@ -144,25 +97,54 @@ local plugins = {
     cmd = { 'NvimTreeToggle', 'NvimTreeFocus' },
   },
 
-  -- Fancey vim
+  -- Harpoon
   {
-    'eandrju/cellular-automaton.nvim',
+    'ThePrimeagen/harpoon',
+    branch = 'harpoon2',
+    dependencies = { { 'nvim-lua/plenary.nvim' } },
   },
 
-  -- presence
+  ----------------------------------------------------------------------
+  --                      Treesitter & Syntax                       --
+  ----------------------------------------------------------------------
+
+  -- Treesitter
   {
-    'andweeb/presence.nvim',
+    -- Highlight, edit, and navigate code
+    'nvim-treesitter/nvim-treesitter',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+      'nvim-treesitter/playground',
+      -- "nvim-treesitter/nvim-treesitter-context",
+    },
   },
 
+  -- Auto tag
+  { 'windwp/nvim-ts-autotag' },
+
+  ----------------------------------------------------------------------
+  --                      Editing & Text Manipulation              --
+  ----------------------------------------------------------------------
+
+  { 'laytan/cloak.nvim' }, -- Cloak
+
+  -- Comment
+  { 'numToStr/Comment.nvim', lazy = false },
+  { 'JoosepAlviste/nvim-ts-context-commentstring' },
+
   {
-    'vyfor/cord.nvim',
-    build = './build',
-    event = 'VeryLazy',
-    opts = {},
+    'ThePrimeagen/refactoring.nvim', -- Detect tabstop and shiftwidth automatically
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+    },
   },
 
-  -- LSP
-  
+  ----------------------------------------------------------------------
+  --                       LSP, Formatting, & Linting              --
+  ----------------------------------------------------------------------
+
+  -- LSP Core
   {
     'neovim/nvim-lspconfig',
     dependencies = {
@@ -176,9 +158,12 @@ local plugins = {
 
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim',       opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} },
     },
   },
+
+  { 'hedyhli/outline.nvim' },
+
   {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
     -- used for completion, annotations and signatures of Neovim apis
@@ -192,6 +177,37 @@ local plugins = {
     },
   },
   { 'Bilal2453/luvit-meta', lazy = true },
+
+  -- Formatting
+  { -- Autoformat
+    'stevearc/conform.nvim',
+    event = { 'BufWritePre' },
+    cmd = { 'ConformInfo' },
+  },
+
+  -- Linting
+  {
+    'mfussenegger/nvim-lint',
+    event = { 'BufReadPre', 'BufNewFile' },
+    config = function()
+      require 'configs.linting'
+    end,
+  },
+
+  -- LSP Enhancements
+  { 'VidocqH/lsp-lens.nvim' }, -- LSP lens/code annotations
+
+  {
+    'ray-x/telescope-ast-grep.nvim',
+    dependencies = {
+      { 'nvim-lua/plenary.nvim' },
+      { 'nvim-telescope/telescope.nvim' },
+    },
+  },
+
+  ----------------------------------------------------------------------
+  --                         Autocompletion                        --
+  ----------------------------------------------------------------------
 
   -- Autocompletion
   {
@@ -216,7 +232,7 @@ local plugins = {
       { 'williamboman/mason.nvim' },
       { 'williamboman/mason-lspconfig.nvim' },
 
-      -- Autocompletion
+      -- Autocompletion Sources
       { 'hrsh7th/cmp-buffer' },
       { 'hrsh7th/cmp-path' },
       { 'hrsh7th/cmp-cmdline' },
@@ -225,108 +241,104 @@ local plugins = {
       { 'hrsh7th/cmp-nvim-lua' },
 
       -- Snippets
-      { 'L3MON4D3/LuaSnip' },
       { 'rafamadriz/friendly-snippets' },
     },
   },
 
-  -- Tmux navigate
-  {
-    'christoomey/vim-tmux-navigator',
-    lazy = false,
-  },
+  -- AI/Copilot-like
+  { 'supermaven-inc/supermaven-nvim' },
+  -- -- Codeium completion
+  -- {
+  --   'Exafunction/codeium.vim',
+  -- },
 
-  -- Detect tabstop and shiftwidth automatically
-  {
-    'ThePrimeagen/refactoring.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
-    },
-  },
+  ----------------------------------------------------------------------
+  --                      Project & Workflow Aids                   --
+  ----------------------------------------------------------------------
 
-  {
-    -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help ibl`
-    main = 'ibl',
-  },
-  { -- Linting
-    'mfussenegger/nvim-lint',
-    event = { 'BufReadPre', 'BufNewFile' },
-    config = function()
-      require 'configs.linting'
-    end,
-  },
-
-  { -- Autoformat
-    'stevearc/conform.nvim',
-    event = { 'BufWritePre' },
-    cmd = { 'ConformInfo' },
-    keys = {
-      {
-        '<leader>f',
-        function()
-          require('conform').format { async = true, lsp_format = 'fallback' }
-        end,
-        mode = '',
-        desc = '[F]ormat buffer',
+  -- Git
+  { -- Adds git related signs to the gutter, as well as utilities for managing changes
+    'lewis6991/gitsigns.nvim',
+    opts = {
+      signs = {
+        add = { text = '+' },
+        change = { text = '~' },
+        delete = { text = '_' },
+        topdelete = { text = '‾' },
+        changedelete = { text = '~' },
       },
     },
   },
 
-  
-  {                     -- Useful plugin to show you pending keybinds.
+  -- Task/Error Management
+  {
+    'folke/todo-comments.nvim', -- floke todo
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = { signs = false },
+  },
+  {
+    'folke/trouble.nvim', -- trouble
+    opts = {},
+    cmd = 'Trouble',
+  },
+
+  -- Keymaps
+  { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
   },
 
-  {
-    'xiyaowong/transparent.nvim',
-  },
+  -- Discord/Presence
+  { 'andweeb/presence.nvim' },
+  { 'vyfor/cord.nvim', build = './build', event = 'VeryLazy', opts = {} },
 
-  {
-    'letieu/hacker.nvim',
-  },
-  {
-    'ty-labs/randiverse.nvim',
-    version = '*', -- Use for stability; omit to use `main` branch for the latest features
-  },
-  -- Auto pairs
-  -- {
-  --     "windwp/nvim-autopairs",
-  --     event = "InsertEnter",
-  --     opts = {}, -- this is equalent to setup({}) function
-  -- },
-  -- "tmsvg/pear-tree",
+  ----------------------------------------------------------------------
+  --                     Language-Specific Plugins                  --
+  ----------------------------------------------------------------------
 
-  -- Auto tag
+  -- Rust
   {
-    'windwp/nvim-ts-autotag',
-  },
-
-  -- selicon snap
-  {
-    'michaelrommel/nvim-silicon',
-    lazy = true,
-    cmd = 'Silicon',
-  },
-  {
-    "toppair/peek.nvim",
-    event = { "VeryLazy" },
-    build = "deno task --quiet build:fast",
-    config = function()
-      require("peek").setup()
-      vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
-      vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+    'rust-lang/rust.vim',
+    ft = 'rust',
+    init = function()
+      vim.g.rustfmt_autosave = 1
     end,
   },
   {
-    'davidmh/mdx.nvim',
-    config = true,
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    'simrat39/rust-tools.nvim',
+    config = function()
+      local rt = require 'rust-tools'
+      rt.setup()
+    end,
   },
+
+  -- Clang
+  { 'p00f/clangd_extensions.nvim' },
+
+  -- Package Info (e.g., npm)
+  {
+    'vuki656/package-info.nvim',
+    dependencies = 'MunifTanjim/nui.nvim',
+  },
+
+  -- DB
+  {
+    'kndndrj/nvim-dbee',
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+    },
+    build = function()
+      -- Install tries to automatically detect the install method.
+      -- if it fails, try calling it with one of these parameters:
+      --    "curl", "wget", "bitsadmin", "go"
+      require('dbee').install()
+    end,
+  },
+
+  ----------------------------------------------------------------------
+  --                      Markdown & Note-Taking                   --
+  ----------------------------------------------------------------------
+
   {
     'epwalsh/obsidian.nvim',
     version = '*', -- recommended, use latest release instead of latest commit
@@ -348,65 +360,46 @@ local plugins = {
     },
   },
   {
-    'rust-lang/rust.vim',
-    ft = 'rust',
-    init = function()
-      vim.g.rustfmt_autosave = 1
-    end,
+    'davidmh/mdx.nvim',
+    config = true,
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
   },
   {
-    'simrat39/rust-tools.nvim',
+    'toppair/peek.nvim',
+    event = { 'VeryLazy' },
+    build = 'deno task --quiet build:fast',
     config = function()
-      local rt = require("rust-tools")
-
-      rt.setup({
-        server = {
-          on_attach = function(_, bufnr)
-            -- Hover actions
-            vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-            -- Code action groups
-            vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-          end,
-        },
-      })
-    end
+      require('peek').setup()
+      vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
+      vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})
+    end,
   },
 
-  -- Here is a more advanced example where we pass configuration
-  -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
-  --    require('gitsigns').setup({ ... })
-  --
-  -- See `:help gitsigns` to understand what the configuration keys do
-  { -- Adds git related signs to the gutter, as well as utilities for managing changes
-    'lewis6991/gitsigns.nvim',
-    opts = {
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
-    },
-  },
+  ----------------------------------------------------------------------
+  --                      Miscellaneous & Utility                   --
+  ----------------------------------------------------------------------
+
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     config = require 'configs.mini',
   },
 
-  -- DB
+  { 'kevinhwang91/promise-async' },
+  { 'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async' },
+
   {
-    'kndndrj/nvim-dbee',
-    dependencies = {
-      'MunifTanjim/nui.nvim',
-    },
-    build = function()
-      -- Install tries to automatically detect the install method.
-      -- if it fails, try calling it with one of these parameters:
-      --    "curl", "wget", "bitsadmin", "go"
-      require('dbee').install()
-    end,
+    'michaelrommel/nvim-silicon', -- selicon snap
+    lazy = true,
+    cmd = 'Silicon',
   },
+
+  -- Auto pairs
+  -- {
+  --     "windwp/nvim-autopairs",
+  --     event = "InsertEnter",
+  --     opts = {}, -- this is equalent to setup({}) function
+  -- },
+  -- "tmsvg/pear-tree",
 
   -- -- Debug
   -- {

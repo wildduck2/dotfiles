@@ -26,7 +26,7 @@ telescope.setup {
       -- n = { ["<leader>s"] = trouble.open_with_trouble },
       -- i = { ['<c-enter>'] = 'to_fuzzy_refine' },
       i = { ['<leader>n'] = open_with_trouble },
-      n = { ['<c-t>'] = open_with_trouble },
+      n = { ['<leader>tr'] = open_with_trouble },
     },
   },
   extensions = {

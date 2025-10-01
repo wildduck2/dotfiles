@@ -1,3 +1,5 @@
+vim.opt.updatetime = 100
+
 require('Comment').setup {
   ---Add a space b/w comment and the line
   padding = true,
@@ -37,7 +39,9 @@ require('Comment').setup {
     extra = true,
   },
   ---Function to call before (un)comment
-  pre_hook = nil,
+  pre_hook = function()
+    require('ts_context_commentstring.internal').update_commentstring()
+  end,
   ---Function to call after (un)comment
   post_hook = nil,
 }

@@ -24,4 +24,7 @@ require('trouble').setup {
   include_declaration = { 'lsp_references', 'lsp_implementations', 'lsp_definitions' },
   signs = values.signs,
   use_diagnostic_signs = false,
+  telescope = {
+    theme = 'dropdown',
+  },
 }

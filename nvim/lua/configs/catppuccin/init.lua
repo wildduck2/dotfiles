@@ -3,7 +3,7 @@ require 'catppuccin.utils.lualine' 'mocha'
 require('catppuccin').setup {
   float = {
     solid = true,
-    transparent = false,
+    transparent = true,
   },
   flavour = 'mocha', -- latte, frappe, macchiato, mocha
   background = { -- :h background
@@ -39,15 +39,15 @@ require('catppuccin').setup {
   color_overrides = {},
   custom_highlights = {},
   integrations = {
-    cmp = true,
-    gitsigns = true,
+    cmp = false,
+    gitsigns = false,
     nvimtree = true,
     treesitter = true,
-    notify = true,
-    harpoon = true,
+    notify = false,
+    harpoon = false,
 
     native_lsp = {
-      enabled = true,
+      enabled = false,
       virtual_text = {
         errors = { 'italic' },
         hints = { 'italic' },
@@ -65,12 +65,10 @@ require('catppuccin').setup {
       },
     },
     mini = {
-      enabled = true,
-      indentscope_color = '',
+      enabled = false,
     },
     telescope = {
-      enabled = true,
-      style = '',
+      enabled = false,
     },
     -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
   },

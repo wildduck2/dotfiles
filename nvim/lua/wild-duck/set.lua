@@ -12,7 +12,7 @@ vim.opt.showmode = false
 
 --NOTE: global clipboard for system clipboard
 vim.schedule(function()
-    vim.opt.clipboard = ''
+  vim.opt.clipboard = ''
 end)
 
 -- Enable break indent
@@ -79,9 +79,9 @@ vim.opt.wrap = true
 vim.opt.linebreak = true
 
 -- Folding stuff
-vim.opt.foldmethod = 'indent'
-vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
-vim.opt.foldlevel = 23
+-- vim.opt.foldmethod = 'indent'
+-- vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+-- vim.opt.foldlevel = 23
 
 --[[ That's it. The most useful commands for working with folds are:
 
