@@ -10,4 +10,3 @@ fi
 # Call i3lock-fancy
 i3lock-fancy
 
-

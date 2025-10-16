@@ -1,0 +1,3 @@
+local blacklineOpts = {}
+
+return blacklineOpts

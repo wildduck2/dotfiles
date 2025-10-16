@@ -138,8 +138,8 @@ M.servers = {
   dockerls = {},
   docformatter = {},
   cpptools = {},
-  sqlfmt = {},
-  sqlls = {},
+  -- sqlfmt = {},
+  -- sqlls = {},
   mdx_analyzer = {},
   grammarly = {},
 

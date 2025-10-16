@@ -306,11 +306,9 @@ local plugins = {
     end,
   },
   {
-    'simrat39/rust-tools.nvim',
-    config = function()
-      local rt = require 'rust-tools'
-      rt.setup()
-    end,
+    'mrcjkb/rustaceanvim',
+    version = '^4', -- Recommended
+    ft = { 'rust' },
   },
 
   -- Clang

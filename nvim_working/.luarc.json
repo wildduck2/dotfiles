@@ -1,0 +1,10 @@
+{
+  "diagnostics.disable": [
+    "undefined-field",
+    "redundant-parameter",
+    "undefined-global",
+        "undefined-doc-name",
+        "unused-local"
+  ],
+  "diagnostics.globals": ["vim"]
+}
