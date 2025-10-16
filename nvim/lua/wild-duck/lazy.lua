@@ -33,6 +33,7 @@ local plugins = {
   { 'folke/tokyonight.nvim', lazy = false, priority = 1000, opts = {} },
   { 'rose-pine/neovim', as = 'rose-pine' },
   { 'navarasu/onedark.nvim', as = 'onedark' },
+  { 'rebelot/kanagawa.nvim', as = 'kanagawa' },
 
   -- UI Components & Enhancements
   { 'nvim-lualine/lualine.nvim' }, -- Lualine
@@ -129,7 +130,7 @@ local plugins = {
   { 'laytan/cloak.nvim' }, -- Cloak
 
   -- Comment
-  { 'numToStr/Comment.nvim', lazy = false },
+  { 'terrortylor/nvim-comment', lazy = false },
   { 'JoosepAlviste/nvim-ts-context-commentstring' },
 
   {
@@ -197,13 +198,13 @@ local plugins = {
   -- LSP Enhancements
   { 'VidocqH/lsp-lens.nvim' }, -- LSP lens/code annotations
 
-  {
-    'ray-x/telescope-ast-grep.nvim',
-    dependencies = {
-      { 'nvim-lua/plenary.nvim' },
-      { 'nvim-telescope/telescope.nvim' },
-    },
-  },
+  -- {
+  --   'ray-x/telescope-ast-grep.nvim',
+  --   dependencies = {
+  --     { 'nvim-lua/plenary.nvim' },
+  --     { 'nvim-telescope/telescope.nvim' },
+  --   },
+  -- },
 
   ----------------------------------------------------------------------
   --                         Autocompletion                        --

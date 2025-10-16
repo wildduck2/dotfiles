@@ -70,11 +70,9 @@ M.servers = {
   --
   -- But for many setups, the LSP (`tsserver`) will work just fine
   ts_ls = {
-    root_dir = require('lspconfig').util.root_pattern(
-      'package.json',
-      'tsconfig.json',
-      'jsconfig.json'
-    ),
+    root_dir = function(fname)
+      return vim.fs.root(fname, { 'package.json', 'tsconfig.json', 'jsconfig.json' })
+    end,
     single_file_support = false,
     capabilities = capabilities,
     formatting = {
@@ -90,7 +88,7 @@ M.servers = {
   },
   -- denols = {
   --   cmd = { 'deno', 'lsp' },
-  --   root_dir = require('lspconfig').util.root_pattern('deno.json', 'deno.jsonc'),
+  --   root_dir = vim.fs.root('deno.json', 'deno.jsonc'),
   --   filetype = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'svelte' },
   --   init_options = {
   --     config = {
@@ -133,7 +131,7 @@ M.servers = {
   lexical = {},
   typos_lsp = {},
   svelte = {
-    cmd = { vim.fn.stdpath('data') .. '/mason/bin/svelteserver', '--stdio' },
+    cmd = { vim.fn.stdpath 'data' .. '/mason/bin/svelteserver', '--stdio' },
   },
   biome = {},
   bashls = {},

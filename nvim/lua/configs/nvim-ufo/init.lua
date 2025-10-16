@@ -37,10 +37,10 @@ require('ufo').setup {
   --   -- refer to ./doc/example.lua for detail
   -- end,
 }
-vim.keymap.set('n', 'fR', require('ufo').openAllFolds)
-vim.keymap.set('n', 'fM', require('ufo').closeAllFolds)
+vim.keymap.set('n', '<leader>fR', require('ufo').openAllFolds)
+vim.keymap.set('n', '<leader>fM', require('ufo').closeAllFolds)
 
-vim.keymap.set('n', 'fm', function()
+vim.keymap.set('n', '<leader>fm', function()
   local line = vim.fn.line '.'
   local foldClosed = vim.fn.foldclosed(line) -- -1 if open
 
