@@ -22,3 +22,19 @@
 - install [dust](https://github.com/bootandy/dust)
 - install [fx](https://github.com/antonmedv/fx)
 - install [ripgrep-all](https://github.com/phiresky/ripgrep-all)
+
+
+## To make the `s` in nvim open yazi in a new terminal
+xdg-mime default terminator-folder.desktop inode/directory
+xdg-mime default terminator-folder.desktop application/x-gnome-saved-search
+gio mime inode/directory terminator-folder.desktop
+update-desktop-database ~/.local/share/applications
+
+
+[Desktop Entry]
+Name=Terminator (Folder with Yazi)
+Type=Application
+MimeType=inode/directory;
+Terminal=false
+Exec=terminator -x zsh -c "cd '%f'; yazi; exec zsh"
+~/.local/share/applications/terminator-folder.desktop
