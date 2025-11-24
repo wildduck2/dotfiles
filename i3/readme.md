@@ -1,0 +1,3 @@
+```sh
+yay -S trayer
+```

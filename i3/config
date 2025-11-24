@@ -9,6 +9,12 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
+
+gaps inner 2
+gaps outer 0
+smart_gaps off 
+
+
 set $mod Mod1
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -18,9 +24,9 @@ font pango:Berkeley Mono Trial 15px
 # GET DEM BORDERS OUT OF HEREc:w
 #
 # Thanks Childz
-for_window [class="^.*"] border pixel 1
+for_window [class="^.*"] border pixel 0
                           # class                 border  backgr. text    indicator child_border
-for_window [class="^.*"] client.focused          #77dd77 #285577 #ffffff #2e9ef4   #285577
+for_window [class="^.*"] client.focused           #77dd77 #285577 #ffffff #2e9ef4   #285577
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -203,8 +209,25 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status
-        tray_output primary
+        # status_command i3status
+        # tray_output primary
+
+    status_command i3status
+    position top
+
+    colors {
+      background         $base
+      statusline         $text
+      focused_statusline $text
+      focused_separator  $base
+
+      # target           border bg        text
+      focused_workspace  $base  $mauve    $crust
+      active_workspace   $base  $surface2 $text
+      inactive_workspace $base  $base     $text
+      urgent_workspace   $base  $red      $crust
+    }
+
 }
 # ------------------------------------------
 # CUSTOM KEYS START
@@ -220,7 +243,7 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #i
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
 
-# Sreen brightness controls
+# Screen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
 
@@ -241,6 +264,8 @@ bindsym $mod+b exec ~/.config/zen/zen
 # bindsym $mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) "/home/$USER/Pictures/$(date).png"
 # bindsym Shift+Print exec --no-startup-id maim --select "/home/$USER/Pictures/$(date).png"
 bindsym Ctrl+Print exec  --no-startup-id flameshot gui
+exec --no-startup-id trayer --edge top --align right --SetDockType true --expand true --widthtype request
+
 bindsym $mod+Ctrl+l exec --no-startup-id i3lock
 # convert /path/to/your/image.png -blur 0x8 /path/to/your/blurred_image.png
 
@@ -267,47 +292,49 @@ exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 exec --no-startup-id nm-applet &
 exec --no-startup-id gnome-keyring-daemon --start --components=pkcs11,secrets,ssh &
 exec --no-startup-id blueman-applet
+exec --no-startup-id pactl load-module module-null-sink sink_name=OBS_VirtualMic sink_properties=device.description=OBS_VirtualMic
 
 
 # Setting bg 
 exec_always feh --bg-scale /home/wildduck/Pictures/bg.jpg
-exec xrandr --output DisplayPort-0 --mode 1920x1080 --rate 165
+# exec xrandr --output DisplayPort-0 --mode 1920x1080 --rate 165
 exec_always screenkey -p fixed -g 12%x5%+85%-15%
 # exec_always --no-startup-id polybar
 # exec componit -b
 # exec compton
-exec_always --no-startup-id picom
+# exec_always  picom --config ~/.config/picom/picom.conf &
+exec_always picom --log-level=info --config ~/.config/picom/picom.conf &
 exec xrandr --output HDMI-0 --auto --left-of DP-2 --rate 120.00
 
 # exec_always --no-startup-id compton
 
 
 set $rosewater #f5e0dc
-set $flamingo  #f2cdcd
-set $pink      #f5c2e7
-set $mauve     #cba6f7
-set $red       #f38ba8
-set $maroon    #eba0ac
-set $peach     #fab387
-set $yellow    #f9e2af
-set $green     #a6e3a1
-set $teal      #94e2d5
-set $sky       #89dceb
-set $sapphire  #74c7ec
-set $blue      #89b4fa
-set $lavender  #b4befe
-set $text      #cdd6f4
-set $subtext1  #bac2de
-set $subtext0  #a6adc8
-set $overlay2  #9399b2
-set $overlay1  #7f849c
-set $overlay0  #6c7086
-set $surface2  #585b70
-set $surface1  #45475a
-set $surface0  #313244
-set $base      #1e1e2e
-set $mantle    #181825
-set $crust     #11111b
+set $flamingo #f2cdcd
+set $pink #f5c2e7
+set $mauve #cba6f7
+set $red #f38ba8
+set $maroon #eba0ac
+set $peach #fab387
+set $yellow #f9e2af
+set $green #a6e3a1
+set $teal #94e2d5
+set $sky #89dceb
+set $sapphire #74c7ec
+set $blue #89b4fa
+set $lavender #b4befe
+set $text #cdd6f4
+set $subtext1 #bac2de
+set $subtext0 #a6adc8
+set $overlay2 #9399b2
+set $overlay1 #7f849c
+set $overlay0 #6c7086
+set $surface2 #585b70
+set $surface1 #45475a
+set $surface0 #313244
+set $base #1e1e2e
+set $mantle #181825
+set $crust #11111b
 
 # target                 title     bg    text      indicator    border
 client.focused           $mantle   $mauve $mantle  $rosewater $mauve
