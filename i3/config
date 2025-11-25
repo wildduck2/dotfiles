@@ -26,7 +26,7 @@ font pango:Berkeley Mono Trial 15px
 # Thanks Childz
 for_window [class="^.*"] border pixel 0
                           # class                 border  backgr. text    indicator child_border
-for_window [class="^.*"] client.focused           #77dd77 #285577 #ffffff #2e9ef4   #285577
+for_window [class="^.*"] client.focused          #77dd77 #285577 #ffffff #2e9ef4   #285577
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -265,6 +265,7 @@ bindsym $mod+b exec ~/.config/zen/zen
 # bindsym Shift+Print exec --no-startup-id maim --select "/home/$USER/Pictures/$(date).png"
 bindsym Ctrl+Print exec  --no-startup-id flameshot gui
 exec --no-startup-id trayer --edge top --align right --SetDockType true --expand true --widthtype request
+exec mechvibes --disable-gpu --no-sandbox &
 
 bindsym $mod+Ctrl+l exec --no-startup-id i3lock
 # convert /path/to/your/image.png -blur 0x8 /path/to/your/blurred_image.png
