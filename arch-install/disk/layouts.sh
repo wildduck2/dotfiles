@@ -40,6 +40,15 @@ apply_layout() {
   esac
 }
 
+layout_description() {
+  case "$1" in
+    minimal) echo "Root-only, no swap/home (auto BIOS/UEFI)";;
+    workstation) echo "8GiB swap, 40GiB root, rest /home";;
+    server) echo "2GiB swap, root uses remainder";;
+    *) echo "Custom layout";;
+  esac
+}
+
 list_layouts() {
   echo "minimal workstation server"
 }

@@ -10,6 +10,7 @@ WIPE=false
 YES=false
 SKIP_FORMAT=false
 LAYOUT="minimal"
+LAYOUT_WAS_PROVIDED=false
 DEVICE=""
 BIOS_BOOT_SIZE_MIB=2
 
@@ -102,6 +103,19 @@ detect_boot_mode() {
   fi
 }
 
+system_overview() {
+  local boot mem cpu
+  boot=$(detect_boot_mode)
+  mem=$(awk '/MemTotal/ {printf "%.1f GiB", $2/1024/1024}' /proc/meminfo 2>/dev/null || echo "unknown")
+  cpu=$(grep -m1 "model name" /proc/cpuinfo 2>/dev/null | cut -d: -f2- | sed 's/^ //')
+  [[ -z "$cpu" ]] && cpu=$(lscpu 2>/dev/null | awk -F: '/Model name/ {gsub(/^ +| +$/,"",$2); print $2; exit}')
+  [[ -z "$cpu" ]] && cpu="unknown"
+  printf "\nSystem overview:\n"
+  printf "  Boot mode    : %s\n" "$boot"
+  printf "  CPU          : %s\n" "$cpu"
+  printf "  Memory       : %s\n" "$mem"
+}
+
 partition_path() {
   local base="$1"
   local number="$2"
@@ -139,13 +153,108 @@ confirm() {
   [[ "$reply" == "y" || "$reply" == "Y" ]] || fail "Aborted by user"
 }
 
+collect_block_entries() {
+  BLOCKS=()
+  while IFS= read -r line; do
+    local NAME="" TYPE="" SIZE="" MODEL="" TRAN="" FSTYPE="" MOUNTPOINT=""
+    # shellcheck disable=SC2086
+    eval "$line"
+    BLOCKS+=("$NAME|$TYPE|${SIZE:-?}|${MODEL:-?}|${TRAN:-?}|${FSTYPE:-}|${MOUNTPOINT:-}")
+  done < <(lsblk -rpno NAME,TYPE,SIZE,MODEL,TRAN,FSTYPE,MOUNTPOINT -P)
+}
+
+print_block_table() {
+  printf "\nDetected block devices (disks + partitions):\n"
+  printf "  %-3s %-20s %-6s %-10s %-7s %-18s %s\n" "#" "Path" "Type" "Size" "Bus" "Model" "Mount/FSType"
+  printf "  %-3s %-20s %-6s %-10s %-7s %-18s %s\n" "---" "--------------------" "------" "----------" "-------" "------------------" "-------------------------"
+  local idx=0
+  for entry in "${BLOCKS[@]}"; do
+    idx=$((idx + 1))
+    IFS="|" read -r path type size model tran fstype mount <<< "$entry"
+    local mountinfo="$mount"
+    [[ -n "$fstype" ]] && mountinfo="${mountinfo:+$mountinfo }(${fstype})"
+    printf "  %-3s %-20s %-6s %-10s %-7s %-18s %s\n" "$idx" "$path" "$type" "$size" "${tran:-?}" "${model:-?}" "${mountinfo:--}"
+  done
+  printf "  Note: choose TYPE=disk for full partitioning. Mounted devices will be wiped if you apply.\n"
+}
+
+select_device_interactive() {
+  system_overview
+  collect_block_entries
+  [[ "${#BLOCKS[@]}" -gt 0 ]] || fail "No block devices found."
+  print_block_table
+  printf "\nSelect target (number or path), or leave empty to abort: "
+  local choice
+  read -r choice
+  [[ -n "$choice" ]] || fail "No device selected."
+
+  local target_path="" target_type="" mountinfo=""
+  if [[ "$choice" =~ ^[0-9]+$ ]]; then
+    local idx="$choice"
+    if (( idx < 1 || idx > ${#BLOCKS[@]} )); then
+      fail "Selection out of range."
+    fi
+    IFS="|" read -r target_path target_type _ _ _ _ mountinfo <<< "${BLOCKS[$((idx-1))]}"
+  else
+    target_path="$choice"
+    target_type=$(lsblk -ndo TYPE "$target_path" 2>/dev/null || true)
+    mountinfo=$(lsblk -ndo MOUNTPOINT "$target_path" 2>/dev/null || true)
+  fi
+
+  [[ -n "$target_path" ]] || fail "Could not resolve device."
+  if [[ "$target_type" != "disk" ]]; then
+    fail "Selected target '$target_path' is TYPE='$target_type'. Full partitioning requires a whole disk."
+  fi
+
+  if [[ -n "$mountinfo" ]]; then
+    warn "Target has mounted partitions: $mountinfo"
+  fi
+
+  DEVICE="$target_path"
+  info "Selected disk: $DEVICE"
+}
+
+select_layout_interactive() {
+  printf "\nPartition layout presets:\n"
+  local layouts
+  layouts=$(list_layouts)
+  local idx=0
+  for name in $layouts; do
+    idx=$((idx + 1))
+    printf "  %d) %-12s - %s\n" "$idx" "$name" "$(layout_description "$name")"
+  done
+  printf "Select layout [%s]: " "$LAYOUT"
+  local choice
+  read -r choice
+  if [[ -z "$choice" ]]; then
+    info "Using default layout: $LAYOUT"
+    return
+  fi
+  if [[ "$choice" =~ ^[0-9]+$ ]]; then
+    local idx_choice="$choice"
+    local sel=""
+    local i=0
+    for name in $layouts; do
+      i=$((i + 1))
+      if [[ "$i" -eq "$idx_choice" ]]; then
+        sel="$name"; break
+      fi
+    done
+    [[ -n "$sel" ]] || fail "Invalid layout selection."
+    LAYOUT="$sel"
+  else
+    LAYOUT="$choice"
+  fi
+  info "Selected layout: $LAYOUT"
+}
+
 parse_args() {
   while [[ $# -gt 0 ]]; do
     case "$1" in
       -d|--device)
         DEVICE="${2:-}"; shift 2;;
       --layout)
-        LAYOUT="${2:-}"; shift 2;;
+        LAYOUT="${2:-}"; LAYOUT_WAS_PROVIDED=true; shift 2;;
       --boot-mode)
         USER_BOOT_MODE="${2:-}"; shift 2;;
       --efi-size)
@@ -210,6 +319,9 @@ apply_overrides() {
 
 validate_inputs() {
   [[ -b "$DEVICE" ]] || fail "Device '$DEVICE' not found or not a block device"
+  local dtype
+  dtype=$(lsblk -ndo TYPE "$DEVICE" 2>/dev/null || true)
+  [[ "$dtype" == "disk" ]] || fail "Target must be a whole disk (TYPE=disk); got '$dtype'"
   if [[ "$APPLY" == true && "$WIPE" == false ]]; then
     fail "--apply is destructive; re-run with --wipe to acknowledge the wipe"
   fi
@@ -232,10 +344,11 @@ collect_device_if_needed() {
   if [[ -n "$DEVICE" ]]; then
     return
   fi
-  info "Detected disks:"
-  list_disks || true
-  read -r -p "Enter target disk (e.g., /dev/nvme0n1): " DEVICE
-  [[ -n "$DEVICE" ]] || fail "No device supplied"
+  if [[ -t 0 ]]; then
+    select_device_interactive
+  else
+    fail "No --device provided and stdin is not interactive."
+  fi
 }
 
 print_plan() {
@@ -427,6 +540,9 @@ main() {
   require_cmd parted
 
   parse_args "$@"
+  if [[ "$LAYOUT_WAS_PROVIDED" == false && -t 0 ]]; then
+    select_layout_interactive
+  fi
   collect_device_if_needed
   apply_overrides
   validate_inputs

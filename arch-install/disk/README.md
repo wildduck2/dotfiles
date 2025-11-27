@@ -22,3 +22,7 @@ Quick start
 - Apply a preset: `sudo ./disk/partition.sh --device /dev/nvme0n1 --layout workstation --apply --wipe`
 - BIOS-only install: `sudo ./disk/partition.sh --device /dev/sda --boot-mode bios --swap-size 2GiB --apply --wipe`
 - Skip formatting (only partition table creation): add `--no-format`
+
+Interactive mode
+- If `--device` is omitted and stdin is a TTY, a menu lists disks/partitions with size/model/mount info and prompts for selection; only TYPE=disk is accepted.
+- If `--layout` is not supplied, a preset picker is shown with descriptions (minimal/workstation/server).
