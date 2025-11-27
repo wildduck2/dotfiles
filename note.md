@@ -38,3 +38,11 @@ MimeType=inode/directory;
 Terminal=false
 Exec=terminator -x zsh -c "cd '%f'; yazi; exec zsh"
 ~/.local/share/applications/terminator-folder.desktop
+
+
+```
+sudo pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter
+sudo systemctl enable lightdm
+
+reboot
+```
