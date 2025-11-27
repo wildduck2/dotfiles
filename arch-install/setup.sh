@@ -40,6 +40,11 @@ fetch_or_copy() {
   dest_dir="$(dirname "$dest")"
   mkdir -p "$dest_dir"
 
+  if [[ -n "${ARCH_INSTALL_FORCE_REFRESH:-}" && -f "$dest" ]]; then
+    info "Refreshing $rel (ARCH_INSTALL_FORCE_REFRESH set)"
+    rm -f "$dest"
+  fi
+
   if [[ -f "$dest" ]]; then
     return
   fi

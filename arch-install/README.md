@@ -6,6 +6,7 @@ Usage
 - Preview or apply partitions: `curl -fsSL https://raw.githubusercontent.com/wildduck2/dotfiles/main/arch-install/setup.sh | bash -s --` (interactive picker) or pass flags, e.g. `--device /dev/nvme0n1 --layout workstation`
 - Apply destructive changes: append `--apply --wipe` (the partition script still prompts unless `-y` is passed).
 - Run from a checkout instead: `./setup.sh --device /dev/sda --layout minimal`
+- Refresh cached scripts when piping: `ARCH_INSTALL_FORCE_REFRESH=1 curl -fsSL ... | bash -s -- ...`
 
 Behavior
 - Ensures `disk/partition.sh` and `disk/layouts.sh` are present by copying from the current directory, the script location, or downloading from `ARCH_INSTALL_RAW_BASE` (default: GitHub raw).
