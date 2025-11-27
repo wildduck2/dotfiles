@@ -15,6 +15,14 @@ info() { printf "[INFO] %s\n" "$*"; }
 warn() { printf "[WARN] %s\n" "$*" >&2; }
 fail() { printf "[ERROR] %s\n" "$*" >&2; exit 1; }
 
+enable_debug() {
+  if [[ -n "${ARCH_INSTALL_DEBUG:-}" ]]; then
+    PS4='+(${BASH_SOURCE##*/}:${LINENO}): '
+    set -x
+    trap 'printf "[DEBUG] %s failed at %s:%s\n" "${BASH_COMMAND:-?}" "${BASH_SOURCE[0]:-?}" "${LINENO:-?}" >&2' ERR
+  fi
+}
+
 require_cmd() {
   command -v "$1" >/dev/null 2>&1 || fail "Missing required command: $1"
 }
@@ -119,6 +127,7 @@ run_install_menu_if_present() {
 }
 
 main() {
+  enable_debug
   resolve_workdir
   ensure_disk_scripts
   run_partition "$@"

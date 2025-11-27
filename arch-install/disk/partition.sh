@@ -2,6 +2,12 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Enable verbose tracing when ARCH_INSTALL_DEBUG is set.
+if [[ -n "${ARCH_INSTALL_DEBUG:-}" ]]; then
+  PS4='+(${BASH_SOURCE##*/}:${LINENO}): '
+  set -x
+  trap 'printf "[DEBUG] %s failed at %s:%s\n" "${BASH_COMMAND:-?}" "${BASH_SOURCE[0]:-?}" "${LINENO:-?}" >&2' ERR
+fi
 # shellcheck source=disk/layouts.sh
 . "$SCRIPT_DIR/layouts.sh"
 
@@ -558,6 +564,7 @@ main() {
   require_cmd parted
 
   parse_args "$@"
+  info "Args: $*"
   if [[ "$LAYOUT_WAS_PROVIDED" == false ]] && has_tty; then
     select_layout_interactive
   fi

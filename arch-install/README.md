@@ -7,6 +7,7 @@ Usage
 - Apply destructive changes: append `--apply --wipe` (the partition script still prompts unless `-y` is passed).
 - Run from a checkout instead: `./setup.sh --device /dev/sda --layout minimal`
 - Refresh cached scripts when piping: `ARCH_INSTALL_FORCE_REFRESH=1 curl -fsSL ... | bash -s -- ...`
+- Debug trace if something fails: set `ARCH_INSTALL_DEBUG=1` when running.
 
 Behavior
 - Ensures `disk/partition.sh` and `disk/layouts.sh` are present by copying from the current directory, the script location, or downloading from `ARCH_INSTALL_RAW_BASE` (default: GitHub raw).
