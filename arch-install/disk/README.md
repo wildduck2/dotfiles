@@ -26,3 +26,4 @@ Quick start
 Interactive mode
 - If `--device` is omitted and stdin is a TTY, a menu lists disks/partitions with size/model/mount info and prompts for selection; only TYPE=disk is accepted.
 - If `--layout` is not supplied, a preset picker is shown with descriptions (minimal/workstation/server).
+- Prompts read from `/dev/tty` when possible so `curl ... | bash -s --` can still be interactive on a real console.

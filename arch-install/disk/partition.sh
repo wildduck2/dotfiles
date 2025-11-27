@@ -13,6 +13,7 @@ LAYOUT="minimal"
 LAYOUT_WAS_PROVIDED=false
 DEVICE=""
 BIOS_BOOT_SIZE_MIB=2
+TTY_INPUT="/dev/tty"
 
 # Defaults (can be overridden by layout or CLI)
 EFI_LABEL="EFI"
@@ -41,6 +42,24 @@ log() {
 info() { log INFO "$1"; }
 warn() { log WARN "$1"; }
 fail() { log ERROR "$1" >&2; exit 1; }
+
+has_tty() {
+  [[ -t 0 || -r "$TTY_INPUT" ]]
+}
+
+prompt_read() {
+  local __outvar="$1"; shift
+  local prompt="${1:-}"
+  local input=""
+  if [[ -t 0 ]]; then
+    read -r -p "$prompt" input
+  elif [[ -r "$TTY_INPUT" ]]; then
+    read -r -p "$prompt" input < "$TTY_INPUT"
+  else
+    fail "No interactive input available; supply required flags."
+  fi
+  printf -v "$__outvar" "%s" "$input"
+}
 
 usage() {
   cat <<'EOF'
@@ -149,7 +168,8 @@ confirm() {
   if [[ "$YES" == true ]]; then
     return
   fi
-  read -r -p "$prompt [y/N]: " reply
+  local reply=""
+  prompt_read reply "$prompt [y/N]: "
   [[ "$reply" == "y" || "$reply" == "Y" ]] || fail "Aborted by user"
 }
 
@@ -183,9 +203,8 @@ select_device_interactive() {
   collect_block_entries
   [[ "${#BLOCKS[@]}" -gt 0 ]] || fail "No block devices found."
   print_block_table
-  printf "\nSelect target (number or path), or leave empty to abort: "
   local choice
-  read -r choice
+  prompt_read choice $'\nSelect target (number or path), or leave empty to abort: '
   [[ -n "$choice" ]] || fail "No device selected."
 
   local target_path="" target_type="" mountinfo=""
@@ -223,9 +242,8 @@ select_layout_interactive() {
     idx=$((idx + 1))
     printf "  %d) %-12s - %s\n" "$idx" "$name" "$(layout_description "$name")"
   done
-  printf "Select layout [%s]: " "$LAYOUT"
   local choice
-  read -r choice
+  prompt_read choice "Select layout [${LAYOUT}]: "
   if [[ -z "$choice" ]]; then
     info "Using default layout: $LAYOUT"
     return
@@ -344,7 +362,7 @@ collect_device_if_needed() {
   if [[ -n "$DEVICE" ]]; then
     return
   fi
-  if [[ -t 0 ]]; then
+  if has_tty; then
     select_device_interactive
   else
     fail "No --device provided and stdin is not interactive."
@@ -540,7 +558,7 @@ main() {
   require_cmd parted
 
   parse_args "$@"
-  if [[ "$LAYOUT_WAS_PROVIDED" == false && -t 0 ]]; then
+  if [[ "$LAYOUT_WAS_PROVIDED" == false ]] && has_tty; then
     select_layout_interactive
   fi
   collect_device_if_needed

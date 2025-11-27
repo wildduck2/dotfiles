@@ -11,7 +11,7 @@ Behavior
 - Ensures `disk/partition.sh` and `disk/layouts.sh` are present by copying from the current directory, the script location, or downloading from `ARCH_INSTALL_RAW_BASE` (default: GitHub raw).
 - Uses `ARCH_INSTALL_DIR` for the working directory (default: `/tmp/wildduck-arch-install` when not already in a checkout).
 - Partitioning auto-detects BIOS vs UEFI and supports swap/home layouts; see `disk/README.md` for details.
-- If `--device` is omitted and stdin is interactive, a menu shows disks/partitions (with size/model/mount info) and lets you choose; only TYPE=disk is accepted. If `--layout` is omitted, a preset picker is shown.
+- If `--device` is omitted and a TTY is available, a menu shows disks/partitions (with size/model/mount info) and lets you choose; only TYPE=disk is accepted. If `--layout` is omitted, a preset picker is shown. Prompts use `/dev/tty` when available, so `curl ... | bash -s --` stays interactive on a console.
 
 Optional installers
 - If `install-workstation.sh` or `install-server.sh` are executable in the working directory, a menu is shown after partitioning to run them; otherwise the script exits after partitioning.
