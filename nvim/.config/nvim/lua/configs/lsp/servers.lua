@@ -127,37 +127,37 @@ M.servers = {
   yamlls = {},
   -- htmx = {},
   prismals = {},
-  graphql = {},
-  lexical = {},
+  -- graphql = {},
+  -- lexical = {},
   typos_lsp = {},
-  svelte = {
-    cmd = { vim.fn.stdpath 'data' .. '/mason/bin/svelteserver', '--stdio' },
-  },
+  -- svelte = {
+  --   cmd = { vim.fn.stdpath 'data' .. '/mason/bin/svelteserver', '--stdio' },
+  -- },
   biome = {},
   bashls = {},
   dockerls = {},
+  docker_compose_language_service = {},
   docformatter = {},
-  cpptools = {},
+  -- cpptools = {},
   -- sqlfmt = {},
   -- sqlls = {},
   mdx_analyzer = {},
-  grammarly = {},
+  -- grammarly = {},
 
   -- GO
-  gopls = {
-    settings = {
-      gopls = {
-        gofumpt = true, -- stricter formatting than gofmt
-        usePlaceholders = true,
-        completeUnimported = true,
-      },
-    },
-  },
-  goimports = {},
-  golines = {},
-  gotests = {},
-  ruff = {},
-  docker_compose_language_service = {},
+  -- gopls = {
+  --   settings = {
+  --     gopls = {
+  --       gofumpt = true, -- stricter formatting than gofmt
+  --       usePlaceholders = true,
+  --       completeUnimported = true,
+  --     },
+  --   },
+  -- },
+  -- goimports = {},
+  -- golines = {},
+  -- gotests = {},
+  -- ruff = {},
   -- css_variables = {},
   -- cssmodules_ls = {}
 }
