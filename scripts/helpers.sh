@@ -21,6 +21,16 @@ header() { printf "\n${BOLD}-- %s --${NC}\n" "$*"; }
 
 command_exists() { command -v "$1" &>/dev/null; }
 
+check_arch() {
+  if [[ "${_ARCH_CHECKED:-}" == "1" ]]; then return 0; fi
+  if ! command_exists pacman; then
+    err "This script is designed for Arch Linux (pacman required)"
+    exit 1
+  fi
+  ok "Running on Arch Linux"
+  export _ARCH_CHECKED=1
+}
+
 pkg_install() {
   local missing=()
   for pkg in "$@"; do
@@ -31,8 +41,6 @@ pkg_install() {
   if [[ ${#missing[@]} -gt 0 ]]; then
     info "Installing: ${missing[*]}"
     sudo pacman -S --needed --noconfirm "${missing[@]}"
-  else
-    ok "Already installed: $*"
   fi
 }
 
@@ -50,8 +58,6 @@ aur_install() {
     else
       warn "yay not found -- skipping AUR packages: ${missing[*]}"
     fi
-  else
-    ok "Already installed (AUR): $*"
   fi
 }
 
@@ -65,8 +71,6 @@ npm_install_global() {
   if [[ ${#missing[@]} -gt 0 ]]; then
     info "Installing npm packages: ${missing[*]}"
     npm i -g "${missing[@]}"
-  else
-    ok "npm packages already installed: $*"
   fi
 }
 
@@ -92,29 +96,40 @@ pip_install() {
     info "Installing pip packages: ${missing[*]}"
     python -m pip install --user --break-system-packages "${missing[@]}" 2>/dev/null \
       || python -m pip install --user "${missing[@]}"
-  else
-    ok "pip packages already installed: $*"
   fi
 }
 
+# Stow a package. Handles both .config-based and home-level dotfiles.
+# Backs up existing non-symlink targets before stowing.
 stow_package() {
   local pkg="$1"
-  local target="$HOME/.config/$pkg"
+  cd "$DOTFILES_DIR"
 
-  if [[ -d "$target" ]] && [[ ! -L "$target" ]]; then
-    warn "Backing up existing $target to ${target}.bak"
-    mv "$target" "${target}.bak"
-  fi
+  # Back up any conflicting files/dirs that stow would overwrite.
+  # Check what stow would create and back up real (non-symlink) conflicts.
+  local conflicts
+  conflicts=$(stow -n -R "$pkg" 2>&1 | grep "existing target" | sed 's/.*: //' || true)
+
+  for target in $conflicts; do
+    local full="$HOME/$target"
+    if [[ -e "$full" ]] && [[ ! -L "$full" ]]; then
+      warn "Backing up $full to ${full}.bak"
+      mv "$full" "${full}.bak"
+    fi
+  done
 
   info "Stowing $pkg"
-  cd "$DOTFILES_DIR"
-  stow -R "$pkg" 2>/dev/null && ok "Stowed $pkg" || warn "Failed to stow $pkg"
+  stow -R "$pkg" && ok "Stowed $pkg" || warn "Failed to stow $pkg"
 }
 
-check_arch() {
-  if ! command_exists pacman; then
-    err "This script is designed for Arch Linux (pacman required)"
-    exit 1
+# Check if a font family is installed
+check_font() {
+  local font_name="$1"
+  if fc-list 2>/dev/null | grep -qi "$font_name"; then
+    ok "Font found: $font_name"
+    return 0
+  else
+    warn "Font not found: $font_name"
+    return 1
   fi
-  ok "Running on Arch Linux"
 }
