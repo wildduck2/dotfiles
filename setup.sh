@@ -6,10 +6,12 @@
 # Designed for Arch Linux. Run from the dotfiles root directory.
 #
 # Usage:
-#   ./setup.sh          Install everything
-#   ./setup.sh kitty    Install only kitty
-#   ./setup.sh nvim     Install only nvim
-#   ./setup.sh i3       Install only i3
+#   ./setup.sh                Install everything
+#   ./setup.sh kitty          Install only kitty
+#   ./setup.sh nvim kitty     Install multiple modules
+#
+# Available modules:
+#   base zsh tmux kitty terminator picom nvim i3 htop neofetch
 #
 set -euo pipefail
 
@@ -20,67 +22,53 @@ source "$DOTFILES_DIR/scripts/helpers.sh"
 header "Dotfiles Setup"
 check_arch
 
-# -- Base packages (needed by everything) ----------------------------------
+# -- Module functions ------------------------------------------------------
+
 setup_base() {
   header "Base Packages"
   pkg_install git base-devel stow curl wget unzip xclip wl-clipboard
 }
 
-# -- ZSH -------------------------------------------------------------------
 setup_zsh() {
-  header "ZSH"
-  pkg_install zsh
-
-  cd "$DOTFILES_DIR"
-  info "Stowing zsh"
-  stow -R zsh 2>/dev/null && ok "Stowed zsh" || warn "Failed to stow zsh"
+  bash "$DOTFILES_DIR/zsh/setup.sh"
 }
 
-# -- Tmux ------------------------------------------------------------------
 setup_tmux() {
-  header "Tmux"
-  pkg_install tmux
-
-  stow_package tmux
+  bash "$DOTFILES_DIR/tmux/setup.sh"
 }
 
-# -- Kitty -----------------------------------------------------------------
 setup_kitty() {
   bash "$DOTFILES_DIR/kitty/setup.sh"
 }
 
-# -- Neovim ----------------------------------------------------------------
+setup_terminator() {
+  header "Terminator"
+  pkg_install terminator
+  stow_package terminator
+}
+
+setup_picom() {
+  bash "$DOTFILES_DIR/picom/setup.sh"
+}
+
 setup_nvim() {
   bash "$DOTFILES_DIR/nvim/setup.sh"
 }
 
-# -- i3 --------------------------------------------------------------------
 setup_i3() {
   bash "$DOTFILES_DIR/i3/setup.sh"
 }
 
-# -- Htop ------------------------------------------------------------------
 setup_htop() {
   header "Htop"
   pkg_install htop
-
   stow_package htop
 }
 
-# -- Neofetch --------------------------------------------------------------
 setup_neofetch() {
   header "Neofetch"
   pkg_install neofetch
-
   stow_package neofetch
-}
-
-# -- Terminator ------------------------------------------------------------
-setup_terminator() {
-  header "Terminator"
-  pkg_install terminator
-
-  stow_package terminator
 }
 
 # -- Single module mode ----------------------------------------------------
@@ -91,13 +79,14 @@ if [[ $# -gt 0 ]]; then
       zsh)        setup_base && setup_zsh ;;
       tmux)       setup_base && setup_tmux ;;
       kitty)      setup_base && setup_kitty ;;
+      terminator) setup_base && setup_terminator ;;
+      picom)      setup_base && setup_picom ;;
       nvim)       setup_base && setup_nvim ;;
       i3)         setup_base && setup_i3 ;;
       htop)       setup_base && setup_htop ;;
       neofetch)   setup_base && setup_neofetch ;;
-      terminator) setup_base && setup_terminator ;;
       *)          err "Unknown module: $module"
-                  echo "Available: base zsh tmux kitty nvim i3 htop neofetch terminator"
+                  echo "Available: base zsh tmux kitty terminator picom nvim i3 htop neofetch"
                   exit 1 ;;
     esac
   done
@@ -112,7 +101,7 @@ fi
 # 1. Base packages first
 setup_base
 
-# 2. Shell (zsh before anything that might depend on shell config)
+# 2. Shell
 setup_zsh
 
 # 3. Terminal multiplexer
@@ -122,13 +111,16 @@ setup_tmux
 setup_kitty
 setup_terminator
 
-# 5. Editor (heaviest -- languages, LSPs, formatters, linters)
+# 5. Compositor (before i3 so it's ready)
+setup_picom
+
+# 6. Editor (heaviest -- languages, LSPs, formatters, linters)
 setup_nvim
 
-# 6. Desktop environment
+# 7. Desktop environment
 setup_i3
 
-# 7. Utilities
+# 8. Utilities
 setup_htop
 setup_neofetch
 
@@ -141,7 +133,7 @@ echo ""
 echo "Stowed modules:"
 
 cd "$DOTFILES_DIR"
-for pkg in zsh tmux kitty nvim i3 picom terminator htop neofetch; do
+for pkg in zsh tmux kitty terminator picom nvim i3 htop neofetch; do
   if stow -n -R "$pkg" 2>/dev/null; then
     printf "  ${GREEN}%-14s${NC} ok\n" "$pkg"
   else
