@@ -15,17 +15,17 @@ conform.setup {
     typescript = { 'biome' },
     javascriptreact = { 'biome' },
     typescriptreact = { 'biome' },
+    json = { 'biome' },
+    html = { 'prettier' },
+    css = { 'prettier' },
+    scss = { 'prettier' },
+    yaml = { 'prettier' },
+    markdown = { 'prettier' },
+    bash = { 'shfmt' },
+    sh = { 'shfmt' },
   },
   format_on_save = {
     lsp_fallback = true,
-    timeout_ms = 500,
+    timeout_ms = 1000,
   },
 }
-
-vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = '*',
-  callback = function(args)
-    -- vim.lsp.buf.format()
-    require('conform').format { bufnr = args.buf }
-  end,
-})
