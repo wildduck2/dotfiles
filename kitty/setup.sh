@@ -8,18 +8,17 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/../scripts/helpers.sh"
 
-header "Kitty Terminal"
-
+header "Kitty"
 check_arch
 
+# -- Packages --------------------------------------------------------------
 pkg_install kitty ttf-jetbrains-mono-nerd
 
-if fc-list | grep -qi "JetBrainsMono Nerd Font.*Bold Italic"; then
-  ok "JetBrainsMono Nerd Font Bold Italic available"
-else
-  warn "Bold Italic style not detected -- try: fc-cache -fv"
-fi
+# -- Verify font -----------------------------------------------------------
+check_font "JetBrainsMono Nerd Font.*Bold Italic" \
+  || warn "Try running: fc-cache -fv"
 
+# -- Stow ------------------------------------------------------------------
 stow_package kitty
 
 ok "Kitty setup complete"
