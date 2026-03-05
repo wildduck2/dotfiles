@@ -12,6 +12,11 @@ header "ZSH"
 check_arch
 
 # -- Packages --------------------------------------------------------------
+# zsh: the shell itself
+# fzf: fuzzy finder (used by fzf --zsh, fzf-tab, fzf_nvim widget)
+# zoxide: smart cd replacement (eval "$(zoxide init --cmd cd zsh)")
+# git: needed by Oh My Zsh, Zinit, and the git plugin
+# curl: needed by Oh My Zsh installer and NVM installer
 pkg_install zsh fzf zoxide git curl
 
 # -- Oh My Zsh -------------------------------------------------------------
@@ -24,7 +29,7 @@ else
   ok "Oh My Zsh installed"
 fi
 
-# -- Zinit -----------------------------------------------------------------
+# -- Zinit (plugin manager) ------------------------------------------------
 ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git"
 if [[ -d "$ZINIT_HOME" ]]; then
   ok "Zinit already installed"
@@ -36,6 +41,7 @@ else
 fi
 
 # -- NVM (Node Version Manager) --------------------------------------------
+# .zshrc sources $NVM_DIR/nvm.sh and $NVM_DIR/bash_completion
 NVM_DIR="$HOME/.nvm"
 if [[ -d "$NVM_DIR" ]]; then
   ok "NVM already installed"
@@ -45,7 +51,12 @@ else
   ok "NVM installed"
 fi
 
+# -- Completions directory -------------------------------------------------
+# .zshrc does: mkdir -p "$HOME/.zsh/completions" and adds to FPATH
+mkdir -p "$HOME/.zsh/completions"
+
 # -- Stow ------------------------------------------------------------------
+# zsh dotfiles are home-level (.zshrc, .zshenv), not .config-based
 stow_package zsh
 
 # -- Default shell ---------------------------------------------------------

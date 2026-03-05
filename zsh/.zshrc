@@ -119,5 +119,3 @@ fzf_nvim() {
 zle -N fzf_nvim
 bindkey '^f' fzf_nvim
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"

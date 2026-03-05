@@ -5,10 +5,11 @@ ZSH shell setup with Oh My Zsh, Zinit plugin manager, fzf integration, and zoxid
 ## Requirements
 
 - **zsh**
-- **fzf** (fuzzy finder)
+- **fzf** (fuzzy finder -- shell integration, fzf-tab, Ctrl+f widget)
 - **zoxide** (smart cd replacement)
-- **git** (for Oh My Zsh and Zinit installation)
-- **curl** (for Oh My Zsh installer)
+- **git** (Oh My Zsh, Zinit, git plugin)
+- **curl** (Oh My Zsh and NVM installers)
+- **neovim** (optional -- `vim` alias and `Ctrl+f` widget open files in nvim)
 
 ## Quick Start
 
@@ -16,6 +17,8 @@ ZSH shell setup with Oh My Zsh, Zinit plugin manager, fzf integration, and zoxid
 cd ~/dotfiles
 ./zsh/setup.sh
 ```
+
+The setup script installs zsh, fzf, zoxide, Oh My Zsh, Zinit, and NVM, then stows the config and sets zsh as the default shell.
 
 ## Files
 
@@ -30,21 +33,21 @@ cd ~/dotfiles
 Framework providing the base theme and git plugin.
 
 - **Theme**: robbyrussell
-- **Plugins**: git
+- **Plugin**: git
 
 ### Zinit
-Fast plugin manager for additional plugins and OMZ snippets.
+Fast plugin manager loading additional plugins and OMZ snippets.
 
 **Plugins:**
+
 | Plugin | Purpose |
 |--------|---------|
 | zsh-syntax-highlighting | Command syntax coloring |
 | zsh-completions | Additional completion definitions |
-| zsh-autosuggestions | Fish-like autosuggestions |
-| fzf-tab | Replace default completion with fzf |
+| zsh-autosuggestions | Fish-like inline suggestions |
+| fzf-tab | Replace default tab completion with fzf |
 
-**OMZ Snippets:**
-git, sudo, archlinux, aws, kubectl, kubectx, command-not-found
+**OMZ Snippets:** git, sudo, archlinux, aws, kubectl, kubectx, command-not-found
 
 ## Keybindings
 
@@ -53,7 +56,7 @@ git, sudo, archlinux, aws, kubectl, kubectx, command-not-found
 | `Ctrl+p` | History search backward |
 | `Ctrl+n` | History search forward |
 | `Alt+w` | Kill region |
-| `Ctrl+f` | fzf file/directory picker (opens in nvim) |
+| `Ctrl+f` | fzf file/directory picker (opens selection in nvim) |
 
 ## Aliases
 
@@ -80,15 +83,19 @@ PATH additions (if directories exist): `~/.local/bin`, `~/bin`, cargo, deno, pye
 
 ## Tool Integrations
 
-- **fzf**: Fuzzy finder shell integration (`eval "$(fzf --zsh)"`)
-- **zoxide**: Smart cd (`eval "$(zoxide init --cmd cd zsh)"`) -- replaces `cd` command
-- **nvm**: Node version manager (lazy loaded from `$NVM_DIR`)
-- **pyenv**: Python version manager
-- **deno/bun/cargo**: Environment sourced if installed
+| Tool | How it's used |
+|------|---------------|
+| **fzf** | Shell keybindings via `eval "$(fzf --zsh)"`, fzf-tab completion |
+| **zoxide** | Replaces `cd` via `eval "$(zoxide init --cmd cd zsh)"` |
+| **NVM** | Node version manager, sourced from `$NVM_DIR/nvm.sh` |
+| **pyenv** | Python version manager, `eval "$(pyenv init - zsh)"` |
+| **deno** | Env sourced from `~/.deno/env` if present |
+| **bun** | Completions sourced from `~/.bun/_bun` if present |
+| **cargo** | Env sourced from `~/.cargo/env` if present |
 
 ## History
 
-- 5000 entries
+- 5000 entries in `~/.zsh_history`
 - Shared across sessions
 - Deduplication enabled
 - Space-prefixed commands ignored
