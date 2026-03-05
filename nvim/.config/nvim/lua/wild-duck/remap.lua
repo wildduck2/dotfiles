@@ -4,8 +4,7 @@ vim.g.have_nerd_font = true
 
 --NOTE: [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
---  open the file menu
-vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
+-- <leader>pv is mapped in nvim-tree/keymaps.lua to NvimTreeToggle
 
 --INFO: Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
@@ -71,9 +70,9 @@ vim.keymap.set('x', '<leader>p', [["_dP]])
 vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
 vim.keymap.set('n', '<leader>Y', [["+Y]])
 
---INFO: move down and up in quick fix mode
-vim.keymap.set('n', 'J', '<cmd>cprev<CR>')
-vim.keymap.set('n', 'K', '<cmd>cnext<CR>')
+-- Quickfix navigation
+vim.keymap.set('n', ']q', '<cmd>cnext<CR>zz', { desc = 'Next quickfix item' })
+vim.keymap.set('n', '[q', '<cmd>cprev<CR>zz', { desc = 'Previous quickfix item' })
 
 --INFO: This is going to get me cancelled
 vim.keymap.set('i', '<C-c>', '<Esc>')
@@ -81,10 +80,9 @@ vim.keymap.set('i', '<C-c>', '<Esc>')
 --INFO: do fancy like dopy ass hacker shit
 vim.keymap.set('n', '<leader>mr', '<cmd>CellularAutomaton make_it_rain<CR>')
 
---FIX: fix these issues wild_duck you sucker
---FIX:: idk what the fuck this is used for
-vim.keymap.set('n', '<leader>k', '<cmd>lnext<CR>')
-vim.keymap.set('n', '<leader>j', '<cmd>lprev<CR>')
+-- Location list navigation
+vim.keymap.set('n', ']l', '<cmd>lnext<CR>zz', { desc = 'Next location list item' })
+vim.keymap.set('n', '[l', '<cmd>lprev<CR>zz', { desc = 'Previous location list item' })
 
 vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]])
 
@@ -93,7 +91,7 @@ vim.keymap.set('n', 'Q', '<nop>')
 vim.keymap.set('n', '<leader>s', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 vim.keymap.set('n', '<leader>x', '<cmd>!chmod +x %<CR>', { silent = true })
 
-vim.keymap.set('n', '<leader>vpp', '<cmd>e ~/.dotfiles/<CR>')
+vim.keymap.set('n', '<leader>vpp', '<cmd>e ~/dotfiles/<CR>')
 
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")

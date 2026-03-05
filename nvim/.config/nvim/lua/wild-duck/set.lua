@@ -10,15 +10,16 @@ vim.opt.mouse = 'a'
 --NOTE: hide the mode in command line
 vim.opt.showmode = false
 
---NOTE: global clipboard for system clipboard
+-- System clipboard integration
 vim.schedule(function()
-  vim.opt.clipboard = ''
+  vim.opt.clipboard = 'unnamedplus'
 end)
 
 -- Enable break indent
 vim.opt.breakindent = true
 
--- Save undo history
+-- Save undo history to a central location
+vim.opt.undodir = vim.fn.expand '~/.config/nvim/.undo'
 vim.opt.undofile = true
 
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
