@@ -11,7 +11,7 @@
 #   ./setup.sh nvim kitty     Install multiple modules
 #
 # Available modules:
-#   base zsh tmux kitty terminator picom nvim i3 htop neofetch
+#   base bash zsh tmux kitty terminator picom nvim i3 htop neofetch
 #
 set -euo pipefail
 
@@ -28,22 +28,14 @@ setup_base() {
   pkg_install git base-devel stow curl wget unzip xclip wl-clipboard
 }
 
+setup_bash()       { bash "$DOTFILES_DIR/bash/setup.sh"; }
 setup_zsh()        { bash "$DOTFILES_DIR/zsh/setup.sh"; }
 setup_tmux()       { bash "$DOTFILES_DIR/tmux/setup.sh"; }
 setup_kitty()      { bash "$DOTFILES_DIR/kitty/setup.sh"; }
+setup_terminator() { bash "$DOTFILES_DIR/terminator/setup.sh"; }
 setup_picom()      { bash "$DOTFILES_DIR/picom/setup.sh"; }
 setup_nvim()       { bash "$DOTFILES_DIR/nvim/setup.sh"; }
 setup_i3()         { bash "$DOTFILES_DIR/i3/setup.sh"; }
-
-setup_terminator() {
-  header "Terminator"
-  check_arch
-  pkg_install terminator ttf-jetbrains-mono-nerd
-  check_font "Berkeley Mono" \
-    || warn "Berkeley Mono Trial not found -- terminator config uses it as primary font"
-  stow_package terminator
-  ok "Terminator setup complete"
-}
 
 setup_htop() {
   header "Htop"
@@ -66,6 +58,7 @@ if [[ $# -gt 0 ]]; then
   for module in "$@"; do
     case "$module" in
       base)       setup_base ;;
+      bash)       setup_base && setup_bash ;;
       zsh)        setup_base && setup_zsh ;;
       tmux)       setup_base && setup_tmux ;;
       kitty)      setup_base && setup_kitty ;;
@@ -76,7 +69,7 @@ if [[ $# -gt 0 ]]; then
       htop)       setup_base && setup_htop ;;
       neofetch)   setup_base && setup_neofetch ;;
       *)          err "Unknown module: $module"
-                  echo "Available: base zsh tmux kitty terminator picom nvim i3 htop neofetch"
+                  echo "Available: base bash zsh tmux kitty terminator picom nvim i3 htop neofetch"
                   exit 1 ;;
     esac
   done
@@ -90,13 +83,14 @@ fi
 # 1. Base packages (git, stow, etc.)
 setup_base
 
-# 2. Shell (everything else may depend on zsh)
+# 2. Shells (bash as fallback, zsh as primary)
+setup_bash
 setup_zsh
 
-# 3. Terminal multiplexer
+# 3. Terminal multiplexer (depends on zsh, xclip)
 setup_tmux
 
-# 4. Terminals
+# 4. Terminals (depends on fonts)
 setup_kitty
 setup_terminator
 
@@ -122,7 +116,7 @@ echo ""
 echo "Stowed modules:"
 
 cd "$DOTFILES_DIR"
-for pkg in zsh tmux kitty terminator picom nvim i3 htop neofetch; do
+for pkg in bash zsh tmux kitty terminator picom nvim i3 htop neofetch; do
   if stow -n -R "$pkg" 2>/dev/null; then
     printf "  ${GREEN}%-14s${NC} ok\n" "$pkg"
   else
