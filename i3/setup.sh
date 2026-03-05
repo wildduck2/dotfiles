@@ -9,7 +9,6 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/../scripts/helpers.sh"
 
 header "i3 Window Manager"
-
 check_arch
 
 # -- Check yay -------------------------------------------------------------
@@ -24,15 +23,29 @@ fi
 # -- Pacman packages -------------------------------------------------------
 pkg_install \
   i3-wm i3status dmenu \
-  terminator picom feh flameshot imagemagick \
+  picom feh flameshot imagemagick \
   pulseaudio pavucontrol \
   xorg-xbacklight xorg-xdpyinfo \
   network-manager-applet blueman \
   gnome-settings-daemon gnome-keyring polkit-gnome \
-  ntfs-3g
+  ntfs-3g \
+  ttf-jetbrains-mono-nerd
 
 # -- AUR packages ----------------------------------------------------------
 aur_install trayer i3lock-color gnome-screensaver-no-watchdog
+
+# -- Font check ------------------------------------------------------------
+# i3 config and lock.sh use Berkeley Mono Trial (proprietary/trial font).
+# It must be manually placed in ~/.local/share/fonts/
+if check_font "Berkeley Mono"; then
+  ok "Berkeley Mono Trial available for i3 and lock screen"
+else
+  warn "Berkeley Mono Trial not found"
+  warn "i3 bar, lock screen, and terminator use this font"
+  warn "Download from https://berkeleymono.com/ and place .ttf files in ~/.local/share/fonts/"
+  warn "Then run: fc-cache -fv"
+  warn "Falling back to JetBrainsMono Nerd Font (already installed)"
+fi
 
 # -- Stow configs ----------------------------------------------------------
 stow_package i3
@@ -51,33 +64,35 @@ else
 fi
 
 # -- GNOME screensaver config ----------------------------------------------
-if [[ -f "$BLURRED" ]]; then
-  info "Configuring GNOME screensaver with blurred wallpaper"
-  gsettings set org.gnome.desktop.screensaver picture-uri "file://$BLURRED"
-  gsettings set org.gnome.desktop.screensaver picture-options 'zoom'
-  gsettings set org.gnome.desktop.screensaver lock-enabled true
-  gsettings set org.gnome.desktop.screensaver lock-delay 0
-  gsettings set org.gnome.desktop.background picture-uri "file://$WALLPAPER"
-  gsettings set org.gnome.desktop.background picture-uri-dark "file://$WALLPAPER"
-elif [[ -f "$WALLPAPER" ]]; then
-  info "Configuring GNOME screensaver with wallpaper (no blur)"
-  gsettings set org.gnome.desktop.screensaver picture-uri "file://$WALLPAPER"
-  gsettings set org.gnome.desktop.screensaver picture-options 'zoom'
-  gsettings set org.gnome.desktop.screensaver lock-enabled true
-  gsettings set org.gnome.desktop.screensaver lock-delay 0
+if command_exists gsettings; then
+  if [[ -f "$BLURRED" ]]; then
+    info "Configuring GNOME screensaver with blurred wallpaper"
+    gsettings set org.gnome.desktop.screensaver picture-uri "file://$BLURRED"
+    gsettings set org.gnome.desktop.screensaver picture-options 'zoom'
+    gsettings set org.gnome.desktop.screensaver lock-enabled true
+    gsettings set org.gnome.desktop.screensaver lock-delay 0
+    gsettings set org.gnome.desktop.background picture-uri "file://$WALLPAPER"
+    gsettings set org.gnome.desktop.background picture-uri-dark "file://$WALLPAPER"
+  elif [[ -f "$WALLPAPER" ]]; then
+    info "Configuring GNOME screensaver with wallpaper (no blur)"
+    gsettings set org.gnome.desktop.screensaver picture-uri "file://$WALLPAPER"
+    gsettings set org.gnome.desktop.screensaver picture-options 'zoom'
+    gsettings set org.gnome.desktop.screensaver lock-enabled true
+    gsettings set org.gnome.desktop.screensaver lock-delay 0
+  fi
+else
+  warn "gsettings not found -- skipping screensaver config"
 fi
 
 # -- Verify ----------------------------------------------------------------
 header "Verification"
 
-CHECKS_PASSED=0
-CHECKS_TOTAL=0
-
+CHECKS=0 TOTAL=0
 check_cmd() {
-  CHECKS_TOTAL=$((CHECKS_TOTAL + 1))
+  TOTAL=$((TOTAL + 1))
   if command_exists "$1"; then
     ok "$1"
-    CHECKS_PASSED=$((CHECKS_PASSED + 1))
+    CHECKS=$((CHECKS + 1))
   else
     err "$1 -- NOT FOUND"
   fi
@@ -86,7 +101,6 @@ check_cmd() {
 check_cmd i3
 check_cmd i3status
 check_cmd dmenu
-check_cmd terminator
 check_cmd picom
 check_cmd feh
 check_cmd flameshot
@@ -94,11 +108,4 @@ check_cmd magick
 check_cmd i3lock
 check_cmd nm-applet
 
-echo ""
-ok "i3 setup complete ($CHECKS_PASSED/$CHECKS_TOTAL checks passed)"
-echo ""
-echo "Next steps:"
-echo "  1. Log out and select i3 as your session"
-echo "  2. Or reload i3 with Alt+Shift+r if already running"
-echo "  3. Place your wallpaper at ~/.config/i3/bgs/bg.jpg"
-echo "  4. Lock screen: Alt+x or Alt+Ctrl+l"
+ok "i3 setup complete ($CHECKS/$TOTAL checks passed)"
