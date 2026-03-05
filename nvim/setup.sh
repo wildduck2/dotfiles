@@ -9,7 +9,6 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/../scripts/helpers.sh"
 
 header "Neovim"
-
 check_arch
 
 # -- Core packages ---------------------------------------------------------
@@ -31,7 +30,7 @@ else
   source "$HOME/.cargo/env" 2>/dev/null || true
 fi
 
-# Deno
+# Deno (for peek.nvim markdown preview)
 if command_exists deno; then
   ok "Deno already installed"
 else
@@ -71,19 +70,14 @@ else
 fi
 
 # -- Go tools --------------------------------------------------------------
-header "Go Tools"
-
 if command_exists go; then
+  header "Go Tools"
   go_install goimports golang.org/x/tools/cmd/goimports@latest
   go_install golangci-lint github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-else
-  warn "Go not found -- skipping Go tools"
 fi
 
 # -- Optional tools --------------------------------------------------------
-if command_exists silicon; then
-  ok "silicon already installed"
-else
+if ! command_exists silicon; then
   pkg_install silicon 2>/dev/null || cargo install silicon 2>/dev/null || {
     warn "Could not install silicon -- install manually if needed"
   }
@@ -92,11 +86,6 @@ fi
 # -- Stow and post-setup --------------------------------------------------
 stow_package nvim
 mkdir -p "$HOME/.config/nvim/.undo"
-ok "Undo directory ready"
 
-info "On next nvim launch:"
-info "  - lazy.nvim will auto-install plugins"
-info "  - Mason will auto-install 16 LSP servers"
-info "  - Treesitter will auto-install 34 parsers"
-
+info "On next nvim launch, lazy.nvim/Mason/Treesitter will auto-install plugins"
 ok "Neovim setup complete"
