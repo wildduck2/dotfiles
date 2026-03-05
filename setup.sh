@@ -18,7 +18,6 @@ set -euo pipefail
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$DOTFILES_DIR/scripts/helpers.sh"
 
-# -- Pre-flight ------------------------------------------------------------
 header "Dotfiles Setup"
 check_arch
 
@@ -29,46 +28,37 @@ setup_base() {
   pkg_install git base-devel stow curl wget unzip xclip wl-clipboard
 }
 
-setup_zsh() {
-  bash "$DOTFILES_DIR/zsh/setup.sh"
-}
-
-setup_tmux() {
-  bash "$DOTFILES_DIR/tmux/setup.sh"
-}
-
-setup_kitty() {
-  bash "$DOTFILES_DIR/kitty/setup.sh"
-}
+setup_zsh()        { bash "$DOTFILES_DIR/zsh/setup.sh"; }
+setup_tmux()       { bash "$DOTFILES_DIR/tmux/setup.sh"; }
+setup_kitty()      { bash "$DOTFILES_DIR/kitty/setup.sh"; }
+setup_picom()      { bash "$DOTFILES_DIR/picom/setup.sh"; }
+setup_nvim()       { bash "$DOTFILES_DIR/nvim/setup.sh"; }
+setup_i3()         { bash "$DOTFILES_DIR/i3/setup.sh"; }
 
 setup_terminator() {
   header "Terminator"
-  pkg_install terminator
+  check_arch
+  pkg_install terminator ttf-jetbrains-mono-nerd
+  check_font "Berkeley Mono" \
+    || warn "Berkeley Mono Trial not found -- terminator config uses it as primary font"
   stow_package terminator
-}
-
-setup_picom() {
-  bash "$DOTFILES_DIR/picom/setup.sh"
-}
-
-setup_nvim() {
-  bash "$DOTFILES_DIR/nvim/setup.sh"
-}
-
-setup_i3() {
-  bash "$DOTFILES_DIR/i3/setup.sh"
+  ok "Terminator setup complete"
 }
 
 setup_htop() {
   header "Htop"
+  check_arch
   pkg_install htop
   stow_package htop
+  ok "Htop setup complete"
 }
 
 setup_neofetch() {
   header "Neofetch"
+  check_arch
   pkg_install neofetch
   stow_package neofetch
+  ok "Neofetch setup complete"
 }
 
 # -- Single module mode ----------------------------------------------------
@@ -90,7 +80,6 @@ if [[ $# -gt 0 ]]; then
                   exit 1 ;;
     esac
   done
-
   echo ""
   printf "${GREEN}${BOLD}Done!${NC}\n"
   exit 0
@@ -98,10 +87,10 @@ fi
 
 # -- Full install (ordered) ------------------------------------------------
 
-# 1. Base packages first
+# 1. Base packages (git, stow, etc.)
 setup_base
 
-# 2. Shell
+# 2. Shell (everything else may depend on zsh)
 setup_zsh
 
 # 3. Terminal multiplexer
@@ -117,7 +106,7 @@ setup_picom
 # 6. Editor (heaviest -- languages, LSPs, formatters, linters)
 setup_nvim
 
-# 7. Desktop environment
+# 7. Desktop environment (depends on picom, terminator, fonts)
 setup_i3
 
 # 8. Utilities
