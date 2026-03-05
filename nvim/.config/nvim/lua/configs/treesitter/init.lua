@@ -1,5 +1,4 @@
 local ensure_installed = require 'configs.treesitter.ensure_installed'
-local filetypes = require 'configs.treesitter.autotagfile_filetype'
 local keymaps = require 'configs.treesitter.keymaps'
 
 -- [[ Configure Treesitter ]]
@@ -13,13 +12,6 @@ vim.defer_fn(function()
     build = ':TSUpdate',
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
-    autotag = {
-      enable = true,
-      enable_rename = true,
-      enable_close = true,
-      enable_close_on_slash = true,
-      filetypes = filetypes.e,
-    },
     highlight = { enable = true },
     indent = { enable = true },
     incremental_selection = {

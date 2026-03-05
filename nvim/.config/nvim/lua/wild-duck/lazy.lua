@@ -2,7 +2,7 @@
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system {
     'git',
     'clone',
@@ -31,9 +31,9 @@ local plugins = {
   { 'tjdevries/gruvbuddy.nvim' },
   { 'catppuccin/nvim', priority = 1000 },
   { 'folke/tokyonight.nvim', lazy = false, priority = 1000, opts = {} },
-  { 'rose-pine/neovim', as = 'rose-pine' },
-  { 'navarasu/onedark.nvim', as = 'onedark' },
-  { 'rebelot/kanagawa.nvim', as = 'kanagawa' },
+  { 'rose-pine/neovim', name = 'rose-pine' },
+  { 'navarasu/onedark.nvim', name = 'onedark' },
+  { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
 
   -- UI Components & Enhancements
   { 'nvim-lualine/lualine.nvim' }, -- Lualine
@@ -289,8 +289,7 @@ local plugins = {
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
   },
 
-  -- Discord/Presence
-  { 'andweeb/presence.nvim' },
+  -- Discord Presence
   { 'vyfor/cord.nvim', build = './build', event = 'VeryLazy', opts = {} },
 
   ----------------------------------------------------------------------
@@ -384,7 +383,7 @@ local plugins = {
   },
 
   { 'kevinhwang91/promise-async' },
-  { 'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async' },
+  { 'kevinhwang91/nvim-ufo', dependencies = { 'kevinhwang91/promise-async' } },
 
   {
     'michaelrommel/nvim-silicon', -- selicon snap

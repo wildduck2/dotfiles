@@ -10,19 +10,8 @@ local M = {}
 --  - settings (table): Override the default settings passed when initializing the server.
 --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 --
--- LSP servers and clients are able to communicate to each other what features they support.
---  By default, Neovim doesn't support everything that is in the LSP Specification.
---  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
---  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
-require('cmp').setup {
-  sources = {
-    { name = 'nvim_lsp' },
-  },
-}
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities =
-  vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+-- Capabilities are set up in lsp/init.lua via cmp_nvim_lsp.
+-- Server definitions only - no cmp setup here to avoid conflicts.
 
 M.servers = {
   -- C/C++
@@ -30,8 +19,7 @@ M.servers = {
   -- WARN: you will need to install this manuanlly by `:MasonInstall clang-format`
   -- clang_format = {},
 
-  -- LAU
-  luacheck = {},
+  -- Lua
   lua_ls = {
     settings = {
       Lua = {
@@ -74,7 +62,7 @@ M.servers = {
       return vim.fs.root(fname, { 'package.json', 'tsconfig.json', 'jsconfig.json' })
     end,
     single_file_support = false,
-    capabilities = capabilities,
+    -- capabilities are merged in lsp/init.lua
     formatting = {
       format_opts = {
         async = true,
@@ -137,7 +125,7 @@ M.servers = {
   bashls = {},
   dockerls = {},
   docker_compose_language_service = {},
-  docformatter = {},
+  -- docformatter is a formatter, not an LSP server - use conform instead
   -- cpptools = {},
   -- sqlfmt = {},
   -- sqlls = {},

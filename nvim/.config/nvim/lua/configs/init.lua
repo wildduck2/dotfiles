@@ -28,7 +28,7 @@ require 'configs.conform'
 require 'configs.ibl'
 require 'configs.which-key'
 
-require 'configs.dap'
+-- require 'configs.dap' -- DAP plugin disabled in lazy.lua
 require 'configs.clang-extensions'
 -- require 'configs.outline'
 -- require 'configs.lsp-lens'

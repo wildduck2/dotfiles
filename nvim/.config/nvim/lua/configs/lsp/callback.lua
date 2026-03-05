@@ -52,8 +52,7 @@ M.callback = function(event)
   --  See `:help K` for why this keymap
   map("K", vim.lsp.buf.hover, "Hover Documentation")
 
-  -- Format the file
-  --vim.lsp.buf.formatting_seq_sync()
+  -- Format the file (using conform instead of LSP formatter)
   vim.keymap.set("n", "<leader>f", function()
     -- vim.lsp.buf.format()
     -- NOTE: We use the `conform` formatting instead of the lsp because it's more robust.
@@ -101,13 +100,13 @@ M.callback = function(event)
       callback = vim.lsp.buf.clear_references,
     })
 
-    -- vim.api.nvim_create_autocmd('LspDetach', {
-    --   group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
-    --   callback = function(event2)
-    --     vim.lsp.buf.clear_references()
-    --     vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
-    --   end,
-    -- })
+    vim.api.nvim_create_autocmd('LspDetach', {
+      group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
+      callback = function(event2)
+        vim.lsp.buf.clear_references()
+        vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
+      end,
+    })
   end
 
   -- The following code creates a keymap to toggle inlay hints in your
