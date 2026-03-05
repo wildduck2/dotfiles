@@ -1,23 +1,18 @@
--- NvimTree keymap
-vim.keymap.set('n', '<leader>pv', vim.cmd.NvimTreeToggle)
-vim.keymap.set('n', '<leader>l', vim.cmd.NvimTreeFocus)
-vim.api.nvim_set_keymap('n', '<leader>tn', ':tabnew<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>to', ':tabonly<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>tc', ':tabclose<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>tm', ':tabmove ', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>t.', ':tabnext<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>t,', ':tabprev<CR>', { noremap = true, silent = true })
---
--- if you face line under the file name in the nvim-tree
+-- NvimTree keymaps
+vim.keymap.set('n', '<leader>pv', vim.cmd.NvimTreeToggle, { desc = 'Toggle file tree' })
+vim.keymap.set('n', '<leader>l', vim.cmd.NvimTreeFocus, { desc = 'Focus file tree' })
+
+-- Tab management
+vim.keymap.set('n', '<leader>tn', '<cmd>tabnew<CR>', { desc = 'New tab' })
+vim.keymap.set('n', '<leader>to', '<cmd>tabonly<CR>', { desc = 'Close other tabs' })
+vim.keymap.set('n', '<leader>tc', '<cmd>tabclose<CR>', { desc = 'Close tab' })
+vim.keymap.set('n', '<leader>t.', '<cmd>tabnext<CR>', { desc = 'Next tab' })
+vim.keymap.set('n', '<leader>t,', '<cmd>tabprev<CR>', { desc = 'Previous tab' })
+
+-- Fix underline on file names in nvim-tree
 vim.cmd [[
     :hi SpellCap cterm=NONE gui=NONE guisp=NONE
     :hi      NvimTreeSpecialFile guifg=#ff80ff gui=underline
     :hi      NvimTreeSymlink     guifg=Yellow  gui=italic
     :hi link NvimTreeImageFile   Title
 ]]
-
--- vim.cmd([[
---     :hi     NvimTreeExecFile    gui=none
---     :hi     NvimTreeNormal      guibg=none
---     :hi     NvimTreeExecFile    gui=none
--- ]])

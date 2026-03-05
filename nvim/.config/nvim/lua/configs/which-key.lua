@@ -41,12 +41,18 @@ local opts = {
   -- Document existing key chains
   spec = {
     { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
-    { '<leader>d', group = '[D]ocument' },
+    { '<leader>d', group = '[D]elete/Document' },
+    { '<leader>e', group = '[E]rror diagnostics' },
+    { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+    { '<leader>p', group = '[P]roject' },
+    { '<leader>q', group = '[Q]uickfix' },
     { '<leader>r', group = '[R]ename' },
     { '<leader>s', group = '[S]earch' },
+    { '<leader>t', group = '[T]oggle/Tab' },
+    { '<leader>v', group = '[V]im config' },
     { '<leader>w', group = '[W]orkspace' },
-    { '<leader>t', group = '[T]oggle' },
-    { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+    { '<leader>x', group = 'Trouble/E[x]ecute' },
+    { '<leader>y', group = '[Y]ank to clipboard' },
   },
 }
 
