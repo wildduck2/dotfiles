@@ -1,5 +1,4 @@
 require 'wild-duck'
-require 'configs'
 
 local orig_notify = vim.notify
 vim.notify = function(msg, level, opts)
