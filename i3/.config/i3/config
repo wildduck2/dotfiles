@@ -195,6 +195,8 @@ bindsym $mod+x exec --no-startup-id ~/.config/i3/lock.sh
 # -------------------------------------------
 # Autostart
 # -------------------------------------------
+exec --no-startup-id xsetroot -cursor_name left_ptr
+exec --no-startup-id xrdb -merge ~/.Xresources
 exec --no-startup-id gnome-settings-daemon
 exec --no-startup-id gnome-screensaver
 exec --no-startup-id nm-applet
