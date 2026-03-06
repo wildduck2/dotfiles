@@ -21,7 +21,7 @@ set -euo pipefail
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$DOTFILES_DIR/scripts/helpers.sh"
 
-ALL_MODULES=(bash zsh tmux kitty terminator picom nvim i3 duck-bash htop neofetch)
+ALL_MODULES=(bash zsh tmux kitty terminator picom nvim i3 duck-bash htop neofetch mechvibes)
 DRY_RUN=0
 VERIFY_ONLY=0
 
@@ -50,6 +50,7 @@ Available modules:
   duck-bash    Utility scripts (git, docker, fzf-tmux, cleanup)
   htop         Process viewer
   neofetch     System info display
+  mechvibes    Mechanical keyboard sounds (NK Cream)
 
 Full install order:
   base -> bash -> zsh -> tmux -> kitty -> terminator -> picom
@@ -142,6 +143,12 @@ setup_picom()      { bash "$DOTFILES_DIR/picom/setup.sh"; }
 setup_nvim()       { bash "$DOTFILES_DIR/nvim/setup.sh"; }
 setup_i3()         { bash "$DOTFILES_DIR/i3/setup.sh"; }
 setup_duck_bash()  { bash "$DOTFILES_DIR/duck-bash/setup.sh"; }
+
+setup_mechvibes() {
+  header "Mechvibes"
+  stow_package mechvibes
+  ok "Mechvibes config stowed (NK Cream, volume 50%)"
+}
 
 setup_htop() {
   header "Htop"
@@ -243,7 +250,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
   # Validate all module names first
   for module in "${MODULES[@]}"; do
     case "$module" in
-      base|bash|zsh|tmux|kitty|terminator|picom|nvim|i3|htop|neofetch|duck-bash) ;;
+      base|bash|zsh|tmux|kitty|terminator|picom|nvim|i3|htop|neofetch|duck-bash|mechvibes) ;;
       *) err "Unknown module: $module"
          echo "Available: ${ALL_MODULES[*]}"
          echo "Run ./setup.sh --help for details"
@@ -273,6 +280,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
       htop)       setup_base && setup_htop ;;
       neofetch)   setup_base && setup_neofetch ;;
       duck-bash)  setup_base && setup_duck_bash ;;
+      mechvibes)  setup_base && setup_mechvibes ;;
     esac
   done
 
@@ -326,6 +334,7 @@ setup_duck_bash
 # 9. Utilities
 setup_htop
 setup_neofetch
+setup_mechvibes
 
 # -- Summary ---------------------------------------------------------------
 header "Setup Complete"
