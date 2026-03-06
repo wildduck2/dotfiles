@@ -146,11 +146,7 @@ setup_nvim()       { bash "$DOTFILES_DIR/nvim/setup.sh"; }
 setup_i3()         { bash "$DOTFILES_DIR/i3/setup.sh"; }
 setup_duck_bash()  { bash "$DOTFILES_DIR/duck-bash/setup.sh"; }
 
-setup_mechvibes() {
-  header "Mechvibes"
-  stow_package mechvibes
-  ok "Mechvibes config stowed (NK Cream, volume 50%)"
-}
+setup_mechvibes()  { bash "$DOTFILES_DIR/mechvibes/setup.sh"; }
 
 setup_obs_studio() {
   header "OBS Studio"
