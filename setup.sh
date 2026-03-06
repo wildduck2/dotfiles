@@ -50,7 +50,7 @@ Available modules:
   duck-bash    Utility scripts (git, docker, fzf-tmux, cleanup)
   htop         Process viewer
   btop         Resource monitor (Tokyo Night, vim keys)
-  neofetch     System info display
+  neofetch     System info display (Duck Arch theme, Nerd Font icons)
   mechvibes    Mechanical keyboard sounds (NK Cream)
   obs-studio   OBS Studio config (scenes, profiles, encoders, plugins)
 
@@ -168,12 +168,7 @@ setup_btop() {
   ok "Btop setup complete (Tokyo Night theme, vim keys)"
 }
 
-setup_neofetch() {
-  header "Neofetch"
-  pkg_install neofetch
-  stow_package neofetch
-  ok "Neofetch setup complete"
-}
+setup_neofetch()   { bash "$DOTFILES_DIR/neofetch/setup.sh"; }
 
 # -- Verify all tools ------------------------------------------------------
 run_verify() {
