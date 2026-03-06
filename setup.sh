@@ -21,7 +21,7 @@ set -euo pipefail
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$DOTFILES_DIR/scripts/helpers.sh"
 
-ALL_MODULES=(bash zsh tmux kitty terminator picom nvim i3 duck-bash htop neofetch mechvibes obs-studio)
+ALL_MODULES=(bash zsh tmux kitty terminator picom nvim i3 duck-bash htop btop neofetch mechvibes obs-studio)
 DRY_RUN=0
 VERIFY_ONLY=0
 
@@ -49,6 +49,7 @@ Available modules:
   i3           i3 window manager (Catppuccin, gaps, lock, chrome, discord, OBS, yaak)
   duck-bash    Utility scripts (git, docker, fzf-tmux, cleanup)
   htop         Process viewer
+  btop         Resource monitor (Tokyo Night, vim keys)
   neofetch     System info display
   mechvibes    Mechanical keyboard sounds (NK Cream)
   obs-studio   OBS Studio config (scenes, profiles, encoders, plugins)
@@ -164,6 +165,13 @@ setup_htop() {
   ok "Htop setup complete"
 }
 
+setup_btop() {
+  header "Btop"
+  pkg_install btop
+  stow_package btop
+  ok "Btop setup complete (Tokyo Night theme, vim keys)"
+}
+
 setup_neofetch() {
   header "Neofetch"
   pkg_install neofetch
@@ -218,7 +226,7 @@ run_verify() {
   _check google-chrome-stable; _check discord; _check firefox; _check obs; _check yaak
 
   info "Utilities:"
-  _check htop; _check neofetch; _check jq; _check yt-dlp; _check qrencode
+  _check htop; _check btop; _check neofetch; _check jq; _check yt-dlp; _check qrencode
 
   echo ""
   if [[ $checks -eq $total ]]; then
@@ -257,7 +265,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
   # Validate all module names first
   for module in "${MODULES[@]}"; do
     case "$module" in
-      base|bash|zsh|tmux|kitty|terminator|picom|nvim|i3|htop|neofetch|duck-bash|mechvibes|obs-studio) ;;
+      base|bash|zsh|tmux|kitty|terminator|picom|nvim|i3|htop|btop|neofetch|duck-bash|mechvibes|obs-studio) ;;
       *) err "Unknown module: $module"
          echo "Available: ${ALL_MODULES[*]}"
          echo "Run ./setup.sh --help for details"
@@ -285,6 +293,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
       nvim)       setup_base && setup_nvim ;;
       i3)         setup_base && setup_i3 ;;
       htop)       setup_base && setup_htop ;;
+      btop)       setup_base && setup_btop ;;
       neofetch)   setup_base && setup_neofetch ;;
       duck-bash)  setup_base && setup_duck_bash ;;
       mechvibes)  setup_base && setup_mechvibes ;;
@@ -341,6 +350,7 @@ setup_duck_bash
 
 # 9. Utilities
 setup_htop
+setup_btop
 setup_neofetch
 setup_mechvibes
 setup_obs_studio
