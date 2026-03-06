@@ -103,7 +103,7 @@ setup_base() {
   elif command_exists rustc; then
     ok "Rust compiler found"
   else
-    info "Installing Rust via rustup"
+    duck_wait "Installing Rust via rustup" "~20-40s"
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path \
       && ok "Rust installed" \
       || warn "Rust installation failed -- install manually: https://rustup.rs"
@@ -114,7 +114,7 @@ setup_base() {
   if command_exists bun; then
     ok "Bun already installed"
   else
-    info "Installing Bun"
+    duck_wait "Installing Bun" "~10-20s"
     curl -fsSL https://bun.sh/install | bash \
       && ok "Bun installed" \
       || warn "Bun installation failed -- install manually: https://bun.sh"
@@ -126,7 +126,7 @@ setup_base() {
   if command_exists claude; then
     ok "Claude Code already installed"
   else
-    info "Installing Claude Code"
+    duck_wait "Installing Claude Code" "~10-20s"
     curl -fsSL https://claude.ai/install.sh | bash \
       && ok "Claude Code installed" \
       || warn "Claude Code installation failed -- install manually: https://claude.ai/install.sh"
@@ -277,7 +277,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
   done
 
   echo ""
-  printf "${GREEN}${BOLD}Done!${NC}\n"
+  printf "🦆 ${GREEN}${BOLD}Done! Quack!${NC}\n"
   exit 0
 fi
 
@@ -331,7 +331,7 @@ setup_neofetch
 header "Setup Complete"
 
 echo ""
-printf "${GREEN}${BOLD}All dotfiles installed and stowed!${NC}\n"
+printf "🦆 ${GREEN}${BOLD}All dotfiles installed and stowed!${NC}\n"
 echo ""
 echo "Stowed modules:"
 
@@ -353,3 +353,4 @@ echo "  4. Place wallpaper at ~/.config/i3/bgs/bg.jpg"
 echo "  5. Run 'claude' to configure Claude Code API key"
 echo "  6. Run 'rustup update' to get latest Rust toolchain"
 echo ""
+duck_quote

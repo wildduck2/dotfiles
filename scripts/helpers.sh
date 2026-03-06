@@ -21,12 +21,46 @@ fi
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # -- Logging ---------------------------------------------------------------
-info()   { printf "${BLUE}[INFO]${NC}  %s\n" "$*"; }
-ok()     { printf "${GREEN}[ OK ]${NC}  %s\n" "$*"; }
-warn()   { printf "${YELLOW}[WARN]${NC}  %s\n" "$*"; }
-err()    { printf "${RED}[ERR]${NC}   %s\n" "$*"; }
-header() { printf "\n${BOLD}-- %s --${NC}\n" "$*"; }
-step()   { printf "${DIM} ->  %s${NC}\n" "$*"; }
+info()   { printf "🦆 ${BLUE}[INFO]${NC}  %s\n" "$*"; }
+ok()     { printf "🦆 ${GREEN}[ OK ]${NC}  %s\n" "$*"; }
+warn()   { printf "🦆 ${YELLOW}[WARN]${NC}  %s\n" "$*"; }
+err()    { printf "🦆 ${RED}[ERR]${NC}   %s\n" "$*"; }
+header() { printf "\n🦆 ${BOLD}-- %s --${NC}\n" "$*"; }
+step()   { printf "   ${DIM} ->  %s${NC}\n" "$*"; }
+
+# -- Entertainment (shown during long waits) -------------------------------
+_DUCK_QUOTES=(
+  "A wise duck once said: 'Quack first, debug later.'"
+  "Roses are red, violets are blue, your dotfiles are stowed, and configs are too."
+  "Fun fact: the average duck can fly at 50 mph. This install is almost that fast."
+  "While you wait... did you know ducks have three eyelids?"
+  "Compiling patience... ████████░░ 80%"
+  "Pro tip: stretch your legs. Ducks never skip leg day."
+  "Why do ducks make great detectives? They always quack the case."
+  "Installing bits and bytes... quack by quack."
+  "Ducks sleep with one eye open. So should your monitoring."
+  "A duck walked into a bar and said, 'Put it on my bill.'"
+  "Your future self will thank you for setting this up."
+  "Did you know? Ducks can surf. Seriously, they ride waves."
+  "Patience is a virtue. Also, this is literally installing software."
+  "In the time you're waiting, a duck has already migrated 3 miles."
+  "What's a duck's favorite snack? Quackers, obviously."
+)
+
+# Print a random duck quote (for long operations)
+duck_quote() {
+  local idx=$((RANDOM % ${#_DUCK_QUOTES[@]}))
+  printf "   ${DIM}💬 %s${NC}\n" "${_DUCK_QUOTES[$idx]}"
+}
+
+# Show a time estimate with entertainment
+# Usage: duck_wait "Installing packages" "~30s"
+duck_wait() {
+  local task="$1"
+  local estimate="${2:-a moment}"
+  info "$task (estimated: $estimate)"
+  duck_quote
+}
 
 command_exists() { command -v "$1" &>/dev/null; }
 
@@ -90,7 +124,7 @@ install_yay() {
     ok "yay already installed"
     return 0
   fi
-  info "Installing yay (AUR helper)"
+  duck_wait "Installing yay (AUR helper)" "~30-60s"
   pkg_install git base-devel
   local tmp_dir
   tmp_dir="$(mktemp -d)"
@@ -133,7 +167,7 @@ pkg_install() {
   if [[ ${#missing[@]} -eq 0 ]]; then
     return 0
   fi
-  info "Installing packages: ${missing[*]}"
+  duck_wait "Installing packages: ${missing[*]}" "~10-30s"
   if ! sudo pacman -S --needed --noconfirm "${missing[@]}"; then
     err "Failed to install packages: ${missing[*]}"
     err "  Check your internet connection and pacman mirrors"
@@ -168,7 +202,7 @@ aur_install() {
     warn "  Install yay: git clone https://aur.archlinux.org/yay.git /tmp/yay && cd /tmp/yay && makepkg -si"
     return 1
   fi
-  info "Installing from AUR: ${missing[*]}"
+  duck_wait "Installing from AUR: ${missing[*]}" "~30-60s"
   if ! yay -S --needed --noconfirm "${missing[@]}"; then
     err "Failed to install AUR packages: ${missing[*]}"
     return 1
