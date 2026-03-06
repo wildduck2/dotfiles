@@ -63,8 +63,13 @@ floating_modifier $mod
 # -------------------------------------------
 bindsym $mod+Return exec terminator
 bindsym $mod+q kill
-# Shows .desktop apps (Files, Settings, etc.) not just raw binaries
+# dmenu: Mod+d for .desktop apps, Mod+Shift+d for all binaries
 bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+Shift+d exec --no-startup-id dmenu_run
+
+# Quick-launch apps
+bindsym $mod+Ctrl+p exec --no-startup-id pavucontrol
+bindsym $mod+Ctrl+b exec --no-startup-id blueman-manager
 
 # -------------------------------------------
 # Key Bindings - Focus (vim-style)

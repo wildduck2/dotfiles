@@ -25,7 +25,8 @@ pkg_install \
   gnome-settings-daemon gnome-keyring polkit-gnome \
   ntfs-3g fontconfig \
   ttf-jetbrains-mono-nerd \
-  kitty terminator discord firefox xdotool
+  kitty terminator discord firefox xdotool \
+  arandr
 
 # -- AUR packages ----------------------------------------------------------
 info "Installing AUR packages"
