@@ -1,7 +1,4 @@
 #!/bin/bash
-# This script replaces the text in the ASCII file and the configuration file,
-# to make BMO say the specified string. https://github.com/Chick2D/neofetch-themes/blob/main/small/bmofetch/
-# Made by https://github.com/donatienLeray
 
 # Global variable for flags
 VERBOSE=false
@@ -49,14 +46,14 @@ replace_string_in_file() {
 # Function to print the help message
 print_help() {
     echo
-    echo "original: https://github.com/donatienLeray/bmofetch"
-    echo
-    echo -e "\u001b[1mSYNOPSIS:"
+    echo -e "\u001b[1mSYNOPSIS:" 
     echo -e "  sh $0 [options] <argument>\u001b[0m"
     echo
     echo -e "\u001b[1mDESCRIPTION:\u001b[0m"
-    echo "  This script enables you to change the text BMO says when using neofetch with the bmofetch config."
+    echo "  This script enables you to change the text BMO says when using neofetch with the config.conf file."
     echo "  You can specify a new string for BMO to say, or get a random line from a file."
+    echo "  you can find the complete neofetch-themes repository at:"
+    echo "  https://github.com/Chick2D/neofetch-themes/blob/main/small/config/"
     echo
     echo -e "\u001b[1mOPTIONS:\u001b[0m"
     echo "  -v, --verbose       Enable verbose mode.(prints debug messages)"
@@ -64,7 +61,7 @@ print_help() {
     echo "  -r, --random        Specify a file to get a random line from."
     echo "  -h, --help          Display this help message and exit."
     echo "  -vq, -qv            Enable both verbose and quiet mode.(only prints debug messages)"
-    echo "  -**,-***            Any combination of r, v, q can be used instead of the above"
+    echo "  -**,-***            Any combination of r, v, q can be used instead  of the above"
     echo
     echo -e "\u001b[1mEXAMPLES:\u001b[0m"
     echo -e "  sh $0 \"Hello, world!\""
@@ -83,6 +80,7 @@ if [[ "$#" -lt 1 ]] || [[ "$#" -gt 4 ]]; then
 fi
 
 # Parse arguments
+# getops couldn't be used here bc. it doesn't support long options
 while [[ "$#" -gt 0 ]]; do
     case "$1" in
         -v|--verbose) VERBOSE=true ;;
@@ -108,11 +106,11 @@ if [[ "$RANDOM_MODE" = true ]]; then
         exit 1
     fi
     # Get a random line from the file as the input
-    input=$(shuf -n 1 "$1")
+    input=$(shuf -n 1 $1)
 else
     # Get the input string
     input=$(echo "$1")
-fi
+fi 
 
 # Clean up multiple and leading or trailing spaces
 input=$(echo "$input" | tr -s ' '| sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
@@ -128,20 +126,22 @@ fi
 # Get the inner size of the speach bubble
 bub_len=$((${#input}+2))
 
-# Make the top line
+# Make the top line "ˏ______ˎ"
 top_line="ˏ$(printf '_%.0s' $(seq 1 $bub_len))ˎ"
 
-# Make center text
+# Make center text "| text |"
 center_text="\| $input \|"
 
-# Make the bottom line
+# Make the bottom line "`ˉˉˉˉˉˉ´"
 bottom_line="\`$(printf 'ˉ%.0s' $(seq 1 $bub_len))\´"
 
-# Default case for start part of the speach bubble
+# The Speach bubble has to be cut in two parts: 
+# The first part will be in the ASCII file and the second part will be in the config file
+# Default case for start part of the speach bubble 
 start_top_line="$top_line"
 start_center_text="$center_text"
 start_bottom_line="$bottom_line"
-# Default case for end part of the speach bubble
+# Deafault case for end part of the speach bubble
 end_top_line=""
 end_center_line=""
 end_bottom_line=""
@@ -158,18 +158,18 @@ if [ "$bub_len" -gt 2 ]; then
     end_bottom_line=${bottom_line: 4}
 fi
 
-# If the text part that gets rendered though the neofetch conf (using prin)
+# If the text part that gets rendered though the neofetch conf (using prin) 
 # has a leading space, let it get rendered as ascii instead (prin does not render leading spaces)
 if [[ $end_center_line =~ ^[[:space:]].* ]]; then
     start_center_text="$center_text"
-    end_center_line=""
+    end_center_line="" #This will print a single whitespace overlapping the ascii
 fi
 
-# Get the path of the neofetch config directory
-CONFPATH="${XDG_CONFIG_HOME:-$HOME/.config}/neofetch"
+# Get the path of the script
+SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 # Path to the ASCII file and the configuration file
-ascii_file="$CONFPATH/bmo.txt"
-conf_file="$CONFPATH/config.conf"
+ascii_file="$SCRIPTPATH/bmo.txt"
+conf_file="$SCRIPTPATH/config.conf"
 
 # Make the first part of the speak bubble in the ascii file (2 chars of the text)
 replace_string_in_file "$ascii_file" "1" "\\\u001b[1m                  $start_top_line"
@@ -178,7 +178,7 @@ replace_string_in_file "$ascii_file" "3" "\\\033[36m    \\/|\\\033[39m ______\\\
 
 # Make the end part of the speak bubble in the conf file (form the third text char to the end)
 replace_string_in_file "$conf_file" "5" "    prin \"$end_top_line\""
-replace_string_in_file "$conf_file" "6" "    prin \"$end_center_line\""
+replace_string_in_file "$conf_file" "6" "    prin \"$end_center_line\"" 
 replace_string_in_file "$conf_file" "7" "    prin \"$end_bottom_line\""
 
 # Success message (if not quiet)
