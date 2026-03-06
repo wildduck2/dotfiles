@@ -21,7 +21,7 @@ set -euo pipefail
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$DOTFILES_DIR/scripts/helpers.sh"
 
-ALL_MODULES=(bash zsh tmux kitty terminator picom nvim i3 duck-bash htop btop neofetch mechvibes obs-studio)
+ALL_MODULES=(bash zsh tmux kitty terminator picom nvim i3 duck-bash htop btop neofetch mechvibes obs-studio banana-cursor)
 DRY_RUN=0
 VERIFY_ONLY=0
 
@@ -53,6 +53,7 @@ Available modules:
   neofetch     System info display (Duck Arch theme, Nerd Font icons)
   mechvibes    Mechanical keyboard sounds (NK Cream)
   obs-studio   OBS Studio config (scenes, profiles, encoders, plugins)
+  banana-cursor Banana cursor theme (Blue variant, Tokyo Night)
 
 Full install order:
   base -> bash -> zsh -> tmux -> kitty -> terminator -> picom
@@ -147,6 +148,8 @@ setup_i3()         { bash "$DOTFILES_DIR/i3/setup.sh"; }
 setup_duck_bash()  { bash "$DOTFILES_DIR/duck-bash/setup.sh"; }
 
 setup_mechvibes()  { bash "$DOTFILES_DIR/mechvibes/setup.sh"; }
+
+setup_banana_cursor() { bash "$DOTFILES_DIR/banana-cursor/setup.sh"; }
 
 setup_obs_studio() {
   header "OBS Studio"
@@ -256,7 +259,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
   # Validate all module names first
   for module in "${MODULES[@]}"; do
     case "$module" in
-      base|bash|zsh|tmux|kitty|terminator|picom|nvim|i3|htop|btop|neofetch|duck-bash|mechvibes|obs-studio) ;;
+      base|bash|zsh|tmux|kitty|terminator|picom|nvim|i3|htop|btop|neofetch|duck-bash|mechvibes|obs-studio|banana-cursor) ;;
       *) err "Unknown module: $module"
          echo "Available: ${ALL_MODULES[*]}"
          echo "Run ./setup.sh --help for details"
@@ -288,7 +291,8 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
       neofetch)   setup_base && setup_neofetch ;;
       duck-bash)  setup_base && setup_duck_bash ;;
       mechvibes)  setup_base && setup_mechvibes ;;
-      obs-studio) setup_base && setup_obs_studio ;;
+      obs-studio)    setup_base && setup_obs_studio ;;
+      banana-cursor) setup_base && setup_banana_cursor ;;
     esac
   done
 
@@ -345,6 +349,7 @@ setup_btop
 setup_neofetch
 setup_mechvibes
 setup_obs_studio
+setup_banana_cursor
 
 # -- Summary ---------------------------------------------------------------
 header "Setup Complete"
