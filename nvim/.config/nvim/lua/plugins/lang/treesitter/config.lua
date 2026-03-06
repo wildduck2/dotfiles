@@ -52,8 +52,8 @@ function M.setup()
         },
         swap = {
           enable = true,
-          swap_next = { ['<leader>s'] = '@parameter.inner' }, -- Swap param right
-          swap_previous = { ['<leader>S'] = '@parameter.inner' }, -- Swap param left
+          swap_next = { ['<leader>sp'] = '@parameter.inner' }, -- Swap param right
+          swap_previous = { ['<leader>sP'] = '@parameter.inner' }, -- Swap param left
         },
       },
     }

@@ -4,7 +4,7 @@ return {
     url = 'https://pkg.go.dev/cmd/gofmt',
     description = 'Formats go programs.',
   },
-  command = 'goimports',
+  command = 'gofmt',
   args = {},
   stdin = true,
 }

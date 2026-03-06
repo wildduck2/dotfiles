@@ -1,6 +1,8 @@
 local M = {}
 
 -- LSP server configurations (empty {} = use defaults)
+-- NOTE: lua_ls library is built lazily in setup() to avoid
+-- scanning runtimepath at require-time
 M.servers = {
   clangd = {},
   lua_ls = {
@@ -11,11 +13,8 @@ M.servers = {
         workspace = {
           -- Don't prompt to configure third-party libs
           checkThirdParty = false,
-          -- Add luv + nvim runtime to workspace library
-          library = {
-            '${3rd}/luv/library',
-            unpack(vim.api.nvim_get_runtime_file('', true)),
-          },
+          -- Populated in setup() to defer rtp scan
+          library = {},
         },
         -- 'Replace' inserts snippet body (alt: 'Disable')
         completion = { callSnippet = 'Replace' },
@@ -163,6 +162,11 @@ function M.setup()
       severity = { min = vim.diagnostic.severity.HINT },
     },
   }
+
+  -- Populate lua_ls library now (deferred from module load time)
+  local lua_lib = { '${3rd}/luv/library' }
+  vim.list_extend(lua_lib, vim.api.nvim_get_runtime_file('', true))
+  M.servers.lua_ls.settings.Lua.workspace.library = lua_lib
 
   -- Merge nvim-cmp capabilities with default LSP caps
   local capabilities = vim.lsp.protocol.make_client_capabilities()

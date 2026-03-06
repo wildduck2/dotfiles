@@ -43,7 +43,7 @@ function M.setup()
         },
         {
           'diagnostics',
-          sources = { 'nvim_diagnostic', 'coc' }, -- LSP diagnostic providers
+          sources = { 'nvim_diagnostic' }, -- LSP diagnostic provider
           sections = { 'error', 'warn', 'info', 'hint' }, -- severity levels shown
           symbols = { error = 'E', warn = 'W', info = 'I', hint = 'H' }, -- text labels
           separator = { left = '', right = '' },

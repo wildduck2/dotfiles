@@ -1,13 +1,10 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-vim.g.have_nerd_font = true
 
 --NOTE: [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
--- <leader>pv is mapped in nvim-tree/keymaps.lua to NvimTreeToggle
 
---INFO: Set highlight on search, but clear on pressing <Esc> in normal mode
-vim.opt.hlsearch = true
+--INFO: Clear search highlight on pressing <Esc> in normal mode
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps

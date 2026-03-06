@@ -29,8 +29,8 @@ function M.setup()
   vim.keymap.set('n', '<C-t>', function()
     harpoon:list():select(1)
   end, opts)
-  -- Jump to harpoon slot 2
-  vim.keymap.set('n', '<C-u>', function()
+  -- Jump to harpoon slot 2 (avoid <C-u> — conflicts with scroll-up)
+  vim.keymap.set('n', '<C-y>', function()
     harpoon:list():select(2)
   end, opts)
   -- Jump to harpoon slot 3

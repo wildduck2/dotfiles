@@ -14,7 +14,7 @@ return {
   init = function()
     vim.g.loaded_netrw = 1
     vim.g.loaded_netrwPlugin = 1
-    vim.opt.termguicolors = true
+    -- termguicolors already set in wild-duck/set.lua
   end,
   config = function()
     require('plugins.ui.nvim-tree.config').setup()
