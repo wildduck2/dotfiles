@@ -4,14 +4,10 @@ function M.setup()
   -- Augroup for fugitive-buffer-only keymaps
   local wildduck_fugitive = vim.api.nvim_create_augroup('wildduck_fugitive', {})
   -- Set keymaps only when inside the fugitive status window
-  vim.api.nvim_create_autocmd('BufWinEnter', {
+  vim.api.nvim_create_autocmd('FileType', {
     group = wildduck_fugitive,
-    pattern = '*', -- matches all buffers; filtered by filetype below
+    pattern = 'fugitive', -- only fires for fugitive buffers
     callback = function()
-      -- Only apply keymaps in fugitive status buffer
-      if vim.bo.ft ~= 'fugitive' then
-        return
-      end
       local bufnr = vim.api.nvim_get_current_buf()
       -- buffer-local, no recursive remap
       local opts = { buffer = bufnr, remap = false }

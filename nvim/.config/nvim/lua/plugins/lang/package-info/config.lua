@@ -13,7 +13,7 @@ function M.setup()
       style = { up_to_date = '|  ', outdated = '|  ', invalid = '|  ' },
     },
     notifications = true, -- Show notification on actions
-    autostart = true, -- Fetch versions on BufEnter
+    autostart = false, -- false: don't fetch on open (use <leader>ns to show)
     hide_up_to_date = false, -- Show even if version is current
     hide_unstable_versions = false, -- Include pre-release versions
     package_manager = 'pnpm', -- npm | yarn | pnpm

@@ -17,7 +17,7 @@ function M.setup_peek()
   -- Open preview in a horizontal i3 split
   vim.api.nvim_create_user_command('PeekOpen', function()
     if not peek.is_open() and vim.bo[vim.api.nvim_get_current_buf()].filetype == 'markdown' then
-      vim.fn.system 'i3-msg split horizontal'
+      vim.system({ 'i3-msg', 'split', 'horizontal' }) -- async i3 IPC
       peek.open()
     end
   end, {})
@@ -26,7 +26,7 @@ function M.setup_peek()
   vim.api.nvim_create_user_command('PeekClose', function()
     if peek.is_open() then
       peek.close()
-      vim.fn.system 'i3-msg move left'
+      vim.system({ 'i3-msg', 'move', 'left' }) -- async i3 IPC
     end
   end, {})
 end

@@ -24,13 +24,11 @@ function M.setup()
   vim.keymap.set('n', '<leader>t.', '<cmd>tabnext<CR>', { desc = 'Next tab' })
   vim.keymap.set('n', '<leader>t,', '<cmd>tabprev<CR>', { desc = 'Previous tab' })
 
-  -- Highlights
-  vim.cmd [[
-    :hi SpellCap cterm=NONE gui=NONE guisp=NONE
-    :hi      NvimTreeSpecialFile guifg=#ff80ff gui=underline
-    :hi      NvimTreeSymlink     guifg=Yellow  gui=italic
-    :hi link NvimTreeImageFile   Title
-  ]]
+  -- Highlights (lua API, faster than vim.cmd)
+  vim.api.nvim_set_hl(0, 'SpellCap', { cterm = {}, sp = nil })
+  vim.api.nvim_set_hl(0, 'NvimTreeSpecialFile', { fg = '#ff80ff', underline = true })
+  vim.api.nvim_set_hl(0, 'NvimTreeSymlink', { fg = 'Yellow', italic = true })
+  vim.api.nvim_set_hl(0, 'NvimTreeImageFile', { link = 'Title' })
 
   require('nvim-tree').setup {
     sort = { sorter = 'case_sensitive' }, -- 'name', 'case_sensitive', 'modification_time'

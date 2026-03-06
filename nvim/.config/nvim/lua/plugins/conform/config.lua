@@ -30,15 +30,14 @@ function M.setup()
       sh = { 'shfmt' },
     },
 
-    -- Auto-format on save; skip if no formatter available
-    format_on_save = function(bufnr)
+    -- Async format after save; won't freeze editor on slow formatters
+    format_after_save = function(bufnr)
       local available = conform.list_formatters(bufnr)
       if #available == 0 then
         return
       end
       return {
         lsp_fallback = true, -- Fall back to LSP formatting
-        timeout_ms = 1000, -- Abort if formatting takes >1s
       }
     end,
   }

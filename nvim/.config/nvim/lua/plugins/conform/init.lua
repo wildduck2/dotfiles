@@ -1,6 +1,6 @@
 return {
   'stevearc/conform.nvim',
-  event = { 'BufWritePre' },
+  event = { 'BufWritePost' },
   cmd = { 'ConformInfo' },
   config = function()
     require('plugins.conform.config').setup()

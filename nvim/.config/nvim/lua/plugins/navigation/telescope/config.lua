@@ -31,21 +31,15 @@ function M.setup()
   -- Resolve git repo root from current file; falls back to cwd
   local function find_git_root()
     local current_file = vim.api.nvim_buf_get_name(0)
-    local current_dir
     local cwd = vim.fn.getcwd()
-    if current_file == '' then
-      current_dir = cwd
-    else
-      -- ':h' extracts the directory part of the path
-      current_dir = vim.fn.fnamemodify(current_file, ':h')
-    end
-    local git_root =
-      vim.fn.systemlist('git -C ' .. vim.fn.escape(current_dir, ' ') .. ' rev-parse --show-toplevel')[1]
-    if vim.v.shell_error ~= 0 then
+    local current_dir = current_file ~= '' and vim.fn.fnamemodify(current_file, ':h') or cwd
+    -- Use vim.fs.root (fast, no subprocess) to find .git
+    local root = vim.fs.root(current_dir, '.git')
+    if not root then
       print 'Not a git repository. Searching on current working directory'
       return cwd
     end
-    return git_root
+    return root
   end
 
   -- Keymaps
