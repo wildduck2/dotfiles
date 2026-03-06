@@ -4,12 +4,13 @@ ZSH shell setup with Oh My Zsh, Zinit plugin manager, fzf integration, and zoxid
 
 ## Requirements
 
-- **zsh**
-- **fzf** (fuzzy finder -- shell integration, fzf-tab, Ctrl+f widget)
-- **zoxide** (smart cd replacement)
-- **git** (Oh My Zsh, Zinit, git plugin)
-- **curl** (Oh My Zsh and NVM installers)
-- **neovim** (optional -- `vim` alias and `Ctrl+f` widget open files in nvim)
+- **[zsh](https://www.zsh.org/)**
+- **[fzf](https://github.com/junegunn/fzf)** (fuzzy finder -- shell integration, fzf-tab, Ctrl+f widget)
+- **[fd](https://github.com/sharkdp/fd)** (fast find alternative -- used by fzf_nvim widget)
+- **[zoxide](https://github.com/ajeetdsouza/zoxide)** (smart cd replacement)
+- **[git](https://git-scm.com/)** (Oh My Zsh, Zinit, git plugin)
+- **[curl](https://curl.se/)** (Oh My Zsh and NVM installers)
+- **[neovim](https://neovim.io/)** (optional -- `vim` alias and `Ctrl+f` widget open files in nvim)
 
 ## Quick Start
 
@@ -29,23 +30,23 @@ The setup script installs zsh, fzf, zoxide, Oh My Zsh, Zinit, and NVM, then stow
 
 ## Plugin Managers
 
-### Oh My Zsh
+### [Oh My Zsh](https://ohmyz.sh/)
 Framework providing the base theme and git plugin.
 
 - **Theme**: robbyrussell
 - **Plugin**: git
 
-### Zinit
+### [Zinit](https://github.com/zdharma-continuum/zinit)
 Fast plugin manager loading additional plugins and OMZ snippets.
 
 **Plugins:**
 
 | Plugin | Purpose |
 |--------|---------|
-| zsh-syntax-highlighting | Command syntax coloring |
-| zsh-completions | Additional completion definitions |
-| zsh-autosuggestions | Fish-like inline suggestions |
-| fzf-tab | Replace default tab completion with fzf |
+| [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting) | Command syntax coloring |
+| [zsh-completions](https://github.com/zsh-users/zsh-completions) | Additional completion definitions |
+| [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) | Fish-like inline suggestions |
+| [fzf-tab](https://github.com/Aloxaf/fzf-tab) | Replace default tab completion with fzf |
 
 **OMZ Snippets:** git, sudo, archlinux, aws, kubectl, kubectx, command-not-found
 
@@ -85,13 +86,13 @@ PATH additions (if directories exist): `~/.local/bin`, `~/bin`, cargo, deno, pye
 
 | Tool | How it's used |
 |------|---------------|
-| **fzf** | Shell keybindings via `eval "$(fzf --zsh)"`, fzf-tab completion |
-| **zoxide** | Replaces `cd` via `eval "$(zoxide init --cmd cd zsh)"` |
-| **NVM** | Node version manager, sourced from `$NVM_DIR/nvm.sh` |
-| **pyenv** | Python version manager, `eval "$(pyenv init - zsh)"` |
-| **deno** | Env sourced from `~/.deno/env` if present |
-| **bun** | Completions sourced from `~/.bun/_bun` if present |
-| **cargo** | Env sourced from `~/.cargo/env` if present |
+| **[fzf](https://github.com/junegunn/fzf)** | Shell keybindings via `eval "$(fzf --zsh)"`, fzf-tab completion |
+| **[zoxide](https://github.com/ajeetdsouza/zoxide)** | Replaces `cd` via `eval "$(zoxide init --cmd cd zsh)"` |
+| **[NVM](https://github.com/nvm-sh/nvm)** | Node version manager (lazy-loaded for fast shell startup) |
+| **[pyenv](https://github.com/pyenv/pyenv)** | Python version manager, `eval "$(pyenv init - zsh)"` |
+| **[Deno](https://deno.land/)** | Env sourced from `~/.deno/env` if present |
+| **[Bun](https://bun.sh/)** | Completions sourced from `~/.bun/_bun` if present |
+| **[Cargo](https://doc.rust-lang.org/cargo/)** | PATH set in `.zshenv` |
 
 ## History
 

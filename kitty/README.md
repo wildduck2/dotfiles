@@ -4,8 +4,8 @@ A minimal kitty terminal setup styled to match the terminator config, using Catp
 
 ## Requirements
 
-- **Kitty** >= 0.35
-- **JetBrainsMono Nerd Font** (ttf-jetbrains-mono-nerd on Arch)
+- **[Kitty](https://sw.kovidgoyal.net/kitty/)** >= 0.35
+- **[JetBrainsMono Nerd Font](https://www.nerdfonts.com/font-downloads)** (ttf-jetbrains-mono-nerd on Arch)
 
 ## Quick Start
 

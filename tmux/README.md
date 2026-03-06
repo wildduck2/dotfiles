@@ -4,11 +4,11 @@ Tmux setup with vim-style navigation, Tokyo Night / Catppuccin theming, and vim-
 
 ## Requirements
 
-- **tmux** >= 3.0
-- **zsh** (set as default shell in tmux)
-- **xclip** (clipboard support for tmux-yank)
+- **[tmux](https://github.com/tmux/tmux)** >= 3.0
+- **[zsh](https://www.zsh.org/)** (set as default shell in tmux)
+- **[xclip](https://github.com/astrand/xclip)** (clipboard support for tmux-yank)
 - **bc** (version comparison in vim-tmux-navigator)
-- **TPM** (Tmux Plugin Manager, auto-installed by setup.sh)
+- **[TPM](https://github.com/tmux-plugins/tpm)** (Tmux Plugin Manager, auto-installed by setup.sh)
 
 ## Quick Start
 
@@ -62,11 +62,11 @@ The prefix is rebound from `Ctrl+b` to `Ctrl+d`.
 
 | Plugin | Purpose |
 |--------|---------|
-| tmux-sensible | Sensible defaults |
-| vim-tmux-navigator | Seamless pane/split nav between tmux and nvim |
-| catppuccin-tmux | Catppuccin Mocha theme |
-| tokyo-night-tmux | Tokyo Night status bar |
-| tmux-yank | System clipboard integration |
+| [tmux-sensible](https://github.com/tmux-plugins/tmux-sensible) | Sensible defaults |
+| [vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator) | Seamless pane/split nav between tmux and nvim |
+| [catppuccin-tmux](https://github.com/catppuccin/tmux) | Catppuccin Mocha theme |
+| [tokyo-night-tmux](https://github.com/janoamaral/tokyo-night-tmux) | Tokyo Night status bar |
+| [tmux-yank](https://github.com/tmux-plugins/tmux-yank) | System clipboard integration |
 
 ## Settings
 

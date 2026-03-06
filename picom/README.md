@@ -4,9 +4,9 @@ Picom compositor config for i3, providing glass-like transparency and blur effec
 
 ## Requirements
 
-- **picom** (compositor)
-- **GLX support** (mesa, GPU drivers)
-- An X11 window manager (i3)
+- **[picom](https://github.com/yshui/picom)** (compositor)
+- **GLX support** ([mesa](https://mesa3d.org/), GPU drivers)
+- An X11 window manager ([i3](https://i3wm.org/))
 
 ## Quick Start
 

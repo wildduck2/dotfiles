@@ -4,9 +4,9 @@ GTK-based terminal emulator with Catppuccin Mocha colors on a TokyoNight backgro
 
 ## Requirements
 
-- **terminator**
-- **Berkeley Mono Trial** font (primary, proprietary -- must be manually installed)
-- **JetBrainsMono Nerd Font** (fallback, installed via setup.sh)
+- **[Terminator](https://gnome-terminator.org/)** (GTK terminal emulator)
+- **[Berkeley Mono Trial](https://berkeleymono.com/)** font (primary, proprietary -- must be manually installed)
+- **[JetBrainsMono Nerd Font](https://www.nerdfonts.com/font-downloads)** (fallback, installed via setup.sh)
 
 ## Quick Start
 
