@@ -204,6 +204,7 @@ exec --no-startup-id trayer --edge top --align right --SetDockType true --expand
 # exec --no-startup-id xrandr --output eDP-1-1 --mode 2560x1600 --rate 240 --primary
 
 exec --no-startup-id mechvibes --disable-gpu --no-sandbox &
+exec --no-startup-id pactl load-module module-null-sink sink_name=OBS_VirtualMic sink_properties=device.description=OBS_VirtualMic
 exec_always --no-startup-id feh --bg-fill ~/.config/i3/bgs/bg.jpg
 # Kill existing picom before restarting to avoid flicker
 exec_always --no-startup-id "killall picom; picom --log-level=info --config ~/.config/picom/picom.conf"
