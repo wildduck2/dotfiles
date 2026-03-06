@@ -22,7 +22,7 @@ M.opts = {
     { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } }, -- normal + visual
     { '<leader>p', group = '[P]roject' },
     { '<leader>q', group = '[Q]uickfix' },
-    { '<leader>r', group = '[R]ename' },
+    { '<leader>r', group = '[R]ename/[R]ust' },
     { '<leader>s', group = '[S]earch' },
     { '<leader>t', group = '[T]oggle/Tab' },
     { '<leader>v', group = '[V]im config' },

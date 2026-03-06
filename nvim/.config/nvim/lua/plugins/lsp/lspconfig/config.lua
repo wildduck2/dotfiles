@@ -21,6 +21,8 @@ M.servers = {
       },
     },
   },
+  -- rust_analyzer: handled by rustaceanvim plugin (plugins/lang/rust)
+  -- which wraps rust-analyzer with extras: debugging, runnables, expandMacro, etc.
   rust_analyzer = {},
   ts_ls = {
     -- Resolve project root from these config files
@@ -112,8 +114,10 @@ local function on_attach(event)
     })
   end
 
-  -- Inlay hints: show type/param hints inline (if supported)
+  -- Inlay hints: show type/param hints at end of line (via endhints plugin)
   if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
+    -- enable by default so endhints can render them at end of line
+    vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
     map('<leader>th', function()
       vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
     end, '[T]oggle Inlay [H]ints')
