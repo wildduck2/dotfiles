@@ -1,3 +1,6 @@
+-- Nerd Font support (enables icons in nvim-tree, lualine, which-key, etc.)
+vim.g.have_nerd_font = true
+
 --NOTE: disable guicursor
 vim.opt.guicursor = ''
 
