@@ -7,13 +7,14 @@ return {
     description = 'Tool to format C/C++/… code according to a set of rules and heuristics.',
   },
   command = 'clang-format',
-  args = { '-assume-filename', '$FILENAME' },
+  args = { '-assume-filename', '$FILENAME', '--fallback-style=Google' },
   range_args = function(self, ctx)
     local start_offset, end_offset = util.get_offsets_from_range(ctx.buf, ctx.range)
     local length = end_offset - start_offset
     return {
       '-assume-filename',
       '$FILENAME',
+      '--fallback-style=Google',
       '--offset',
       tostring(start_offset),
       '--length',

@@ -1,5 +1,3 @@
-local configs = require 'plugins.cmp.configs'
-
 return {
   'hrsh7th/nvim-cmp',
   event = 'InsertEnter',
@@ -12,7 +10,15 @@ return {
         end
         return 'make install_jsregexp'
       end)(),
-      config = configs.setup_luasnip,
+      config = function()
+        local ls = require 'luasnip'
+        require('luasnip.loaders.from_vscode').lazy_load()
+        pcall(require, 'plugins.cmp.snippets')
+
+        vim.keymap.set({ 'i', 's' }, '<C-k>', function()
+          ls.expand_or_jump()
+        end, { noremap = true, silent = true })
+      end,
     },
     { 'neovim/nvim-lspconfig' },
     { 'williamboman/mason.nvim' },
@@ -25,5 +31,7 @@ return {
     { 'hrsh7th/cmp-nvim-lua' },
     { 'rafamadriz/friendly-snippets' },
   },
-  config = configs.setup,
+  config = function()
+    require('plugins.cmp.config').setup()
+  end,
 }
