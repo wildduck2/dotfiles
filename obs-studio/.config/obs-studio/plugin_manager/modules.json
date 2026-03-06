@@ -1,0 +1,17 @@
+[
+    {
+        "display_name": "",
+        "enabled": true,
+        "encoders": [],
+        "id": "",
+        "module_name": "linux-pipewire-audio",
+        "outputs": [],
+        "services": [],
+        "sources": [
+            "pipewire_audio_input_capture",
+            "pipewire_audio_output_capture",
+            "pipewire_audio_application_capture"
+        ],
+        "version": ""
+    }
+]

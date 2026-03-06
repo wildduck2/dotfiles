@@ -21,7 +21,7 @@ set -euo pipefail
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$DOTFILES_DIR/scripts/helpers.sh"
 
-ALL_MODULES=(bash zsh tmux kitty terminator picom nvim i3 duck-bash htop neofetch mechvibes)
+ALL_MODULES=(bash zsh tmux kitty terminator picom nvim i3 duck-bash htop neofetch mechvibes obs-studio)
 DRY_RUN=0
 VERIFY_ONLY=0
 
@@ -51,6 +51,7 @@ Available modules:
   htop         Process viewer
   neofetch     System info display
   mechvibes    Mechanical keyboard sounds (NK Cream)
+  obs-studio   OBS Studio config (scenes, profiles, encoders, plugins)
 
 Full install order:
   base -> bash -> zsh -> tmux -> kitty -> terminator -> picom
@@ -148,6 +149,12 @@ setup_mechvibes() {
   header "Mechvibes"
   stow_package mechvibes
   ok "Mechvibes config stowed (NK Cream, volume 50%)"
+}
+
+setup_obs_studio() {
+  header "OBS Studio"
+  stow_package obs-studio
+  ok "OBS Studio config stowed (scenes, profiles, encoders)"
 }
 
 setup_htop() {
@@ -250,7 +257,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
   # Validate all module names first
   for module in "${MODULES[@]}"; do
     case "$module" in
-      base|bash|zsh|tmux|kitty|terminator|picom|nvim|i3|htop|neofetch|duck-bash|mechvibes) ;;
+      base|bash|zsh|tmux|kitty|terminator|picom|nvim|i3|htop|neofetch|duck-bash|mechvibes|obs-studio) ;;
       *) err "Unknown module: $module"
          echo "Available: ${ALL_MODULES[*]}"
          echo "Run ./setup.sh --help for details"
@@ -281,6 +288,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
       neofetch)   setup_base && setup_neofetch ;;
       duck-bash)  setup_base && setup_duck_bash ;;
       mechvibes)  setup_base && setup_mechvibes ;;
+      obs-studio) setup_base && setup_obs_studio ;;
     esac
   done
 
@@ -335,6 +343,7 @@ setup_duck_bash
 setup_htop
 setup_neofetch
 setup_mechvibes
+setup_obs_studio
 
 # -- Summary ---------------------------------------------------------------
 header "Setup Complete"
