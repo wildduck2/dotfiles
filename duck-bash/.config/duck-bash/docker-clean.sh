@@ -10,15 +10,17 @@ echo "Cleaning up Docker containers, networks, volumes, and build cache..."
 echo "Images will NOT be deleted."
 
 # Stop all running containers
-if [ "$(docker ps -q)" ]; then
+running=$(docker ps -q)
+if [[ -n "$running" ]]; then
   echo "Stopping all running containers..."
-  docker stop $(docker ps -q)
+  docker stop $running
 fi
 
 # Remove all containers (stopped + exited)
-if [ "$(docker ps -aq)" ]; then
-  echo "🗑 Removing all containers..."
-  docker rm -f $(docker ps -aq)
+all=$(docker ps -aq)
+if [[ -n "$all" ]]; then
+  echo "Removing all containers..."
+  docker rm -f $all
 fi
 
 # Remove all unused networks

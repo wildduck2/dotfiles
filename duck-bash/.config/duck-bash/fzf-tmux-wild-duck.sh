@@ -8,15 +8,15 @@ else
     selected=$(find ~/ -mindepth 1 -maxdepth 2 -type d | fzf --height 40% --inline-info)
 fi
 
-if [[ -z $selected ]]; then
+if [[ -z "$selected" ]]; then
     exit 0
 fi
 
 selected_name=$(basename "$selected" | tr . _)
-tmux_running=$(pgrep tmux)
+tmux_running=$(pgrep tmux || true)
 
-tmux neww -n $selected_name -c $selected
-if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+tmux neww -n "$selected_name" -c "$selected"
+if [[ -z "${TMUX:-}" ]] && [[ -z "$tmux_running" ]]; then
     exit 0
 fi
 

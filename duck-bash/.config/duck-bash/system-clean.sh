@@ -17,9 +17,10 @@ if command -v yay &>/dev/null; then
 fi
 
 # 2. Remove orphaned packages
-if pacman -Qdtq &>/dev/null; then
+orphans=$(pacman -Qdtq 2>/dev/null || true)
+if [[ -n "$orphans" ]]; then
   echo "Removing orphaned dependencies..."
-  sudo pacman -Rns --noconfirm $(pacman -Qdtq)
+  echo "$orphans" | sudo pacman -Rns --noconfirm -
 else
   echo "No orphaned packages."
 fi
@@ -39,6 +40,6 @@ command -v yarn &>/dev/null && { echo "Cleaning yarn cache..."; yarn cache clean
 
 # 6. Clean thumbnails
 echo "Clearing thumbnails..."
-rm -rf ~/.cache/thumbnails/* 2>/dev/null || true
+rm -rf "$HOME/.cache/thumbnails/"* 2>/dev/null || true
 
 echo "System Cleanup Complete!"

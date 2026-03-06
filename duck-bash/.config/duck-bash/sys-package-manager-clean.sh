@@ -8,9 +8,10 @@ echo "Clearing old pacman cache (keeping 3 versions)..."
 sudo paccache -r -k3
 
 # Remove unused/orphaned dependencies
-if pacman -Qdtq &>/dev/null; then
+orphans=$(pacman -Qdtq 2>/dev/null || true)
+if [[ -n "$orphans" ]]; then
   echo "Removing orphaned dependencies..."
-  sudo pacman -Rns --noconfirm $(pacman -Qdtq)
+  echo "$orphans" | sudo pacman -Rns --noconfirm -
 else
   echo "No orphaned dependencies found."
 fi
