@@ -34,9 +34,13 @@ zinit snippet OMZP::kubectl
 zinit snippet OMZP::kubectx
 zinit snippet OMZP::command-not-found
 
-# Completion
+# Completion (use -C to skip rebuild if cache is fresh — saves ~100ms)
 autoload -Uz compinit
-compinit
+if [[ -n "$HOME/.zcompdump"(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
 zinit cdreplay -q
 
 # Keybindings
@@ -64,11 +68,12 @@ alias ls='ls --color'
 alias vim='nvim'
 alias c='clear'
 
-# fzf
+# fzf (prefer native integration, fall back to sourced script)
 if command -v fzf >/dev/null 2>&1; then
   eval "$(fzf --zsh)"
+elif [[ -f "$HOME/.fzf.zsh" ]]; then
+  source "$HOME/.fzf.zsh"
 fi
-[[ -f "$HOME/.fzf.zsh" ]] && source "$HOME/.fzf.zsh"
 
 # zoxide
 if command -v zoxide >/dev/null 2>&1; then
