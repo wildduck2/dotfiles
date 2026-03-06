@@ -1,6 +1,6 @@
 return {
   'mbbill/undotree',
-  config = function()
-    require('plugins.editor.undotree.config').setup()
-  end,
+  keys = {
+    { '<leader>u', '<cmd>UndotreeToggle<cr>', desc = 'Toggle undo tree' },
+  },
 }
