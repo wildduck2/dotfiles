@@ -19,4 +19,11 @@ pkg_install bash
 # bash dotfiles live in $HOME (.bashrc, .bash_profile), not .config
 stow_package bash
 
+# -- Verify ----------------------------------------------------------------
+if [[ -L "$HOME/.bashrc" ]]; then
+  ok ".bashrc symlinked"
+else
+  warn ".bashrc not symlinked -- check stow output"
+fi
+
 ok "Bash setup complete"

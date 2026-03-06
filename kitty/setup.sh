@@ -21,4 +21,11 @@ check_font "JetBrainsMono Nerd Font.*Bold Italic" \
 # -- Stow ------------------------------------------------------------------
 stow_package kitty
 
+# -- Verify ----------------------------------------------------------------
+if command_exists kitty; then
+  ok "kitty binary found"
+else
+  warn "kitty binary not found"
+fi
+
 ok "Kitty setup complete"

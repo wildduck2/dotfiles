@@ -19,4 +19,11 @@ pkg_install picom mesa
 # -- Stow ------------------------------------------------------------------
 stow_package picom
 
+# -- Verify ----------------------------------------------------------------
+if command_exists picom; then
+  ok "picom binary found"
+else
+  warn "picom binary not found"
+fi
+
 ok "Picom setup complete"
