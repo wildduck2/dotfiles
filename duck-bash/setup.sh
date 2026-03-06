@@ -65,6 +65,7 @@ check_duck_cmd git
 check_duck_cmd curl
 check_duck_cmd qrencode
 check_duck_cmd magick
+check_duck_cmd convert
 check_duck_cmd yt-dlp
 check_duck_cmd flameshot
 check_duck_cmd paccache
