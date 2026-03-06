@@ -33,6 +33,14 @@ aur_install trayer i3lock-color gnome-screensaver-no-watchdog \
   obs-studio-tytan652 obs-pipewire-audio-capture \
   google-chrome yaak-bin
 
+# -- OBS Virtual Camera (v4l2loopback) ------------------------------------
+info "Setting up OBS virtual camera support"
+pkg_install v4l2loopback-dkms
+if ! lsmod | grep -q v4l2loopback; then
+  info "Loading v4l2loopback kernel module"
+  sudo modprobe v4l2loopback || warn "Failed to load v4l2loopback -- may need a reboot after kernel headers install"
+fi
+
 # -- Font check ------------------------------------------------------------
 check_preferred_font
 
