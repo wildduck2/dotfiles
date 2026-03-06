@@ -1,5 +1,7 @@
 return {
   'folke/lazydev.nvim',
   ft = 'lua',
-  opts = require('plugins.lsp.lazydev.config').opts,
+  opts = function()
+    return require('plugins.lsp.lazydev.config').opts
+  end,
 }

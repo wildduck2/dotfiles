@@ -1,9 +1,7 @@
 local M = {}
 
-M.opts = {}
-
-function M.setup(_, opts)
-  require('tokyonight').setup(opts)
+function M.setup()
+  require('tokyonight').setup()
   -- Variants: tokyonight-night | -storm | -day | -moon
   vim.cmd.colorscheme 'tokyonight-night'
 end

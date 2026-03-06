@@ -1,4 +1,6 @@
 return {
   'folke/snacks.nvim',
-  opts = require('plugins.ui.snacks.config').opts,
+  opts = function()
+    return require('plugins.ui.snacks.config').opts
+  end,
 }

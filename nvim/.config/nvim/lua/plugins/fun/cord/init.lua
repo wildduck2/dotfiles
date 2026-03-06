@@ -2,5 +2,7 @@ return {
   'vyfor/cord.nvim',
   build = './build',
   event = 'VeryLazy',
-  opts = require('plugins.fun.cord.config').opts,
+  opts = function()
+    return require('plugins.fun.cord.config').opts
+  end,
 }

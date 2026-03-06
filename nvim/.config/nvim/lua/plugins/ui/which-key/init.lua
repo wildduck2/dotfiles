@@ -1,5 +1,7 @@
 return {
   'folke/which-key.nvim',
   event = 'VimEnter',
-  opts = require('plugins.ui.which-key.config').opts,
+  opts = function()
+    return require('plugins.ui.which-key.config').opts
+  end,
 }

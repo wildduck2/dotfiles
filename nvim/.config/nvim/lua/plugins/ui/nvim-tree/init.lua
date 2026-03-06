@@ -3,7 +3,9 @@ return {
   dependencies = {
     {
       'nvim-tree/nvim-web-devicons',
-      opts = require('plugins.ui.nvim-tree.config').devicons_opts,
+      opts = function()
+        return require('plugins.ui.nvim-tree.config').devicons_opts
+      end,
     },
   },
   cmd = { 'NvimTreeToggle', 'NvimTreeFocus' },
