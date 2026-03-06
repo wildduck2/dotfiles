@@ -6,6 +6,12 @@
 # Only dependency: i3lock-color (AUR)
 # ============================================================================
 
+# Use Berkeley Mono if available, otherwise JetBrainsMono Nerd Font
+LOCK_FONT="JetBrainsMono Nerd Font"
+if fc-list 2>/dev/null | grep -qi "Berkeley Mono"; then
+  LOCK_FONT="Berkeley Mono Trial"
+fi
+
 i3lock \
     --nofork \
     --ignore-empty-password \
@@ -27,12 +33,12 @@ i3lock \
     --time-str "%H:%M" \
     --time-color cdd6f4ff \
     --time-size 64 \
-    --time-font "Berkeley Mono Trial" \
+    --time-font "$LOCK_FONT" \
     --time-pos "ix:iy-40" \
     --date-str "%A, %B %d" \
     --date-color a6adc8ff \
     --date-size 24 \
-    --date-font "Berkeley Mono Trial" \
+    --date-font "$LOCK_FONT" \
     --date-pos "tx:ty+50" \
     --verif-text "Verifying..." \
     --wrong-text "Wrong!" \
