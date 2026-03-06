@@ -1,6 +1,8 @@
-# Neofetch - Duck Arch
+# Neofetch - BMOfetch (Duck Arch)
 
-Custom neofetch config with a duck + Arch Linux ASCII art mashup, Catppuccin Mocha-inspired colors, and Nerd Font icons for info labels.
+BMOfetch theme for neofetch — BMO ASCII art with a speech bubble, colorful Nerd Font icon labels, adapted for WildDuck Arch.
+
+Based on [Chick2D/neofetch-themes (bmofetch)](https://github.com/Chick2D/neofetch-themes/tree/main/small/bmofetch) by [donatienLeray](https://github.com/donatienLeray).
 
 ## Requirements
 
@@ -23,42 +25,36 @@ cd ~/dotfiles
 
 ### ASCII Art
 
-Custom duck-on-Arch logo (`duck_arch.txt`) — an Arch triangle with a duck sitting underneath, colored in blue and teal.
+BMO (from Adventure Time) with a speech bubble. The bubble text can be changed using the included `bmosay.sh` script:
+
+```bash
+# Change what BMO says
+~/.config/neofetch/bmosay.sh "Quack!"
+
+# Random line from a file
+~/.config/neofetch/bmosay.sh -r quotes.txt
+```
 
 ### Info Labels
 
-Uses Nerd Font icons instead of text labels:
-
-| Icon | Info |
-|------|------|
-|  | Distro |
-|  | Kernel |
-| 󰇄 | Host |
-|  | Uptime |
-|  | Packages |
-|  | Shell |
-|  | WM |
-|  | Terminal |
-|  | Terminal Font |
-|  | CPU |
-| 󰍛 | Memory |
-| 󰊠 | GPU |
-|  | Disk |
-| 󰍹 | Resolution |
+| Icon | Label | Info |
+|------|-------|------|
+|  | USR | Users |
+|  | OS | Distro |
+|  | UP | Uptime |
+| 󰍛 | CPU | CPU |
+|  | GPU | GPU (dedicated) |
+| 󰟖 | RAM | Memory (GiB, %) |
+|  | MEM | Disk |
 
 ### Colors
 
-Catppuccin Mocha-inspired palette:
-- **Labels**: Blue (color 4)
-- **Info text**: White (color 7)
-- **Separators**: Teal (color 6)
-- **Separator**: ` ➜ `
-- **Underline**: `─`
+Distro-based coloring with rainbow icon row at the bottom. ASCII art uses Arch blue/teal palette (`4 6 1 8 8 6`).
 
-### Extras
+### Key Settings
 
-- CPU temperature shown in Celsius
-- Memory shown in GiB with percentage
-- Uptime in compact format (`2d 10h 3m`)
-- Refresh rate shown with resolution
-- Color blocks displayed at the bottom
+- Architecture hidden for cleaner output
+- CPU speed/cores hidden (brand only)
+- Dedicated GPU only
+- Memory in GiB with percentage
+- Negative gap (`-44`) for overlapping BMO art with info text
