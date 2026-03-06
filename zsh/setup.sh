@@ -14,10 +14,11 @@ check_arch
 # -- Packages --------------------------------------------------------------
 # zsh: the shell itself
 # fzf: fuzzy finder (used by fzf --zsh, fzf-tab, fzf_nvim widget)
+# fd: fast find alternative (used by fzf_nvim widget in .zshrc)
 # zoxide: smart cd replacement (eval "$(zoxide init --cmd cd zsh)")
 # git: needed by Oh My Zsh, Zinit, and the git plugin
 # curl: needed by Oh My Zsh installer and NVM installer
-pkg_install zsh fzf zoxide git curl
+pkg_install zsh fzf fd zoxide git curl
 
 # -- Oh My Zsh -------------------------------------------------------------
 OMZ_DIR="$HOME/.oh-my-zsh"
@@ -25,7 +26,7 @@ if [[ -d "$OMZ_DIR" ]]; then
   ok "Oh My Zsh already installed"
 else
   info "Installing Oh My Zsh"
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
+  sh -c "$(safe_curl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh "Oh My Zsh installer")" "" --unattended --keep-zshrc
   ok "Oh My Zsh installed"
 fi
 
@@ -36,8 +37,12 @@ if [[ -d "$ZINIT_HOME" ]]; then
 else
   info "Installing Zinit"
   mkdir -p "$(dirname "$ZINIT_HOME")"
-  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-  ok "Zinit installed"
+  if git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"; then
+    ok "Zinit installed"
+  else
+    err "Failed to clone Zinit -- check internet and try again"
+    exit 1
+  fi
 fi
 
 # -- NVM (Node Version Manager) --------------------------------------------
@@ -47,7 +52,7 @@ if [[ -d "$NVM_DIR" ]]; then
   ok "NVM already installed"
 else
   info "Installing NVM"
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+  safe_curl https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh "NVM installer" | bash
   ok "NVM installed"
 fi
 

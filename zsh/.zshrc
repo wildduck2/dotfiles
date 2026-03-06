@@ -76,12 +76,19 @@ if command -v zoxide >/dev/null 2>&1; then
   zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 fi
 
-# NVM
+# NVM (lazy-loaded — sourcing nvm.sh on every shell adds ~200ms)
+# NVM loads on first call to nvm, node, npm, npx, or yarn
 if [[ -s "$NVM_DIR/nvm.sh" ]]; then
-  source "$NVM_DIR/nvm.sh"
-fi
-if [[ -s "$NVM_DIR/bash_completion" ]]; then
-  source "$NVM_DIR/bash_completion"
+  _nvm_lazy_load() {
+    unset -f nvm node npm npx yarn 2>/dev/null
+    source "$NVM_DIR/nvm.sh"
+    [[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
+  }
+  nvm()  { _nvm_lazy_load; nvm "$@"; }
+  node() { _nvm_lazy_load; node "$@"; }
+  npm()  { _nvm_lazy_load; npm "$@"; }
+  npx()  { _nvm_lazy_load; npx "$@"; }
+  yarn() { _nvm_lazy_load; yarn "$@"; }
 fi
 
 # Deno env (if installed)
@@ -94,9 +101,6 @@ fi
 if command -v pyenv >/dev/null 2>&1; then
   eval "$(pyenv init - zsh)"
 fi
-
-# Cargo env (optional; usually not needed if PATH set in .zshenv)
-[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
 # fzf->nvim widget: Ctrl+f to pick a file/dir and open in nvim
 fzf_nvim() {
