@@ -1,2 +1,8 @@
 *.tmp
+*.swp
+*.swo
+*~
+.DS_Store
+node_modules/
+.cache/
 nvim/.config/nvim/.undo/
