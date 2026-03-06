@@ -98,22 +98,15 @@ fi
 # Cargo env (optional; usually not needed if PATH set in .zshenv)
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
-# Your fzf->nvim widget (unchanged)
+# fzf->nvim widget: Ctrl+f to pick a file/dir and open in nvim
 fzf_nvim() {
   local selected
-  selected=$(find ~/ -mindepth 1 -maxdepth 2 | fzf --height 40% --inline-info)
-  if [[ -n "$selected" ]]; then
-    if [[ -d "$selected" ]]; then
-      cd "$selected" && nvim || return 1
-    elif [[ -f "$selected" ]]; then
-      nvim "$selected" || return 1
-    else
-      echo "'$selected' is neither a file nor a directory."
-      return 1
-    fi
+  selected=$(fd --max-depth 3 --hidden --exclude .git ~ | fzf --height 40% --inline-info)
+  [[ -z "$selected" ]] && return 0
+  if [[ -d "$selected" ]]; then
+    cd "$selected" && nvim
   else
-    echo "No selection made."
-    return 1
+    nvim "$selected"
   fi
 }
 zle -N fzf_nvim
