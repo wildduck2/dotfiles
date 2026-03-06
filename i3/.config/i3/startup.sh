@@ -7,56 +7,80 @@
 #   Workspace 2 → external monitor → Kitty
 #   Workspace 5 → primary monitor  → Discord
 #
-# Monitor names are auto-detected. The primary monitor gets Discord,
-# the first non-primary monitor gets Chrome and Kitty.
-
-# Wait for a window with the given class to appear (max 10s)
-wait_for_window() {
-  local class="$1"
-  local max=20
-  for ((i=0; i<max; i++)); do
-    if xdotool search --class "$class" &>/dev/null; then
-      return 0
-    fi
-    sleep 0.5
-  done
-  return 1
-}
+# Monitor detection:
+#   - External on the left  → use it for Chrome/Kitty
+#   - External on the right → rotate it left, then use it
+#   - No external monitor   → keep everything on primary
 
 # Auto-detect monitors
 PRIMARY=$(xrandr --query | grep ' connected primary' | awk '{print $1}')
+PRIMARY_X=$(xrandr --query | grep ' connected primary' | grep -oP '\d+x\d+\+\K\d+')
 EXTERNAL=$(xrandr --query | grep ' connected' | grep -v 'primary' | head -1 | awk '{print $1}')
+EXTERNAL_X=$(xrandr --query | grep ' connected' | grep -v 'primary' | head -1 | grep -oP '\d+x\d+\+\K\d+')
 
-# Fallback: if no external monitor, use primary for everything
-if [[ -z "$EXTERNAL" ]]; then
-  EXTERNAL="$PRIMARY"
+if [[ -n "$EXTERNAL" ]]; then
+  if [[ "$EXTERNAL_X" -lt "$PRIMARY_X" ]]; then
+    # External monitor is on the left — use it for Chrome
+    CHROME_OUTPUT="$EXTERNAL"
+  else
+    # External monitor is on the right — rotate it
+    xrandr --output "$EXTERNAL" --rotate left
+    CHROME_OUTPUT="$EXTERNAL"
+  fi
+else
+  # No external monitor — everything on primary
+  CHROME_OUTPUT="$PRIMARY"
 fi
+
+# Assign workspaces to monitors
+i3-msg "workspace 1, move workspace to output $CHROME_OUTPUT"
+i3-msg "workspace 2, move workspace to output $CHROME_OUTPUT"
+i3-msg "workspace 5, move workspace to output $PRIMARY"
 
 sleep 1
 
-# --- Workspace 1: Chrome on external monitor ---
-if command -v google-chrome-stable &>/dev/null; then
-  i3-msg "workspace 1, move workspace to output $EXTERNAL"
-  google-chrome-stable &
-  wait_for_window "Google-chrome"
-  i3-msg '[class="Google-chrome"] move to workspace 1'
-fi
+# Launch app on a specific workspace/output if not already running
+# Usage: launch_on_workspace <workspace> <output> <class> <command...>
+launch_on_workspace() {
+  local ws="$1" output="$2" class="$3"
+  shift 3
 
-# --- Workspace 2: Kitty on external monitor ---
-if command -v kitty &>/dev/null; then
-  i3-msg "workspace 2, move workspace to output $EXTERNAL"
-  kitty &
-  wait_for_window "kitty"
-  i3-msg '[class="kitty"] move to workspace 2'
-fi
+  # Skip if already running
+  if xdotool search --class "$class" &>/dev/null; then
+    return 0
+  fi
 
-# --- Workspace 5: Discord on primary monitor ---
-if command -v discord &>/dev/null; then
-  i3-msg "workspace 5, move workspace to output $PRIMARY"
-  discord &
-  wait_for_window "discord"
-  i3-msg '[class="discord"] move to workspace 5'
-fi
+  # Focus workspace and ensure it's on the correct monitor
+  i3-msg "workspace $ws, move workspace to output $output"
+  "$@" &>/dev/null &
+  disown
+
+  # Wait for window to appear (max 30s)
+  for ((i=0; i<60; i++)); do
+    if xdotool search --class "$class" &>/dev/null; then
+      break
+    fi
+    sleep 0.5
+  done
+}
+
+# Launch apps on their assigned workspaces
+launch_on_workspace 1 "$CHROME_OUTPUT" "Google-chrome" google-chrome-stable
+launch_on_workspace 2 "$CHROME_OUTPUT" "kitty" kitty
 
 # Focus workspace 1
 i3-msg 'workspace 1'
+
+# Discord: launch last on workspace 5
+# Discord has a splash then main window — stay on ws 5 until it's fully loaded
+if ! xdotool search --class "Discord" &>/dev/null; then
+  i3-msg "workspace 5, move workspace to output $PRIMARY"
+  discord &>/dev/null &
+  disown
+
+  # Keep focus on workspace 5 and push Discord windows there for 60s
+  for ((i=0; i<120; i++)); do
+    i3-msg '[class="Discord"] move to workspace 5' &>/dev/null
+    sleep 0.5
+  done
+fi
