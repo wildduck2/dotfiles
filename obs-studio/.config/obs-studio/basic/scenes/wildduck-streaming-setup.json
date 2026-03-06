@@ -1,2970 +1,2970 @@
 {
-    "DesktopAudioDevice1": {
-        "prev_ver": 536870916,
-        "name": "Desktop Audio",
-        "uuid": "84820b25-dfbf-404f-8262-1585feacea0b",
-        "id": "pulse_output_capture",
-        "versioned_id": "pulse_output_capture",
-        "settings": {
-            "device_id": "alsa_output.usb-3142_fifine_Microphone-00.analog-stereo.monitor"
-        },
-        "mixers": 255,
-        "sync": 0,
-        "flags": 0,
-        "volume": 1.0,
-        "balance": 0.5,
-        "enabled": true,
-        "muted": true,
-        "push-to-mute": false,
-        "push-to-mute-delay": 0,
-        "push-to-talk": false,
-        "push-to-talk-delay": 0,
-        "hotkeys": {
-            "libobs.mute": [],
-            "libobs.unmute": [],
-            "libobs.push-to-mute": [],
-            "libobs.push-to-talk": []
-        },
-        "deinterlace_mode": 0,
-        "deinterlace_field_order": 0,
-        "monitoring_type": 0,
-        "private_settings": {}
-    },
-    "AuxAudioDevice1": {
-        "prev_ver": 536870916,
-        "name": "Mic/Aux",
-        "uuid": "355508b0-f19a-4846-92b7-867f837cc255",
-        "id": "pulse_input_capture",
-        "versioned_id": "pulse_input_capture",
-        "settings": {
-            "device_id": "default"
-        },
-        "mixers": 255,
-        "sync": 0,
-        "flags": 0,
-        "volume": 0.8411943912506104,
-        "balance": 0.5,
-        "enabled": true,
-        "muted": false,
-        "push-to-mute": false,
-        "push-to-mute-delay": 0,
-        "push-to-talk": false,
-        "push-to-talk-delay": 0,
-        "hotkeys": {
-            "libobs.mute": [],
-            "libobs.unmute": [],
-            "libobs.push-to-mute": [],
-            "libobs.push-to-talk": []
-        },
-        "deinterlace_mode": 0,
-        "deinterlace_field_order": 0,
-        "monitoring_type": 0,
-        "private_settings": {},
-        "filters": [
-            {
-                "prev_ver": 536870916,
-                "name": "Noise Suppression",
-                "uuid": "852c37e4-70ac-4bee-bd2a-64bfb23452a8",
-                "id": "noise_suppress_filter",
-                "versioned_id": "noise_suppress_filter_v2",
-                "settings": {},
-                "mixers": 255,
-                "sync": 0,
-                "flags": 0,
-                "volume": 1.0,
-                "balance": 0.5,
-                "enabled": true,
-                "muted": false,
-                "push-to-mute": false,
-                "push-to-mute-delay": 0,
-                "push-to-talk": false,
-                "push-to-talk-delay": 0,
-                "hotkeys": {},
-                "deinterlace_mode": 0,
-                "deinterlace_field_order": 0,
-                "monitoring_type": 0,
-                "private_settings": {}
-            },
-            {
-                "prev_ver": 536870916,
-                "name": "Compressor",
-                "uuid": "817db38e-e702-4a57-86e0-f9fc3a79a36e",
-                "id": "compressor_filter",
-                "versioned_id": "compressor_filter",
-                "settings": {
-                    "ratio": 4.0,
-                    "threshold": -35.3,
-                    "attack_time": 2,
-                    "release_time": 100,
-                    "output_gain": 19.5
-                },
-                "mixers": 255,
-                "sync": 0,
-                "flags": 0,
-                "volume": 1.0,
-                "balance": 0.5,
-                "enabled": true,
-                "muted": false,
-                "push-to-mute": false,
-                "push-to-mute-delay": 0,
-                "push-to-talk": false,
-                "push-to-talk-delay": 0,
-                "hotkeys": {},
-                "deinterlace_mode": 0,
-                "deinterlace_field_order": 0,
-                "monitoring_type": 0,
-                "private_settings": {}
-            },
-            {
-                "prev_ver": 536870916,
-                "name": "Expander",
-                "uuid": "16788baa-be18-4d93-99a7-82de2c2e7141",
-                "id": "expander_filter",
-                "versioned_id": "expander_filter",
-                "settings": {
-                    "ratio": 4.0,
-                    "release_time": 100,
-                    "attack_time": 2,
-                    "threshold": -26.1,
-                    "output_gain": 0.0
-                },
-                "mixers": 255,
-                "sync": 0,
-                "flags": 0,
-                "volume": 1.0,
-                "balance": 0.5,
-                "enabled": true,
-                "muted": false,
-                "push-to-mute": false,
-                "push-to-mute-delay": 0,
-                "push-to-talk": false,
-                "push-to-talk-delay": 0,
-                "hotkeys": {},
-                "deinterlace_mode": 0,
-                "deinterlace_field_order": 0,
-                "monitoring_type": 0,
-                "private_settings": {}
-            }
-        ]
-    },
-    "current_scene": "MAIN_STREAMING",
-    "current_program_scene": "MAIN_STREAMING",
-    "scene_order": [
-        {
-            "name": "MAIN_RECORDING"
-        },
-        {
-            "name": "STARTING"
-        },
-        {
-            "name": "MAIN_STREAMING"
-        },
-        {
-            "name": "BE_BACK"
-        },
-        {
-            "name": "ENDING"
-        }
-    ],
-    "name": "Untitled",
-    "sources": [
-        {
-            "prev_ver": 536870916,
-            "name": "MAIN_RECORDING",
-            "uuid": "3c36af05-7a75-4f4c-a3a4-99f4790de386",
-            "id": "scene",
-            "versioned_id": "scene",
-            "settings": {
-                "id_counter": 12,
-                "custom_size": false,
-                "items": [
-                    {
-                        "name": "MONITOR_2",
-                        "source_uuid": "d5c1b765-092b-4cea-a386-218f2a091bce",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 2,
-                        "group_item_backup": true,
-                        "pos": {
-                            "x": 96.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.600000023841858,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 0.675000011920929,
-                            "y": 0.675000011920929
-                        },
-                        "scale_rel": {
-                            "x": 0.675000011920929,
-                            "y": 0.675000011920929
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "MONITOR_1",
-                        "source_uuid": "4e87eaff-6524-4467-97f4-306433ecd1b9",
-                        "visible": false,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 3,
-                        "group_item_backup": true,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "DISPLAY",
-                        "source_uuid": "d6761d7d-db97-476b-b436-8e2e3038f697",
-                        "visible": true,
-                        "locked": false,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 12,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {
-                            "collapsed": false
-                        }
-                    },
-                    {
-                        "name": "DISCORD_CALL_AUDIO",
-                        "source_uuid": "06975351-f85e-45c3-8d96-84dbf58f8805",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 8,
-                        "group_item_backup": true,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "KEYBOARD_AUDIO",
-                        "source_uuid": "6c5cda7a-d23a-45c5-b7ca-49554fd0dd71",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 9,
-                        "group_item_backup": true,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "MUSIC_AUDIO",
-                        "source_uuid": "c06d7013-7e9c-4c5b-a289-26b476489a15",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 10,
-                        "group_item_backup": true,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "AUDIO",
-                        "source_uuid": "efd9697d-6599-4793-9325-738f26eb1c34",
-                        "visible": true,
-                        "locked": false,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 11,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    }
-                ]
-            },
-            "mixers": 0,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "OBSBasic.SelectScene": [],
-                "libobs.show_scene_item.12": [],
-                "libobs.hide_scene_item.12": [],
-                "libobs.show_scene_item.11": [],
-                "libobs.hide_scene_item.11": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "MONITOR_2",
-            "uuid": "d5c1b765-092b-4cea-a386-218f2a091bce",
-            "id": "xshm_input_v2",
-            "versioned_id": "xshm_input_v2",
-            "settings": {
-                "screen": 0,
-                "advanced": false
-            },
-            "mixers": 0,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {},
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "MONITOR_1",
-            "uuid": "4e87eaff-6524-4467-97f4-306433ecd1b9",
-            "id": "xshm_input_v2",
-            "versioned_id": "xshm_input_v2",
-            "settings": {
-                "screen": 1
-            },
-            "mixers": 0,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {},
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "DISCORD_CALL_AUDIO",
-            "uuid": "06975351-f85e-45c3-8d96-84dbf58f8805",
-            "id": "pipewire_audio_application_capture",
-            "versioned_id": "pipewire_audio_application_capture",
-            "settings": {
-                "TargetName": "Discord"
-            },
-            "mixers": 255,
-            "sync": 0,
-            "flags": 0,
-            "volume": 0.8411943912506104,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "libobs.mute": [],
-                "libobs.unmute": [],
-                "libobs.push-to-mute": [],
-                "libobs.push-to-talk": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "KEYBOARD_AUDIO",
-            "uuid": "6c5cda7a-d23a-45c5-b7ca-49554fd0dd71",
-            "id": "pipewire_audio_application_capture",
-            "versioned_id": "pipewire_audio_application_capture",
-            "settings": {
-                "TargetName": "mechvibes"
-            },
-            "mixers": 255,
-            "sync": 0,
-            "flags": 0,
-            "volume": 0.45633941888809204,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "libobs.mute": [],
-                "libobs.unmute": [],
-                "libobs.push-to-mute": [],
-                "libobs.push-to-talk": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "MUSIC_AUDIO",
-            "uuid": "c06d7013-7e9c-4c5b-a289-26b476489a15",
-            "id": "pipewire_audio_application_capture",
-            "versioned_id": "pipewire_audio_application_capture",
-            "settings": {},
-            "mixers": 255,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "libobs.mute": [],
-                "libobs.unmute": [],
-                "libobs.push-to-mute": [],
-                "libobs.push-to-talk": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "STARTING",
-            "uuid": "30ac962c-b125-4cdd-8d66-30a50c518165",
-            "id": "scene",
-            "versioned_id": "scene",
-            "settings": {
-                "id_counter": 3,
-                "custom_size": false,
-                "items": [
-                    {
-                        "name": "STARTING_VIDEO",
-                        "source_uuid": "e8ae92cb-9543-4706-aa2a-84c1632cb507",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 1,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "FOLLOW_ALERT",
-                        "source_uuid": "6918bf53-05e2-4375-b20a-dbb0fa11eab8",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 2,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 1527.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": 1.0499999523162842,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 0.49125000834465027,
-                            "y": 0.49166667461395264
-                        },
-                        "scale_rel": {
-                            "x": 0.49125000834465027,
-                            "y": 0.49166667461395264
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "TWITCH_CHAT",
-                        "source_uuid": "38218a0e-36cd-4ddd-9379-3a6be04b2f95",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 3,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 1319.0,
-                            "y": 102.5
-                        },
-                        "pos_rel": {
-                            "x": 0.664814829826355,
-                            "y": -0.8101851940155029
-                        },
-                        "scale": {
-                            "x": 0.5286458134651184,
-                            "y": 0.5287036895751953
-                        },
-                        "scale_rel": {
-                            "x": 0.5286458134651184,
-                            "y": 0.5287036895751953
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    }
-                ]
-            },
-            "mixers": 0,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "OBSBasic.SelectScene": [],
-                "libobs.show_scene_item.1": [],
-                "libobs.hide_scene_item.1": [],
-                "libobs.show_scene_item.2": [],
-                "libobs.hide_scene_item.2": [],
-                "libobs.show_scene_item.3": [],
-                "libobs.hide_scene_item.3": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "STARTING_VIDEO",
-            "uuid": "e8ae92cb-9543-4706-aa2a-84c1632cb507",
-            "id": "browser_source",
-            "versioned_id": "browser_source",
-            "settings": {
-                "url": "https://streamelements.com/overlay/68080eae1ed1d06333005ac2/tBX5fHLCrHd9wlKfsKHOWA7xavPjo2XTkb0yecWGEGWmEDfG",
-                "width": 1920,
-                "height": 1080
-            },
-            "mixers": 255,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "libobs.mute": [],
-                "libobs.unmute": [],
-                "libobs.push-to-mute": [],
-                "libobs.push-to-talk": [],
-                "ObsBrowser.Refresh": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "BE_BACK",
-            "uuid": "6b87287d-56b1-49d1-a6ea-9e86dca36a17",
-            "id": "scene",
-            "versioned_id": "scene",
-            "settings": {
-                "id_counter": 3,
-                "custom_size": false,
-                "items": [
-                    {
-                        "name": "BE_BACK_VIDEO",
-                        "source_uuid": "2a31e1e9-dfca-47b2-a711-4b525ad99563",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 1,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "FOLLOW_ALERT",
-                        "source_uuid": "6918bf53-05e2-4375-b20a-dbb0fa11eab8",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 2,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 1527.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": 1.0499999523162842,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 0.49125000834465027,
-                            "y": 0.49166667461395264
-                        },
-                        "scale_rel": {
-                            "x": 0.49125000834465027,
-                            "y": 0.49166667461395264
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "TWITCH_CHAT",
-                        "source_uuid": "38218a0e-36cd-4ddd-9379-3a6be04b2f95",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 3,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 1319.0,
-                            "y": 102.5
-                        },
-                        "pos_rel": {
-                            "x": 0.664814829826355,
-                            "y": -0.8101851940155029
-                        },
-                        "scale": {
-                            "x": 0.5286458134651184,
-                            "y": 0.5287036895751953
-                        },
-                        "scale_rel": {
-                            "x": 0.5286458134651184,
-                            "y": 0.5287036895751953
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    }
-                ]
-            },
-            "mixers": 0,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "OBSBasic.SelectScene": [],
-                "libobs.show_scene_item.1": [],
-                "libobs.hide_scene_item.1": [],
-                "libobs.show_scene_item.2": [],
-                "libobs.hide_scene_item.2": [],
-                "libobs.show_scene_item.3": [],
-                "libobs.hide_scene_item.3": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "BE_BACK_VIDEO",
-            "uuid": "2a31e1e9-dfca-47b2-a711-4b525ad99563",
-            "id": "browser_source",
-            "versioned_id": "browser_source",
-            "settings": {
-                "url": "https://streamelements.com/overlay/68080eae1ed1d06333005ac3/tBX5fHLCrHd9wlKfsKHOWA7xavPjo2XTkb0yecWGEGWmEDfG",
-                "width": 1920,
-                "height": 1080
-            },
-            "mixers": 255,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "libobs.mute": [],
-                "libobs.unmute": [],
-                "libobs.push-to-mute": [],
-                "libobs.push-to-talk": [],
-                "ObsBrowser.Refresh": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "ENDING",
-            "uuid": "1875dd32-7bd8-42ec-ad49-4e04e2e3ee07",
-            "id": "scene",
-            "versioned_id": "scene",
-            "settings": {
-                "id_counter": 3,
-                "custom_size": false,
-                "items": [
-                    {
-                        "name": "ENDING_VIDEO",
-                        "source_uuid": "0023e204-c233-4626-9278-b4495349d635",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 1,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "FOLLOW_ALERT",
-                        "source_uuid": "6918bf53-05e2-4375-b20a-dbb0fa11eab8",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 2,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 1527.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": 1.0499999523162842,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 0.49125000834465027,
-                            "y": 0.49166667461395264
-                        },
-                        "scale_rel": {
-                            "x": 0.49125000834465027,
-                            "y": 0.49166667461395264
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "TWITCH_CHAT",
-                        "source_uuid": "38218a0e-36cd-4ddd-9379-3a6be04b2f95",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 3,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 1319.0,
-                            "y": 102.5
-                        },
-                        "pos_rel": {
-                            "x": 0.664814829826355,
-                            "y": -0.8101851940155029
-                        },
-                        "scale": {
-                            "x": 0.5286458134651184,
-                            "y": 0.5287036895751953
-                        },
-                        "scale_rel": {
-                            "x": 0.5286458134651184,
-                            "y": 0.5287036895751953
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    }
-                ]
-            },
-            "mixers": 0,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "OBSBasic.SelectScene": [],
-                "libobs.show_scene_item.1": [],
-                "libobs.hide_scene_item.1": [],
-                "libobs.show_scene_item.2": [],
-                "libobs.hide_scene_item.2": [],
-                "libobs.show_scene_item.3": [],
-                "libobs.hide_scene_item.3": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "ENDING_VIDEO",
-            "uuid": "0023e204-c233-4626-9278-b4495349d635",
-            "id": "browser_source",
-            "versioned_id": "browser_source",
-            "settings": {
-                "url": "https://streamelements.com/overlay/68080eae1ed1d06333005ac4/tBX5fHLCrHd9wlKfsKHOWA7xavPjo2XTkb0yecWGEGWmEDfG",
-                "width": 1920,
-                "height": 1080
-            },
-            "mixers": 255,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "libobs.mute": [],
-                "libobs.unmute": [],
-                "libobs.push-to-mute": [],
-                "libobs.push-to-talk": [],
-                "ObsBrowser.Refresh": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "MAIN_STREAMING",
-            "uuid": "d99a8616-4386-408e-b46c-a3c095c9baca",
-            "id": "scene",
-            "versioned_id": "scene",
-            "settings": {
-                "id_counter": 8,
-                "custom_size": false,
-                "items": [
-                    {
-                        "name": "MONITOR_2",
-                        "source_uuid": "d5c1b765-092b-4cea-a386-218f2a091bce",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 2,
-                        "group_item_backup": true,
-                        "pos": {
-                            "x": 96.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.600000023841858,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 0.675000011920929,
-                            "y": 0.675000011920929
-                        },
-                        "scale_rel": {
-                            "x": 0.675000011920929,
-                            "y": 0.675000011920929
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "MONITOR_1",
-                        "source_uuid": "4e87eaff-6524-4467-97f4-306433ecd1b9",
-                        "visible": false,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 3,
-                        "group_item_backup": true,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "DISPLAY",
-                        "source_uuid": "d6761d7d-db97-476b-b436-8e2e3038f697",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 5,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {
-                            "collapsed": false
-                        }
-                    },
-                    {
-                        "name": "DISCORD_CALL_AUDIO",
-                        "source_uuid": "06975351-f85e-45c3-8d96-84dbf58f8805",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 8,
-                        "group_item_backup": true,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "KEYBOARD_AUDIO",
-                        "source_uuid": "6c5cda7a-d23a-45c5-b7ca-49554fd0dd71",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 9,
-                        "group_item_backup": true,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "MUSIC_AUDIO",
-                        "source_uuid": "c06d7013-7e9c-4c5b-a289-26b476489a15",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 10,
-                        "group_item_backup": true,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "AUDIO",
-                        "source_uuid": "efd9697d-6599-4793-9325-738f26eb1c34",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 4,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {
-                            "collapsed": true
-                        }
-                    },
-                    {
-                        "name": "Video Capture Device (V4L2)",
-                        "source_uuid": "a1013c64-5b26-4c33-9235-653e027dfb3f",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 3,
-                        "group_item_backup": true,
-                        "pos": {
-                            "x": 1508.922119140625,
-                            "y": 867.057373046875
-                        },
-                        "pos_rel": {
-                            "x": 1.0165224075317383,
-                            "y": 0.6056617498397827
-                        },
-                        "scale": {
-                            "x": 0.7657408714294434,
-                            "y": 0.7657408118247986
-                        },
-                        "scale_rel": {
-                            "x": 0.3026723265647888,
-                            "y": 0.3030834197998047
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "STREAMING_LAYOUT",
-                        "source_uuid": "d38f6d3e-49f2-472c-b603-8120337344c7",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 1,
-                        "group_item_backup": true,
-                        "pos": {
-                            "x": 1494.6925048828125,
-                            "y": 836.5804443359375
-                        },
-                        "pos_rel": {
-                            "x": 0.9901713132858276,
-                            "y": 0.5492230653762817
-                        },
-                        "scale": {
-                            "x": 1.9194444417953491,
-                            "y": 1.9194444417953491
-                        },
-                        "scale_rel": {
-                            "x": 0.7586936354637146,
-                            "y": 0.7597241401672363
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "STREAMING_CAM",
-                        "source_uuid": "72f3df66-2b62-4198-919d-89290eada274",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 6,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 1494.6925048828125,
-                            "y": 836.5804443359375
-                        },
-                        "pos_rel": {
-                            "x": 0.9901713132858276,
-                            "y": 0.5492230653762817
-                        },
-                        "scale": {
-                            "x": 0.3952673077583313,
-                            "y": 0.39580419659614563
-                        },
-                        "scale_rel": {
-                            "x": 0.3952673077583313,
-                            "y": 0.39580419659614563
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {
-                            "collapsed": false
-                        }
-                    },
-                    {
-                        "name": "FOLLOW_ALERT",
-                        "source_uuid": "6918bf53-05e2-4375-b20a-dbb0fa11eab8",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 7,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 1527.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": 1.0499999523162842,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 0.49125000834465027,
-                            "y": 0.49166667461395264
-                        },
-                        "scale_rel": {
-                            "x": 0.49125000834465027,
-                            "y": 0.49166667461395264
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "TWITCH_CHAT",
-                        "source_uuid": "38218a0e-36cd-4ddd-9379-3a6be04b2f95",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 8,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 1319.0,
-                            "y": 102.5
-                        },
-                        "pos_rel": {
-                            "x": 0.664814829826355,
-                            "y": -0.8101851940155029
-                        },
-                        "scale": {
-                            "x": 0.5286458134651184,
-                            "y": 0.5287036895751953
-                        },
-                        "scale_rel": {
-                            "x": 0.5286458134651184,
-                            "y": 0.5287036895751953
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    }
-                ]
-            },
-            "mixers": 0,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "OBSBasic.SelectScene": [],
-                "libobs.show_scene_item.5": [],
-                "libobs.hide_scene_item.5": [],
-                "libobs.show_scene_item.4": [],
-                "libobs.hide_scene_item.4": [],
-                "libobs.show_scene_item.6": [],
-                "libobs.hide_scene_item.6": [],
-                "libobs.show_scene_item.7": [],
-                "libobs.hide_scene_item.7": [],
-                "libobs.show_scene_item.8": [],
-                "libobs.hide_scene_item.8": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "STREAMING_LAYOUT",
-            "uuid": "d38f6d3e-49f2-472c-b603-8120337344c7",
-            "id": "browser_source",
-            "versioned_id": "browser_source",
-            "settings": {
-                "url": "https://streamelements.com/overlay/68080eae1ed1d06333005ac0/tBX5fHLCrHd9wlKfsKHOWA7xavPjo2XTkb0yecWGEGWmEDfG",
-                "width": 1920,
-                "height": 1080
-            },
-            "mixers": 255,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "libobs.mute": [],
-                "libobs.unmute": [],
-                "libobs.push-to-mute": [],
-                "libobs.push-to-talk": [],
-                "ObsBrowser.Refresh": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "private_settings": {},
-            "filters": [
-                {
-                    "prev_ver": 536870916,
-                    "name": "Crop/Pad",
-                    "uuid": "4ca52238-53de-470d-97c8-a8cf05183291",
-                    "id": "crop_filter",
-                    "versioned_id": "crop_filter",
-                    "settings": {
-                        "left": 22,
-                        "top": 268,
-                        "right": 1304,
-                        "bottom": 440
-                    },
-                    "mixers": 0,
-                    "sync": 0,
-                    "flags": 0,
-                    "volume": 1.0,
-                    "balance": 0.5,
-                    "enabled": true,
-                    "muted": false,
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "hotkeys": {},
-                    "deinterlace_mode": 0,
-                    "deinterlace_field_order": 0,
-                    "monitoring_type": 0,
-                    "private_settings": {}
-                }
-            ]
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "Video Capture Device (V4L2)",
-            "uuid": "a1013c64-5b26-4c33-9235-653e027dfb3f",
-            "id": "v4l2_input",
-            "versioned_id": "v4l2_input",
-            "settings": {
-                "device_id": "/dev/video0",
-                "input": 0,
-                "pixelformat": 861030210,
-                "resolution": 8246337209400,
-                "framerate": -1,
-                "color_range": 2
-            },
-            "mixers": 0,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {},
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "private_settings": {},
-            "filters": [
-                {
-                    "prev_ver": 536870916,
-                    "name": "Crop/Pad",
-                    "uuid": "08bfed83-d729-42b8-aa4f-6eb085d3e7a7",
-                    "id": "crop_filter",
-                    "versioned_id": "crop_filter",
-                    "settings": {
-                        "left": 404,
-                        "right": 153,
-                        "bottom": 311
-                    },
-                    "mixers": 0,
-                    "sync": 0,
-                    "flags": 0,
-                    "volume": 1.0,
-                    "balance": 0.5,
-                    "enabled": true,
-                    "muted": false,
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "hotkeys": {},
-                    "deinterlace_mode": 0,
-                    "deinterlace_field_order": 0,
-                    "monitoring_type": 0,
-                    "private_settings": {}
-                }
-            ]
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "FOLLOW_ALERT",
-            "uuid": "6918bf53-05e2-4375-b20a-dbb0fa11eab8",
-            "id": "browser_source",
-            "versioned_id": "browser_source",
-            "settings": {
-                "url": "https://dashboard.twitch.tv/widgets/alertbox#eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhbGVydF9zZXRfaWQiOiI5ZjgzZTk5NS00YzU5LTQxMDktYWQ0NS04Mjg4ZjRjMDcwOWMiLCJ1c2VyX2lkIjoiOTczNDUyODQ2In0.3TVrmXWgPZH9Yh1DNE7GDJ2wGIHPCqzBtNmAVxX2DVs"
-            },
-            "mixers": 255,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "libobs.mute": [],
-                "libobs.unmute": [],
-                "libobs.push-to-mute": [],
-                "libobs.push-to-talk": [],
-                "ObsBrowser.Refresh": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "TWITCH_CHAT",
-            "uuid": "38218a0e-36cd-4ddd-9379-3a6be04b2f95",
-            "id": "browser_source",
-            "versioned_id": "browser_source",
-            "settings": {
-                "url": "https://streamelements.com/overlay/68080eb81ed1d06333005d07/tBX5fHLCrHd9wlKfsKHOWA7xavPjo2XTkb0yecWGEGWmEDfG",
-                "width": 1920,
-                "height": 1080
-            },
-            "mixers": 255,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "libobs.mute": [],
-                "libobs.unmute": [],
-                "libobs.push-to-mute": [],
-                "libobs.push-to-talk": [],
-                "ObsBrowser.Refresh": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "private_settings": {},
-            "filters": [
-                {
-                    "prev_ver": 536870916,
-                    "name": "Crop/Pad",
-                    "uuid": "b376d9a2-0a09-474c-98c8-20a84a03de86",
-                    "id": "crop_filter",
-                    "versioned_id": "crop_filter",
-                    "settings": {
-                        "left": 338,
-                        "top": 0,
-                        "right": 981,
-                        "bottom": 0
-                    },
-                    "mixers": 0,
-                    "sync": 0,
-                    "flags": 0,
-                    "volume": 1.0,
-                    "balance": 0.5,
-                    "enabled": false,
-                    "muted": false,
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "hotkeys": {},
-                    "deinterlace_mode": 0,
-                    "deinterlace_field_order": 0,
-                    "monitoring_type": 0,
-                    "private_settings": {}
-                }
-            ]
-        }
-    ],
-    "groups": [
-        {
-            "prev_ver": 536870916,
-            "name": "AUDIO",
-            "uuid": "efd9697d-6599-4793-9325-738f26eb1c34",
-            "id": "group",
-            "versioned_id": "group",
-            "settings": {
-                "id_counter": 0,
-                "custom_size": true,
-                "cx": 0,
-                "cy": 0,
-                "items": [
-                    {
-                        "name": "DISCORD_CALL_AUDIO",
-                        "source_uuid": "06975351-f85e-45c3-8d96-84dbf58f8805",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 8,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "KEYBOARD_AUDIO",
-                        "source_uuid": "6c5cda7a-d23a-45c5-b7ca-49554fd0dd71",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 9,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "MUSIC_AUDIO",
-                        "source_uuid": "c06d7013-7e9c-4c5b-a289-26b476489a15",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 10,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    }
-                ]
-            },
-            "mixers": 0,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "libobs.show_scene_item.8": [],
-                "libobs.hide_scene_item.8": [],
-                "libobs.show_scene_item.9": [],
-                "libobs.hide_scene_item.9": [],
-                "libobs.show_scene_item.10": [],
-                "libobs.hide_scene_item.10": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "DISPLAY",
-            "uuid": "d6761d7d-db97-476b-b436-8e2e3038f697",
-            "id": "group",
-            "versioned_id": "group",
-            "settings": {
-                "id_counter": 0,
-                "custom_size": true,
-                "cx": 1920,
-                "cy": 1080,
-                "items": [
-                    {
-                        "name": "MONITOR_2",
-                        "source_uuid": "d5c1b765-092b-4cea-a386-218f2a091bce",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 2,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 96.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.600000023841858,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 0.675000011920929,
-                            "y": 0.675000011920929
-                        },
-                        "scale_rel": {
-                            "x": 0.675000011920929,
-                            "y": 0.675000011920929
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "MONITOR_1",
-                        "source_uuid": "4e87eaff-6524-4467-97f4-306433ecd1b9",
-                        "visible": false,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 3,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    }
-                ]
-            },
-            "mixers": 0,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "libobs.show_scene_item.2": [],
-                "libobs.hide_scene_item.2": [],
-                "libobs.show_scene_item.3": [],
-                "libobs.hide_scene_item.3": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "STREAMING_CAM",
-            "uuid": "72f3df66-2b62-4198-919d-89290eada274",
-            "id": "group",
-            "versioned_id": "group",
-            "settings": {
-                "id_counter": 0,
-                "custom_size": true,
-                "cx": 1141,
-                "cy": 715,
-                "items": [
-                    {
-                        "name": "Video Capture Device (V4L2)",
-                        "source_uuid": "a1013c64-5b26-4c33-9235-653e027dfb3f",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 3,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 35.99993896484375,
-                            "y": 77.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7111111879348755,
-                            "y": -0.8574073910713196
-                        },
-                        "scale": {
-                            "x": 0.7657408714294434,
-                            "y": 0.7657408118247986
-                        },
-                        "scale_rel": {
-                            "x": 0.7657408714294434,
-                            "y": 0.7657408118247986
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "STREAMING_LAYOUT",
-                        "source_uuid": "d38f6d3e-49f2-472c-b603-8120337344c7",
-                        "visible": true,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 1,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.9194444417953491,
-                            "y": 1.9194444417953491
-                        },
-                        "scale_rel": {
-                            "x": 1.9194444417953491,
-                            "y": 1.9194444417953491
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    }
-                ]
-            },
-            "mixers": 0,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "libobs.show_scene_item.3": [],
-                "libobs.hide_scene_item.3": [],
-                "libobs.show_scene_item.1": [],
-                "libobs.hide_scene_item.1": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
-            "private_settings": {},
-            "filters": [
-                {
-                    "prev_ver": 536870916,
-                    "name": "Crop/Pad",
-                    "uuid": "0d77b054-0a98-4f07-aee6-ae0540a81330",
-                    "id": "crop_filter",
-                    "versioned_id": "crop_filter",
-                    "settings": {
-                        "left": 22,
-                        "bottom": 36,
-                        "right": 43,
-                        "top": 64
-                    },
-                    "mixers": 0,
-                    "sync": 0,
-                    "flags": 0,
-                    "volume": 1.0,
-                    "balance": 0.5,
-                    "enabled": true,
-                    "muted": false,
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "hotkeys": {},
-                    "deinterlace_mode": 0,
-                    "deinterlace_field_order": 0,
-                    "monitoring_type": 0,
-                    "private_settings": {}
-                }
-            ]
-        }
-    ],
-    "quick_transitions": [
-        {
-            "name": "Cut",
-            "duration": 300,
-            "hotkeys": [],
-            "id": 1,
-            "fade_to_black": false
-        },
-        {
-            "name": "Fade",
-            "duration": 300,
-            "hotkeys": [],
-            "id": 2,
-            "fade_to_black": false
-        },
-        {
-            "name": "Fade",
-            "duration": 300,
-            "hotkeys": [],
-            "id": 3,
-            "fade_to_black": true
-        }
-    ],
-    "transitions": [],
-    "saved_projectors": [],
-    "canvases": [],
-    "current_transition": "Fade",
-    "transition_duration": 300,
-    "preview_locked": false,
-    "scaling_enabled": false,
-    "scaling_level": -13,
-    "scaling_off_x": 0.0,
-    "scaling_off_y": 0.0,
-    "virtual-camera": {
-        "type2": 3
-    },
-    "modules": {
-        "scripts-tool": [],
-        "output-timer": {
-            "streamTimerHours": 0,
-            "streamTimerMinutes": 0,
-            "streamTimerSeconds": 30,
-            "recordTimerHours": 0,
-            "recordTimerMinutes": 0,
-            "recordTimerSeconds": 30,
-            "autoStartStreamTimer": false,
-            "autoStartRecordTimer": false,
-            "pauseRecordTimer": true
-        },
-        "auto-scene-switcher": {
-            "interval": 300,
-            "non_matching_scene": "",
-            "switch_if_not_matching": false,
-            "active": false,
-            "switches": []
-        }
-    },
-    "version": 2
+	"DesktopAudioDevice1": {
+		"prev_ver": 536870916,
+		"name": "Desktop Audio",
+		"uuid": "84820b25-dfbf-404f-8262-1585feacea0b",
+		"id": "pulse_output_capture",
+		"versioned_id": "pulse_output_capture",
+		"settings": {
+			"device_id": "alsa_output.usb-3142_fifine_Microphone-00.analog-stereo.monitor"
+		},
+		"mixers": 255,
+		"sync": 0,
+		"flags": 0,
+		"volume": 1.0,
+		"balance": 0.5,
+		"enabled": true,
+		"muted": true,
+		"push-to-mute": false,
+		"push-to-mute-delay": 0,
+		"push-to-talk": false,
+		"push-to-talk-delay": 0,
+		"hotkeys": {
+			"libobs.mute": [],
+			"libobs.unmute": [],
+			"libobs.push-to-mute": [],
+			"libobs.push-to-talk": []
+		},
+		"deinterlace_mode": 0,
+		"deinterlace_field_order": 0,
+		"monitoring_type": 0,
+		"private_settings": {}
+	},
+	"AuxAudioDevice1": {
+		"prev_ver": 536870916,
+		"name": "Mic/Aux",
+		"uuid": "355508b0-f19a-4846-92b7-867f837cc255",
+		"id": "pulse_input_capture",
+		"versioned_id": "pulse_input_capture",
+		"settings": {
+			"device_id": "default"
+		},
+		"mixers": 255,
+		"sync": 0,
+		"flags": 0,
+		"volume": 0.8411943912506104,
+		"balance": 0.5,
+		"enabled": true,
+		"muted": false,
+		"push-to-mute": false,
+		"push-to-mute-delay": 0,
+		"push-to-talk": false,
+		"push-to-talk-delay": 0,
+		"hotkeys": {
+			"libobs.mute": [],
+			"libobs.unmute": [],
+			"libobs.push-to-mute": [],
+			"libobs.push-to-talk": []
+		},
+		"deinterlace_mode": 0,
+		"deinterlace_field_order": 0,
+		"monitoring_type": 0,
+		"private_settings": {},
+		"filters": [
+			{
+				"prev_ver": 536870916,
+				"name": "Noise Suppression",
+				"uuid": "852c37e4-70ac-4bee-bd2a-64bfb23452a8",
+				"id": "noise_suppress_filter",
+				"versioned_id": "noise_suppress_filter_v2",
+				"settings": {},
+				"mixers": 255,
+				"sync": 0,
+				"flags": 0,
+				"volume": 1.0,
+				"balance": 0.5,
+				"enabled": true,
+				"muted": false,
+				"push-to-mute": false,
+				"push-to-mute-delay": 0,
+				"push-to-talk": false,
+				"push-to-talk-delay": 0,
+				"hotkeys": {},
+				"deinterlace_mode": 0,
+				"deinterlace_field_order": 0,
+				"monitoring_type": 0,
+				"private_settings": {}
+			},
+			{
+				"prev_ver": 536870916,
+				"name": "Compressor",
+				"uuid": "817db38e-e702-4a57-86e0-f9fc3a79a36e",
+				"id": "compressor_filter",
+				"versioned_id": "compressor_filter",
+				"settings": {
+					"ratio": 4.0,
+					"threshold": -35.3,
+					"attack_time": 2,
+					"release_time": 100,
+					"output_gain": 19.5
+				},
+				"mixers": 255,
+				"sync": 0,
+				"flags": 0,
+				"volume": 1.0,
+				"balance": 0.5,
+				"enabled": true,
+				"muted": false,
+				"push-to-mute": false,
+				"push-to-mute-delay": 0,
+				"push-to-talk": false,
+				"push-to-talk-delay": 0,
+				"hotkeys": {},
+				"deinterlace_mode": 0,
+				"deinterlace_field_order": 0,
+				"monitoring_type": 0,
+				"private_settings": {}
+			},
+			{
+				"prev_ver": 536870916,
+				"name": "Expander",
+				"uuid": "16788baa-be18-4d93-99a7-82de2c2e7141",
+				"id": "expander_filter",
+				"versioned_id": "expander_filter",
+				"settings": {
+					"ratio": 4.0,
+					"release_time": 100,
+					"attack_time": 2,
+					"threshold": -26.1,
+					"output_gain": 0.0
+				},
+				"mixers": 255,
+				"sync": 0,
+				"flags": 0,
+				"volume": 1.0,
+				"balance": 0.5,
+				"enabled": true,
+				"muted": false,
+				"push-to-mute": false,
+				"push-to-mute-delay": 0,
+				"push-to-talk": false,
+				"push-to-talk-delay": 0,
+				"hotkeys": {},
+				"deinterlace_mode": 0,
+				"deinterlace_field_order": 0,
+				"monitoring_type": 0,
+				"private_settings": {}
+			}
+		]
+	},
+	"current_scene": "MAIN_STREAMING",
+	"current_program_scene": "MAIN_STREAMING",
+	"scene_order": [
+		{
+			"name": "MAIN_RECORDING"
+		},
+		{
+			"name": "STARTING"
+		},
+		{
+			"name": "MAIN_STREAMING"
+		},
+		{
+			"name": "BE_BACK"
+		},
+		{
+			"name": "ENDING"
+		}
+	],
+	"name": "Untitled",
+	"sources": [
+		{
+			"prev_ver": 536870916,
+			"name": "MAIN_RECORDING",
+			"uuid": "3c36af05-7a75-4f4c-a3a4-99f4790de386",
+			"id": "scene",
+			"versioned_id": "scene",
+			"settings": {
+				"id_counter": 12,
+				"custom_size": false,
+				"items": [
+					{
+						"name": "MONITOR_2",
+						"source_uuid": "d5c1b765-092b-4cea-a386-218f2a091bce",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 2,
+						"group_item_backup": true,
+						"pos": {
+							"x": 96.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.600000023841858,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 0.675000011920929,
+							"y": 0.675000011920929
+						},
+						"scale_rel": {
+							"x": 0.675000011920929,
+							"y": 0.675000011920929
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "MONITOR_1",
+						"source_uuid": "4e87eaff-6524-4467-97f4-306433ecd1b9",
+						"visible": false,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 3,
+						"group_item_backup": true,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "DISPLAY",
+						"source_uuid": "d6761d7d-db97-476b-b436-8e2e3038f697",
+						"visible": true,
+						"locked": false,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 12,
+						"group_item_backup": false,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {
+							"collapsed": false
+						}
+					},
+					{
+						"name": "DISCORD_CALL_AUDIO",
+						"source_uuid": "06975351-f85e-45c3-8d96-84dbf58f8805",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 8,
+						"group_item_backup": true,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "KEYBOARD_AUDIO",
+						"source_uuid": "6c5cda7a-d23a-45c5-b7ca-49554fd0dd71",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 9,
+						"group_item_backup": true,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "MUSIC_AUDIO",
+						"source_uuid": "c06d7013-7e9c-4c5b-a289-26b476489a15",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 10,
+						"group_item_backup": true,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "AUDIO",
+						"source_uuid": "efd9697d-6599-4793-9325-738f26eb1c34",
+						"visible": true,
+						"locked": false,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 11,
+						"group_item_backup": false,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					}
+				]
+			},
+			"mixers": 0,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {
+				"OBSBasic.SelectScene": [],
+				"libobs.show_scene_item.12": [],
+				"libobs.hide_scene_item.12": [],
+				"libobs.show_scene_item.11": [],
+				"libobs.hide_scene_item.11": []
+			},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
+			"private_settings": {}
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "MONITOR_2",
+			"uuid": "d5c1b765-092b-4cea-a386-218f2a091bce",
+			"id": "xshm_input_v2",
+			"versioned_id": "xshm_input_v2",
+			"settings": {
+				"screen": 0,
+				"advanced": false
+			},
+			"mixers": 0,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"private_settings": {}
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "MONITOR_1",
+			"uuid": "4e87eaff-6524-4467-97f4-306433ecd1b9",
+			"id": "xshm_input_v2",
+			"versioned_id": "xshm_input_v2",
+			"settings": {
+				"screen": 1
+			},
+			"mixers": 0,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"private_settings": {}
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "DISCORD_CALL_AUDIO",
+			"uuid": "06975351-f85e-45c3-8d96-84dbf58f8805",
+			"id": "pipewire_audio_application_capture",
+			"versioned_id": "pipewire_audio_application_capture",
+			"settings": {
+				"TargetName": "Discord"
+			},
+			"mixers": 255,
+			"sync": 0,
+			"flags": 0,
+			"volume": 0.8411943912506104,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {
+				"libobs.mute": [],
+				"libobs.unmute": [],
+				"libobs.push-to-mute": [],
+				"libobs.push-to-talk": []
+			},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"private_settings": {}
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "KEYBOARD_AUDIO",
+			"uuid": "6c5cda7a-d23a-45c5-b7ca-49554fd0dd71",
+			"id": "pipewire_audio_application_capture",
+			"versioned_id": "pipewire_audio_application_capture",
+			"settings": {
+				"TargetName": "mechvibes"
+			},
+			"mixers": 255,
+			"sync": 0,
+			"flags": 0,
+			"volume": 0.45633941888809204,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {
+				"libobs.mute": [],
+				"libobs.unmute": [],
+				"libobs.push-to-mute": [],
+				"libobs.push-to-talk": []
+			},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"private_settings": {}
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "MUSIC_AUDIO",
+			"uuid": "c06d7013-7e9c-4c5b-a289-26b476489a15",
+			"id": "pipewire_audio_application_capture",
+			"versioned_id": "pipewire_audio_application_capture",
+			"settings": {},
+			"mixers": 255,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {
+				"libobs.mute": [],
+				"libobs.unmute": [],
+				"libobs.push-to-mute": [],
+				"libobs.push-to-talk": []
+			},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"private_settings": {}
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "STARTING",
+			"uuid": "30ac962c-b125-4cdd-8d66-30a50c518165",
+			"id": "scene",
+			"versioned_id": "scene",
+			"settings": {
+				"id_counter": 3,
+				"custom_size": false,
+				"items": [
+					{
+						"name": "STARTING_VIDEO",
+						"source_uuid": "e8ae92cb-9543-4706-aa2a-84c1632cb507",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 1,
+						"group_item_backup": false,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "FOLLOW_ALERT",
+						"source_uuid": "6918bf53-05e2-4375-b20a-dbb0fa11eab8",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 2,
+						"group_item_backup": false,
+						"pos": {
+							"x": 1527.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": 1.0499999523162842,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 0.49125000834465027,
+							"y": 0.49166667461395264
+						},
+						"scale_rel": {
+							"x": 0.49125000834465027,
+							"y": 0.49166667461395264
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "TWITCH_CHAT",
+						"source_uuid": "38218a0e-36cd-4ddd-9379-3a6be04b2f95",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 3,
+						"group_item_backup": false,
+						"pos": {
+							"x": 1319.0,
+							"y": 102.5
+						},
+						"pos_rel": {
+							"x": 0.664814829826355,
+							"y": -0.8101851940155029
+						},
+						"scale": {
+							"x": 0.5286458134651184,
+							"y": 0.5287036895751953
+						},
+						"scale_rel": {
+							"x": 0.5286458134651184,
+							"y": 0.5287036895751953
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					}
+				]
+			},
+			"mixers": 0,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {
+				"OBSBasic.SelectScene": [],
+				"libobs.show_scene_item.1": [],
+				"libobs.hide_scene_item.1": [],
+				"libobs.show_scene_item.2": [],
+				"libobs.hide_scene_item.2": [],
+				"libobs.show_scene_item.3": [],
+				"libobs.hide_scene_item.3": []
+			},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
+			"private_settings": {}
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "STARTING_VIDEO",
+			"uuid": "e8ae92cb-9543-4706-aa2a-84c1632cb507",
+			"id": "browser_source",
+			"versioned_id": "browser_source",
+			"settings": {
+				"url": "https://streamelements.com/overlay/68080eae1ed1d06333005ac2/tBX5fHLCrHd9wlKfsKHOWA7xavPjo2XTkb0yecWGEGWmEDfG",
+				"width": 1920,
+				"height": 1080
+			},
+			"mixers": 255,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {
+				"libobs.mute": [],
+				"libobs.unmute": [],
+				"libobs.push-to-mute": [],
+				"libobs.push-to-talk": [],
+				"ObsBrowser.Refresh": []
+			},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"private_settings": {}
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "BE_BACK",
+			"uuid": "6b87287d-56b1-49d1-a6ea-9e86dca36a17",
+			"id": "scene",
+			"versioned_id": "scene",
+			"settings": {
+				"id_counter": 3,
+				"custom_size": false,
+				"items": [
+					{
+						"name": "BE_BACK_VIDEO",
+						"source_uuid": "2a31e1e9-dfca-47b2-a711-4b525ad99563",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 1,
+						"group_item_backup": false,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "FOLLOW_ALERT",
+						"source_uuid": "6918bf53-05e2-4375-b20a-dbb0fa11eab8",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 2,
+						"group_item_backup": false,
+						"pos": {
+							"x": 1527.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": 1.0499999523162842,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 0.49125000834465027,
+							"y": 0.49166667461395264
+						},
+						"scale_rel": {
+							"x": 0.49125000834465027,
+							"y": 0.49166667461395264
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "TWITCH_CHAT",
+						"source_uuid": "38218a0e-36cd-4ddd-9379-3a6be04b2f95",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 3,
+						"group_item_backup": false,
+						"pos": {
+							"x": 1319.0,
+							"y": 102.5
+						},
+						"pos_rel": {
+							"x": 0.664814829826355,
+							"y": -0.8101851940155029
+						},
+						"scale": {
+							"x": 0.5286458134651184,
+							"y": 0.5287036895751953
+						},
+						"scale_rel": {
+							"x": 0.5286458134651184,
+							"y": 0.5287036895751953
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					}
+				]
+			},
+			"mixers": 0,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {
+				"OBSBasic.SelectScene": [],
+				"libobs.show_scene_item.1": [],
+				"libobs.hide_scene_item.1": [],
+				"libobs.show_scene_item.2": [],
+				"libobs.hide_scene_item.2": [],
+				"libobs.show_scene_item.3": [],
+				"libobs.hide_scene_item.3": []
+			},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
+			"private_settings": {}
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "BE_BACK_VIDEO",
+			"uuid": "2a31e1e9-dfca-47b2-a711-4b525ad99563",
+			"id": "browser_source",
+			"versioned_id": "browser_source",
+			"settings": {
+				"url": "https://streamelements.com/overlay/68080eae1ed1d06333005ac3/tBX5fHLCrHd9wlKfsKHOWA7xavPjo2XTkb0yecWGEGWmEDfG",
+				"width": 1920,
+				"height": 1080
+			},
+			"mixers": 255,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {
+				"libobs.mute": [],
+				"libobs.unmute": [],
+				"libobs.push-to-mute": [],
+				"libobs.push-to-talk": [],
+				"ObsBrowser.Refresh": []
+			},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"private_settings": {}
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "ENDING",
+			"uuid": "1875dd32-7bd8-42ec-ad49-4e04e2e3ee07",
+			"id": "scene",
+			"versioned_id": "scene",
+			"settings": {
+				"id_counter": 3,
+				"custom_size": false,
+				"items": [
+					{
+						"name": "ENDING_VIDEO",
+						"source_uuid": "0023e204-c233-4626-9278-b4495349d635",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 1,
+						"group_item_backup": false,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "FOLLOW_ALERT",
+						"source_uuid": "6918bf53-05e2-4375-b20a-dbb0fa11eab8",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 2,
+						"group_item_backup": false,
+						"pos": {
+							"x": 1527.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": 1.0499999523162842,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 0.49125000834465027,
+							"y": 0.49166667461395264
+						},
+						"scale_rel": {
+							"x": 0.49125000834465027,
+							"y": 0.49166667461395264
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "TWITCH_CHAT",
+						"source_uuid": "38218a0e-36cd-4ddd-9379-3a6be04b2f95",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 3,
+						"group_item_backup": false,
+						"pos": {
+							"x": 1319.0,
+							"y": 102.5
+						},
+						"pos_rel": {
+							"x": 0.664814829826355,
+							"y": -0.8101851940155029
+						},
+						"scale": {
+							"x": 0.5286458134651184,
+							"y": 0.5287036895751953
+						},
+						"scale_rel": {
+							"x": 0.5286458134651184,
+							"y": 0.5287036895751953
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					}
+				]
+			},
+			"mixers": 0,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {
+				"OBSBasic.SelectScene": [],
+				"libobs.show_scene_item.1": [],
+				"libobs.hide_scene_item.1": [],
+				"libobs.show_scene_item.2": [],
+				"libobs.hide_scene_item.2": [],
+				"libobs.show_scene_item.3": [],
+				"libobs.hide_scene_item.3": []
+			},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
+			"private_settings": {}
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "ENDING_VIDEO",
+			"uuid": "0023e204-c233-4626-9278-b4495349d635",
+			"id": "browser_source",
+			"versioned_id": "browser_source",
+			"settings": {
+				"url": "https://streamelements.com/overlay/68080eae1ed1d06333005ac4/tBX5fHLCrHd9wlKfsKHOWA7xavPjo2XTkb0yecWGEGWmEDfG",
+				"width": 1920,
+				"height": 1080
+			},
+			"mixers": 255,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {
+				"libobs.mute": [],
+				"libobs.unmute": [],
+				"libobs.push-to-mute": [],
+				"libobs.push-to-talk": [],
+				"ObsBrowser.Refresh": []
+			},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"private_settings": {}
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "MAIN_STREAMING",
+			"uuid": "d99a8616-4386-408e-b46c-a3c095c9baca",
+			"id": "scene",
+			"versioned_id": "scene",
+			"settings": {
+				"id_counter": 8,
+				"custom_size": false,
+				"items": [
+					{
+						"name": "MONITOR_2",
+						"source_uuid": "d5c1b765-092b-4cea-a386-218f2a091bce",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 2,
+						"group_item_backup": true,
+						"pos": {
+							"x": 96.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.600000023841858,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 0.675000011920929,
+							"y": 0.675000011920929
+						},
+						"scale_rel": {
+							"x": 0.675000011920929,
+							"y": 0.675000011920929
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "MONITOR_1",
+						"source_uuid": "4e87eaff-6524-4467-97f4-306433ecd1b9",
+						"visible": false,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 3,
+						"group_item_backup": true,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "DISPLAY",
+						"source_uuid": "d6761d7d-db97-476b-b436-8e2e3038f697",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 5,
+						"group_item_backup": false,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {
+							"collapsed": false
+						}
+					},
+					{
+						"name": "DISCORD_CALL_AUDIO",
+						"source_uuid": "06975351-f85e-45c3-8d96-84dbf58f8805",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 8,
+						"group_item_backup": true,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "KEYBOARD_AUDIO",
+						"source_uuid": "6c5cda7a-d23a-45c5-b7ca-49554fd0dd71",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 9,
+						"group_item_backup": true,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "MUSIC_AUDIO",
+						"source_uuid": "c06d7013-7e9c-4c5b-a289-26b476489a15",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 10,
+						"group_item_backup": true,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "AUDIO",
+						"source_uuid": "efd9697d-6599-4793-9325-738f26eb1c34",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 4,
+						"group_item_backup": false,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {
+							"collapsed": true
+						}
+					},
+					{
+						"name": "Video Capture Device (V4L2)",
+						"source_uuid": "a1013c64-5b26-4c33-9235-653e027dfb3f",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 3,
+						"group_item_backup": true,
+						"pos": {
+							"x": 1508.922119140625,
+							"y": 867.057373046875
+						},
+						"pos_rel": {
+							"x": 1.0165224075317383,
+							"y": 0.6056617498397827
+						},
+						"scale": {
+							"x": 0.7657408714294434,
+							"y": 0.7657408118247986
+						},
+						"scale_rel": {
+							"x": 0.3026723265647888,
+							"y": 0.3030834197998047
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "STREAMING_LAYOUT",
+						"source_uuid": "d38f6d3e-49f2-472c-b603-8120337344c7",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 1,
+						"group_item_backup": true,
+						"pos": {
+							"x": 1494.6925048828125,
+							"y": 836.5804443359375
+						},
+						"pos_rel": {
+							"x": 0.9901713132858276,
+							"y": 0.5492230653762817
+						},
+						"scale": {
+							"x": 1.9194444417953491,
+							"y": 1.9194444417953491
+						},
+						"scale_rel": {
+							"x": 0.7586936354637146,
+							"y": 0.7597241401672363
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "STREAMING_CAM",
+						"source_uuid": "72f3df66-2b62-4198-919d-89290eada274",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 6,
+						"group_item_backup": false,
+						"pos": {
+							"x": 1494.6925048828125,
+							"y": 836.5804443359375
+						},
+						"pos_rel": {
+							"x": 0.9901713132858276,
+							"y": 0.5492230653762817
+						},
+						"scale": {
+							"x": 0.3952673077583313,
+							"y": 0.39580419659614563
+						},
+						"scale_rel": {
+							"x": 0.3952673077583313,
+							"y": 0.39580419659614563
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {
+							"collapsed": false
+						}
+					},
+					{
+						"name": "FOLLOW_ALERT",
+						"source_uuid": "6918bf53-05e2-4375-b20a-dbb0fa11eab8",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 7,
+						"group_item_backup": false,
+						"pos": {
+							"x": 1527.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": 1.0499999523162842,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 0.49125000834465027,
+							"y": 0.49166667461395264
+						},
+						"scale_rel": {
+							"x": 0.49125000834465027,
+							"y": 0.49166667461395264
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "TWITCH_CHAT",
+						"source_uuid": "38218a0e-36cd-4ddd-9379-3a6be04b2f95",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 8,
+						"group_item_backup": false,
+						"pos": {
+							"x": 1319.0,
+							"y": 102.5
+						},
+						"pos_rel": {
+							"x": 0.664814829826355,
+							"y": -0.8101851940155029
+						},
+						"scale": {
+							"x": 0.5286458134651184,
+							"y": 0.5287036895751953
+						},
+						"scale_rel": {
+							"x": 0.5286458134651184,
+							"y": 0.5287036895751953
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					}
+				]
+			},
+			"mixers": 0,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {
+				"OBSBasic.SelectScene": [],
+				"libobs.show_scene_item.5": [],
+				"libobs.hide_scene_item.5": [],
+				"libobs.show_scene_item.4": [],
+				"libobs.hide_scene_item.4": [],
+				"libobs.show_scene_item.6": [],
+				"libobs.hide_scene_item.6": [],
+				"libobs.show_scene_item.7": [],
+				"libobs.hide_scene_item.7": [],
+				"libobs.show_scene_item.8": [],
+				"libobs.hide_scene_item.8": []
+			},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
+			"private_settings": {}
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "STREAMING_LAYOUT",
+			"uuid": "d38f6d3e-49f2-472c-b603-8120337344c7",
+			"id": "browser_source",
+			"versioned_id": "browser_source",
+			"settings": {
+				"url": "https://streamelements.com/overlay/68080eae1ed1d06333005ac0/tBX5fHLCrHd9wlKfsKHOWA7xavPjo2XTkb0yecWGEGWmEDfG",
+				"width": 1920,
+				"height": 1080
+			},
+			"mixers": 255,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {
+				"libobs.mute": [],
+				"libobs.unmute": [],
+				"libobs.push-to-mute": [],
+				"libobs.push-to-talk": [],
+				"ObsBrowser.Refresh": []
+			},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"private_settings": {},
+			"filters": [
+				{
+					"prev_ver": 536870916,
+					"name": "Crop/Pad",
+					"uuid": "4ca52238-53de-470d-97c8-a8cf05183291",
+					"id": "crop_filter",
+					"versioned_id": "crop_filter",
+					"settings": {
+						"left": 22,
+						"top": 268,
+						"right": 1304,
+						"bottom": 440
+					},
+					"mixers": 0,
+					"sync": 0,
+					"flags": 0,
+					"volume": 1.0,
+					"balance": 0.5,
+					"enabled": true,
+					"muted": false,
+					"push-to-mute": false,
+					"push-to-mute-delay": 0,
+					"push-to-talk": false,
+					"push-to-talk-delay": 0,
+					"hotkeys": {},
+					"deinterlace_mode": 0,
+					"deinterlace_field_order": 0,
+					"monitoring_type": 0,
+					"private_settings": {}
+				}
+			]
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "Video Capture Device (V4L2)",
+			"uuid": "a1013c64-5b26-4c33-9235-653e027dfb3f",
+			"id": "v4l2_input",
+			"versioned_id": "v4l2_input",
+			"settings": {
+				"device_id": "/dev/video0",
+				"input": 0,
+				"pixelformat": 861030210,
+				"resolution": 8246337209400,
+				"framerate": -1,
+				"color_range": 2
+			},
+			"mixers": 0,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"private_settings": {},
+			"filters": [
+				{
+					"prev_ver": 536870916,
+					"name": "Crop/Pad",
+					"uuid": "08bfed83-d729-42b8-aa4f-6eb085d3e7a7",
+					"id": "crop_filter",
+					"versioned_id": "crop_filter",
+					"settings": {
+						"left": 404,
+						"right": 153,
+						"bottom": 311
+					},
+					"mixers": 0,
+					"sync": 0,
+					"flags": 0,
+					"volume": 1.0,
+					"balance": 0.5,
+					"enabled": true,
+					"muted": false,
+					"push-to-mute": false,
+					"push-to-mute-delay": 0,
+					"push-to-talk": false,
+					"push-to-talk-delay": 0,
+					"hotkeys": {},
+					"deinterlace_mode": 0,
+					"deinterlace_field_order": 0,
+					"monitoring_type": 0,
+					"private_settings": {}
+				}
+			]
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "FOLLOW_ALERT",
+			"uuid": "6918bf53-05e2-4375-b20a-dbb0fa11eab8",
+			"id": "browser_source",
+			"versioned_id": "browser_source",
+			"settings": {
+				"url": "https://dashboard.twitch.tv/widgets/alertbox#eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhbGVydF9zZXRfaWQiOiI5ZjgzZTk5NS00YzU5LTQxMDktYWQ0NS04Mjg4ZjRjMDcwOWMiLCJ1c2VyX2lkIjoiOTczNDUyODQ2In0.3TVrmXWgPZH9Yh1DNE7GDJ2wGIHPCqzBtNmAVxX2DVs"
+			},
+			"mixers": 255,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {
+				"libobs.mute": [],
+				"libobs.unmute": [],
+				"libobs.push-to-mute": [],
+				"libobs.push-to-talk": [],
+				"ObsBrowser.Refresh": []
+			},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"private_settings": {}
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "TWITCH_CHAT",
+			"uuid": "38218a0e-36cd-4ddd-9379-3a6be04b2f95",
+			"id": "browser_source",
+			"versioned_id": "browser_source",
+			"settings": {
+				"url": "https://streamelements.com/overlay/68080eb81ed1d06333005d07/tBX5fHLCrHd9wlKfsKHOWA7xavPjo2XTkb0yecWGEGWmEDfG",
+				"width": 1920,
+				"height": 1080
+			},
+			"mixers": 255,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {
+				"libobs.mute": [],
+				"libobs.unmute": [],
+				"libobs.push-to-mute": [],
+				"libobs.push-to-talk": [],
+				"ObsBrowser.Refresh": []
+			},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"private_settings": {},
+			"filters": [
+				{
+					"prev_ver": 536870916,
+					"name": "Crop/Pad",
+					"uuid": "b376d9a2-0a09-474c-98c8-20a84a03de86",
+					"id": "crop_filter",
+					"versioned_id": "crop_filter",
+					"settings": {
+						"left": 338,
+						"top": 0,
+						"right": 981,
+						"bottom": 0
+					},
+					"mixers": 0,
+					"sync": 0,
+					"flags": 0,
+					"volume": 1.0,
+					"balance": 0.5,
+					"enabled": false,
+					"muted": false,
+					"push-to-mute": false,
+					"push-to-mute-delay": 0,
+					"push-to-talk": false,
+					"push-to-talk-delay": 0,
+					"hotkeys": {},
+					"deinterlace_mode": 0,
+					"deinterlace_field_order": 0,
+					"monitoring_type": 0,
+					"private_settings": {}
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"prev_ver": 536870916,
+			"name": "AUDIO",
+			"uuid": "efd9697d-6599-4793-9325-738f26eb1c34",
+			"id": "group",
+			"versioned_id": "group",
+			"settings": {
+				"id_counter": 0,
+				"custom_size": true,
+				"cx": 0,
+				"cy": 0,
+				"items": [
+					{
+						"name": "DISCORD_CALL_AUDIO",
+						"source_uuid": "06975351-f85e-45c3-8d96-84dbf58f8805",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 8,
+						"group_item_backup": false,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "KEYBOARD_AUDIO",
+						"source_uuid": "6c5cda7a-d23a-45c5-b7ca-49554fd0dd71",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 9,
+						"group_item_backup": false,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "MUSIC_AUDIO",
+						"source_uuid": "c06d7013-7e9c-4c5b-a289-26b476489a15",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 10,
+						"group_item_backup": false,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					}
+				]
+			},
+			"mixers": 0,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {
+				"libobs.show_scene_item.8": [],
+				"libobs.hide_scene_item.8": [],
+				"libobs.show_scene_item.9": [],
+				"libobs.hide_scene_item.9": [],
+				"libobs.show_scene_item.10": [],
+				"libobs.hide_scene_item.10": []
+			},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
+			"private_settings": {}
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "DISPLAY",
+			"uuid": "d6761d7d-db97-476b-b436-8e2e3038f697",
+			"id": "group",
+			"versioned_id": "group",
+			"settings": {
+				"id_counter": 0,
+				"custom_size": true,
+				"cx": 1920,
+				"cy": 1080,
+				"items": [
+					{
+						"name": "MONITOR_2",
+						"source_uuid": "d5c1b765-092b-4cea-a386-218f2a091bce",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 2,
+						"group_item_backup": false,
+						"pos": {
+							"x": 96.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.600000023841858,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 0.675000011920929,
+							"y": 0.675000011920929
+						},
+						"scale_rel": {
+							"x": 0.675000011920929,
+							"y": 0.675000011920929
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "MONITOR_1",
+						"source_uuid": "4e87eaff-6524-4467-97f4-306433ecd1b9",
+						"visible": false,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 3,
+						"group_item_backup": false,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"scale_rel": {
+							"x": 1.0,
+							"y": 1.0
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					}
+				]
+			},
+			"mixers": 0,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {
+				"libobs.show_scene_item.2": [],
+				"libobs.hide_scene_item.2": [],
+				"libobs.show_scene_item.3": [],
+				"libobs.hide_scene_item.3": []
+			},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
+			"private_settings": {}
+		},
+		{
+			"prev_ver": 536870916,
+			"name": "STREAMING_CAM",
+			"uuid": "72f3df66-2b62-4198-919d-89290eada274",
+			"id": "group",
+			"versioned_id": "group",
+			"settings": {
+				"id_counter": 0,
+				"custom_size": true,
+				"cx": 1141,
+				"cy": 715,
+				"items": [
+					{
+						"name": "Video Capture Device (V4L2)",
+						"source_uuid": "a1013c64-5b26-4c33-9235-653e027dfb3f",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 3,
+						"group_item_backup": false,
+						"pos": {
+							"x": 35.99993896484375,
+							"y": 77.0
+						},
+						"pos_rel": {
+							"x": -1.7111111879348755,
+							"y": -0.8574073910713196
+						},
+						"scale": {
+							"x": 0.7657408714294434,
+							"y": 0.7657408118247986
+						},
+						"scale_rel": {
+							"x": 0.7657408714294434,
+							"y": 0.7657408118247986
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					},
+					{
+						"name": "STREAMING_LAYOUT",
+						"source_uuid": "d38f6d3e-49f2-472c-b603-8120337344c7",
+						"visible": true,
+						"locked": true,
+						"rot": 0.0,
+						"scale_ref": {
+							"x": 1920.0,
+							"y": 1080.0
+						},
+						"align": 5,
+						"bounds_type": 0,
+						"bounds_align": 0,
+						"bounds_crop": false,
+						"crop_left": 0,
+						"crop_top": 0,
+						"crop_right": 0,
+						"crop_bottom": 0,
+						"id": 1,
+						"group_item_backup": false,
+						"pos": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"pos_rel": {
+							"x": -1.7777777910232544,
+							"y": -1.0
+						},
+						"scale": {
+							"x": 1.9194444417953491,
+							"y": 1.9194444417953491
+						},
+						"scale_rel": {
+							"x": 1.9194444417953491,
+							"y": 1.9194444417953491
+						},
+						"bounds": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"bounds_rel": {
+							"x": 0.0,
+							"y": 0.0
+						},
+						"scale_filter": "disable",
+						"blend_method": "default",
+						"blend_type": "normal",
+						"show_transition": {
+							"duration": 0
+						},
+						"hide_transition": {
+							"duration": 0
+						},
+						"private_settings": {}
+					}
+				]
+			},
+			"mixers": 0,
+			"sync": 0,
+			"flags": 0,
+			"volume": 1.0,
+			"balance": 0.5,
+			"enabled": true,
+			"muted": false,
+			"push-to-mute": false,
+			"push-to-mute-delay": 0,
+			"push-to-talk": false,
+			"push-to-talk-delay": 0,
+			"hotkeys": {
+				"libobs.show_scene_item.3": [],
+				"libobs.hide_scene_item.3": [],
+				"libobs.show_scene_item.1": [],
+				"libobs.hide_scene_item.1": []
+			},
+			"deinterlace_mode": 0,
+			"deinterlace_field_order": 0,
+			"monitoring_type": 0,
+			"canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
+			"private_settings": {},
+			"filters": [
+				{
+					"prev_ver": 536870916,
+					"name": "Crop/Pad",
+					"uuid": "0d77b054-0a98-4f07-aee6-ae0540a81330",
+					"id": "crop_filter",
+					"versioned_id": "crop_filter",
+					"settings": {
+						"left": 22,
+						"bottom": 36,
+						"right": 43,
+						"top": 64
+					},
+					"mixers": 0,
+					"sync": 0,
+					"flags": 0,
+					"volume": 1.0,
+					"balance": 0.5,
+					"enabled": true,
+					"muted": false,
+					"push-to-mute": false,
+					"push-to-mute-delay": 0,
+					"push-to-talk": false,
+					"push-to-talk-delay": 0,
+					"hotkeys": {},
+					"deinterlace_mode": 0,
+					"deinterlace_field_order": 0,
+					"monitoring_type": 0,
+					"private_settings": {}
+				}
+			]
+		}
+	],
+	"quick_transitions": [
+		{
+			"name": "Cut",
+			"duration": 300,
+			"hotkeys": [],
+			"id": 1,
+			"fade_to_black": false
+		},
+		{
+			"name": "Fade",
+			"duration": 300,
+			"hotkeys": [],
+			"id": 2,
+			"fade_to_black": false
+		},
+		{
+			"name": "Fade",
+			"duration": 300,
+			"hotkeys": [],
+			"id": 3,
+			"fade_to_black": true
+		}
+	],
+	"transitions": [],
+	"saved_projectors": [],
+	"canvases": [],
+	"current_transition": "Fade",
+	"transition_duration": 300,
+	"preview_locked": false,
+	"scaling_enabled": false,
+	"scaling_level": -13,
+	"scaling_off_x": 0.0,
+	"scaling_off_y": 0.0,
+	"virtual-camera": {
+		"type2": 3
+	},
+	"modules": {
+		"scripts-tool": [],
+		"output-timer": {
+			"streamTimerHours": 0,
+			"streamTimerMinutes": 0,
+			"streamTimerSeconds": 30,
+			"recordTimerHours": 0,
+			"recordTimerMinutes": 0,
+			"recordTimerSeconds": 30,
+			"autoStartStreamTimer": false,
+			"autoStartRecordTimer": false,
+			"pauseRecordTimer": true
+		},
+		"auto-scene-switcher": {
+			"interval": 300,
+			"non_matching_scene": "",
+			"switch_if_not_matching": false,
+			"active": false,
+			"switches": []
+		}
+	},
+	"version": 2
 }
