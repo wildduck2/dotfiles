@@ -181,19 +181,15 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 20
 # -------------------------------------------
 # Custom Key Bindings
 # -------------------------------------------
-bindsym $mod+Shift+n exec --no-startup-id ~/dotfiles/bin/resolution
 bindsym $mod+Shift+period exec systemctl suspend
-bindsym $mod+b exec ~/.config/zen/zen
 bindsym Ctrl+Print exec --no-startup-id flameshot gui
-# Lock screen (GNOME screensaver)
-bindsym $mod+Ctrl+l exec --no-startup-id gnome-screensaver-command -l
-bindsym $mod+x exec --no-startup-id gnome-screensaver-command -l
+# Lock screen (i3lock-color with Catppuccin theme)
+bindsym $mod+Ctrl+l exec --no-startup-id ~/.config/i3/lock.sh
+bindsym $mod+x exec --no-startup-id ~/.config/i3/lock.sh
 
 # -------------------------------------------
 # Autostart
 # -------------------------------------------
-# gnome-screensaver daemon must be running for lock to work
-exec --no-startup-id gnome-screensaver
 exec --no-startup-id gnome-settings-daemon
 exec --no-startup-id nm-applet
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
@@ -203,4 +199,5 @@ exec --no-startup-id trayer --edge top --align right --SetDockType true --expand
 # exec --no-startup-id xrandr --output eDP-1-1 --mode 2560x1600 --rate 240 --primary
 
 exec_always --no-startup-id feh --bg-fill ~/.config/i3/bgs/bg.jpg
-exec_always picom --log-level=info --config ~/.config/picom/picom.conf
+# Kill existing picom before restarting to avoid flicker
+exec_always --no-startup-id "killall picom; picom --log-level=info --config ~/.config/picom/picom.conf"
