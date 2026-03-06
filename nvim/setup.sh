@@ -26,7 +26,11 @@ elif command_exists rustc; then
   ok "Rust compiler found"
 else
   info "Installing Rust via rustup"
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+  if safe_curl https://sh.rustup.rs "rustup installer" | sh -s -- -y --no-modify-path; then
+    ok "Rust installed"
+  else
+    warn "Rust installation failed -- silicon and rustfmt will be skipped"
+  fi
   source "$HOME/.cargo/env" 2>/dev/null || true
 fi
 
@@ -34,25 +38,29 @@ fi
 if command_exists deno; then
   ok "Deno already installed"
 else
-  pkg_install deno 2>/dev/null || {
-    info "Installing Deno via install script"
-    curl -fsSL https://deno.land/install.sh | sh
-  }
+  info "Installing Deno"
+  if pkg_install deno 2>/dev/null; then
+    ok "Deno installed via pacman"
+  elif safe_curl https://deno.land/install.sh "Deno installer" | sh; then
+    ok "Deno installed via install script"
+  else
+    warn "Deno installation failed -- peek.nvim markdown preview will not work"
+  fi
 fi
 
 # -- Formatters ------------------------------------------------------------
 header "Formatters"
 
 pkg_install stylua shfmt clang
-npm_install_global prettier
-pip_install black isort
+npm_install_global prettier || true
+pip_install black isort || true
 
 if command_exists rustup; then
-  if rustup component list --installed | grep -q rustfmt; then
+  if rustup component list --installed 2>/dev/null | grep -q rustfmt; then
     ok "rustfmt already installed"
   else
     info "Adding rustfmt component"
-    rustup component add rustfmt
+    rustup component add rustfmt && ok "rustfmt installed" || warn "Failed to add rustfmt"
   fi
 fi
 
@@ -60,27 +68,34 @@ fi
 header "Linters"
 
 pkg_install luacheck
-npm_install_global eslint_d markdownlint-cli jsonlint @biomejs/biome
-pip_install pylint
+npm_install_global eslint_d markdownlint-cli jsonlint @biomejs/biome || true
+pip_install pylint || true
 
 if command_exists hadolint; then
   ok "hadolint already installed"
 else
-  aur_install hadolint-bin
+  aur_install hadolint-bin || true
 fi
 
 # -- Go tools --------------------------------------------------------------
 if command_exists go; then
   header "Go Tools"
-  go_install goimports golang.org/x/tools/cmd/goimports@latest
-  go_install golangci-lint github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+  go_install goimports golang.org/x/tools/cmd/goimports@latest || true
+  go_install golangci-lint github.com/golangci/golangci-lint/cmd/golangci-lint@latest || true
 fi
 
 # -- Optional tools --------------------------------------------------------
-if ! command_exists silicon; then
-  pkg_install silicon 2>/dev/null || cargo install silicon 2>/dev/null || {
+if command_exists silicon; then
+  ok "silicon already installed"
+else
+  info "Installing silicon (code screenshot tool)"
+  if pkg_install silicon 2>/dev/null; then
+    true
+  elif command_exists cargo && cargo install silicon 2>/dev/null; then
+    ok "silicon installed via cargo"
+  else
     warn "Could not install silicon -- install manually if needed"
-  }
+  fi
 fi
 
 # -- Stow and post-setup --------------------------------------------------
