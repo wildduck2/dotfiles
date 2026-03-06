@@ -11,7 +11,7 @@
 #   ./setup.sh nvim kitty     Install multiple modules
 #
 # Available modules:
-#   base bash zsh tmux kitty terminator picom nvim i3 htop neofetch
+#   base bash zsh tmux kitty terminator picom nvim i3 duck-bash htop neofetch
 #
 set -euo pipefail
 
@@ -36,6 +36,7 @@ setup_terminator() { bash "$DOTFILES_DIR/terminator/setup.sh"; }
 setup_picom()      { bash "$DOTFILES_DIR/picom/setup.sh"; }
 setup_nvim()       { bash "$DOTFILES_DIR/nvim/setup.sh"; }
 setup_i3()         { bash "$DOTFILES_DIR/i3/setup.sh"; }
+setup_duck_bash()  { bash "$DOTFILES_DIR/duck-bash/setup.sh"; }
 
 setup_htop() {
   header "Htop"
@@ -68,8 +69,9 @@ if [[ $# -gt 0 ]]; then
       i3)         setup_base && setup_i3 ;;
       htop)       setup_base && setup_htop ;;
       neofetch)   setup_base && setup_neofetch ;;
+      duck-bash)  setup_base && setup_duck_bash ;;
       *)          err "Unknown module: $module"
-                  echo "Available: base bash zsh tmux kitty terminator picom nvim i3 htop neofetch"
+                  echo "Available: base bash zsh tmux kitty terminator picom nvim i3 duck-bash htop neofetch"
                   exit 1 ;;
     esac
   done
@@ -103,7 +105,10 @@ setup_nvim
 # 7. Desktop environment (depends on picom, terminator, fonts)
 setup_i3
 
-# 8. Utilities
+# 8. Utility scripts
+setup_duck_bash
+
+# 9. Utilities
 setup_htop
 setup_neofetch
 
@@ -116,7 +121,7 @@ echo ""
 echo "Stowed modules:"
 
 cd "$DOTFILES_DIR"
-for pkg in bash zsh tmux kitty terminator picom nvim i3 htop neofetch; do
+for pkg in bash zsh tmux kitty terminator picom nvim i3 duck-bash htop neofetch; do
   if stow -n -R "$pkg" 2>/dev/null; then
     printf "  ${GREEN}%-14s${NC} ok\n" "$pkg"
   else
