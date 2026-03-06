@@ -31,7 +31,7 @@ pkg_install \
 info "Installing AUR packages"
 aur_install trayer i3lock-color gnome-screensaver-no-watchdog \
   obs-studio-tytan652 obs-pipewire-audio-capture \
-  google-chrome yaak-bin
+  google-chrome yaak-bin mechvibes-bin
 
 # -- OBS Virtual Camera (v4l2loopback) ------------------------------------
 info "Setting up OBS virtual camera support"
@@ -122,5 +122,6 @@ check_cmd discord
 check_cmd firefox
 check_cmd obs
 check_cmd yaak
+check_cmd mechvibes
 
 ok "i3 setup complete ($CHECKS/$TOTAL checks passed)"
