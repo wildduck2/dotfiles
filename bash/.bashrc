@@ -9,12 +9,8 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
 
-PATH=~/.console-ninja/.bin:$PATH
-export JAVA_HOME=/usr/lib/jvm/java-22-openjdk
-export PATH=$JAVA_HOME/bin:$PATH
-export ANDROID_HOME=$HOME/Android/Sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/tools/bin
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-. "$HOME/.cargo/env"
+# Console Ninja (optional)
+[[ -d "$HOME/.console-ninja/.bin" ]] && export PATH="$HOME/.console-ninja/.bin:$PATH"
+
+# Cargo / Rust (optional)
+[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
