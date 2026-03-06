@@ -7,4 +7,5 @@ return {
   require 'plugins.lsp.lint',
   require 'plugins.lsp.trouble',
   require 'plugins.lsp.todo-comments',
+  require 'plugins.lsp.endhints',
 }
