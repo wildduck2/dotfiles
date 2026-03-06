@@ -1,8 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-
-# This script is written by Ahmed Ayob " wild_duck " 
-# This script aimmed to make you 
+# Git push helper — interactive commit and push workflow
 
 echo 'Welcome to wild_duck Scripts'
 echo '           _  _      _              _               _    
@@ -34,8 +33,6 @@ fi
 # Navigate to the directory
 cd "$repo_path" || exit
 
-
-#!/bin/bash
 
 # Function to check if the remote 'origin' exists and add it if not
 check_remote_origin_exists_and_add() {

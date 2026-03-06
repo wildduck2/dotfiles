@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # commit-message-hf.sh — generate structured conventional commit messages using Hugging Face free API
 
-set -e
+set -euo pipefail
 
 DIFF=$(git diff --cached)
 if [ -z "$DIFF" ]; then

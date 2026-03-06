@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 #NOTE: this script is for use in tmux sessions
 if [[ $# -eq 1 ]]; then

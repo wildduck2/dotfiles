@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "🔄 Cleaning up Docker containers, networks, volumes, and build cache..."
-echo "⚠️ Images will NOT be deleted."
+if ! command -v docker &>/dev/null; then
+  echo "Error: docker is not installed."
+  exit 1
+fi
+
+echo "Cleaning up Docker containers, networks, volumes, and build cache..."
+echo "Images will NOT be deleted."
 
 # Stop all running containers
 if [ "$(docker ps -q)" ]; then
-  echo "🛑 Stopping all running containers..."
+  echo "Stopping all running containers..."
   docker stop $(docker ps -q)
 fi
 

@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 # Check if URL is provided as an argument
 if [ -z "$1" ]; then

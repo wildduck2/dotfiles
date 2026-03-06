@@ -1,38 +1,31 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-# INFO: Define variables
-REPO_URL="<https://github.com/wildduck2/dotfiles.git>"
-CLONE_DIR="~/.config/.dotfiles"
-DESTINATION_CONFIG="~/.config/nvim"
-DESTINATION_LOCAL_SHARE="~/.local/share/nvim"
+# Install latest Neovim from GitHub releases (useful when pacman version is outdated)
 
-# Move existing nvim directories to backup
-mv ~/.config/nvim ~/.config/nvim.bakup || true
-mv ~/.local/share/nvim ~/.local/share/nvim.bakup || true
+INSTALL_DIR="${HOME}/.local"
+BIN_DIR="${INSTALL_DIR}/bin"
 
-# Clone the repository
-git clone $REPO_URL $CLONE_DIR
+if command -v nvim &>/dev/null; then
+  CURRENT=$(nvim --version | head -1)
+  echo "Current: $CURRENT"
+  read -r -p "Reinstall/update Neovim? [y/N] " response
+  [[ "$response" =~ ^[Yy]$ ]] || exit 0
+fi
 
-# Change into the cloned directory
-cd $CLONE_DIR
+echo "Downloading latest Neovim..."
+TARBALL="/tmp/nvim-linux-x86_64.tar.gz"
+curl -fsSL -o "$TARBALL" "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz"
 
-# Copy the nvim folder to the destination
-cp -r nvim $DESTINATION_CONFIG/
+echo "Extracting to $INSTALL_DIR..."
+mkdir -p "$INSTALL_DIR"
+tar -xzf "$TARBALL" -C "$INSTALL_DIR" --strip-components=1
 
+rm -f "$TARBALL"
 
-# INFO: List of tools to check
-TOOLS=("unzip" "wget" "curl" "gzip" "tar" "bash" "sh" "ripgrep" "fd" "fzf")
-
-# Loop through each tool
-for TOOL in "${TOOLS[@]}"; do
-    # Attempt to execute the tool
-    if! command -v $TOOL &> /dev/null; then
-        echo "$TOOL is not installed."
-    else
-        echo "$TOOL is installed."
-    fi
-done
-
-
-echo "Script completed successfully."
-
+if command -v nvim &>/dev/null; then
+  echo "Installed: $(nvim --version | head -1)"
+else
+  echo "Neovim installed to $BIN_DIR/nvim"
+  echo "Make sure $BIN_DIR is in your PATH"
+fi

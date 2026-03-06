@@ -1,7 +1,5 @@
-#!/bin/bash
-
-# Exit on error
-set -e
+#!/usr/bin/env bash
+set -euo pipefail
 
 # Check dependencies
 if ! command -v qrencode &> /dev/null; then
