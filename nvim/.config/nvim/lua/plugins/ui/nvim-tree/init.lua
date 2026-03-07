@@ -8,7 +8,7 @@ return {
       end,
     },
   },
-  cmd = { 'NvimTreeToggle', 'NvimTreeFocus' },
+  lazy = false,
   keys = {
     { '<leader>pv', '<cmd>NvimTreeToggle<CR>', desc = 'Toggle file tree' },
     { '<leader>l', '<cmd>NvimTreeFocus<CR>', desc = 'Focus file tree' },

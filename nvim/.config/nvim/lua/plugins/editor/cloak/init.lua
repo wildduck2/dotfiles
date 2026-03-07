@@ -1,6 +1,6 @@
 return {
   'laytan/cloak.nvim',
-  event = 'BufReadPre',
+  lazy = false,
   opts = function()
     return require('plugins.editor.cloak.config').opts
   end,
