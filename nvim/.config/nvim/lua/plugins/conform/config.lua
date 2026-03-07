@@ -13,6 +13,7 @@ function M.setup()
       lua = { 'stylua' },
       c = { 'clang_format' },
       cpp = { 'clang_format' },
+      -- TODO: add 'docformatter' when untokenize supports Python 3.14+
       python = { 'isort', 'black' }, -- Sort imports, then format
       go = { 'goimports', 'gofmt' }, -- Fix imports, then format
       rust = { 'rustfmt', lsp_format = 'fallback' }, -- Use LSP if rustfmt unavailable
@@ -26,6 +27,7 @@ function M.setup()
       scss = { 'prettier' },
       yaml = { 'prettier' },
       markdown = { 'prettier' },
+      mdx = { 'prettier' },
       bash = { 'shfmt' },
       sh = { 'shfmt' },
     },

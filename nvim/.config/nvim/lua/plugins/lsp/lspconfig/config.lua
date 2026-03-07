@@ -47,7 +47,12 @@ M.servers = {
   bashls = {},
   dockerls = {},
   docker_compose_language_service = {},
-  mdx_analyzer = {},
+  mdx_analyzer = {
+    filetypes = { 'mdx' },
+    init_options = {
+      typescript = {},
+    },
+  },
 }
 
 -- Compat wrapper: 0.11+ uses method syntax, older uses fn
@@ -178,6 +183,7 @@ function M.setup()
 
   -- Mason: portable LSP/tool installer
   require('mason').setup()
+  -- Auto-install all servers + extra tools (formatters, linters)
   -- Auto-install all servers listed in M.servers
   require('mason-tool-installer').setup { ensure_installed = vim.tbl_keys(M.servers or {}) }
 
