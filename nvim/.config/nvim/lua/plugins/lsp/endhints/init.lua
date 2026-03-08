@@ -1,7 +1,16 @@
 return {
   'chrisgrieser/nvim-lsp-endhints',
   event = 'LspAttach',
-  opts = function()
-    return require('plugins.lsp.endhints.config').opts
-  end,
+  opts = {
+    autoEnableHints = true,
+    icons = {
+      type = '=> ',
+      parameter = '=> ',
+      offspec = '=> ',
+      unknown = '=> ',
+    },
+    label = {
+      truncateAtChars = 40,
+    },
+  },
 }
