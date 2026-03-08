@@ -1,4 +1,4 @@
 return {
   'hedyhli/outline.nvim',
-  lazy = false,
+  cmd = 'Outline',
 }

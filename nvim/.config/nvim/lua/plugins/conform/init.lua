@@ -1,6 +1,6 @@
 return {
   'stevearc/conform.nvim',
-  lazy = false,
+  event = 'BufReadPost',
   config = function()
     require('plugins.conform.config').setup()
   end,

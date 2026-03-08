@@ -1,6 +1,6 @@
 return {
   'folke/trouble.nvim',
-  lazy = false,
+  event = 'VeryLazy',
   config = function()
     require('plugins.lsp.trouble.config').setup()
     vim.keymap.set('n', '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>', { desc = 'Diagnostics (Trouble)' })

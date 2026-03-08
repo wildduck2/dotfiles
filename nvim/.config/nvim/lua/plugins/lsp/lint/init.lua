@@ -1,6 +1,6 @@
 return {
   'mfussenegger/nvim-lint',
-  lazy = false,
+  event = 'BufReadPost',
   config = function()
     require('plugins.lsp.lint.config').setup()
   end,
