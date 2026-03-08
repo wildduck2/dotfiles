@@ -47,7 +47,16 @@ function M.setup()
     },
     git = { enable = true, ignore = false }, -- ignore=false: show git-ignored files
     filesystem_watchers = { enable = true }, -- true: auto-refresh on fs changes
-    actions = { open_file = { resize_window = true } }, -- true: resize tree on file open
+    actions = { open_file = { resize_window = true } },
+    on_attach = function(bufnr)
+      local api = require('nvim-tree.api')
+      api.config.mappings.default_on_attach(bufnr)
+      vim.keymap.set('n', 's', function()
+        local node = api.tree.get_node_under_cursor()
+        local path = node.type == 'directory' and node.absolute_path or vim.fn.fnamemodify(node.absolute_path, ':h')
+        vim.fn.jobstart({ 'nautilus', path }, { detach = true })
+      end, { buffer = bufnr, desc = 'Open in file explorer' })
+    end,
     renderer = {
       root_folder_label = false, -- false: hide root folder path label
       highlight_git = true, -- true: color filenames by git status

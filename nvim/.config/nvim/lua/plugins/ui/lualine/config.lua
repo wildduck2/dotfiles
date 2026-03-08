@@ -77,7 +77,7 @@ function M.setup()
       },
       -- Section X: filetype with icon
       lualine_x = {
-        { 'filetype', colored = true, icon_only = false, icon = { align = 'right' } }, -- icon_only=true hides text
+        { 'filetype', colored = true, icon_only = false, icons_enabled = false },
       },
       lualine_y = { 'progress' }, -- % through file
       lualine_z = { 'location' }, -- line:column
