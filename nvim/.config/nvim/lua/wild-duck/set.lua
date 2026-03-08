@@ -13,10 +13,7 @@ vim.opt.mouse = 'a'
 --NOTE: hide the mode in command line
 vim.opt.showmode = false
 
--- System clipboard integration
-vim.schedule(function()
-  vim.opt.clipboard = 'unnamedplus'
-end)
+-- Nvim clipboard is separate from system; use <leader>y to yank to system
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -73,6 +70,9 @@ vim.opt.incsearch = true
 vim.opt.cursorline = true
 
 vim.opt.termguicolors = true
+
+-- Rounded borders on all floating windows (hover, signature help, etc.)
+vim.o.winborder = 'rounded'
 
 vim.opt.isfname:append '@-@'
 vim.opt.scrolljump = 1

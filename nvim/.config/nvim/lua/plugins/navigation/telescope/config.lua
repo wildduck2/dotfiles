@@ -13,6 +13,7 @@ function M.setup()
   require('telescope').setup {
     pickers = {},
     defaults = {
+      borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
       mappings = {
         -- Insert mode: send results to trouble
         i = { ['<leader>n'] = open_with_trouble },

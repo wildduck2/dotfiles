@@ -1,6 +1,10 @@
 local M = {}
 
 M.opts = {
+  win = {
+    border = 'rounded',
+    padding = { 1, 2 },
+  },
   icons = {
     mappings = vim.g.have_nerd_font, -- true: use nerd font icons for groups
     keys = vim.g.have_nerd_font and {} or { -- text fallbacks when no nerd font

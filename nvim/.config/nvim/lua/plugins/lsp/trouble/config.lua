@@ -55,7 +55,7 @@ function M.setup()
     -- true = draw indent guide lines in tree view
     indent_lines = true,
     -- Border style (alt: 'rounded','double','none')
-    win_config = { border = 'single' },
+    win_config = { border = 'rounded' },
     -- false = don't open Trouble automatically
     auto_open = false,
     -- false = don't close when no more diagnostics

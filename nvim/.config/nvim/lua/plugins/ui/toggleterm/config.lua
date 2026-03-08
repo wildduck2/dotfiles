@@ -29,8 +29,9 @@ M.opts = {
 
   -- Options for floating terminal window
   float_opts = {
-    winblend = 0, -- 0=opaque, 100=fully transparent
-    title_pos = 'left', -- 'left' | 'center' | 'right'
+    border = 'rounded',
+    winblend = 0,
+    title_pos = 'left',
   },
 
   -- Responsive layout switching

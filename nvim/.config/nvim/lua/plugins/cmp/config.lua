@@ -14,8 +14,16 @@ function M.setup()
     },
     -- Bordered floating windows for completion/docs
     window = {
-      completion = cmp.config.window.bordered(),
-      documentation = cmp.config.window.bordered(),
+      completion = cmp.config.window.bordered({
+        border = 'rounded',
+        winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None',
+        col_offset = -1,
+        side_padding = 1,
+      }),
+      documentation = cmp.config.window.bordered({
+        border = 'rounded',
+        winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder,Search:None',
+      }),
     },
     -- Auto-select first item, show menu even with one match
     completion = { completeopt = 'menu,menuone,noinsert' },

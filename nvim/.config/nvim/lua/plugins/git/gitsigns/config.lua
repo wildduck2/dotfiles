@@ -57,10 +57,11 @@ function M.setup()
 
     -- Floating preview window style for hunk previews
     preview_config = {
-      style = 'minimal', -- 'minimal' hides border/number
-      relative = 'cursor', -- 'cursor'|'editor'|'win'
-      row = 0, -- vertical offset from cursor
-      col = 1, -- horizontal offset from cursor
+      border = 'rounded',
+      style = 'minimal',
+      relative = 'cursor',
+      row = 0,
+      col = 1,
     },
 
     -- Watch .git dir for external changes (e.g. CLI)

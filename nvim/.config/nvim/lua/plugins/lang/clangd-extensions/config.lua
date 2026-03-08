@@ -16,8 +16,8 @@ M.opts = {
     },
     highlights = { detail = 'Comment' }, -- Highlight group for details
   },
-  memory_usage = { border = 'none' }, -- No border on memory usage float
-  symbol_info = { border = 'none' }, -- No border on symbol info float
+  memory_usage = { border = 'rounded' },
+  symbol_info = { border = 'rounded' },
 }
 
 return M
