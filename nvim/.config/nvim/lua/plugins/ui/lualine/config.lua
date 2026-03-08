@@ -26,8 +26,8 @@ function M.setup()
       lualine_a = {
         {
           'mode',
-          fmt = function() -- maps vim mode to short label via mode_map
-            return M.mode_map[vim.api.nvim_get_mode().mode] or '__'
+          fmt = function(mode_str)
+            return M.mode_map[vim.api.nvim_get_mode().mode] or mode_str
           end,
         },
       },

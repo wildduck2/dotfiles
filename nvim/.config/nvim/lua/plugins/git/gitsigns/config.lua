@@ -29,7 +29,7 @@ function M.setup()
     -- true=show signs for untracked (new) files
     attach_to_untracked = false,
     -- ms delay before updating signs after change
-    update_debounce = 100,
+    update_debounce = 500,
     -- Disable gitsigns for files exceeding this many lines
     max_file_length = 40000,
     -- true=highlight individual word diffs inline

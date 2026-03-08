@@ -46,7 +46,7 @@ function M.setup()
       preserve_window_proportions = true, -- true: keep window sizes on open/close
     },
     git = { enable = true, ignore = false }, -- ignore=false: show git-ignored files
-    filesystem_watchers = { enable = true }, -- true: auto-refresh on fs changes
+    filesystem_watchers = { enable = false }, -- disabled for performance; use R to refresh
     actions = { open_file = { resize_window = true } },
     on_attach = function(bufnr)
       local api = require('nvim-tree.api')
