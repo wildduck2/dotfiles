@@ -1,0 +1,10 @@
+[Unit]
+Description=System analytics dashboard generator timer
+
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=5min
+AccuracySec=30s
+
+[Install]
+WantedBy=timers.target

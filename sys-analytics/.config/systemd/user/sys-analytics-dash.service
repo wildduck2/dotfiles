@@ -1,0 +1,7 @@
+[Unit]
+Description=System analytics dashboard generator
+
+[Service]
+Type=oneshot
+ExecStart=%h/dotfiles/sys-analytics/dashboard.sh
+Nice=19

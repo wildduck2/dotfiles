@@ -1,0 +1,8 @@
+[Unit]
+Description=System analytics data collector
+
+[Service]
+Type=oneshot
+ExecStart=%h/dotfiles/sys-analytics/collect.sh
+Nice=19
+IOSchedulingClass=idle
