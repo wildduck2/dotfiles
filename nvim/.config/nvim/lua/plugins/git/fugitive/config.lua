@@ -31,8 +31,6 @@ function M.setup()
       vim.keymap.set('n', '<leader>t', ':Git push -u origin ', opts)
     end,
   })
-  -- Open fugitive status window (:Git)
-  vim.keymap.set('n', '<leader>gs', vim.cmd.Git)
 end
 
 return M

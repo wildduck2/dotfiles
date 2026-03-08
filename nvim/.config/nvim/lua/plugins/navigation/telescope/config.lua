@@ -63,13 +63,6 @@ function M.setup()
     require('trouble').toggle { mode = 'document_diagnostics' }
   end, { desc = '[S]earch trouble' })
 
-  vim.keymap.set('n', '<leader>snd', '<cmd>Telescope diagnostics<cr>', {
-    desc = 'Search diagnostics with Telescope',
-  })
-  vim.keymap.set('n', '<leader>sd', function()
-    require('telescope.builtin').diagnostics { bufnr = 0 }
-  end, { desc = 'Search document diagnostics (Telescope)' })
-
   vim.keymap.set('n', '<leader>/', function()
     builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
       winblend = 10, -- 0=opaque, 100=transparent; slight bg blend
