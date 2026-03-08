@@ -6,10 +6,7 @@ function M.setup()
   -- Map filetypes to their linter(s)
   lint.linters_by_ft = {
     markdown = { 'markdownlint' },
-    javascript = { 'eslint_d' },
-    typescript = { 'eslint_d' },
-    javascriptreact = { 'eslint_d' },
-    typescriptreact = { 'eslint_d' },
+    -- biome handles JS/TS linting via LSP, no need for eslint_d
     lua = { 'luacheck' },
     python = { 'pylint' },
     go = { 'golangcilint' },

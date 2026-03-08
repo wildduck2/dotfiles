@@ -41,8 +41,17 @@ M.servers = {
 		single_file_support = false,
 		-- true = format without blocking the editor
 		formatting = { format_opts = { async = true } },
-		-- false = keep TS auto-import suggestions enabled
-		init_options = { preferences = { disableSuggestions = false } },
+		init_options = {
+			preferences = {
+				disableSuggestions = false,
+				-- Reduce heavy operations that cause lag
+				includeCompletionsForModuleExports = false,
+				includeCompletionsWithObjectLiteralMethodSnippets = false,
+				includePackageJsonAutoImports = "off",
+			},
+			-- Limit memory usage
+			maxTsServerMemory = 4096,
+		},
 	},
 	tailwindcss = {},
 	cssls = {},
@@ -50,7 +59,9 @@ M.servers = {
 	jsonls = {},
 	yamlls = {},
 	prismals = {},
-	typos_lsp = {},
+	typos_lsp = {
+		filetypes = { "markdown", "text", "gitcommit" },
+	},
 	biome = {},
 	bashls = {},
 	dockerls = {},
@@ -81,57 +92,64 @@ local function on_attach(event)
 	end
 
 	-- LSP keymaps (buffer-local, only active when LSP attached)
+	-- Wrap telescope requires in functions to avoid eager loading
 	map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 	map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-	map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-	map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-	map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+	map("gr", function() require("telescope.builtin").lsp_references() end, "[G]oto [R]eferences")
+	map("gI", function() require("telescope.builtin").lsp_implementations() end, "[G]oto [I]mplementation")
+	map("gd", function() require("telescope.builtin").lsp_definitions() end, "[G]oto [D]efinition")
 	map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-	map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
-	map("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
-	map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
+	map("<leader>ds", function() require("telescope.builtin").lsp_document_symbols() end, "[D]ocument [S]ymbols")
+	map("<leader>ws", function() require("telescope.builtin").lsp_dynamic_workspace_symbols() end, "[W]orkspace [S]ymbols")
+	map("<leader>D", function() require("telescope.builtin").lsp_type_definitions() end, "Type [D]efinition")
 	map("K", vim.lsp.buf.hover, "Hover Documentation")
 
-	-- Format current buffer via conform on <leader>f
-	vim.keymap.set("n", "<leader>f", function()
-		require("conform").format({ bufnr = event.buf })
-	end)
-
-	-- Document highlight: highlight symbol under cursor
 	local client = vim.lsp.get_client_by_id(event.data.client_id)
+
+	-- Disable biome diagnostics (ts_ls handles diagnostics for JS/TS)
+	if client and client.name == "biome" then
+		client.server_capabilities.diagnosticProvider = nil
+	end
+
+	-- Document highlight: only register once per buffer (not per LSP client)
+	local buf = event.buf
 	if
-		client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf)
+		client
+		and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_documentHighlight, buf)
+		and not vim.b[buf]._lsp_highlight_registered
 	then
-		-- clear=false so multiple buffers can share the group
+		vim.b[buf]._lsp_highlight_registered = true
 		local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
-		-- Highlight refs when cursor rests on a symbol
-		vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-			buffer = event.buf,
+		vim.api.nvim_create_autocmd("CursorHold", {
+			buffer = buf,
 			group = highlight_augroup,
 			callback = vim.lsp.buf.document_highlight,
 		})
-		-- Clear highlights when cursor moves away
-		vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-			buffer = event.buf,
+		vim.api.nvim_create_autocmd("CursorMoved", {
+			buffer = buf,
 			group = highlight_augroup,
 			callback = vim.lsp.buf.clear_references,
 		})
-		-- Clean up autocmds when LSP detaches from buffer
 		vim.api.nvim_create_autocmd("LspDetach", {
 			group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
 			callback = function(event2)
 				vim.lsp.buf.clear_references()
 				vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
+				vim.b[event2.buf]._lsp_highlight_registered = nil
 			end,
 		})
 	end
 
-	-- Inlay hints: show type/param hints at end of line (via endhints plugin)
-	if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
-		-- enable by default so endhints can render them at end of line
-		vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
+	-- Inlay hints: only enable once per buffer
+	if
+		client
+		and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, buf)
+		and not vim.b[buf]._lsp_inlay_registered
+	then
+		vim.b[buf]._lsp_inlay_registered = true
+		vim.lsp.inlay_hint.enable(true, { bufnr = buf })
 		map("<leader>th", function()
-			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = buf }))
 		end, "[T]oggle Inlay [H]ints")
 	end
 end

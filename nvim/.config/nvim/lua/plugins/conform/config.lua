@@ -39,7 +39,8 @@ function M.setup()
         return
       end
       return {
-        lsp_fallback = true, -- Fall back to LSP formatting
+        async = true,
+        lsp_fallback = true,
       }
     end,
   }
