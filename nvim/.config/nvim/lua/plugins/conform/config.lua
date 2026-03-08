@@ -40,7 +40,7 @@ function M.setup()
       end
       return {
         async = true,
-        lsp_fallback = true,
+        lsp_format = 'fallback',
       }
     end,
   }
@@ -48,7 +48,7 @@ function M.setup()
   -- Manual format keymap (normal + visual mode)
   vim.keymap.set({ 'n', 'v' }, '<leader>f', function()
     conform.format {
-      lsp_fallback = true,
+      lsp_format = 'fallback',
       timeout_ms = 1000,
     }
   end, { desc = '[F]ormat buffer' })
