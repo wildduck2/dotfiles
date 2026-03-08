@@ -32,15 +32,14 @@ function M.setup()
       sh = { 'shfmt' },
     },
 
-    -- Async format after save; won't freeze editor on slow formatters
+    -- Format after save; falls back to LSP if no formatter available
     format_after_save = function(bufnr)
       local available = conform.list_formatters(bufnr)
       if #available == 0 then
         return
       end
       return {
-        async = true,
-        lsp_format = 'fallback',
+        lsp_fallback = true,
       }
     end,
   }
@@ -48,7 +47,7 @@ function M.setup()
   -- Manual format keymap (normal + visual mode)
   vim.keymap.set({ 'n', 'v' }, '<leader>f', function()
     conform.format {
-      lsp_format = 'fallback',
+      lsp_fallback = true,
       timeout_ms = 1000,
     }
   end, { desc = '[F]ormat buffer' })
