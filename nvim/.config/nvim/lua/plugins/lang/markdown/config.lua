@@ -3,7 +3,7 @@ local M = {}
 function M.setup_peek()
   local peek = require 'peek'
   peek.setup {
-    auto_load = true, -- Auto-start preview on markdown open
+    auto_load = false, -- Manual preview with :PeekOpen
     close_on_bdelete = true, -- Close preview when buffer deleted
     syntax = true, -- Syntax highlighting in preview
     theme = 'dark', -- Preview theme: 'dark' | 'light'
