@@ -1,0 +1,14 @@
+<!DOCTYPE patchbay>
+<patchbay name="wildduck-audio" version="0.9.9">
+ <items>
+  <item node-type="pipewire" port-type="pipewire-audio">
+   <output node="OBS-1" port="OBS:monitor_FR"/>
+   <input node="WEBRTC VoiceEngine" port="WEBRTC VoiceEngine:input_FR"/>
+  </item>
+  <item node-type="pipewire" port-type="pipewire-audio">
+   <output node="OBS-1" port="OBS:monitor_FL"/>
+   <input node="WEBRTC VoiceEngine" port="WEBRTC VoiceEngine:input_FL"/>
+  </item>
+ </items>
+</patchbay>
+

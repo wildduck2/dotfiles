@@ -30,6 +30,10 @@ export DENO_INSTALL="$HOME/.deno"
 export CARGO_HOME="${CARGO_HOME:-$HOME/.cargo}"
 [[ -d "$CARGO_HOME/bin" ]] && export PATH="$CARGO_HOME/bin:$PATH"
 
+# Cursor theme
+export XCURSOR_THEME="Banana-Blue"
+export XCURSOR_SIZE=24
+
 # User local bins
 [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
 [[ -d "$HOME/bin" ]] && export PATH="$HOME/bin:$PATH"

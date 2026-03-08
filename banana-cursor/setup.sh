@@ -55,4 +55,8 @@ if [[ -d "$ICONS_DIR/$CURSOR_THEME" ]]; then
   ok "Set $CURSOR_THEME as default cursor"
 fi
 
+# -- Export cursor env vars (current session) -------------------------------
+export XCURSOR_THEME="$CURSOR_THEME"
+export XCURSOR_SIZE="$CURSOR_SIZE"
+
 ok "Banana Cursor setup complete ($CURSOR_THEME, size $CURSOR_SIZE)"
