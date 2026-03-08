@@ -10,7 +10,6 @@ function M.setup()
       'prisma', 'rust', 'scala', 'scss', 'sql', 'surface', 'tsx',
       'typescript', 'vim', 'vimdoc', 'yaml', 'zig',
     },
-    build = ':TSUpdate',
     auto_install = false,
     highlight = { enable = true },
     indent = { enable = true },
