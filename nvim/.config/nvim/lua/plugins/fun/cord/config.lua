@@ -21,10 +21,10 @@ M.opts = {
 
   -- Elapsed time display
   timestamp = {
-    enabled = true, -- Show elapsed time on Discord
-    reset_on_idle = false, -- Restart timer after idle
-    reset_on_change = false, -- Restart timer on file change
-    shared = false, -- Share timer across instances
+    enabled = true,
+    reset_on_idle = false,
+    reset_on_change = false,
+    shared = false,
   },
 
   -- Idle/AFK detection
@@ -43,10 +43,19 @@ M.opts = {
 
   -- Status text templates per activity type
   text = {
-    default = nil, -- Fallback text (nil = auto)
+    default = nil,
     workspace = function(opts) return 'In ' .. opts.workspace end,
-    viewing = function(opts) return 'Viewing ' .. opts.filename end,
-    editing = function(opts) return 'Editing ' .. opts.filename end,
+    viewing = function(opts)
+      local parent = vim.fn.expand '%:h:t'
+      local file = parent ~= '' and parent ~= '.' and (parent .. '/' .. opts.filename) or opts.filename
+      return 'Viewing ' .. file .. ' [' .. opts.cursor_line .. ':' .. opts.cursor_char .. ']'
+    end,
+    editing = function(opts)
+      local parent = vim.fn.expand '%:h:t'
+      local file = parent ~= '' and parent ~= '.' and (parent .. '/' .. opts.filename) or opts.filename
+      local lines = vim.api.nvim_buf_line_count(0)
+      return 'Editing ' .. file .. ' [' .. opts.cursor_line .. '/' .. lines .. ']'
+    end,
     file_browser = function(opts) return 'Browsing files in ' .. opts.name end,
     plugin_manager = function(opts) return 'Managing plugins in ' .. opts.name end,
     lsp = function(opts) return 'Configuring LSP in ' .. opts.name end,
@@ -58,49 +67,100 @@ M.opts = {
     diagnostics = function(opts) return 'Fixing problems in ' .. opts.name end,
     games = function(opts) return 'Playing ' .. opts.name end,
     terminal = function(opts) return 'Running commands in ' .. opts.name end,
-    dashboard = 'Home', -- Text shown on dashboard screen
+    dashboard = 'Home',
   },
-  buttons = nil, -- Custom buttons on Discord profile
-  assets = nil, -- Custom image assets
-  variables = nil, -- Custom template variables
 
-  -- Lifecycle hooks
-  hooks = {
-    ready = nil, -- Fires when cord connects
-    shutdown = nil, -- Fires on cord shutdown
-    pre_activity = nil, -- Before activity update
-    post_activity = nil, -- After activity update
-    idle_enter = nil, -- When entering idle
-    idle_leave = nil, -- When leaving idle
-    workspace_change = nil, -- On workspace switch
-    buf_enter = nil, -- On buffer enter
+  -- Buttons shown on Discord profile
+  buttons = {
+    {
+      label = 'View Repository',
+      url = function(opts)
+        return opts.repo_url or 'https://github.com/wildduck'
+      end,
+    },
   },
-  plugins = nil, -- Extra plugin integrations
+
+  -- Custom file type assets
+  assets = {
+    rust = {
+      icon = 'rust',
+      tooltip = 'Rust',
+      name = 'Rust',
+    },
+    typescript = {
+      icon = 'typescript',
+      tooltip = 'TypeScript',
+      name = 'TypeScript',
+    },
+    lua = {
+      icon = 'lua',
+      tooltip = 'Lua',
+      name = 'Lua',
+    },
+  },
+
+  -- Custom variables for string templates
+  variables = true,
+
+  -- Extensions
+  extensions = {
+    -- Persist elapsed time across nvim sessions
+    persistent_timer = {
+      scope = 'global',
+      mode = 'all',
+      save_on = { 'exit', 'focus_change', 'periodic' },
+      save_interval = 30,
+    },
+    -- Hide certain workspaces from Discord
+    visibility = {
+      override = true,
+      precedence = 'blacklist',
+      rules = {
+        blacklist = {
+          -- Add workspace names or paths to hide from Discord:
+          -- 'secret-project',
+          -- { type = 'path', value = '/home/wildduck/work/private-repo' },
+          -- { type = 'glob', value = '**/private-*' },
+        },
+      },
+    },
+  },
 
   -- Advanced/internal settings
   advanced = {
     plugin = {
-      autocmds = true, -- Register autocmds for tracking
-      cursor_update = 'on_hold', -- Update on CursorHold event
-      match_in_mappings = true, -- Detect plugins from mappings
+      autocmds = true,
+      cursor_update = 'on_hold',
+      match_in_mappings = true,
+      debounce = {
+        delay = 0,
+        interval = 500,
+      },
     },
     server = {
-      update = 'fetch', -- Update method: 'fetch' | 'build'
-      pipe_path = nil, -- Custom IPC pipe path
-      executable_path = nil, -- Custom server binary path
-      timeout = 300000, -- Server connection timeout (ms)
+      update = 'fetch',
+      pipe_path = nil,
+      executable_path = nil,
+      timeout = 300000,
     },
     discord = {
-      pipe_paths = nil, -- Custom Discord IPC pipe paths
+      pipe_paths = nil,
       reconnect = {
-        enabled = false, -- Auto-reconnect on disconnect
-        interval = 5000, -- Retry interval (ms)
-        initial = true, -- Reconnect on initial failure
+        enabled = true,
+        interval = 5000,
+        initial = true,
+      },
+      sync = {
+        enabled = true,
+        mode = 'defer',
+        interval = 5000,
+        reset_on_update = false,
+        pad = true,
       },
     },
     workspace = {
-      root_markers = { '.git', '.hg', '.svn' }, -- Project root indicators
-      limit_to_cwd = false, -- Only detect workspace in cwd
+      root_markers = { '.git', '.hg', '.svn' },
+      limit_to_cwd = false,
     },
   },
 }
