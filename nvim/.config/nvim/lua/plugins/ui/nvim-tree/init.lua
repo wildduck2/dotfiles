@@ -9,10 +9,6 @@ return {
     },
   },
   lazy = false,
-  keys = {
-    { '<leader>pv', '<cmd>NvimTreeToggle<CR>', desc = 'Toggle file tree' },
-    { '<leader>l', '<cmd>NvimTreeFocus<CR>', desc = 'Focus file tree' },
-  },
   init = function()
     vim.g.loaded_netrw = 1
     vim.g.loaded_netrwPlugin = 1
@@ -20,5 +16,7 @@ return {
   end,
   config = function()
     require('plugins.ui.nvim-tree.config').setup()
+    vim.keymap.set('n', '<leader>pv', '<cmd>NvimTreeToggle<CR>', { desc = 'Toggle file tree' })
+    vim.keymap.set('n', '<leader>l', '<cmd>NvimTreeFocus<CR>', { desc = 'Focus file tree' })
   end,
 }
