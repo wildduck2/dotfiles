@@ -6,4 +6,5 @@ return {
   require 'plugins.editor.undotree',
   require 'plugins.editor.ufo',
   require 'plugins.editor.supermaven',
+  require 'plugins.editor.indent-blankline',
 }
