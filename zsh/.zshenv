@@ -1,7 +1,7 @@
 # ~/.zshenv
 # Environment variables and PATH only (runs for every zsh, even non-interactive)
 
-# Oh My Zsh location
+# Oh My Zsh
 export ZSH="$HOME/.oh-my-zsh"
 
 # Zinit

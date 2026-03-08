@@ -2,15 +2,10 @@
 # Interactive shell config (plugins, completions, keybinds, aliases, eval)
 
 # Ensure completions path exists
-mkdir -p "$HOME/.zsh/completions"
+[[ -d "$HOME/.zsh/completions" ]] || mkdir -p "$HOME/.zsh/completions"
 if [[ ":$FPATH:" != *":$HOME/.zsh/completions:"* ]]; then
   export FPATH="$HOME/.zsh/completions:$FPATH"
 fi
-
-# Oh My Zsh
-ZSH_THEME="robbyrussell"
-plugins=(git)
-source "$ZSH/oh-my-zsh.sh"
 
 # Zinit bootstrap
 if [[ ! -d "$ZINIT_HOME" ]]; then
@@ -19,19 +14,29 @@ if [[ ! -d "$ZINIT_HOME" ]]; then
 fi
 source "$ZINIT_HOME/zinit.zsh"
 
-# Zinit plugins
+# Oh My Zsh (theme only — plugins handled by Zinit)
+ZSH_THEME="robbyrussell"
+plugins=()
+source "$ZSH/oh-my-zsh.sh"
+
+# Zinit plugins (turbo mode — deferred loading)
+zinit ice wait lucid
 zinit light zsh-users/zsh-syntax-highlighting
+zinit ice wait lucid
 zinit light zsh-users/zsh-completions
+zinit ice wait lucid
 zinit light zsh-users/zsh-autosuggestions
+zinit ice wait lucid
 zinit light Aloxaf/fzf-tab
 
-# Zinit snippets
+# Zinit snippets (turbo mode)
+zinit ice wait lucid
 zinit snippet OMZP::git
+zinit ice wait lucid
 zinit snippet OMZP::sudo
+zinit ice wait lucid
 zinit snippet OMZP::archlinux
-zinit snippet OMZP::aws
-zinit snippet OMZP::kubectl
-zinit snippet OMZP::kubectx
+zinit ice wait lucid
 zinit snippet OMZP::command-not-found
 
 # Completion (use -C to skip rebuild if cache is fresh — saves ~100ms)
@@ -68,21 +73,26 @@ alias ls='ls --color'
 alias vim='nvim'
 alias c='clear'
 
-# fzf (prefer native integration, fall back to sourced script)
-if command -v fzf >/dev/null 2>&1; then
-  eval "$(fzf --zsh)"
+# fzf (cache the output instead of eval on every shell)
+if [[ -f "$HOME/.zsh/_fzf_cache.zsh" ]] && [[ "$HOME/.zsh/_fzf_cache.zsh" -nt "$(command -v fzf)" ]]; then
+  source "$HOME/.zsh/_fzf_cache.zsh"
+elif command -v fzf >/dev/null 2>&1; then
+  fzf --zsh > "$HOME/.zsh/_fzf_cache.zsh" 2>/dev/null
+  source "$HOME/.zsh/_fzf_cache.zsh"
 elif [[ -f "$HOME/.fzf.zsh" ]]; then
   source "$HOME/.fzf.zsh"
 fi
 
-# zoxide
-if command -v zoxide >/dev/null 2>&1; then
-  eval "$(zoxide init --cmd cd zsh)"
+# zoxide (cache the output instead of eval on every shell)
+if [[ -f "$HOME/.zsh/_zoxide_cache.zsh" ]] && [[ "$HOME/.zsh/_zoxide_cache.zsh" -nt "$(command -v zoxide)" ]]; then
+  source "$HOME/.zsh/_zoxide_cache.zsh"
+elif command -v zoxide >/dev/null 2>&1; then
+  zoxide init --cmd cd zsh > "$HOME/.zsh/_zoxide_cache.zsh" 2>/dev/null
+  source "$HOME/.zsh/_zoxide_cache.zsh"
   zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 fi
 
 # NVM (lazy-loaded — sourcing nvm.sh on every shell adds ~200ms)
-# NVM loads on first call to nvm, node, npm, npx, or yarn
 if [[ -s "$NVM_DIR/nvm.sh" ]]; then
   _nvm_lazy_load() {
     unset -f nvm node npm npx yarn 2>/dev/null
@@ -102,9 +112,17 @@ fi
 # Bun completions (optional)
 [[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
 
-# Pyenv (only if installed)
-if command -v pyenv >/dev/null 2>&1; then
-  eval "$(pyenv init - zsh)"
+# Pyenv (lazy-loaded — eval on every shell adds ~100ms)
+if [[ -d "$PYENV_ROOT/bin" ]]; then
+  _pyenv_lazy_load() {
+    unset -f pyenv python python3 pip pip3 2>/dev/null
+    eval "$(pyenv init - zsh)"
+  }
+  pyenv()   { _pyenv_lazy_load; pyenv "$@"; }
+  python()  { _pyenv_lazy_load; python "$@"; }
+  python3() { _pyenv_lazy_load; python3 "$@"; }
+  pip()     { _pyenv_lazy_load; pip "$@"; }
+  pip3()    { _pyenv_lazy_load; pip3 "$@"; }
 fi
 
 # fzf->nvim widget: Ctrl+f to pick a file/dir and open in nvim
