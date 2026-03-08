@@ -12,7 +12,7 @@ end
 
 add 'plugins.lang.treesitter'
 add 'plugins.lang.autotag'
-add 'plugins.lang.rust'
+-- add 'plugins.lang.rust'
 add 'plugins.lang.clangd-extensions'
 add 'plugins.lang.package-info'
 add 'plugins.lang.dbee'

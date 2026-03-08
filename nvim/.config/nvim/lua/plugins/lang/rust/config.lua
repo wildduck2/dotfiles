@@ -43,7 +43,8 @@ function M.setup()
           -- show all compiler warnings
           diagnostics = { enable = true },
           -- run clippy on save instead of check (stricter linting)
-          checkOnSave = { command = 'clippy' },
+          checkOnSave = true,
+          check = { command = 'clippy' },
           -- enable proc macro support
           procMacro = { enable = true },
           -- show inlay hints for types, params, chaining, etc.
