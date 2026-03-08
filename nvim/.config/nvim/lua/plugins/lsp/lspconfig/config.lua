@@ -33,14 +33,6 @@ M.servers = {
 		},
 	},
 	ts_ls = {
-		-- Resolve project root from these config files
-		root_dir = function(fname)
-			return vim.fs.root(fname, { "package.json", "tsconfig.json", "jsconfig.json" })
-		end,
-		-- false = don't start without a project root
-		single_file_support = false,
-		-- true = format without blocking the editor
-		formatting = { format_opts = { async = true } },
 		init_options = {
 			preferences = {
 				disableSuggestions = false,
@@ -62,7 +54,13 @@ M.servers = {
 	typos_lsp = {
 		filetypes = { "markdown", "text", "gitcommit" },
 	},
-	biome = {},
+	biome = {
+		capabilities = {
+			general = {
+				positionEncodings = { "utf-16" },
+			},
+		},
+	},
 	bashls = {},
 	dockerls = {},
 	docker_compose_language_service = {},
@@ -213,19 +211,18 @@ function M.setup()
 	-- Auto-install all servers listed in M.servers
 	require("mason-tool-installer").setup({ ensure_installed = vim.tbl_keys(M.servers or {}) })
 
-	-- Bridge mason-installed servers to lspconfig
+	-- Disable automatic_enable so we control server configs ourselves
 	require("mason-lspconfig").setup({
-		handlers = {
-			-- Default handler: configure and enable each server
-			function(server_name)
-				local server = M.servers[server_name] or {}
-				-- Merge server-specific caps with shared caps
-				server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-				vim.lsp.config(server_name, server)
-				vim.lsp.enable(server_name)
-			end,
-		},
+		automatic_enable = false,
 	})
+
+	-- Configure and enable each server with our custom settings
+	for server_name, server_config in pairs(M.servers) do
+		local config = vim.tbl_deep_extend("force", {}, server_config)
+		config.capabilities = vim.tbl_deep_extend("force", {}, capabilities, config.capabilities or {})
+		vim.lsp.config(server_name, config)
+		vim.lsp.enable(server_name)
+	end
 end
 
 return M
