@@ -1,0 +1,138 @@
+/* Waybar — i3 flat layout, HyprFlux colors */
+
+@import "style/catppuccin-themes/mocha.css";
+
+* {
+  font-family: "Berkeley Mono Trial", "JetBrainsMono Nerd Font";
+  font-weight: bold;
+  font-size: 14px;
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+}
+
+window#waybar {
+  background-color: #0e0e16;
+  color: @text;
+}
+
+/* --- Workspaces (left, flat like i3) --- */
+
+#workspaces {
+  margin: 0;
+  padding: 0;
+}
+
+#workspaces button {
+  padding: 0 6px;
+  min-width: 20px;
+  color: @text;
+  background: transparent;
+  border-radius: 0;
+  min-height: 0;
+}
+
+#workspaces button.active {
+  color: @crust;
+  background-color: @mauve;
+}
+
+#workspaces button.urgent {
+  color: @crust;
+  background-color: @red;
+}
+
+/* --- Right side modules (all inline) --- */
+
+#network,
+#battery,
+#disk,
+#memory,
+#cpu,
+#temperature,
+#pulseaudio,
+#clock,
+#tray {
+  padding: 0 8px;
+}
+
+#network {
+  color: @teal;
+}
+
+#network.disconnected,
+#network.disabled {
+  color: @red;
+}
+
+#battery {
+  color: @green;
+}
+
+#battery.warning {
+  color: @yellow;
+}
+
+#battery.critical:not(.charging) {
+  background-color: @red;
+  color: @crust;
+}
+
+#disk {
+  color: @sapphire;
+}
+
+#memory {
+  color: @sky;
+}
+
+#cpu {
+  color: @green;
+}
+
+#temperature {
+  color: @teal;
+}
+
+#temperature.critical {
+  background-color: @red;
+  color: @crust;
+}
+
+#pulseaudio {
+  color: @green;
+}
+
+#pulseaudio.muted {
+  color: @red;
+}
+
+#clock {
+  color: @text;
+}
+
+#tray {
+  padding: 0 6px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+}
+
+/* --- Tooltip --- */
+
+tooltip {
+  background-color: #0e0e16;
+  border: 1px solid @surface1;
+  border-radius: 0;
+  color: @text;
+}
+
+tooltip label {
+  color: @text;
+  padding: 4px 8px;
+}

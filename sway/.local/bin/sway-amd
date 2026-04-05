@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Launch Sway with AMD primary + NVIDIA for external outputs
+# card1 = AMD (primary renderer), card0 = NVIDIA (external display)
+
+export WLR_DRM_DEVICES="/dev/dri/card1:/dev/dri/card0"
+exec sway --unsupported-gpu "$@"

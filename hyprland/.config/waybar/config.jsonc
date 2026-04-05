@@ -1,0 +1,96 @@
+{
+  "layer": "top",
+  "position": "top",
+  "spacing": 0,
+  "fixed-center": true,
+  "ipc": true,
+
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": [],
+  "modules-right": [
+    "network",
+    "battery",
+    "disk",
+    "memory",
+    "cpu",
+    "temperature",
+    "pulseaudio",
+    "clock",
+    "tray"
+  ],
+
+  "hyprland/workspaces": {
+    "format": "{id}",
+    "on-click": "activate",
+    "on-scroll-up": "hyprctl dispatch workspace e-1",
+    "on-scroll-down": "hyprctl dispatch workspace e+1",
+    "sort-by-number": true,
+    "all-outputs": false,
+    "active-only": false,
+    "disable-scroll": false
+  },
+
+  "network": {
+    "format-wifi": "W: {essid} {signalStrength}%",
+    "format-ethernet": "E: {ipaddr}",
+    "format-disconnected": "W: down",
+    "tooltip-format-wifi": "{essid} {signalStrength}%\n{ipaddr}/{cidr}",
+    "tooltip-format-ethernet": "{ifname}\n{ipaddr}/{cidr}"
+  },
+
+  "battery": {
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "BAT: {status} {capacity}% {time}",
+    "format-charging": "BAT: Charging {capacity}%",
+    "format-plugged": "BAT: Plugged {capacity}%",
+    "format-time": "{H}h {M}m"
+  },
+
+  "disk": {
+    "format": "DISK: {free}",
+    "path": "/",
+    "interval": 30
+  },
+
+  "memory": {
+    "format": "MEM: {used:0.1f}G / {total:0.1f}G",
+    "interval": 5
+  },
+
+  "cpu": {
+    "format": "CPU: {usage}%",
+    "interval": 5
+  },
+
+  "temperature": {
+    "interval": 10,
+    "critical-threshold": 82,
+    "format": "{temperatureC}°C",
+    "format-critical": "{temperatureC}°C!",
+    "tooltip": true
+  },
+
+  "pulseaudio": {
+    "format": "VOL: {volume}%",
+    "format-muted": "VOL: muted",
+    "on-click": "$HOME/.config/hypr/scripts/Volume.sh --toggle",
+    "on-click-right": "pavucontrol",
+    "on-scroll-up": "$HOME/.config/hypr/scripts/Volume.sh --inc",
+    "on-scroll-down": "$HOME/.config/hypr/scripts/Volume.sh --dec",
+    "scroll-step": 5
+  },
+
+  "clock": {
+    "format": "{:%Y-%m-%d %H:%M:%S}",
+    "interval": 1,
+    "tooltip-format": "<tt><small>{calendar}</small></tt>"
+  },
+
+  "tray": {
+    "icon-size": 16,
+    "spacing": 8
+  }
+}

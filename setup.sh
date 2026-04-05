@@ -21,7 +21,7 @@ set -euo pipefail
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$DOTFILES_DIR/scripts/helpers.sh"
 
-ALL_MODULES=(bash zsh tmux kitty terminator picom nvim i3 duck-bash htop btop neofetch mechvibes obs-studio banana-cursor)
+ALL_MODULES=(bash zsh tmux kitty terminator picom nvim i3 sway hyprland duck-bash htop btop neofetch mechvibes obs-studio banana-cursor)
 DRY_RUN=0
 VERIFY_ONLY=0
 
@@ -47,6 +47,8 @@ Available modules:
   picom        Compositor (GLX backend, blur, opacity)
   nvim         Neovim IDE (74 plugins, 16 LSPs, formatters, linters)
   i3           i3 window manager (Catppuccin, gaps, lock, chrome, discord, OBS, yaak)
+  sway         Sway Wayland compositor (i3-compatible, same config, same bar)
+  hyprland     Hyprland Wayland compositor (Catppuccin, HyprFlux, rofi, swaync, wlogout)
   duck-bash    Utility scripts (git, docker, fzf-tmux, cleanup)
   htop         Process viewer
   btop         Resource monitor (Tokyo Night, vim keys)
@@ -145,6 +147,8 @@ setup_terminator() { bash "$DOTFILES_DIR/terminator/setup.sh"; }
 setup_picom()      { bash "$DOTFILES_DIR/picom/setup.sh"; }
 setup_nvim()       { bash "$DOTFILES_DIR/nvim/setup.sh"; }
 setup_i3()         { bash "$DOTFILES_DIR/i3/setup.sh"; }
+setup_sway()       { bash "$DOTFILES_DIR/sway/setup.sh"; }
+setup_hyprland()   { bash "$DOTFILES_DIR/hyprland/setup.sh"; }
 setup_duck_bash()  { bash "$DOTFILES_DIR/duck-bash/setup.sh"; }
 
 setup_mechvibes()  { bash "$DOTFILES_DIR/mechvibes/setup.sh"; }
@@ -216,6 +220,11 @@ run_verify() {
   _check i3; _check i3status; _check picom; _check feh; _check flameshot
   _check i3lock; _check dmenu; _check nm-applet
 
+  info "Desktop (Hyprland):"
+  _check Hyprland; _check waybar; _check rofi; _check hyprlock; _check swww
+  _check swaync-client; _check wlogout; _check pamixer; _check playerctl
+  _check grim; _check slurp
+
   info "Apps:"
   _check google-chrome-stable; _check discord; _check firefox; _check obs; _check yaak
 
@@ -259,7 +268,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
   # Validate all module names first
   for module in "${MODULES[@]}"; do
     case "$module" in
-      base|bash|zsh|tmux|kitty|terminator|picom|nvim|i3|htop|btop|neofetch|duck-bash|mechvibes|obs-studio|banana-cursor) ;;
+      base|bash|zsh|tmux|kitty|terminator|picom|nvim|i3|sway|hyprland|htop|btop|neofetch|duck-bash|mechvibes|obs-studio|banana-cursor) ;;
       *) err "Unknown module: $module"
          echo "Available: ${ALL_MODULES[*]}"
          echo "Run ./setup.sh --help for details"
@@ -286,6 +295,8 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
       picom)      setup_base && setup_picom ;;
       nvim)       setup_base && setup_nvim ;;
       i3)         setup_base && setup_i3 ;;
+      sway)       setup_base && setup_sway ;;
+      hyprland)   setup_base && setup_hyprland ;;
       htop)       setup_base && setup_htop ;;
       btop)       setup_base && setup_btop ;;
       neofetch)   setup_base && setup_neofetch ;;
@@ -339,6 +350,12 @@ setup_nvim
 
 # 7. Desktop environment (depends on picom, terminator, fonts)
 setup_i3
+
+# 7b. Sway (Wayland i3 drop-in replacement)
+setup_sway
+
+# 7c. Hyprland (Wayland alternative — can coexist with i3)
+setup_hyprland
 
 # 8. Utility scripts
 setup_duck_bash

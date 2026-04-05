@@ -1,0 +1,9 @@
+@import "~/.config/rofi/master-config.rasi"
+
+configuration {
+    font: "Berkeley Mono Trial 10";
+}
+
+element-text {
+    font: "Berkeley Mono Trial 9";
+}
