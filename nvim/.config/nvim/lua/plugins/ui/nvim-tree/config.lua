@@ -31,6 +31,7 @@ function M.setup()
   vim.api.nvim_set_hl(0, 'NvimTreeImageFile', { link = 'Title' })
 
   require('nvim-tree').setup {
+    auto_reload_on_write = true, -- refresh tree after :w
     sort = { sorter = 'case_sensitive' }, -- 'name', 'case_sensitive', 'modification_time'
     filters = { dotfiles = false }, -- true: hide dotfiles
     disable_netrw = true, -- true: disable built-in file explorer
@@ -46,7 +47,7 @@ function M.setup()
       preserve_window_proportions = true, -- true: keep window sizes on open/close
     },
     git = { enable = true, ignore = false }, -- ignore=false: show git-ignored files
-    filesystem_watchers = { enable = false }, -- disabled for performance; use R to refresh
+    filesystem_watchers = { enable = true, debounce_delay = 100 }, -- live update on external file changes
     actions = { open_file = { resize_window = true } },
     on_attach = function(bufnr)
       local api = require('nvim-tree.api')
