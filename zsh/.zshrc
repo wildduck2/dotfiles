@@ -138,3 +138,7 @@ fzf_nvim() {
 }
 zle -N fzf_nvim
 bindkey '^f' fzf_nvim
+export PATH="/usr/games:$PATH"
+
+# opencode
+export PATH=/home/wildduck/.opencode/bin:$PATH
