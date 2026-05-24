@@ -1,7 +1,7 @@
 local M = {}
 
 function M.setup()
-  require('nvim-treesitter.configs').setup {
+  require('treesitter-modules').setup {
     ensure_installed = {
       'bash', 'c', 'cpp', 'css', 'eex', 'elixir', 'erlang', 'go',
       'gitignore', 'haskell', 'heex', 'hjson', 'html', 'javascript',
