@@ -142,3 +142,13 @@ export PATH="/usr/games:$PATH"
 
 # opencode
 export PATH=/home/wildduck/.opencode/bin:$PATH
+
+# Added by flyctl installer
+export FLYCTL_INSTALL="/home/wildduck/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
+PATH="/home/wildduck/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/wildduck/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/wildduck/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/wildduck/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/wildduck/perl5"; export PERL_MM_OPT;
