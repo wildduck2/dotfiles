@@ -148,6 +148,57 @@ function M.setup()
   vmap('<leader>Xe', function() dapui.eval(nil, { enter = true }) end, 'Eval expression')
   map('<leader>Xj', dap.down, 'Stack down')
   map('<leader>Xk', dap.up, 'Stack up')
+
+  -- Breakpoint navigation: collect all breakpoints across all buffers,
+  -- jump to next/prev relative to cursor. Wraps around.
+  local function bp_jump(dir)
+    local bps = require('dap.breakpoints').get()
+    local items = {}
+    for bufnr, lines in pairs(bps) do
+      local name = vim.api.nvim_buf_get_name(bufnr)
+      for _, b in ipairs(lines) do
+        table.insert(items, { bufnr = bufnr, name = name, line = b.line })
+      end
+    end
+    if #items == 0 then
+      vim.notify('No breakpoints set', vim.log.levels.INFO)
+      return
+    end
+    table.sort(items, function(a, b)
+      if a.name == b.name then return a.line < b.line end
+      return a.name < b.name
+    end)
+    local cur_buf = vim.api.nvim_get_current_buf()
+    local cur_line = vim.api.nvim_win_get_cursor(0)[1]
+    local cur_name = vim.api.nvim_buf_get_name(cur_buf)
+    local target
+    if dir == 'next' then
+      for _, it in ipairs(items) do
+        if (it.name == cur_name and it.line > cur_line) or it.name > cur_name then
+          target = it; break
+        end
+      end
+      target = target or items[1]
+    else
+      for i = #items, 1, -1 do
+        local it = items[i]
+        if (it.name == cur_name and it.line < cur_line) or it.name < cur_name then
+          target = it; break
+        end
+      end
+      target = target or items[#items]
+    end
+    vim.cmd('edit ' .. vim.fn.fnameescape(target.name))
+    vim.api.nvim_win_set_cursor(0, { target.line, 0 })
+    vim.cmd('normal! zz')
+  end
+
+  map('<leader>X]', function() bp_jump('next') end, 'Next breakpoint')
+  map('<leader>X[', function() bp_jump('prev') end, 'Prev breakpoint')
+  map('<leader>Xv', function()
+    require('dap').list_breakpoints()
+    vim.cmd('copen')
+  end, 'List breakpoints in quickfix')
 end
 
 return M
