@@ -215,9 +215,13 @@ The `module` column links to the per-module README under
 - **nvim-lint** -- runs linters on `BufWritePost`/`InsertLeave`. Linters:
   markdownlint, luacheck, pylint, golangcilint, hadolint.
 - **nvim-dap + nvim-dap-ui + nvim-dap-virtual-text + mason-nvim-dap +
-  nvim-dap-vscode-js + nvim-dap-go + nvim-dap-python** -- debugger stack.
-  Adapters for ts/js, rust, c/cpp, elixir, go, python. `<F5>` continue,
-  `<leader>X*` namespace. See `plugins/lsp/dap/`.
+  nvim-dap-go + nvim-dap-python** -- debugger stack. js-debug-adapter
+  wired directly. Adapters for ts/js, rust, c/cpp, elixir, go, python.
+  `<F5>` continue, `<leader>X*` namespace. See `plugins/lsp/dap/`.
+- **neotest + neotest-jest + neotest-vitest + neotest-python + neotest-go
+  + neotest-rust + neotest-elixir** -- test runner. ✓ / ✗ signs in
+  gutter, virtual-text error on failing line, summary panel, DAP debug
+  strategy. `<leader>T*` namespace. See `plugins/lsp/neotest/`.
 
 ### navigation
 

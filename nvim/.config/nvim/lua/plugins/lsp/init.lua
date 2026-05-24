@@ -9,4 +9,5 @@ return {
   require 'plugins.lsp.todo-comments',
   require 'plugins.lsp.endhints',
   require 'plugins.lsp.dap',
+  require 'plugins.lsp.neotest',
 }

@@ -45,7 +45,7 @@ or setting.
 | Fun extras | hacker, randiverse, cellular-automaton, Discord presence | [plugins/fun](plugins/fun/README.md) |
 | Git | fugitive, gitsigns | [plugins/git](plugins/git/README.md) |
 | Language tooling | treesitter, rust, dadbod, markdown, package-info, autotag, clangd | [plugins/lang](plugins/lang/README.md) |
-| LSP and diagnostics | lspconfig, lazydev, lint, trouble, todo-comments, inlay hints, outline, **dap** | [plugins/lsp](plugins/lsp/README.md) |
+| LSP and diagnostics | lspconfig, lazydev, lint, trouble, todo-comments, inlay hints, outline, **dap**, **neotest** | [plugins/lsp](plugins/lsp/README.md) |
 | Navigation | telescope, harpoon, tmux navigator | [plugins/navigation](plugins/navigation/README.md) |
 | Tools | silicon code screenshots | [plugins/tools](plugins/tools/README.md) |
 | UI | lualine, nvim-tree, which-key, snacks, toggleterm, zen-mode | [plugins/ui](plugins/ui/README.md) |

@@ -784,6 +784,26 @@ fire by default.
 | `<leader>xL` | Trouble loclist |
 | `<leader>xQ` | Trouble qflist |
 
+### `<leader>T*` -- neotest test runner
+
+See [`plugins/lsp/neotest/README.md`](plugins/lsp/neotest/README.md) for
+the full table.
+
+| Keys | Action |
+| --- | --- |
+| `<leader>Tr` | run nearest test |
+| `<leader>Tt` | run file |
+| `<leader>TT` | run project |
+| `<leader>Tl` | run last |
+| `<leader>Td` | debug nearest (DAP) |
+| `<leader>TD` | debug last (DAP) |
+| `<leader>Ts` | summary panel |
+| `<leader>To` | output (current test) |
+| `<leader>TO` | output panel (all runs) |
+| `<leader>TS` | stop |
+| `<leader>Tw` | toggle watch on file |
+| `[t` / `]t` | prev / next failed test |
+
 ### `<leader>X*` -- DAP debugger
 
 See [`plugins/lsp/dap/README.md`](plugins/lsp/dap/README.md) for the full

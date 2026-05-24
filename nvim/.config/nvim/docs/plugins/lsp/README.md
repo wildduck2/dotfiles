@@ -14,3 +14,4 @@ LSP and code-intel layer.
 | todo-comments | Highlight + search TODO/FIXME/NOTE comments | [todo-comments](todo-comments/README.md) |
 | endhints | End-of-line inlay hint label | [endhints](endhints/README.md) |
 | dap | Debugger stack — nvim-dap + dap-ui + adapters for ts/js, rust, c/cpp, elixir, go, python | [dap](dap/README.md) |
+| neotest | Test runner — jest, vitest, pytest, go, rust, elixir. Pass/fail signs + DAP debug | [neotest](neotest/README.md) |
