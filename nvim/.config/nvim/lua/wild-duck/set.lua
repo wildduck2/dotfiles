@@ -64,6 +64,17 @@ vim.opt.smartindent = true
 
 vim.opt.swapfile = false
 vim.opt.backup = false
+vim.opt.autoread = true -- reload buffer when file changed on disk
+
+-- Trigger :checktime so autoread fires while sitting in nvim
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI', 'TermLeave' }, {
+  group = vim.api.nvim_create_augroup('AutoReloadOnDiskChange', { clear = true }),
+  callback = function()
+    if vim.fn.mode() ~= 'c' and vim.fn.getcmdwintype() == '' then
+      vim.cmd('checktime')
+    end
+  end,
+})
 
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
