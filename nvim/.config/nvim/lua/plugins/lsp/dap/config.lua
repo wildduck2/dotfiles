@@ -6,14 +6,37 @@ function M.setup()
 
   require('mason-nvim-dap').setup({
     automatic_installation = true,
-    ensure_installed = {
-      'codelldb',
-      'js-debug-adapter',
-      'delve',
-      'debugpy',
-    },
     handlers = {},
   })
+
+  -- Mason-tool-installer is owned by lspconfig and we cannot re-call its
+  -- setup without clobbering the LSP list. Use mason-registry directly so
+  -- every DAP package is fetched on first nvim load and any time the list
+  -- below changes. Runs after VeryLazy so mason itself is ready.
+  local dap_packages = {
+    'codelldb',          -- rust / c / c++
+    'js-debug-adapter',  -- node / chrome (vscode-js-debug)
+    'delve',             -- go
+    'debugpy',           -- python
+    'elixir-ls',         -- elixir (LSP + debug adapter in one package)
+  }
+
+  local ok_reg, registry = pcall(require, 'mason-registry')
+  if ok_reg then
+    local function install_missing()
+      for _, name in ipairs(dap_packages) do
+        local ok_pkg, pkg = pcall(registry.get_package, name)
+        if ok_pkg and not pkg:is_installed() then
+          pkg:install()
+        end
+      end
+    end
+    if registry.refresh then
+      registry.refresh(install_missing)
+    else
+      install_missing()
+    end
+  end
 
   dapui.setup({
     icons = { expanded = '', collapsed = '', current_frame = '' },
@@ -62,11 +85,20 @@ function M.setup()
     virt_lines = false,
   })
 
-  vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'DiagnosticError', linehl = '', numhl = '' })
-  vim.fn.sign_define('DapBreakpointCondition', { text = '', texthl = 'DiagnosticWarn', linehl = '', numhl = '' })
-  vim.fn.sign_define('DapLogPoint', { text = '', texthl = 'DiagnosticInfo', linehl = '', numhl = '' })
-  vim.fn.sign_define('DapStopped', { text = '', texthl = 'DiagnosticOk', linehl = 'Visual', numhl = '' })
-  vim.fn.sign_define('DapBreakpointRejected', { text = '', texthl = 'DiagnosticError', linehl = '', numhl = '' })
+  -- Use filled-circle glyphs that render in any terminal (no nerd font
+  -- needed). Distinct colors per state so you can see at a glance.
+  vim.api.nvim_set_hl(0, 'DapBreakpointSign', { fg = '#e06c75' })           -- red
+  vim.api.nvim_set_hl(0, 'DapBreakpointCondSign', { fg = '#e5c07b' })       -- yellow
+  vim.api.nvim_set_hl(0, 'DapLogPointSign', { fg = '#61afef' })             -- blue
+  vim.api.nvim_set_hl(0, 'DapStoppedSign', { fg = '#98c379' })              -- green
+  vim.api.nvim_set_hl(0, 'DapStoppedLine', { bg = '#31353f' })              -- subtle line bg
+  vim.api.nvim_set_hl(0, 'DapBreakpointRejectedSign', { fg = '#5c6370' })   -- grey
+
+  vim.fn.sign_define('DapBreakpoint',          { text = '●', texthl = 'DapBreakpointSign',         numhl = 'DapBreakpointSign' })
+  vim.fn.sign_define('DapBreakpointCondition', { text = '●', texthl = 'DapBreakpointCondSign',     numhl = 'DapBreakpointCondSign' })
+  vim.fn.sign_define('DapLogPoint',            { text = '◆', texthl = 'DapLogPointSign',           numhl = 'DapLogPointSign' })
+  vim.fn.sign_define('DapStopped',             { text = '▶', texthl = 'DapStoppedSign', linehl = 'DapStoppedLine', numhl = 'DapStoppedSign' })
+  vim.fn.sign_define('DapBreakpointRejected',  { text = '○', texthl = 'DapBreakpointRejectedSign', numhl = 'DapBreakpointRejectedSign' })
 
   dap.listeners.before.attach.dapui_config = function() dapui.open() end
   dap.listeners.before.launch.dapui_config = function() dapui.open() end

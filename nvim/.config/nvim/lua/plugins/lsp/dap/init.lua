@@ -8,7 +8,6 @@ return {
       'theHamsta/nvim-dap-virtual-text',
       'jay-babu/mason-nvim-dap.nvim',
       'williamboman/mason.nvim',
-      { 'mxsdev/nvim-dap-vscode-js' },
       { 'leoluz/nvim-dap-go' },
       { 'mfussenegger/nvim-dap-python' },
     },

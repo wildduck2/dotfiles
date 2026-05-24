@@ -28,10 +28,12 @@ and an in-editor variable popup for every language we wired:
 | `adapters/go.lua` | `dap-go.setup()` — delve-based debug / debug_test / attach. |
 | `adapters/python.lua` | `dap-python.setup()` pointed at mason debugpy when present; pytest is the default test runner. |
 
-## Plugins installed (mason-nvim-dap)
+## Plugins installed (auto)
 
-`mason-nvim-dap` auto-installs these on first run. `automatic_installation`
-is `true` so any newly-referenced adapter is also fetched.
+`config.lua` walks a hard-coded list and calls `mason-registry`'s
+`pkg:install()` for any package not present. Runs every nvim launch (after
+VeryLazy) so a missing debugger gets queued automatically — no manual
+`:MasonInstall` needed.
 
 | Adapter | Mason package |
 | --- | --- |
@@ -39,10 +41,13 @@ is `true` so any newly-referenced adapter is also fetched.
 | js-debug (node/chrome) | `js-debug-adapter` |
 | delve (go) | `delve` |
 | debugpy (python) | `debugpy` |
-| elixir-ls debug adapter | install via `:MasonInstall elixir-ls` (LSP package also ships DAP) |
+| elixir-ls (LSP + debug adapter) | `elixir-ls` |
 
-If a debugger is missing, run `:Mason` and install it manually, or call
-`:MasonInstall <package>`.
+`mason-nvim-dap` is still loaded with `automatic_installation = true` so any
+adapter referenced at runtime but not in the list above is also fetched.
+
+Check status: `:Mason` or
+`:lua =require('mason-registry').get_package('codelldb'):is_installed()`.
 
 ## Global keybinds
 

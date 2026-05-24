@@ -13,39 +13,38 @@ local function pick_exe(default_dir)
 end
 
 local function rust_cargo_target()
-  -- Coroutine so DAP can suspend while we shell out to cargo.
-  return coroutine.create(function(co)
-    vim.system({ 'cargo', 'metadata', '--no-deps', '--format-version', '1' }, { text = true }, function(out)
-      vim.schedule(function()
-        local ok, meta = pcall(vim.json.decode, out.stdout or '')
-        if not ok or not meta or not meta.packages then
-          coroutine.resume(co, vim.fn.input('Binary: ', vim.fn.getcwd() .. '/target/debug/', 'file'))
-          return
-        end
-        local target_dir = meta.target_directory or (vim.fn.getcwd() .. '/target')
-        local bins = {}
-        for _, pkg in ipairs(meta.packages) do
-          for _, t in ipairs(pkg.targets or {}) do
-            for _, kind in ipairs(t.kind or {}) do
-              if kind == 'bin' or kind == 'example' then
-                local sub = kind == 'example' and '/examples/' or '/'
-                table.insert(bins, target_dir .. '/debug' .. sub .. t.name)
-              end
+  local co = coroutine.running()
+  vim.system({ 'cargo', 'metadata', '--no-deps', '--format-version', '1' }, { text = true }, function(out)
+    vim.schedule(function()
+      local ok, meta = pcall(vim.json.decode, out.stdout or '')
+      if not ok or not meta or not meta.packages then
+        coroutine.resume(co, vim.fn.input('Binary: ', vim.fn.getcwd() .. '/target/debug/', 'file'))
+        return
+      end
+      local target_dir = meta.target_directory or (vim.fn.getcwd() .. '/target')
+      local bins = {}
+      for _, pkg in ipairs(meta.packages) do
+        for _, t in ipairs(pkg.targets or {}) do
+          for _, kind in ipairs(t.kind or {}) do
+            if kind == 'bin' or kind == 'example' then
+              local sub = kind == 'example' and '/examples/' or '/'
+              table.insert(bins, target_dir .. '/debug' .. sub .. t.name)
             end
           end
         end
-        if #bins == 0 then
-          coroutine.resume(co, vim.fn.input('Binary: ', target_dir .. '/debug/', 'file'))
-        elseif #bins == 1 then
-          coroutine.resume(co, bins[1])
-        else
-          vim.ui.select(bins, { prompt = 'Pick rust binary' }, function(choice)
-            coroutine.resume(co, choice or bins[1])
-          end)
-        end
-      end)
+      end
+      if #bins == 0 then
+        coroutine.resume(co, vim.fn.input('Binary: ', target_dir .. '/debug/', 'file'))
+      elseif #bins == 1 then
+        coroutine.resume(co, bins[1])
+      else
+        vim.ui.select(bins, { prompt = 'Pick rust binary' }, function(choice)
+          coroutine.resume(co, choice or bins[1])
+        end)
+      end
     end)
   end)
+  return coroutine.yield()
 end
 
 function M.setup()
@@ -65,7 +64,7 @@ function M.setup()
       name = 'Launch (cargo target)',
       type = 'codelldb',
       request = 'launch',
-      program = rust_cargo_target(),
+      program = rust_cargo_target,
       cwd = '${workspaceFolder}',
       stopOnEntry = false,
       args = {},
