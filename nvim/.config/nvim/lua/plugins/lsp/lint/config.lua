@@ -11,6 +11,7 @@ function M.setup()
     python = { 'pylint' },
     go = { 'golangcilint' },
     dockerfile = { 'hadolint' },
+    -- SQL diagnostics handled by duck_sqllsp via LSP, no nvim-lint entry.
   }
 
   -- clear=true prevents duplicate autocmds on re-source

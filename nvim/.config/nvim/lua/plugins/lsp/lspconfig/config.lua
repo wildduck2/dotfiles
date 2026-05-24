@@ -1,22 +1,17 @@
 local M = {}
 
--- LSP server configurations (empty {} = use defaults)
--- NOTE: lua_ls library is built lazily in setup() to avoid
--- scanning runtimepath at require-time
+-- LSP server configurations. See docs/plugins/lsp/lspconfig/README.md.
 M.servers = {
 	clangd = {},
 	lua_ls = {
 		settings = {
 			Lua = {
-				-- Target LuaJIT runtime (alt: 'Lua 5.1'-'5.4')
 				runtime = { version = "LuaJIT" },
 				workspace = {
-					-- Don't prompt to configure third-party libs
 					checkThirdParty = false,
-					-- Populated in setup() to defer rtp scan
+					-- Populated in setup() to defer rtp scan.
 					library = {},
 				},
-				-- 'Replace' inserts snippet body (alt: 'Disable')
 				completion = { callSnippet = "Replace" },
 			},
 		},
@@ -36,12 +31,10 @@ M.servers = {
 		init_options = {
 			preferences = {
 				disableSuggestions = false,
-				-- Reduce heavy operations that cause lag
 				includeCompletionsForModuleExports = false,
 				includeCompletionsWithObjectLiteralMethodSnippets = false,
 				includePackageJsonAutoImports = "off",
 			},
-			-- Limit memory usage
 			maxTsServerMemory = 4096,
 		},
 	},
@@ -66,13 +59,18 @@ M.servers = {
 	docker_compose_language_service = {},
 	mdx_analyzer = {
 		filetypes = { "mdx" },
-		init_options = {
-			typescript = {},
-		},
+		init_options = { typescript = {} },
+	},
+	-- duck-sqllsp: our native SQL language server (Rust workspace at
+	-- @duck-sqllsp). Binary installed to ~/.local/bin/duck-sqllsp.
+	-- Connections are pushed in via plugins/lang/dadbod/db_manager at
+	-- LspAttach time so the server gets the same list as dadbod-ui.
+	duck_sqllsp = {
+		filetypes = { "sql", "mysql", "plsql" },
+		cmd = { "duck-sqllsp", "server" },
 	},
 }
 
--- Compat wrapper: 0.11+ uses method syntax, older uses fn
 local function client_supports_method(client, method, bufnr)
 	if vim.fn.has("nvim-0.11") == 1 then
 		return client:supports_method(method, bufnr)
@@ -81,16 +79,12 @@ local function client_supports_method(client, method, bufnr)
 	end
 end
 
--- Runs when an LSP client attaches to a buffer
 local function on_attach(event)
-	-- Helper: set buffer-local keymap with LSP: prefix
 	local map = function(keys, func, desc, mode)
 		mode = mode or "n"
 		vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 	end
 
-	-- LSP keymaps (buffer-local, only active when LSP attached)
-	-- Wrap telescope requires in functions to avoid eager loading
 	map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 	map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
 	map("gr", function() require("telescope.builtin").lsp_references() end, "[G]oto [R]eferences")
@@ -100,16 +94,51 @@ local function on_attach(event)
 	map("<leader>ds", function() require("telescope.builtin").lsp_document_symbols() end, "[D]ocument [S]ymbols")
 	map("<leader>ws", function() require("telescope.builtin").lsp_dynamic_workspace_symbols() end, "[W]orkspace [S]ymbols")
 	map("<leader>D", function() require("telescope.builtin").lsp_type_definitions() end, "Type [D]efinition")
+	-- Default nvim hover -- no custom float, no markdown overlay, no
+	-- auto-close hook. Width / height / styling come straight from
+	-- vim.lsp.buf.hover().
 	map("K", vim.lsp.buf.hover, "Hover Documentation")
+	map("<C-s>", vim.lsp.buf.signature_help, "Signature Help", "i")
 
 	local client = vim.lsp.get_client_by_id(event.data.client_id)
 
-	-- Disable biome diagnostics (ts_ls handles diagnostics for JS/TS)
+	-- Auto-trigger signature help when the LSP advertises it. Fires on `(`
+	-- and `,` so the parameter hint stays in sync as the user types args.
+	if client and client.server_capabilities.signatureHelpProvider
+		and not vim.b[event.buf]._lsp_sighelp_registered then
+		vim.b[event.buf]._lsp_sighelp_registered = true
+		local triggers = client.server_capabilities.signatureHelpProvider.triggerCharacters or { "(", "," }
+		vim.api.nvim_create_autocmd("TextChangedI", {
+			buffer = event.buf,
+			callback = function()
+				local col = vim.api.nvim_win_get_cursor(0)[2]
+				if col == 0 then return end
+				local line = vim.api.nvim_get_current_line()
+				local ch = line:sub(col, col)
+				for _, t in ipairs(triggers) do
+					if ch == t then vim.lsp.buf.signature_help(); return end
+				end
+			end,
+		})
+	end
+
+	-- ts_ls owns JS/TS diagnostics; suppress biome's to avoid duplicates.
 	if client and client.name == "biome" then
 		client.server_capabilities.diagnosticProvider = nil
 	end
 
-	-- Document highlight: only register once per buffer (not per LSP client)
+	-- duck-sqllsp advertises semantic tokens, but tree-sitter SQL has
+	-- richer coverage. Letting both run lets the LSP tokens repaint
+	-- identifiers in flat colours and the buffer ends up de-coloured.
+	-- Drop the LSP provider so tree-sitter highlights remain authoritative.
+	if client and client.name == "duck_sqllsp" then
+		client.server_capabilities.semanticTokensProvider = nil
+		-- nvim 0.11 renamed `vim.lsp.semantic_tokens.stop` -> nothing
+		-- public; clearing the provider above is enough to halt future
+		-- token requests, and existing highlights drop on the next
+		-- buffer change.
+	end
+
 	local buf = event.buf
 	if
 		client
@@ -138,7 +167,6 @@ local function on_attach(event)
 		})
 	end
 
-	-- Inlay hints: only enable once per buffer
 	if
 		client
 		and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, buf)
@@ -153,23 +181,16 @@ local function on_attach(event)
 end
 
 function M.setup()
-	-- Register on_attach for every LSP client connection
 	vim.api.nvim_create_autocmd("LspAttach", {
-		-- clear=true so re-sourcing doesn't duplicate
 		group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 		callback = on_attach,
 	})
 
-	-- Diagnostic display settings
 	vim.diagnostic.config({
-		-- false = don't update diagnostics while typing
 		update_in_insert = false,
-		-- true = sort by severity (errors first)
 		severity_sort = true,
-		-- Floating window style (alt border: 'single','none')
 		float = { border = "rounded", source = "if_many" },
 		underline = true,
-		-- Use nerd font icons for sign column if available
 		signs = vim.g.have_nerd_font and {
 			text = {
 				[vim.diagnostic.severity.ERROR] = "󰅚 ",
@@ -177,46 +198,40 @@ function M.setup()
 				[vim.diagnostic.severity.INFO] = "󰋽 ",
 				[vim.diagnostic.severity.HINT] = "󰌶 ",
 			},
-			-- Show signs for all severity levels
 			severity = { min = vim.diagnostic.severity.HINT },
 		} or {},
 		virtual_text = {
-			-- 'if_many' = show source only when multiple exist
 			source = "if_many",
-			-- Columns between code and virtual text
 			spacing = 2,
-			-- Display raw message (can transform here)
 			format = function(diagnostic)
 				return diagnostic.message
 			end,
-			-- Show virtual text for all severity levels
 			severity = { min = vim.diagnostic.severity.HINT },
 		},
 	})
 
-	-- Populate lua_ls library now (deferred from module load time)
 	local lua_lib = { "${3rd}/luv/library" }
 	vim.list_extend(lua_lib, vim.api.nvim_get_runtime_file("", true))
 	M.servers.lua_ls.settings.Lua.workspace.library = lua_lib
 
-	-- Merge nvim-cmp capabilities with default LSP caps
 	local capabilities = vim.lsp.protocol.make_client_capabilities()
 	capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-	-- Mason: portable LSP/tool installer
-	require("mason").setup({
-		ui = { border = "rounded" },
-	})
-	-- Auto-install all servers + extra tools (formatters, linters)
-	-- Auto-install all servers listed in M.servers
-	require("mason-tool-installer").setup({ ensure_installed = vim.tbl_keys(M.servers or {}) })
+	require("mason").setup({ ui = { border = "rounded" } })
 
-	-- Disable automatic_enable so we control server configs ourselves
-	require("mason-lspconfig").setup({
-		automatic_enable = false,
-	})
+	-- Mason auto-installs every server in M.servers EXCEPT duck_sqllsp,
+	-- which is built from source under @duck-sqllsp and installed to
+	-- ~/.local/bin via `cargo install` (or `install -m 0755 target/release/...`).
+	local ensure = {}
+	for name, _ in pairs(M.servers or {}) do
+		if name ~= "duck_sqllsp" then
+			table.insert(ensure, name)
+		end
+	end
+	require("mason-tool-installer").setup({ ensure_installed = ensure })
 
-	-- Configure and enable each server with our custom settings
+	require("mason-lspconfig").setup({ automatic_enable = false })
+
 	for server_name, server_config in pairs(M.servers) do
 		local config = vim.tbl_deep_extend("force", {}, server_config)
 		config.capabilities = vim.tbl_deep_extend("force", {}, capabilities, config.capabilities or {})

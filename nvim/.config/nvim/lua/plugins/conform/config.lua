@@ -30,17 +30,21 @@ function M.setup()
       mdx = { 'prettier' },
       bash = { 'shfmt' },
       sh = { 'shfmt' },
+      -- SQL formatting handled by duck_sqllsp via LSP; conform stays out.
     },
 
-    -- Format after save; falls back to LSP if no formatter available
+    -- Format after save; falls back to LSP when conform has no formatter
+    -- (used by SQL via duck-sqllsp, Rust via rust-analyzer, etc.).
     format_after_save = function(bufnr)
+      local ft = vim.bo[bufnr].filetype
       local available = conform.list_formatters(bufnr)
       if #available == 0 then
+        if ft == 'sql' or ft == 'plsql' or ft == 'psql' then
+          return { lsp_fallback = 'always' }
+        end
         return
       end
-      return {
-        lsp_fallback = true,
-      }
+      return { lsp_fallback = true }
     end,
   }
 

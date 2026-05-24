@@ -1,0 +1,615 @@
+diff --git a/grammar/column-lists.js b/grammar/column-lists.js
+index 55d257d..409fdf7 100644
+--- a/grammar/column-lists.js
++++ b/grammar/column-lists.js
+@@ -85,7 +85,7 @@ export default {
+       )
+     ),
+     $.keyword_check,
+-    wrapped_in_parenthesis($.binary_expression)
++    wrapped_in_parenthesis($._expression)
+   ),
+ 
+   _default_expression: $ => seq(
+@@ -129,7 +129,46 @@ export default {
+       ),
+       seq(
+         $._check_constraint
+-      )
++      ),
++      seq(
++        choice(
++          seq(
++            $.keyword_unique,
++            optional(
++              choice(
++                $.keyword_index,
++                $.keyword_key,
++                seq($.keyword_nulls, optional($.keyword_not), $.keyword_distinct),
++              ),
++            ),
++          ),
++          seq(optional($.keyword_foreign), $.keyword_key, optional($._if_not_exists)),
++        ),
++        $.ordered_columns,
++        optional(
++          seq(
++            $.keyword_references,
++            $.object_reference,
++            paren_list($.identifier, true),
++            repeat(
++              seq(
++                $.keyword_on,
++                choice($.keyword_delete, $.keyword_update),
++                choice(
++                  seq($.keyword_no, $.keyword_action),
++                  $.keyword_restrict,
++                  $.keyword_cascade,
++                  seq(
++                    $.keyword_set,
++                    choice($.keyword_null, $.keyword_default),
++                    optional(paren_list($.identifier, true))
++                  ),
++                ),
++              ),
++            ),
++          ),
++        ),
++      ),
+     )
+   ),
+ 
+diff --git a/grammar/expressions.js b/grammar/expressions.js
+index 5d49ccb..0492226 100644
+--- a/grammar/expressions.js
++++ b/grammar/expressions.js
+@@ -239,6 +239,7 @@ export default {
+       '-|-',
+       '||',
+       '^@',
++      '&&',
+     ),
+   ),
+ 
+@@ -270,6 +271,7 @@ export default {
+       // `is (not distinct from)` with a unary `not`
+       [$.distinct_from, 'binary_is'],
+       [$.not_distinct_from, 'binary_is'],
++      [$.at_time_zone, 'binary_is'],
+     ].map(([operator, precedence]) =>
+       prec.left(precedence, seq(
+         field('left', $._expression),
+diff --git a/grammar/keywords.js b/grammar/keywords.js
+index 6be9e89..4c45d58 100644
+--- a/grammar/keywords.js
++++ b/grammar/keywords.js
+@@ -324,6 +324,48 @@ export default {
+   keyword_avro: _ => make_keyword("avro"),
+   keyword_jsonfile: _ => make_keyword("jsonfile"),
+ 
++  // PL/pgSQL keywords (procedural extensions)
++  keyword_elsif: _ => make_keyword("elsif"),
++  keyword_elseif: _ => make_keyword("elseif"),
++  keyword_raise: _ => make_keyword("raise"),
++  keyword_exception: _ => make_keyword("exception"),
++  keyword_notice: _ => make_keyword("notice"),
++  keyword_warning: _ => make_keyword("warning"),
++  keyword_info: _ => make_keyword("info"),
++  keyword_log: _ => make_keyword("log"),
++  keyword_debug: _ => make_keyword("debug"),
++  keyword_get: _ => make_keyword("get"),
++  keyword_diagnostics: _ => make_keyword("diagnostics"),
++  keyword_stacked: _ => make_keyword("stacked"),
++  keyword_found: _ => make_keyword("found"),
++  keyword_loop: _ => make_keyword("loop"),
++  keyword_endloop: _ => make_keyword("endloop"),
++  keyword_perform: _ => make_keyword("perform"),
++  keyword_assert: _ => make_keyword("assert"),
++  keyword_continue: _ => make_keyword("continue"),
++  keyword_exit: _ => make_keyword("exit"),
++
++  // TCL (transaction control)
++  keyword_savepoint: _ => make_keyword("savepoint"),
++  keyword_release: _ => make_keyword("release"),
++  keyword_work: _ => make_keyword("work"),
++
++  // Privileges
++  keyword_grant: _ => make_keyword("grant"),
++  keyword_revoke: _ => make_keyword("revoke"),
++  keyword_usage: _ => make_keyword("usage"),
++
++  // Misc
++  keyword_at: _ => make_keyword("at"),
++  keyword_domain: _ => make_keyword("domain"),
++  keyword_grouping: _ => make_keyword("grouping"),
++  keyword_sets: _ => make_keyword("sets"),
++  keyword_rollup: _ => make_keyword("rollup"),
++  keyword_cube: _ => make_keyword("cube"),
++
++  // Composite operator: AT TIME ZONE
++  at_time_zone: $ => seq($.keyword_at, $.keyword_time, $.keyword_zone),
++
+   // Operators
+   is_not: $ => prec.left(seq($.keyword_is, $.keyword_not)),
+   not_like: $ => seq($.keyword_not, $.keyword_like),
+diff --git a/grammar/statements/alter.js b/grammar/statements/alter.js
+index 7646598..3c45ad5 100644
+--- a/grammar/statements/alter.js
++++ b/grammar/statements/alter.js
+@@ -112,6 +112,12 @@ export default {
+         ),
+         $.keyword_type,
+         field('type', $._type),
++        optional(
++          seq(
++            $.keyword_using,
++            field('using', $._expression),
++          ),
++        ),
+       ),
+       seq(
+         $.keyword_set,
+diff --git a/grammar/statements/create-function.js b/grammar/statements/create-function.js
+index 283881a..23ccbda 100644
+--- a/grammar/statements/create-function.js
++++ b/grammar/statements/create-function.js
+@@ -98,9 +98,104 @@ export default {
+     ';',
+   ),
+ 
++  _plpgsql_assignment: $ => seq(
++    field('left',
++      alias(
++        $._qualified_field,
++        $.field,
++      ),
++    ),
++    ':=',
++    field('right', $._expression),
++  ),
++
++  // PL/pgSQL: IF expr THEN ... [ELSIF expr THEN ...]* [ELSE ...] END IF
++  _plpgsql_if: $ => seq(
++    $.keyword_if,
++    $._expression,
++    $.keyword_then,
++    repeat(seq($._function_body_statement, ';')),
++    repeat(
++      seq(
++        choice($.keyword_elsif, $.keyword_elseif),
++        $._expression,
++        $.keyword_then,
++        repeat(seq($._function_body_statement, ';')),
++      ),
++    ),
++    optional(
++      seq(
++        $.keyword_else,
++        repeat(seq($._function_body_statement, ';')),
++      ),
++    ),
++    $.keyword_end,
++    $.keyword_if,
++  ),
++
++  // PL/pgSQL: RAISE [level] [fmt [, arg]*] [USING ...]
++  _plpgsql_raise: $ => seq(
++    $.keyword_raise,
++    optional(
++      choice(
++        $.keyword_exception,
++        $.keyword_notice,
++        $.keyword_warning,
++        $.keyword_info,
++        $.keyword_log,
++        $.keyword_debug,
++      ),
++    ),
++    optional(
++      seq(
++        $._expression,
++        repeat(seq(',', $._expression)),
++      ),
++    ),
++    optional(
++      seq(
++        $.keyword_using,
++        $.identifier,
++        '=',
++        $._expression,
++        repeat(seq(',', $.identifier, '=', $._expression)),
++      ),
++    ),
++  ),
++
++  // PL/pgSQL: GET [CURRENT|STACKED] DIAGNOSTICS var = item [, var = item]*
++  _plpgsql_get_diagnostics: $ => seq(
++    $.keyword_get,
++    optional(choice($.keyword_current, $.keyword_stacked)),
++    $.keyword_diagnostics,
++    $.identifier,
++    '=',
++    $.identifier,
++    repeat(seq(',', $.identifier, '=', $.identifier)),
++  ),
++
++  // PL/pgSQL: PERFORM expr (call a function for side effects)
++  _plpgsql_perform: $ => seq(
++    $.keyword_perform,
++    $._expression,
++  ),
++
++  // PL/pgSQL: EXIT / CONTINUE [label] [WHEN expr]
++  _plpgsql_exit: $ => seq(
++    choice($.keyword_exit, $.keyword_continue),
++    optional($.identifier),
++    optional(seq($.keyword_when, $._expression)),
++  ),
++
+   _function_body_statement: $ => choice(
+     $.statement,
+     $._function_return,
++    $._plpgsql_assignment,
++    $._plpgsql_if,
++    $._plpgsql_raise,
++    $._plpgsql_get_diagnostics,
++    $._plpgsql_perform,
++    $._plpgsql_exit,
+   ),
+ 
+   _tsql_function_body_statement: $ => seq(
+diff --git a/grammar/statements/create.js b/grammar/statements/create.js
+index 41f54a2..0f21330 100644
+--- a/grammar/statements/create.js
++++ b/grammar/statements/create.js
+@@ -20,6 +20,7 @@ export default {
+       $.create_extension,
+       $.create_trigger,
+       $.create_policy,
++      $.create_domain,
+       prec.left(seq(
+         $.create_schema,
+         repeat($._create_statement),
+@@ -27,6 +28,26 @@ export default {
+     ),
+   ),
+ 
++  // CREATE DOMAIN name AS type [DEFAULT expr] [constraints...]
++  create_domain: $ => seq(
++    $.keyword_create,
++    $.keyword_domain,
++    $.object_reference,
++    optional($.keyword_as),
++    $._type,
++    optional(seq($.keyword_default, $._expression)),
++    repeat(
++      choice(
++        seq(optional($.keyword_not), $.keyword_null),
++        seq(
++          optional(seq($.keyword_constraint, $.identifier)),
++          $.keyword_check,
++          '(', $._expression, ')',
++        ),
++      ),
++    ),
++  ),
++
+   // left precedence because 'quoted' table options otherwise conflict with
+   // `create function` string bodies; if you remove this precedence you will
+   // have to also disable the `_literal_string` choice for the `name` field
+@@ -62,6 +83,27 @@ export default {
+             $.create_query,
+           ),
+         ),
++        // PG declarative partitioning: CREATE TABLE child PARTITION OF
++        // parent FOR VALUES FROM (lo) TO (hi)  |  IN (...)  |  WITH (...)
++        seq(
++          $.keyword_partition,
++          $.keyword_of,
++          $.object_reference,
++          $.keyword_for,
++          $.keyword_values,
++          choice(
++            seq(
++              $.keyword_from, '(', $._expression, repeat(seq(',', $._expression)), ')',
++              $.keyword_to,   '(', $._expression, repeat(seq(',', $._expression)), ')',
++            ),
++            seq(
++              $.keyword_in, '(', $._expression, repeat(seq(',', $._expression)), ')',
++            ),
++            seq(
++              $.keyword_with, '(', $._expression, repeat(seq(',', $._expression)), ')',
++            ),
++          ),
++        ),
+       ),
+     ),
+   ),
+diff --git a/grammar/statements/delete.js b/grammar/statements/delete.js
+index 97bad16..87290bd 100644
+--- a/grammar/statements/delete.js
++++ b/grammar/statements/delete.js
+@@ -12,6 +12,11 @@ export default {
+       $.keyword_only,
+     ),
+     $.object_reference,
++    optional(seq(
++      $.keyword_using,
++      $.object_reference,
++      repeat(seq(',', $.object_reference)),
++    )),
+     optional($.where),
+     optional($.order_by),
+     optional($.limit),
+diff --git a/grammar/statements/index.js b/grammar/statements/index.js
+index 94f0ec6..19e8eb7 100644
+--- a/grammar/statements/index.js
++++ b/grammar/statements/index.js
+@@ -15,6 +15,7 @@ import copy_rules from "./copy.js";
+ import select_rules from "./select.js";
+ import set_rules from "./set.js";
+ import refresh_rules from "./refresh.js";
++import tcl_rules from "./tcl.js";
+ 
+ export default {
+ 
+@@ -84,6 +85,9 @@ export default {
+     $.comment_statement,
+     $.set_statement,
+     $.reset_statement,
++    $.tcl_statement,
++    $.grant_statement,
++    $.revoke_statement,
+   ),
+ 
+   ...create_rules,
+@@ -115,6 +119,7 @@ export default {
+   ...update_rules,
+   ...truncate_rules,
+   ...copy_rules,
++  ...tcl_rules,
+ 
+   _dml_read: $ => seq(
+     optional(optional_parenthesis($._cte)),
+diff --git a/grammar/statements/insert.js b/grammar/statements/insert.js
+index f241d12..258690d 100644
+--- a/grammar/statements/insert.js
++++ b/grammar/statements/insert.js
+@@ -50,6 +50,12 @@ export default {
+   _on_conflict: $ => seq(
+     $.keyword_on,
+     $.keyword_conflict,
++    optional(
++      choice(
++        seq('(', $.identifier, repeat(seq(',', $.identifier)), ')'),
++        seq($.keyword_on, $.keyword_constraint, $.identifier),
++      ),
++    ),
+     seq(
+       $.keyword_do,
+       choice(
+diff --git a/grammar/statements/select.js b/grammar/statements/select.js
+index 69629c8..04b7246 100644
+--- a/grammar/statements/select.js
++++ b/grammar/statements/select.js
+@@ -229,6 +229,7 @@ export default {
+ 
+   relation: $ => prec.right(
+     seq(
++      optional($.keyword_lateral),
+       choice(
+         $.subquery,
+         $.invocation,
+@@ -325,7 +326,7 @@ export default {
+     )
+   ),
+ 
+-  lateral_join: $ => seq(
++  lateral_join: $ => prec(10, seq(
+     optional(
+       choice(
+         // lateral joins cannot be right!
+@@ -355,9 +356,9 @@ export default {
+       $.keyword_true,
+       $.keyword_false,
+     ),
+-  ),
++  )),
+ 
+-  lateral_cross_join: $ => seq(
++  lateral_cross_join: $ => prec(10, seq(
+     $.keyword_cross,
+     $.keyword_join,
+     $.keyword_lateral,
+@@ -374,7 +375,7 @@ export default {
+         field('alias', $.identifier),
+       ),
+     ),
+-  ),
++  )),
+ 
+   where: $ => seq(
+     $.keyword_where,
+@@ -384,9 +385,30 @@ export default {
+   group_by: $ => seq(
+     $.keyword_group,
+     $.keyword_by,
+-    comma_list($._expression, true),
++    choice(
++      comma_list($._expression, true),
++      $._grouping_construct,
++    ),
++    repeat(seq(',', $._grouping_construct)),
+   ),
+ 
++  // GROUPING SETS / ROLLUP / CUBE
++  _grouping_construct: $ => prec(15, seq(
++    choice(
++      seq($.keyword_grouping, $.keyword_sets),
++      $.keyword_rollup,
++      $.keyword_cube,
++    ),
++    '(',
++    optional(
++      seq(
++        $._expression,
++        repeat(seq(',', $._expression)),
++      ),
++    ),
++    ')',
++  )),
++
+   having: $ => seq(
+     $.keyword_having,
+     $._expression,
+@@ -400,23 +422,21 @@ export default {
+ 
+   order_target: $ => seq(
+     $._expression,
++    optional(
++      choice(
++        $.direction,
++        seq(
++          $.keyword_using,
++          choice('<', '>', '<=', '>='),
++        ),
++      ),
++    ),
+     optional(
+       seq(
++        $.keyword_nulls,
+         choice(
+-          $.direction,
+-          seq(
+-            $.keyword_using,
+-            choice('<', '>', '<=', '>='),
+-          ),
+-        ),
+-        optional(
+-          seq(
+-            $.keyword_nulls,
+-            choice(
+-              $.keyword_first,
+-              $.keyword_last,
+-            ),
+-          ),
++          $.keyword_first,
++          $.keyword_last,
+         ),
+       ),
+     ),
+diff --git a/grammar/statements/set.js b/grammar/statements/set.js
+index e916bc7..b064a94 100644
+--- a/grammar/statements/set.js
++++ b/grammar/statements/set.js
+@@ -18,6 +18,15 @@ export default {
+               $.keyword_on,
+               $.keyword_off,
+             ),
++            repeat(seq(',',
++              choice(
++                $.literal,
++                $.keyword_default,
++                $.identifier,
++                $.keyword_on,
++                $.keyword_off,
++              ),
++            )),
+           ),
+           seq($.keyword_schema, $.literal),
+           seq($.keyword_names, $.literal),
+diff --git a/grammar/statements/tcl.js b/grammar/statements/tcl.js
+new file mode 100644
+index 0000000..d5137af
+--- /dev/null
++++ b/grammar/statements/tcl.js
+@@ -0,0 +1,89 @@
++// Savepoint + privilege statements.
++// `transaction` (BEGIN...COMMIT/ROLLBACK) already handled by upstream
++// transactions.js. Only adds what's missing.
++
++export default {
++
++  // SAVEPOINT name
++  _tcl_savepoint: $ => seq(
++    $.keyword_savepoint,
++    $.identifier,
++  ),
++
++  // RELEASE [SAVEPOINT] name
++  _tcl_release: $ => seq(
++    $.keyword_release,
++    optional($.keyword_savepoint),
++    $.identifier,
++  ),
++
++  // ROLLBACK TO [SAVEPOINT] name -- savepoint rollback (not transaction end)
++  _tcl_rollback_to: $ => seq(
++    $.keyword_rollback,
++    $.keyword_to,
++    optional($.keyword_savepoint),
++    $.identifier,
++  ),
++
++  tcl_statement: $ => choice(
++    $._tcl_savepoint,
++    $._tcl_release,
++    $._tcl_rollback_to,
++  ),
++
++  // GRANT privs [ON obj] TO grantee
++  grant_statement: $ => prec.left(seq(
++    $.keyword_grant,
++    choice(
++      $.keyword_all,
++      seq(
++        choice($.keyword_select, $.keyword_insert, $.keyword_update,
++               $.keyword_delete, $.keyword_truncate, $.keyword_references,
++               $.keyword_trigger, $.keyword_execute, $.keyword_usage),
++        repeat(seq(',',
++          choice($.keyword_select, $.keyword_insert, $.keyword_update,
++                 $.keyword_delete, $.keyword_truncate, $.keyword_references,
++                 $.keyword_trigger, $.keyword_execute, $.keyword_usage),
++        )),
++      ),
++    ),
++    optional(seq($.keyword_on,
++      optional(choice($.keyword_table, $.keyword_schema, $.keyword_database,
++                      $.keyword_function, $.keyword_sequence)),
++      $.object_reference,
++      repeat(seq(',', $.object_reference)),
++    )),
++    $.keyword_to,
++    choice($.identifier, $.keyword_public, $.keyword_current_user),
++    repeat(seq(',', choice($.identifier, $.keyword_public, $.keyword_current_user))),
++    optional(seq($.keyword_with, $.keyword_grant, $.keyword_option)),
++  )),
++
++  // REVOKE privs [ON obj] FROM grantee
++  revoke_statement: $ => prec.left(seq(
++    $.keyword_revoke,
++    choice(
++      $.keyword_all,
++      seq(
++        choice($.keyword_select, $.keyword_insert, $.keyword_update,
++               $.keyword_delete, $.keyword_truncate, $.keyword_references,
++               $.keyword_trigger, $.keyword_execute, $.keyword_usage),
++        repeat(seq(',',
++          choice($.keyword_select, $.keyword_insert, $.keyword_update,
++                 $.keyword_delete, $.keyword_truncate, $.keyword_references,
++                 $.keyword_trigger, $.keyword_execute, $.keyword_usage),
++        )),
++      ),
++    ),
++    optional(seq($.keyword_on,
++      optional(choice($.keyword_table, $.keyword_schema, $.keyword_database,
++                      $.keyword_function, $.keyword_sequence)),
++      $.object_reference,
++      repeat(seq(',', $.object_reference)),
++    )),
++    $.keyword_from,
++    choice($.identifier, $.keyword_public, $.keyword_current_user),
++    repeat(seq(',', choice($.identifier, $.keyword_public, $.keyword_current_user))),
++  )),
++
++};

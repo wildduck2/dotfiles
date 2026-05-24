@@ -15,7 +15,7 @@ add 'plugins.lang.autotag'
 -- add 'plugins.lang.rust'
 add 'plugins.lang.clangd-extensions'
 add 'plugins.lang.package-info'
-add 'plugins.lang.dbee'
+add 'plugins.lang.dadbod' -- SQL: dadbod engine + UI + db_manager + cmp completion
 add 'plugins.lang.markdown'
 
 return specs
