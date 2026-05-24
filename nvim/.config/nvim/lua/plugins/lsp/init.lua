@@ -8,4 +8,5 @@ return {
   require 'plugins.lsp.trouble',
   require 'plugins.lsp.todo-comments',
   require 'plugins.lsp.endhints',
+  require 'plugins.lsp.dap',
 }
