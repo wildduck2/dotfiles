@@ -72,7 +72,7 @@ Set via `vim.api.nvim_set_hl`:
 | `git.enable` | `true` | -- |
 | `git.ignore` | `false` | Show ignored files. |
 | `filesystem_watchers.enable` | `true` | Live updates. |
-| `filesystem_watchers.debounce_delay` | `100` | ms. |
+| `filesystem_watchers.debounce_delay` | `50` | ms. Lower = faster reaction to external file changes. |
 | `actions.open_file.resize_window` | `true` | -- |
 | `renderer.root_folder_label` | `false` | -- |
 | `renderer.highlight_git` | `true` | Color filenames by git status. |

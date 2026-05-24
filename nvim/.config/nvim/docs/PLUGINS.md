@@ -178,11 +178,11 @@ The `module` column links to the per-module README under
 - **clangd_extensions.nvim** -- C/C++ extras over clangd (AST, memory).
 - **package-info.nvim + nui.nvim** -- inline npm package version info in
   `package.json`. `pnpm` is the configured package manager.
-- **vim-dadbod + vim-dadbod-ui + vim-dadbod-completion** -- SQL stack. UI on
-  `<leader>db`. `db_manager` (`:DBAdd`, `:DBSwitch`, `:DBScope`, ...) persists
-  named connections and pushes them into both dadbod and sqls LSP. Schema-aware
-  completion through a wrapped cmp source that maps items to Table/Column/
-  Function/Keyword kinds.
+- **vim-dadbod + vim-dadbod-ui** -- SQL stack. UI on `<leader>db`.
+  `db_manager` (`:DBAdd`, `:DBSwitch`, `:DBScope`, ...) persists named
+  connections and pushes them into both dadbod and `duck-sqllsp`.
+  Completion / hover / format / diagnostics for SQL all come from
+  duck-sqllsp.
 - **obsidian.nvim + mdx.nvim + peek.nvim** -- markdown stack. Peek renders to
   a browser via `:PeekOpen` (uses `i3-msg` to split the window manager).
 - **rust.vim + rustaceanvim** -- Rust support. rustaceanvim adds RustLsp
@@ -194,10 +194,12 @@ The `module` column links to the per-module README under
 - **nvim-lspconfig** -- core LSP plumbing. Servers configured in
   `plugins/lsp/lspconfig/config.lua`: clangd, lua_ls, rust_analyzer, ts_ls,
   tailwindcss, cssls, html, jsonls, yamlls, prismals, typos_lsp, biome,
-  bashls, dockerls, docker_compose_language_service, mdx_analyzer, sqls.
+  bashls, dockerls, docker_compose_language_service, mdx_analyzer,
+  duck_sqllsp.
 - **mason.nvim + mason-lspconfig.nvim + mason-tool-installer.nvim** -- LSP/
   formatter/linter binary management. `ensure_installed` covers every server
-  above plus `sqlfluff`.
+  in `M.servers` EXCEPT `duck_sqllsp`, which is built from source at
+  `@duck-sqllsp` and installed to `~/.local/bin/duck-sqllsp`.
 - **fidget.nvim** -- LSP progress notifications. Configured to avoid the
   nvim-tree sidebar.
 - **lazydev.nvim** -- Lua workspace setup for nvim runtime when editing
@@ -211,7 +213,11 @@ The `module` column links to the per-module README under
 - **outline.nvim** -- symbol outline (`:Outline`).
 - **todo-comments.nvim** -- highlights TODO/FIX/NOTE; signs disabled.
 - **nvim-lint** -- runs linters on `BufWritePost`/`InsertLeave`. Linters:
-  markdownlint, luacheck, pylint, golangcilint, hadolint, sqlfluff.
+  markdownlint, luacheck, pylint, golangcilint, hadolint.
+- **nvim-dap + nvim-dap-ui + nvim-dap-virtual-text + mason-nvim-dap +
+  nvim-dap-vscode-js + nvim-dap-go + nvim-dap-python** -- debugger stack.
+  Adapters for ts/js, rust, c/cpp, elixir, go, python. `<F5>` continue,
+  `<leader>X*` namespace. See `plugins/lsp/dap/`.
 
 ### navigation
 

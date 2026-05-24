@@ -36,6 +36,7 @@ plugin, the global keymaps, and bootstraps lazy.nvim.
 | `tabstop`, `softtabstop`, `shiftwidth` | `2` | 2-space indent. |
 | `expandtab`, `smartindent` | true | Spaces, not tabs. |
 | `swapfile`, `backup` | false | No swap or backup files. |
+| `autoread` | true | Reload buffers when the file changes on disk. |
 | `hlsearch`, `incsearch` | true | Highlight + incremental search. |
 | `cursorline` | true | Highlight current line. |
 | `termguicolors` | true | True color. |
@@ -79,6 +80,9 @@ Leader is `Space`. LocalLeader is `Space`.
 
 - `TextYankPost` -> `vim.highlight.on_yank()` (highlight yanked region briefly).
   Group `wild_duck_highlight`.
+- `FocusGained`, `BufEnter`, `CursorHold`, `CursorHoldI`, `TermLeave` ->
+  `:checktime` so `autoread` actually reloads open buffers while sitting in
+  nvim. Group `AutoReloadOnDiskChange`. Skips when in command-line mode.
 
 ## Lazy bootstrap (`lazy.lua`)
 

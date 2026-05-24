@@ -8,26 +8,31 @@ and the mason install pipeline.
 ## Files
 
 - `init.lua` -- spec + dependencies; calls
-  `require('plugins.lsp.lspconfig.config').setup()`.
+  `require('plugins.lsp.lspconfig.config').setup()`. Configures fidget with
+  `notification.window.avoid = { 'NvimTree' }` so progress popups never
+  overlap the file tree.
 - `config.lua` -- the full setup. Owns:
   - `M.servers` -- table of LSP servers and their per-server config.
   - `on_attach(event)` -- registers buffer-local LSP keymaps, document
-    highlighting, inlay hints toggle.
+    highlighting, inlay hints toggle, signature-help autocmd, and the
+    duck_sqllsp / biome capability overrides.
   - `M.setup()` -- creates the `LspAttach` autocmd, configures
-    `vim.diagnostic`, installs servers via mason-tool-installer, calls
-    `vim.lsp.config(name, cfg)` + `vim.lsp.enable(name)` for each server.
+    `vim.diagnostic`, installs servers via mason-tool-installer (excluding
+    `duck_sqllsp` which is built from source), enables every server with our
+    custom settings.
 
 ## Servers configured (`M.servers` keys)
 
-All servers below are auto-installed via `mason-tool-installer`
-(`ensure_installed = vim.tbl_keys(M.servers)` plus `sqlfluff`).
+Every server below is auto-installed via `mason-tool-installer` EXCEPT
+`duck_sqllsp`, which lives at `~/.local/bin/duck-sqllsp` (built from the
+`@duck-sqllsp` Rust workspace).
 
 | Server | Filetypes | Custom settings |
 | --- | --- | --- |
 | `clangd` | c, c++ | `{}` defaults; see also `plugins/lang/clangd-extensions/` |
-| `lua_ls` | lua | `runtime.version = LuaJIT`; `workspace.checkThirdParty = false`; `workspace.library` is filled lazily in `setup()` with `${3rd}/luv/library` + `nvim_get_runtime_file('', true)`; `completion.callSnippet = 'Replace'` |
-| `rust_analyzer` | rust | inlay hints (chaining, type, parameter) all enabled. Most rust users will prefer rustaceanvim (see `plugins/lang/rust/`); rustaceanvim is currently commented out in `plugins/lang/init.lua`. |
-| `ts_ls` | js/ts | `init_options.preferences.disableSuggestions = false`; `includeCompletionsForModuleExports = false`; `includeCompletionsWithObjectLiteralMethodSnippets = false`; `includePackageJsonAutoImports = 'off'`; `maxTsServerMemory = 4096`. All four reduce typescript-language-server load on large projects. |
+| `lua_ls` | lua | `runtime.version = LuaJIT`; `workspace.checkThirdParty = false`; `workspace.library` filled lazily in `setup()` with `${3rd}/luv/library` + `nvim_get_runtime_file('', true)`; `completion.callSnippet = 'Replace'` |
+| `rust_analyzer` | rust | inlay hints (chaining, type, parameter) enabled |
+| `ts_ls` | js/ts | `disableSuggestions = false`; `includeCompletionsForModuleExports = false`; `includeCompletionsWithObjectLiteralMethodSnippets = false`; `includePackageJsonAutoImports = 'off'`; `maxTsServerMemory = 4096`. Reduces tsserver load on large repos. |
 | `tailwindcss` | -- | defaults |
 | `cssls` | -- | defaults |
 | `html` | -- | defaults |
@@ -35,15 +40,12 @@ All servers below are auto-installed via `mason-tool-installer`
 | `yamlls` | -- | defaults |
 | `prismals` | -- | defaults |
 | `typos_lsp` | `markdown`, `text`, `gitcommit` | spell checker, restricted to prose filetypes |
-| `biome` | -- | `capabilities.general.positionEncodings = { 'utf-16' }`. `on_attach` (global) also disables biome diagnostics so ts_ls owns them. |
+| `biome` | -- | `capabilities.general.positionEncodings = { 'utf-16' }`. `on_attach` also strips biome diagnostics so ts_ls owns them. |
 | `bashls` | -- | defaults |
 | `dockerls` | -- | defaults |
 | `docker_compose_language_service` | -- | defaults |
-| `mdx_analyzer` | `mdx` | `init_options.typescript = {}` (lets mdx_analyzer use a local tsserver) |
-| `sqls` | `sql`, `mysql`, `plsql` | connections live at `~/.config/sqls/config.yml`; `on_attach` disables `documentFormattingProvider` and `documentRangeFormattingProvider` so conform owns SQL formatting |
-
-`sqlfluff` is added to `mason-tool-installer.ensure_installed` separately
-(it's a CLI tool, not an LSP server).
+| `mdx_analyzer` | `mdx` | `init_options.typescript = {}` (uses local tsserver) |
+| `duck_sqllsp` | `sql`, `mysql`, `plsql` | `cmd = { 'duck-sqllsp', 'server' }`. Built from source; connections are pushed in via `plugins/lang/dadbod/db_manager`. `on_attach` strips its `semanticTokensProvider` so tree-sitter remains the authoritative highlighter. |
 
 ## Global on_attach
 
@@ -52,34 +54,54 @@ every attaching client it does:
 
 ### LSP keymaps (buffer-local, prefixed `LSP:` in descriptions)
 
-| Key | Action |
-| --- | --- |
-| `<leader>ca` | `vim.lsp.buf.code_action` |
-| `<leader>rn` | `vim.lsp.buf.rename` |
-| `gr` | telescope `lsp_references` |
-| `gI` | telescope `lsp_implementations` |
-| `gd` | telescope `lsp_definitions` |
-| `gD` | `vim.lsp.buf.declaration` |
-| `<leader>ds` | telescope `lsp_document_symbols` |
-| `<leader>ws` | telescope `lsp_dynamic_workspace_symbols` |
-| `<leader>D` | telescope `lsp_type_definitions` |
-| `K` | `vim.lsp.buf.hover` |
+| Key | Mode | Action |
+| --- | --- | --- |
+| `<leader>ca` | n | `vim.lsp.buf.code_action` |
+| `<leader>rn` | n | `vim.lsp.buf.rename` |
+| `gr` | n | telescope `lsp_references` |
+| `gI` | n | telescope `lsp_implementations` |
+| `gd` | n | telescope `lsp_definitions` |
+| `gD` | n | `vim.lsp.buf.declaration` |
+| `<leader>ds` | n | telescope `lsp_document_symbols` |
+| `<leader>ws` | n | telescope `lsp_dynamic_workspace_symbols` |
+| `<leader>D` | n | telescope `lsp_type_definitions` |
+| `K` | n | `vim.lsp.buf.hover` (default float — no custom border / overlay) |
+| `<C-s>` | i | `vim.lsp.buf.signature_help` |
+
+### Signature-help autocmd
+
+If the attaching client advertises `signatureHelpProvider`, a buffer-local
+`TextChangedI` autocmd fires `vim.lsp.buf.signature_help()` whenever the
+character just typed matches the server's `triggerCharacters` (defaults to
+`(` and `,`). Registered once per buffer via
+`vim.b[buf]._lsp_sighelp_registered` so multiple LSPs do not stack
+duplicates.
 
 ### Biome diagnostics override
 
-If `client.name == 'biome'`, sets `client.server_capabilities.diagnosticProvider = nil`
-so ts_ls owns JS/TS diagnostics (avoids double-reporting).
+If `client.name == 'biome'`, sets
+`client.server_capabilities.diagnosticProvider = nil` so ts_ls owns JS/TS
+diagnostics (avoids double-reporting).
+
+### duck_sqllsp highlights override
+
+If `client.name == 'duck_sqllsp'`, sets
+`client.server_capabilities.semanticTokensProvider = nil`. duck-sqllsp
+advertises semantic tokens, but the tree-sitter SQL parser (see
+`parser/sql.so` + `queries/sql/`) has richer coverage. Dropping the LSP
+provider leaves tree-sitter as the sole highlighter.
 
 ### Document highlight
 
-If the client supports `textDocument/documentHighlight` and the buffer hasn't
-been registered yet, creates `kickstart-lsp-highlight` autocmd group:
+If the client supports `textDocument/documentHighlight` and the buffer
+hasn't been registered yet, creates `kickstart-lsp-highlight` autocmd group:
+
 - `CursorHold` -> `vim.lsp.buf.document_highlight`
 - `CursorMoved` -> `vim.lsp.buf.clear_references`
 - `LspDetach` -> clear references + tear down autocmds.
 
-A buffer-local flag (`vim.b[buf]._lsp_highlight_registered`) prevents
-duplicate registration if multiple LSPs attach to the same buffer.
+Buffer-local flag (`vim.b[buf]._lsp_highlight_registered`) prevents
+duplicate registration when multiple LSPs attach to the same buffer.
 
 ### Inlay hints
 
@@ -105,84 +127,47 @@ If the client supports `textDocument/inlayHint`, enables hints for the buffer
 | `signs.severity.min` | `HINT` (show signs for all severities) |
 | `virtual_text.source` | `'if_many'` |
 | `virtual_text.spacing` | `2` |
-| `virtual_text.format` | identity (just returns `diagnostic.message`) |
+| `virtual_text.format` | identity (returns `diagnostic.message`) |
 | `virtual_text.severity.min` | `HINT` |
 
 ## Mason setup
 
 - `require('mason').setup({ ui = { border = 'rounded' } })`.
-- `mason-tool-installer`: ensures every server in `M.servers` plus
-  `sqlfluff` is installed.
-- `mason-lspconfig`: `automatic_enable = false` -- we enable servers ourselves
+- `mason-tool-installer`: ensures every server in `M.servers` is installed,
+  EXCEPT `duck_sqllsp` (built externally — see below).
+- `mason-lspconfig`: `automatic_enable = false` — we enable servers ourselves
   so per-server custom settings apply.
 
-Fidget shows install progress with `notification.window.avoid = { 'NvimTree' }`
-to prevent overlap with the file tree.
+Fidget shows install progress; its window-avoid list keeps notifications
+clear of the nvim-tree sidebar.
 
 ## How to add a new LSP server
 
-1. Add a key to `M.servers` in `config.lua`. Empty table `{}` if you only need
-   defaults. Otherwise include `settings`, `init_options`, `filetypes`,
-   `on_attach`, or `capabilities` overrides.
-2. The mason-tool-installer line will pick it up automatically (since it does
-   `vim.tbl_keys(M.servers)`). Run `:Lazy reload nvim-lspconfig` then
-   `:Mason` to install if it doesn't trigger on next start.
-3. If the server requires a binary that Mason cannot install (e.g. system
-   compilers), document it under "External setup" here.
+1. Add a key to `M.servers` in `config.lua`. Empty table `{}` if only
+   defaults are needed; otherwise include `settings`, `init_options`,
+   `filetypes`, `on_attach`, or `capabilities` overrides.
+2. mason-tool-installer auto-picks it up via `vim.tbl_keys(M.servers)`
+   (minus duck_sqllsp). Run `:Lazy reload nvim-lspconfig` then `:Mason` if
+   the install does not trigger on next start.
+3. If the server requires a binary Mason cannot install, add a guard like
+   the duck_sqllsp skip and document the external install here.
 
-To opt OUT of mason install for one server but keep the config, append its
-name to a skip list before `mason-tool-installer.setup{}` (no such list
-currently).
+## duck_sqllsp — native SQL language server
 
-## sqls -- SQL LSP server
+Lives at `@duck-sqllsp` (separate Rust workspace). Binary expected at
+`~/.local/bin/duck-sqllsp`. Build with `cargo install --path .` from that
+workspace, or `install -m 0755 target/release/duck-sqllsp ~/.local/bin/`.
 
-`sqls` provides hover, go-to-definition, and completion for SQL identifiers,
-backed by live database connections.
+Connections are NOT configured via a YAML file. They are pushed in by
+`plugins/lang/dadbod/db_manager` at LspAttach time so the SQL LS sees the
+same connection list as dadbod-ui.
 
-### Connection config
+Formatting also routes through duck_sqllsp (conform has no SQL formatter
+entry; its `format_after_save` returns `{ lsp_fallback = 'always' }` for SQL
+filetypes — see `plugins/conform/`).
 
-Global connections live at `~/.config/sqls/config.yml`:
-
-```yaml
-lowercaseKeywords: false
-connections:
-  - alias: Local
-    driver: postgresql
-    dataSourceName: "host=localhost port=5432 user=postgres password=postgres dbname=mydb sslmode=disable"
-  - alias: Prod
-    driver: mysql
-    dataSourceName: "user:pass@tcp(db.example.com:3306)/proddb"
-```
-
-Per-project connections override the global file at `<project_root>/.sqls/config.json`:
-
-```json
-{
-  "lowercaseKeywords": false,
-  "connections": [
-    { "alias": "ProjectDb", "driver": "postgresql",
-      "dataSourceName": "host=localhost port=5432 user=app password=secret dbname=app_dev sslmode=disable" }
-  ]
-}
-```
-
-### Commands (registered by sqls)
-
-| Command | What it does |
-| --- | --- |
-| `:LspSqlsExecuteQuery` | run the query under the cursor / selection |
-| `:LspSqlsSwitchConnection` | switch the active connection for this buffer |
-| `:LspSqlsSwitchDatabase` | switch the active database within a connection |
-| `:LspSqlsShowConnections` | list all configured connections |
-| `:LspSqlsShowDatabases` | list databases in the active connection |
-| `:LspSqlsShowTables` | list tables in the active database |
-| `:LspSqlsShowSchemas` | list schemas |
-
-### Formatting
-
-The on_attach for sqls disables `documentFormattingProvider` and
-`documentRangeFormattingProvider`. Formatting goes through conform
-(`sqlfluff`) -- see `plugins/conform/`.
+Diagnostics are reported by duck_sqllsp directly; `nvim-lint` has no SQL
+entry.
 
 ## References
 
@@ -191,4 +176,3 @@ The on_attach for sqls disables `documentFormattingProvider` and
 - mason-lspconfig.nvim: https://github.com/williamboman/mason-lspconfig.nvim
 - mason-tool-installer.nvim: https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim
 - fidget.nvim: https://github.com/j-hui/fidget.nvim
-- sqls: https://github.com/sqls-server/sqls

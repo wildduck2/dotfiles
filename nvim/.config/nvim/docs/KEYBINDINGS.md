@@ -784,6 +784,29 @@ fire by default.
 | `<leader>xL` | Trouble loclist |
 | `<leader>xQ` | Trouble qflist |
 
+### `<leader>X*` -- DAP debugger
+
+See [`plugins/lsp/dap/README.md`](plugins/lsp/dap/README.md) for the full
+table and per-language usage.
+
+| Keys | Action |
+| --- | --- |
+| `<F5>` / `<leader>Xc` | continue / start session |
+| `<F10>` / `<leader>Xn` | step over |
+| `<F11>` / `<leader>Xi` | step into |
+| `<F12>` / `<leader>Xo` | step out |
+| `<S-F5>` / `<leader>Xt` | terminate |
+| `<leader>Xb` | toggle breakpoint |
+| `<leader>XB` | conditional breakpoint (prompt) |
+| `<leader>Xl` | log point (prompt) |
+| `<leader>XL` | run last configuration |
+| `<leader>Xr` | toggle REPL |
+| `<leader>Xu` | toggle dap-ui |
+| `<leader>Xh` | hover eval under cursor |
+| `<leader>Xe` | eval visual / word (n+v) |
+| `<leader>Xj` / `<leader>Xk` | stack down / up |
+| `<leader>Xq` | clear breakpoints + terminate |
+
 ### `<leader>y*`
 
 | Keys | Action |
