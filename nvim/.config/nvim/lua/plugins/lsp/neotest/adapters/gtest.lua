@@ -19,7 +19,25 @@ local async = require('neotest.async')
 
 local M = { name = 'gtest' }
 
-local binary_cache = {}
+local cache_path = vim.fn.stdpath('cache') .. '/neotest_gtest_binaries.json'
+
+local function load_cache()
+  local fd = io.open(cache_path, 'r')
+  if not fd then return {} end
+  local raw = fd:read('*a'); fd:close()
+  if not raw or raw == '' then return {} end
+  local ok, decoded = pcall(vim.json.decode, raw)
+  return ok and decoded or {}
+end
+
+local function save_cache(tbl)
+  local fd = io.open(cache_path, 'w')
+  if not fd then return end
+  fd:write(vim.json.encode(tbl))
+  fd:close()
+end
+
+local binary_cache = load_cache()
 
 local function default_binary_paths(file)
   local cwd = vim.fn.getcwd()
@@ -35,20 +53,29 @@ local function default_binary_paths(file)
 end
 
 local function resolve_binary(opts, file)
+  -- Cache lookup BEFORE the conventional path scan so a once-answered
+  -- prompt is never asked again, even after restart.
+  if binary_cache[file] and vim.fn.executable(binary_cache[file]) == 1 then
+    return binary_cache[file]
+  end
   if opts.binary then
     local b = type(opts.binary) == 'function' and opts.binary(file) or opts.binary
-    if b and vim.fn.executable(b) == 1 then return b end
+    if b and vim.fn.executable(b) == 1 then
+      binary_cache[file] = b; save_cache(binary_cache)
+      return b
+    end
   end
   for _, p in ipairs(default_binary_paths(file)) do
-    if vim.fn.executable(p) == 1 then return p end
+    if vim.fn.executable(p) == 1 then
+      binary_cache[file] = p; save_cache(binary_cache)
+      return p
+    end
   end
   local cwd = vim.fn.getcwd()
-  if binary_cache[cwd] and vim.fn.executable(binary_cache[cwd]) == 1 then
-    return binary_cache[cwd]
-  end
   local prompt = vim.fn.input('gtest binary for ' .. file .. ': ', cwd .. '/build/', 'file')
   if prompt ~= '' and vim.fn.executable(prompt) == 1 then
-    binary_cache[cwd] = prompt
+    binary_cache[file] = prompt
+    save_cache(binary_cache)
     return prompt
   end
   return nil

@@ -77,8 +77,10 @@ function M.setup()
     output_panel = { enabled = true, open = 'botright split | resize 15' },
     quickfix = { enabled = true, open = false },
 
-    -- Inline status + error messages on the failing line
-    status = { enabled = true, signs = true, virtual_text = true },
+    -- signs = gutter glyph (left side). virtual_text=false avoids the
+    -- extra × at end-of-line; diagnostic (below) already shows the error
+    -- message inline.
+    status = { enabled = true, signs = true, virtual_text = false },
     icons = {
       passed = '✓',
       failed = '✗',
