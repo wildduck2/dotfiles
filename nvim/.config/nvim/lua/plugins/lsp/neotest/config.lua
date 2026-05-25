@@ -37,7 +37,6 @@ function M.setup()
         dap = { justMyCode = false },
       }),
       require('neotest-go'),
-      require('neotest-rust'),
       require('neotest-elixir'),
     },
 

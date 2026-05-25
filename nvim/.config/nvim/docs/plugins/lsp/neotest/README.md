@@ -28,8 +28,17 @@ test under cursor without writing a launch config.
 | `marilari88/neotest-vitest` | Vitest adapter |
 | `nvim-neotest/neotest-python` | pytest adapter |
 | `nvim-neotest/neotest-go` | go test adapter |
-| `rouge8/neotest-rust` | cargo test adapter |
 | `jfpedroza/neotest-elixir` | ExUnit adapter |
+
+**Not loaded**
+
+- **neotest-rust** — broken (`table index is nil` at init.lua:414). Use
+  DAP directly for rust tests: `cargo test --no-run`, then `<F5>` →
+  "Launch (pick binary)" → `target/debug/deps/<crate>-<hash>` with args
+  `test_name --exact --nocapture`. Or wait for `rustaceanvim` (commented
+  out in `lang/init.lua`) which ships its own test runner.
+- **C / C++** — no quality neotest adapter exists. Debug test binaries
+  via DAP directly: build with `-g`, `<F5>` → "Launch (pick binary)".
 
 ## Global keymaps — `<leader>T*` namespace
 
@@ -113,12 +122,6 @@ library code).
 ### go
 
 Default `go test` invocation. Discovers via `_test.go` files.
-
-### rust
-
-Discovers `#[test]` and `#[cfg(test)]` items. NOTE: rustaceanvim ships
-its own test runner; if you prefer that, remove `neotest-rust` from
-`init.lua` deps and the adapter from `config.lua`.
 
 ### elixir
 

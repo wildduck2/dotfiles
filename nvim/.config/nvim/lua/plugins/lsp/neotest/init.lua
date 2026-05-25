@@ -12,7 +12,9 @@ return {
       'marilari88/neotest-vitest',
       'nvim-neotest/neotest-python',
       'nvim-neotest/neotest-go',
-      'rouge8/neotest-rust',
+      -- neotest-rust: removed (table index is nil bug at init.lua:414).
+      -- Rust tests via DAP directly: <F5> -> "Launch (pick binary)" ->
+      -- target/debug/deps/<crate>-<hash> + args like "test_name --exact".
       'jfpedroza/neotest-elixir',
     },
     config = function()
