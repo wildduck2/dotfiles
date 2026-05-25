@@ -164,33 +164,44 @@ function M.build_spec(args)
   }
 end
 
+local function strip_ansi(s)
+  return (s:gsub('\27%[[%d;]*[A-Za-z]', ''))
+end
+
 local function parse_human_output(text)
-  -- Lines look like:
-  --   test some::path::name ... ok
-  --   test some::path::name ... FAILED
-  --   test some::path::name ... ignored
-  -- Failure bodies follow `failures:` section:
-  --   ---- some::path::name stdout ----
-  --   <panic body>
+  text = strip_ansi(text or '')
   local results = {}
+
+  -- Status lines: "test path::name ... ok|FAILED|ignored"
   for line in text:gmatch('[^\n]+') do
-    local name, status = line:match('^test%s+(%S+)%s+%.%.%.%s+(%w+)')
+    local name, status = line:match('^test%s+(%S+)%s+%.%.%.%s+([%w%-_]+)')
     if name and status then
       local s = 'unknown'
       local low = status:lower()
       if low == 'ok' then s = 'passed'
       elseif low == 'failed' then s = 'failed'
-      elseif low == 'ignored' then s = 'skipped' end
+      elseif low == 'ignored' then s = 'skipped'
+      end
       results[name] = { status = s }
     end
   end
-  -- Collect failure bodies
-  local body = text:match('failures:%s*(.+)')
-  if body then
-    for header, msg in body:gmatch('%-%-%-%-%s+(%S+)%s+stdout%s+%-%-%-%-%s*(.-)\n%s*\n') do
-      if results[header] then results[header].message = msg end
+
+  -- Failure bodies between `---- path::name stdout ----` markers.
+  -- Body ends at the next `---- ... ----` line or a `failures:` summary.
+  local idx = 1
+  while true do
+    local s_start, s_end, header = text:find('%-%-%-%-%s+(%S+)%s+stdout%s+%-%-%-%-', idx)
+    if not s_start then break end
+    local next_start = text:find('%-%-%-%-%s+%S+%s+stdout%s+%-%-%-%-', s_end + 1)
+    local stop = next_start or text:find('\nfailures:', s_end + 1) or #text
+    local body = text:sub(s_end + 1, stop):gsub('^%s+', ''):gsub('%s+$', '')
+    if results[header] then
+      results[header].message = body
+      results[header].line = tonumber(body:match('panicked at[^:]+:(%d+):'))
     end
+    idx = s_end + 1
   end
+
   return results
 end
 
@@ -215,15 +226,30 @@ function M.results(spec, result, tree)
   end
   local parsed = parse_human_output(content)
 
+  -- Fallback: cargo exited non-zero but we couldn't map any test line
+  -- (e.g. compile error). Mark every discovered test as failed with the
+  -- raw output so the user sees what blew up.
+  local nothing_parsed = next(parsed) == nil
+  local cargo_failed = result.code ~= 0
+
   for _, node in tree:iter_nodes() do
     local d = node:data()
     if d.type == 'test' then
       local key = position_to_filter(node)
       local p = key and parsed[key]
       if p then
+        local entry = { status = p.status, short = p.message }
+        if p.status == 'failed' and p.message then
+          entry.errors = {
+            { message = p.message, line = (p.line and p.line - 1) or (d.range and d.range[1] or 0) },
+          }
+        end
+        results[d.id] = entry
+      elseif cargo_failed and nothing_parsed then
         results[d.id] = {
-          status = p.status,
-          short = p.message,
+          status = 'failed',
+          short = 'cargo test failed (see output panel)',
+          errors = { { message = content:sub(1, 1000), line = d.range and d.range[1] or 0 } },
         }
       else
         results[d.id] = { status = 'skipped' }

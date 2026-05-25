@@ -178,37 +178,56 @@ function M.discover_positions(file_path)
   return Tree.from_list(list, function(p) return p.id end)
 end
 
+local function xml_unescape(s)
+  if not s then return s end
+  return (s:gsub('&quot;', '"'):gsub('&apos;', "'"):gsub('&lt;', '<')
+            :gsub('&gt;', '>'):gsub('&amp;', '&'):gsub('&#10;', '\n')
+            :gsub('&#13;', ''):gsub('&#9;', '\t'))
+end
+
 local function parse_gtest_xml(path)
   local fd = io.open(path, 'r')
   if not fd then return {} end
   local xml = fd:read('*a'); fd:close()
   local results = {}
-  -- Each <testcase ...> entry. Failures are nested <failure message="..."/>
-  for case in xml:gmatch('<testcase[^>]*/?>.-</testcase>') do
-    local suite = case:match('classname="([^"]+)"')
-    local name  = case:match('name="([^"]+)"')
+  local consumed = {}
+
+  -- Self-closing testcases first: <testcase ... />. Mark their character
+  -- ranges so the long-form pattern below cannot re-consume them.
+  for s, attrs, e in xml:gmatch('()<testcase([^/>]*)/>()') do
+    local suite = attrs:match('classname="([^"]+)"')
+    local name  = attrs:match('name="([^"]+)"')
+    if suite and name then
+      results[suite .. '.' .. name] = { status = 'passed' }
+    end
+    table.insert(consumed, { s, e })
+  end
+
+  -- Wipe consumed regions with spaces so long-form gmatch skips them.
+  local buf = xml
+  for _, range in ipairs(consumed) do
+    buf = buf:sub(1, range[1] - 1) .. string.rep(' ', range[2] - range[1]) .. buf:sub(range[2])
+  end
+
+  -- Long-form: <testcase attrs>...</testcase>
+  for attrs, body in buf:gmatch('<testcase([^>]*)>(.-)</testcase>') do
+    local suite = attrs:match('classname="([^"]+)"')
+    local name  = attrs:match('name="([^"]+)"')
     if suite and name then
       local id = suite .. '.' .. name
       local status = 'passed'
-      local message = nil
-      if case:find('<failure') then
+      local message
+      if body:find('<failure') then
         status = 'failed'
-        message = case:match('<failure[^>]*message="([^"]+)"')
-        if message then
-          message = message:gsub('&quot;', '"'):gsub('&amp;', '&'):gsub('&lt;', '<'):gsub('&gt;', '>')
+        message = body:match('<failure[^>]*>(.-)</failure>')
+        if not message or message:gsub('%s+', '') == '' then
+          message = body:match('<failure[^>]*message="([^"]+)"')
         end
-      elseif case:find('<skipped') then
+        message = xml_unescape(message)
+      elseif body:find('<skipped') then
         status = 'skipped'
       end
       results[id] = { status = status, message = message }
-    end
-  end
-  -- Also catch self-closing <testcase ... /> with no body.
-  for case in xml:gmatch('<testcase[^/>]*/>') do
-    local suite = case:match('classname="([^"]+)"')
-    local name  = case:match('name="([^"]+)"')
-    if suite and name then
-      results[suite .. '.' .. name] = results[suite .. '.' .. name] or { status = 'passed' }
     end
   end
   return results
@@ -282,10 +301,15 @@ function M.results(spec, result, tree)
       local key = (suite or '') .. '.' .. d.name
       local case = cases[key]
       if case then
-        results[d.id] = {
-          status = case.status,
-          short = case.message,
-        }
+        local entry = { status = case.status, short = case.message }
+        if case.status == 'failed' and case.message then
+          -- neotest publishes errors[] as vim.diagnostic entries so the
+          -- failure shows inline AND in the trouble/qflist.
+          entry.errors = {
+            { message = case.message, line = d.range and d.range[1] or 0 },
+          }
+        end
+        results[d.id] = entry
       else
         results[d.id] = { status = 'skipped' }
       end
