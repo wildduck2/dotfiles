@@ -7,13 +7,22 @@ function M.setup()
   vim.api.nvim_set_hl(0, 'NeotestRunning', { fg = '#61afef' })   -- blue
   vim.api.nvim_set_hl(0, 'NeotestSkipped', { fg = '#5c6370' })   -- grey
 
+  -- Per-namespace diagnostic config for neotest. Override at the namespace
+  -- level so global vim.diagnostic.config (lspconfig owns it) is untouched.
+  local ns = vim.api.nvim_create_namespace('neotest')
   vim.diagnostic.config({
     virtual_text = {
-      format = function(diagnostic)
-        return diagnostic.message
+      spacing = 4,
+      prefix = '■',
+      severity = { min = vim.diagnostic.severity.HINT },
+      format = function(d)
+        return (d.message or ''):gsub('\n', ' '):sub(1, 200)
       end,
     },
-  }, vim.api.nvim_create_namespace('neotest'))
+    underline = true,
+    severity_sort = true,
+    signs = false,  -- the test ✗/✓ glyph already lives in the signcolumn
+  }, ns)
 
   require('neotest').setup({
     adapters = {
