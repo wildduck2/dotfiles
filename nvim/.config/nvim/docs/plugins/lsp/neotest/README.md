@@ -30,21 +30,13 @@ test under cursor without writing a launch config.
 | `nvim-neotest/neotest-go` | go test adapter |
 | `jfpedroza/neotest-elixir` | ExUnit adapter |
 
-**Custom adapter (in this repo)**
+**Custom adapters (in this repo)**
 
 - **gtest** (C / C++) — `lua/plugins/lsp/neotest/adapters/gtest.lua`. Hand
-  rolled. Discovers `TEST`, `TEST_F`, `TEST_P` via tree-sitter, runs the
-  prebuilt binary with `--gtest_output=xml`, parses the XML for
-  pass/fail/skipped + assertion message. See "C / C++ (custom gtest)"
-  section below for setup.
-
-**Not loaded**
-
-- **neotest-rust** — broken (`table index is nil` at init.lua:414). Use
-  DAP directly for rust tests: `cargo test --no-run`, then `<F5>` →
-  "Launch (pick binary)" → `target/debug/deps/<crate>-<hash>` with args
-  `test_name --exact --nocapture`. Or wait for `rustaceanvim` (commented
-  out in `lang/init.lua`) which ships its own test runner.
+  rolled. See "C / C++ (custom gtest)" below.
+- **cargo-test** (Rust) — `lua/plugins/lsp/neotest/adapters/rust.lua`.
+  Hand rolled. Replaces the broken `neotest-rust`. See "Rust (custom
+  cargo-test)" below.
 
 ## Global keymaps — `<leader>T*` namespace
 
@@ -181,6 +173,60 @@ require('plugins.lsp.neotest.adapters.gtest')({
     local base = vim.fn.fnamemodify(file, ':t:r')
     return vim.fn.getcwd() .. '/build/tests/' .. base
   end,
+})
+```
+
+### Rust (custom cargo-test)
+
+`lua/plugins/lsp/neotest/adapters/rust.lua` — minimal in-tree adapter.
+
+**Test discovery**
+
+- File qualifies if `*.rs` AND contains `#[test]`, `#[tokio::test]`,
+  `#[async_std::test]`, or `#[rstest]`.
+- Tree-sitter query matches those attributes followed by a
+  `function_item`. `mod_item` declarations create namespaces. Nested
+  modules become nested namespaces so the cargo filter reconstructs to
+  `outer::inner::test_name`.
+
+**Run**
+
+```
+cargo test --color never <filter> -- --nocapture --exact --test-threads=1
+```
+
+- File-level: omits `<filter>` (runs every test the crate has — slow on
+  big crates, narrow with `<leader>Tr` instead).
+- Module run: `<filter>` = `outer::inner`.
+- Single test: `<filter>` = `outer::inner::test_name` with `--exact`.
+
+Output is parsed from stable cargo human format — lines like
+`test path::name ... ok|FAILED|ignored`. Failure bodies after `failures:`
+become the inline `short` message. No nightly toolchain needed.
+
+**DAP debug**
+
+`<leader>Td` runs `cargo test --no-run --message-format=json`, picks the
+compiler-artifact whose `target.src_path` matches the current file, and
+launches it under `codelldb` with `--exact --nocapture <test_path>` as
+args. Breakpoints honored.
+
+**Cargo.toml requirement for breakpoints**
+
+```toml
+[profile.dev]
+debug = true
+opt-level = 0
+```
+
+Without this, codelldb can attach but breakpoints get optimised away.
+
+**Per-project override**
+
+```lua
+require('plugins.lsp.neotest.adapters.rust')({
+  -- (no options yet; placeholder for future cargo flags, package
+  -- selection, etc.)
 })
 ```
 

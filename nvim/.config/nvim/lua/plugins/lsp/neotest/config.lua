@@ -41,6 +41,7 @@ function M.setup()
       require('plugins.lsp.neotest.adapters.gtest')({
         -- binary = function(file) return ... end,  -- override here per project
       }),
+      require('plugins.lsp.neotest.adapters.rust')({}),
     },
 
     -- Test discovery + summary panel layout

@@ -65,34 +65,90 @@ end
 
 function M.is_test_file(file_path)
   local ext = file_path:match('%.([^./]+)$')
-  if ext ~= 'c' and ext ~= 'cc' and ext ~= 'cpp' and ext ~= 'cxx' then
+  if not (ext == 'c' or ext == 'cc' or ext == 'cpp' or ext == 'cxx'
+       or ext == 'h' or ext == 'hpp' or ext == 'hh' or ext == 'hxx') then
     return false
   end
   local base = vim.fn.fnamemodify(file_path, ':t:r'):lower()
-  if base:match('_test$') or base:match('%.test$') or base:match('^test_') then
+  if base:match('_test$') or base:match('%.test$') or base:match('^test_')
+     or base:match('_tests$') or base:match('^tests?$') then
     return true
   end
-  -- Fallback: scan for #include <gtest/gtest.h>
+  -- Fallback 1: scan for gtest header include
   local fd = io.open(file_path, 'r')
   if not fd then return false end
-  local content = fd:read('*a')
-  fd:close()
-  return content and content:find('gtest/gtest%.h', 1, true) ~= nil
+  local content = fd:read('*a'); fd:close()
+  if not content then return false end
+  if content:find('gtest/gtest%.h', 1, true) then return true end
+  -- Fallback 2: any TEST( / TEST_F( / TEST_P( macro call
+  if content:find('\nTEST%s*%(') or content:find('^TEST%s*%(')
+     or content:find('TEST_F%s*%(') or content:find('TEST_P%s*%(') then
+    return true
+  end
+  return false
 end
 
+-- Discovery via regex scan. Tree-sitter parses `TEST(A,B) { ... }` as a
+-- function_definition (macro looks like a function) rather than a
+-- call_expression, which makes a clean treesitter query brittle across
+-- C and C++. The regex catches every `TEST(...)`, `TEST_F(...)`,
+-- `TEST_P(...)` declaration line.
 function M.discover_positions(file_path)
-  local query = [[
-    ((call_expression
-       function: (identifier) @macro
-       arguments: (argument_list
-         . (identifier) @namespace.name
-         . (identifier) @test.name))
-     (#any-of? @macro "TEST" "TEST_F" "TEST_P")) @test.definition
-  ]]
-  return lib.treesitter.parse_positions(file_path, query, {
-    require_namespaces = true,
-    nested_tests = false,
-  })
+  local lines = vim.fn.readfile(file_path)
+  if not lines then return nil end
+
+  local Tree = require('neotest.types').Tree
+
+  local file_pos = {
+    id = file_path,
+    name = vim.fn.fnamemodify(file_path, ':t'),
+    type = 'file',
+    path = file_path,
+    range = { 0, 0, #lines, 0 },
+  }
+
+  -- suite_name -> { ns_pos, list of test positions }
+  local suite_order = {}
+  local suite_map = {}
+
+  for lnum, line in ipairs(lines) do
+    local macro, suite, name = line:match('^%s*(TEST[_FP]*)%s*%(%s*([%w_]+)%s*,%s*([%w_]+)%s*%)')
+    if macro and suite and name then
+      if not suite_map[suite] then
+        suite_map[suite] = {
+          ns = {
+            id = file_path .. '::' .. suite,
+            name = suite,
+            type = 'namespace',
+            path = file_path,
+            range = { lnum - 1, 0, lnum - 1, #line },
+          },
+          tests = {},
+        }
+        table.insert(suite_order, suite)
+      end
+      table.insert(suite_map[suite].tests, {
+        id = file_path .. '::' .. suite .. '::' .. name,
+        name = name,
+        type = 'test',
+        path = file_path,
+        range = { lnum - 1, 0, lnum - 1, #line },
+      })
+    end
+  end
+
+  -- Nested list shape: { file, { ns1, { t1 }, { t2 } }, { ns2, { t3 } } }
+  local list = { file_pos }
+  for _, suite in ipairs(suite_order) do
+    local entry = suite_map[suite]
+    local branch = { entry.ns }
+    for _, t in ipairs(entry.tests) do
+      table.insert(branch, { t })
+    end
+    table.insert(list, branch)
+  end
+
+  return Tree.from_list(list, function(p) return p.id end)
 end
 
 local function parse_gtest_xml(path)
@@ -183,15 +239,15 @@ end
 function M.results(spec, result, tree)
   local results = {}
   if spec.context.error then
-    for _, node in tree:iter() do
-      if node:data().type == 'test' then
-        results[node:data().id] = { status = 'failed', short = spec.context.error }
+    for _, pos in tree:iter() do
+      if pos.type == 'test' then
+        results[pos.id] = { status = 'failed', short = spec.context.error }
       end
     end
     return results
   end
   local cases = parse_gtest_xml(spec.context.results_path)
-  for _, node in tree:iter() do
+  for _, node in tree:iter_nodes() do
     local d = node:data()
     if d.type == 'test' then
       local parent = node:parent() and node:parent():data()
