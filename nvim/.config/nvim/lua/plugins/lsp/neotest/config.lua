@@ -38,6 +38,9 @@ function M.setup()
       }),
       require('neotest-go'),
       require('neotest-elixir'),
+      require('plugins.lsp.neotest.adapters.gtest')({
+        -- binary = function(file) return ... end,  -- override here per project
+      }),
     },
 
     -- Test discovery + summary panel layout

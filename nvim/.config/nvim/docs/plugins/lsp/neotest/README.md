@@ -30,6 +30,14 @@ test under cursor without writing a launch config.
 | `nvim-neotest/neotest-go` | go test adapter |
 | `jfpedroza/neotest-elixir` | ExUnit adapter |
 
+**Custom adapter (in this repo)**
+
+- **gtest** (C / C++) — `lua/plugins/lsp/neotest/adapters/gtest.lua`. Hand
+  rolled. Discovers `TEST`, `TEST_F`, `TEST_P` via tree-sitter, runs the
+  prebuilt binary with `--gtest_output=xml`, parses the XML for
+  pass/fail/skipped + assertion message. See "C / C++ (custom gtest)"
+  section below for setup.
+
 **Not loaded**
 
 - **neotest-rust** — broken (`table index is nil` at init.lua:414). Use
@@ -37,8 +45,6 @@ test under cursor without writing a launch config.
   "Launch (pick binary)" → `target/debug/deps/<crate>-<hash>` with args
   `test_name --exact --nocapture`. Or wait for `rustaceanvim` (commented
   out in `lang/init.lua`) which ships its own test runner.
-- **C / C++** — no quality neotest adapter exists. Debug test binaries
-  via DAP directly: build with `-g`, `<F5>` → "Launch (pick binary)".
 
 ## Global keymaps — `<leader>T*` namespace
 
@@ -122,6 +128,61 @@ library code).
 ### go
 
 Default `go test` invocation. Discovers via `_test.go` files.
+
+### C / C++ (custom gtest)
+
+`lua/plugins/lsp/neotest/adapters/gtest.lua` — minimal in-tree adapter.
+
+**Test discovery**
+
+- File qualifies if it ends in `_test.{c,cc,cpp,cxx}` / `.test.{...}` /
+  starts with `test_` OR `#include <gtest/gtest.h>` is in the file.
+- Tree-sitter query matches `TEST(suite, name)`, `TEST_F(fixture, name)`,
+  `TEST_P(fixture, name)`. Suite = neotest namespace, test name = leaf.
+
+**Binary discovery (in order)**
+
+1. `opts.binary` (function or string) passed at adapter init in
+   `config.lua` — set this per project for non-standard layouts.
+2. `${cwd}/build/<basename without _test/.test>`
+3. `${cwd}/build/<basename>`
+4. `${cwd}/build/test_<basename>`
+5. `${cwd}/build/tests/<...>`
+6. Interactive prompt (cached per cwd) on first run.
+
+You build the binary yourself (cmake / make / ninja). The adapter does
+not run a build step.
+
+**Run + parse**
+
+```
+<bin> --gtest_output=xml:/tmp/abc.xml --gtest_color=no --gtest_filter=<suite>.<name>
+```
+
+- File-level run: omits `--gtest_filter` (runs every test in the binary).
+- Namespace run: `--gtest_filter=<suite>.*`.
+- Single test: `--gtest_filter=<suite>.<name>`.
+
+XML is parsed for `<testcase>` entries; each `<failure>` becomes a
+neotest `failed` status with the `message` attribute as the inline
+diagnostic.
+
+**DAP debug**
+
+`<leader>Td` on a `TEST(...)` body launches the binary via codelldb with
+the matching `--gtest_filter` flag. Breakpoints honored.
+
+**Per-project override**
+
+```lua
+require('plugins.lsp.neotest.adapters.gtest')({
+  binary = function(file)
+    -- e.g. one binary per source file under build/tests/
+    local base = vim.fn.fnamemodify(file, ':t:r')
+    return vim.fn.getcwd() .. '/build/tests/' .. base
+  end,
+})
+```
 
 ### elixir
 
