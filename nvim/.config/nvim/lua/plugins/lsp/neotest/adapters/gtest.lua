@@ -53,10 +53,15 @@ local function default_binary_paths(file)
 end
 
 local function resolve_binary(opts, file)
-  -- Cache lookup BEFORE the conventional path scan so a once-answered
-  -- prompt is never asked again, even after restart.
-  if binary_cache[file] and vim.fn.executable(binary_cache[file]) == 1 then
-    return binary_cache[file]
+  -- Cache lookup BEFORE the conventional path scan. If the cached path
+  -- is no longer executable, drop it and re-resolve so a moved/deleted
+  -- binary does not silently keep failing.
+  if binary_cache[file] then
+    if vim.fn.executable(binary_cache[file]) == 1 then
+      return binary_cache[file]
+    end
+    binary_cache[file] = nil
+    save_cache(binary_cache)
   end
   if opts.binary then
     local b = type(opts.binary) == 'function' and opts.binary(file) or opts.binary
@@ -78,6 +83,7 @@ local function resolve_binary(opts, file)
     save_cache(binary_cache)
     return prompt
   end
+  vim.notify('gtest: no executable binary at "' .. prompt .. '"', vim.log.levels.ERROR)
   return nil
 end
 
@@ -285,9 +291,40 @@ end
 function M.results(spec, result, tree)
   local results = {}
   if spec.context.error then
-    for _, pos in tree:iter() do
-      if pos.type == 'test' then
-        results[pos.id] = { status = 'failed', short = spec.context.error }
+    for _, node in tree:iter_nodes() do
+      local d = node:data()
+      if d.type == 'test' then
+        results[d.id] = {
+          status = 'failed',
+          short = spec.context.error,
+          errors = {
+            { message = spec.context.error, line = d.range and d.range[1] or 0 },
+          },
+        }
+      end
+    end
+    return results
+  end
+
+  -- If the binary ran but the XML is missing (e.g. exit 1 from a crash
+  -- before any test reached completion) read whatever stdout/stderr
+  -- neotest captured so the user sees something inline.
+  local xml_exists = vim.fn.filereadable(spec.context.results_path) == 1
+  if not xml_exists then
+    local content = ''
+    if result.output then
+      local fd = io.open(result.output, 'r')
+      if fd then content = fd:read('*a') or ''; fd:close() end
+    end
+    local msg = content ~= '' and content:sub(1, 1000) or 'gtest binary produced no XML report'
+    for _, node in tree:iter_nodes() do
+      local d = node:data()
+      if d.type == 'test' then
+        results[d.id] = {
+          status = 'failed',
+          short = msg,
+          errors = { { message = msg, line = d.range and d.range[1] or 0 } },
+        }
       end
     end
     return results

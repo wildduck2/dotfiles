@@ -77,30 +77,25 @@ local function position_to_filter(tree)
   return table.concat(parts, '::')
 end
 
-local function pick_test_binary(file_path, cb)
-  vim.system({ 'cargo', 'test', '--no-run', '--message-format=json' },
-    { text = true }, function(out)
-      vim.schedule(function()
-        if out.code ~= 0 or not out.stdout then
-          cb(nil, 'cargo test --no-run failed: ' .. (out.stderr or ''))
-          return
-        end
-        local picked
-        for line in out.stdout:gmatch('[^\n]+') do
-          local ok, msg = pcall(vim.json.decode, line)
-          if ok and msg and msg.reason == 'compiler-artifact'
-              and msg.executable and msg.profile and msg.profile.test then
-            -- Prefer artifacts whose target src_path matches our file.
-            if msg.target and msg.target.src_path == file_path then
-              picked = msg.executable
-              break
-            end
-            picked = picked or msg.executable
-          end
-        end
-        if picked then cb(picked) else cb(nil, 'no test binary found') end
-      end)
-    end)
+-- Synchronous binary resolution. nvim-nio rejects raw coroutine.yield in
+-- neotest's task context, so we block briefly on cargo here.
+local function pick_test_binary(file_path)
+  local out = vim.fn.system({ 'cargo', 'test', '--no-run', '--message-format=json' })
+  if vim.v.shell_error ~= 0 or not out or out == '' then
+    return nil, 'cargo test --no-run failed: ' .. (out or '')
+  end
+  local picked
+  for line in out:gmatch('[^\n]+') do
+    local ok, msg = pcall(vim.json.decode, line)
+    if ok and msg and msg.reason == 'compiler-artifact'
+        and msg.executable and msg.profile and msg.profile.test then
+      if msg.target and msg.target.src_path == file_path then
+        return msg.executable
+      end
+      picked = picked or msg.executable
+    end
+  end
+  return picked, picked and nil or 'no test binary found'
 end
 
 function M.build_spec(args)
@@ -110,23 +105,11 @@ function M.build_spec(args)
   local filter = position_to_filter(tree)
 
   if args.strategy == 'dap' then
-    -- DAP needs a binary path; this requires async resolution. Use the
-    -- coroutine pattern dap.lua uses for its program callback.
-    local co = coroutine.running()
-    if not co then
-      vim.notify('neotest-rust DAP strategy must run inside a coroutine', vim.log.levels.ERROR)
+    local binary, err = pick_test_binary(pos.path)
+    if not binary then
+      vim.notify('rust DAP: ' .. (err or 'no binary'), vim.log.levels.ERROR)
       return
     end
-    pick_test_binary(pos.path, function(bin, err)
-      if not bin then
-        vim.notify('rust DAP: ' .. (err or 'no binary'), vim.log.levels.ERROR)
-        coroutine.resume(co, nil)
-      else
-        coroutine.resume(co, bin)
-      end
-    end)
-    local binary = coroutine.yield()
-    if not binary then return end
 
     local dap_args = { '--exact', '--nocapture' }
     if filter and pos.type == 'test' then table.insert(dap_args, 1, filter) end
@@ -165,16 +148,19 @@ function M.build_spec(args)
 end
 
 local function strip_ansi(s)
-  return (s:gsub('\27%[[%d;]*[A-Za-z]', ''))
+  return (s:gsub('\27%[[%d;?]*[A-Za-z]', '')
+           :gsub('\r', ''))
 end
 
 local function parse_human_output(text)
   text = strip_ansi(text or '')
   local results = {}
 
-  -- Status lines: "test path::name ... ok|FAILED|ignored"
+  -- Status lines: "test path::name ... ok|FAILED|ignored".
+  -- Tolerate leading whitespace (some cargo wrappers indent) and any
+  -- trailing word (test result might be `ok`, `FAILED`, `ignored`).
   for line in text:gmatch('[^\n]+') do
-    local name, status = line:match('^test%s+(%S+)%s+%.%.%.%s+([%w%-_]+)')
+    local name, status = line:match('^%s*test%s+(%S+)%s+%.%.%.%s+(%a+)')
     if name and status then
       local s = 'unknown'
       local low = status:lower()
@@ -226,11 +212,10 @@ function M.results(spec, result, tree)
   end
   local parsed = parse_human_output(content)
 
-  -- Fallback: cargo exited non-zero but we couldn't map any test line
-  -- (e.g. compile error). Mark every discovered test as failed with the
-  -- raw output so the user sees what blew up.
   local nothing_parsed = next(parsed) == nil
   local cargo_failed = result.code ~= 0
+  local has_test_header = content:match('running%s+%d+%s+tests?') ~= nil
+  local compile_error = nothing_parsed and cargo_failed and not has_test_header
 
   for _, node in tree:iter_nodes() do
     local d = node:data()
@@ -245,14 +230,31 @@ function M.results(spec, result, tree)
           }
         end
         results[d.id] = entry
-      elseif cargo_failed and nothing_parsed then
+      elseif compile_error then
         results[d.id] = {
           status = 'failed',
-          short = 'cargo test failed (see output panel)',
-          errors = { { message = content:sub(1, 1000), line = d.range and d.range[1] or 0 } },
+          short = 'compile error — see :NeotestOutputPanel',
+          errors = {
+            { message = 'cargo compile error — open <leader>TO',
+              line = d.range and d.range[1] or 0 },
+          },
+        }
+      elseif cargo_failed then
+        -- cargo exited non-zero AND we know tests ran (has_test_header)
+        -- AND our parser missed this specific test line — trust the exit
+        -- code: this test failed. Dump the relevant failure section.
+        local panic = content:match('panicked at[^\n]+\n[^\n]+')
+        results[d.id] = {
+          status = 'failed',
+          short = panic or 'cargo test failed',
+          errors = {
+            { message = panic or 'see <leader>TO for full output',
+              line = d.range and d.range[1] or 0 },
+          },
         }
       else
-        results[d.id] = { status = 'skipped' }
+        -- cargo exited 0 and parser missed → trust the exit code: passed.
+        results[d.id] = { status = 'passed' }
       end
     end
   end
