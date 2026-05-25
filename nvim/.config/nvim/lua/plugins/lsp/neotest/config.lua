@@ -2,10 +2,10 @@ local M = {}
 
 function M.setup()
   -- Distinct sign glyphs for test status. Render in any terminal.
-  vim.api.nvim_set_hl(0, 'NeotestPassed',  { fg = '#98c379' })   -- green
-  vim.api.nvim_set_hl(0, 'NeotestFailed',  { fg = '#e06c75' })   -- red
-  vim.api.nvim_set_hl(0, 'NeotestRunning', { fg = '#61afef' })   -- blue
-  vim.api.nvim_set_hl(0, 'NeotestSkipped', { fg = '#5c6370' })   -- grey
+  vim.api.nvim_set_hl(0, 'NeotestPassed', { fg = '#98c379' }) -- green
+  vim.api.nvim_set_hl(0, 'NeotestFailed', { fg = '#e06c75' }) -- red
+  vim.api.nvim_set_hl(0, 'NeotestRunning', { fg = '#61afef' }) -- blue
+  vim.api.nvim_set_hl(0, 'NeotestSkipped', { fg = '#5c6370' }) -- grey
 
   -- Per-namespace diagnostic config for neotest. Override at the namespace
   -- level so global vim.diagnostic.config (lspconfig owns it) is untouched.
@@ -21,7 +21,7 @@ function M.setup()
     },
     underline = true,
     severity_sort = true,
-    signs = false,  -- the test ✗/✓ glyph already lives in the signcolumn
+    signs = false, -- the test ✗/✓ glyph already lives in the signcolumn
   }, ns)
 
   require('neotest').setup({
@@ -36,10 +36,14 @@ function M.setup()
           return vim.fn.getcwd() .. '/jest.config.js'
         end,
         env = { CI = true },
-        cwd = function() return vim.fn.getcwd() end,
+        cwd = function()
+          return vim.fn.getcwd()
+        end,
       }),
       require('neotest-vitest')({
-        filter_dir = function(name) return name ~= 'node_modules' end,
+        filter_dir = function(name)
+          return name ~= 'node_modules'
+        end,
       }),
       require('neotest-python')({
         runner = 'pytest',
@@ -94,21 +98,21 @@ function M.setup()
     -- codepoints showed up as blank cells in some terminals — defeating
     -- the purpose of having a status sign).
     icons = {
-      passed             = '✓',
-      failed             = '✗',
-      running            = '●',
-      skipped            = '○',
-      unknown            = '◌',
-      running_animated   = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
-      child_indent       = '│',
-      child_prefix       = '├',
+      passed = '✓',
+      failed = '✗',
+      running = '●',
+      skipped = '○',
+      unknown = '◌',
+      running_animated = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
+      child_indent = '│',
+      child_prefix = '├',
       final_child_indent = ' ',
       final_child_prefix = '╰',
-      non_collapsible    = '─',
-      collapsed          = '─',
-      expanded           = '╮',
-      watching           = '◉',
-      notify             = '!',
+      non_collapsible = '─',
+      collapsed = '─',
+      expanded = '╮',
+      watching = '◉',
+      notify = '!',
     },
     floating = { border = 'rounded', max_height = 0.8, max_width = 0.8, options = {} },
     diagnostic = { enabled = true, severity = vim.diagnostic.severity.ERROR },
@@ -132,7 +136,9 @@ function M.setup()
     for k, v in pairs(results) do
       if k:find(file, 1, true) then
         count = count + 1
-        if count <= 5 then table.insert(lines, ('  %s -> %s'):format(k:sub(-60), v.status or '?')) end
+        if count <= 5 then
+          table.insert(lines, ('  %s -> %s'):format(k:sub(-60), v.status or '?'))
+        end
       end
     end
     table.insert(lines, ('results for this file: %d'):format(count))

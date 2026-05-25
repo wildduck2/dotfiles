@@ -5,14 +5,22 @@ M.opts = {
   ast = {
     -- Icons for AST node roles
     role_icons = {
-      type = '', declaration = '', expression = '',
-      specifier = '', statement = '', ['template argument'] = '',
+      type = '',
+      declaration = '',
+      expression = '',
+      specifier = '',
+      statement = '',
+      ['template argument'] = '',
     },
     -- Icons for AST node kinds
     kind_icons = {
-      Compound = '', Recovery = '', TranslationUnit = '',
-      PackExpansion = '', TemplateTypeParm = '',
-      TemplateTemplateParm = '', TemplateParamObject = '',
+      Compound = '',
+      Recovery = '',
+      TranslationUnit = '',
+      PackExpansion = '',
+      TemplateTypeParm = '',
+      TemplateTemplateParm = '',
+      TemplateParamObject = '',
     },
     highlights = { detail = 'Comment' }, -- Highlight group for details
   },

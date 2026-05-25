@@ -1,7 +1,7 @@
-require 'plugins.cmp.snippets.lua'
-require 'plugins.cmp.snippets.typescript'
-require 'plugins.cmp.snippets.tsx'
-require 'plugins.cmp.snippets.sql'
-require 'plugins.cmp.snippets.rust'
-require 'plugins.cmp.snippets.c'
-require 'plugins.cmp.snippets.cpp'
+require('plugins.cmp.snippets.lua')
+require('plugins.cmp.snippets.typescript')
+require('plugins.cmp.snippets.tsx')
+require('plugins.cmp.snippets.sql')
+require('plugins.cmp.snippets.rust')
+require('plugins.cmp.snippets.c')
+require('plugins.cmp.snippets.cpp')

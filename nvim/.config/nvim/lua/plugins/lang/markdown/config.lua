@@ -1,8 +1,8 @@
 local M = {}
 
 function M.setup_peek()
-  local peek = require 'peek'
-  peek.setup {
+  local peek = require('peek')
+  peek.setup({
     auto_load = false, -- Manual preview with :PeekOpen
     close_on_bdelete = true, -- Close preview when buffer deleted
     syntax = true, -- Syntax highlighting in preview
@@ -12,7 +12,7 @@ function M.setup_peek()
     filetype = { 'markdown' }, -- Filetypes to enable preview for
     throttle_at = 200000, -- Throttle updates above this size
     throttle_time = 'auto', -- Throttle interval: 'auto' | ms
-  }
+  })
 
   -- Open preview in a horizontal i3 split
   vim.api.nvim_create_user_command('PeekOpen', function()

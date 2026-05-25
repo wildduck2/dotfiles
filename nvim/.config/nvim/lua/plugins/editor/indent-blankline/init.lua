@@ -15,8 +15,14 @@ return {
     },
     exclude = {
       filetypes = {
-        'help', 'NvimTree', 'Trouble', 'lazy', 'mason',
-        'toggleterm', 'dashboard', '',
+        'help',
+        'NvimTree',
+        'Trouble',
+        'lazy',
+        'mason',
+        'toggleterm',
+        'dashboard',
+        '',
       },
     },
   },

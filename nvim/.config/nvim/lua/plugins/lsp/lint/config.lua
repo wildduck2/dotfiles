@@ -1,7 +1,7 @@
 local M = {}
 
 function M.setup()
-  local lint = require 'lint'
+  local lint = require('lint')
 
   -- Map filetypes to their linter(s)
   lint.linters_by_ft = {
@@ -25,7 +25,9 @@ function M.setup()
       local linters = lint.linters_by_ft[ft] or {}
       for _, name in ipairs(linters) do
         -- pcall guards against missing linter definitions
-        local ok, linter = pcall(function() return lint.linters[name] end)
+        local ok, linter = pcall(function()
+          return lint.linters[name]
+        end)
         if ok and linter then
           -- Resolve cmd (can be string or function)
           local cmd = type(linter.cmd) == 'function' and linter.cmd() or linter.cmd

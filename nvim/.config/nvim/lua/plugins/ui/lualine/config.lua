@@ -2,20 +2,41 @@ local M = {}
 
 -- Short display names for each vim mode in statusline
 M.mode_map = {
-  ['n'] = 'N', ['no'] = 'O-P', ['nov'] = 'O-P', ['noV'] = 'O-P',
-  ['niI'] = 'N', ['niR'] = 'N', ['niV'] = 'N', ['nt'] = 'N',
-  ['v'] = 'V', ['vs'] = 'V', ['V'] = 'V-L', ['Vs'] = 'V-L',
-  ['s'] = 'S', ['S'] = 'S-L',
-  ['i'] = 'I', ['ic'] = 'I', ['ix'] = 'I',
-  ['R'] = 'R', ['Rc'] = 'R', ['Rx'] = 'R',
-  ['Rv'] = 'V-R', ['Rvc'] = 'V-R', ['Rvx'] = 'V-R',
-  ['c'] = 'C', ['cv'] = 'EX', ['ce'] = 'EX',
-  ['r'] = 'R', ['rm'] = 'MORE', ['r?'] = 'CONFIRM',
-  ['!'] = 'SHELL', ['t'] = 'T',
+  ['n'] = 'N',
+  ['no'] = 'O-P',
+  ['nov'] = 'O-P',
+  ['noV'] = 'O-P',
+  ['niI'] = 'N',
+  ['niR'] = 'N',
+  ['niV'] = 'N',
+  ['nt'] = 'N',
+  ['v'] = 'V',
+  ['vs'] = 'V',
+  ['V'] = 'V-L',
+  ['Vs'] = 'V-L',
+  ['s'] = 'S',
+  ['S'] = 'S-L',
+  ['i'] = 'I',
+  ['ic'] = 'I',
+  ['ix'] = 'I',
+  ['R'] = 'R',
+  ['Rc'] = 'R',
+  ['Rx'] = 'R',
+  ['Rv'] = 'V-R',
+  ['Rvc'] = 'V-R',
+  ['Rvx'] = 'V-R',
+  ['c'] = 'C',
+  ['cv'] = 'EX',
+  ['ce'] = 'EX',
+  ['r'] = 'R',
+  ['rm'] = 'MORE',
+  ['r?'] = 'CONFIRM',
+  ['!'] = 'SHELL',
+  ['t'] = 'T',
 }
 
 function M.setup()
-  require('lualine').setup {
+  require('lualine').setup({
     options = {
       icons_enabled = true,
       theme = 'auto', -- auto-detect from colorscheme; or 'gruvbox', etc.
@@ -84,15 +105,18 @@ function M.setup()
     },
     -- Sections shown in unfocused windows
     inactive_sections = {
-      lualine_a = {}, lualine_b = {},
-      lualine_c = { 'filename' }, lualine_x = { 'location' },
-      lualine_y = {}, lualine_z = {},
+      lualine_a = {},
+      lualine_b = {},
+      lualine_c = { 'filename' },
+      lualine_x = { 'location' },
+      lualine_y = {},
+      lualine_z = {},
     },
     tabline = {}, -- top tabline components (empty = disabled)
     winbar = {}, -- per-window top bar (empty = disabled)
     inactive_winbar = {},
     extensions = {}, -- integrations: 'nvim-tree', 'fugitive', etc.
-  }
+  })
 end
 
 return M

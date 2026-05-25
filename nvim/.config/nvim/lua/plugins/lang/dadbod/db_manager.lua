@@ -11,9 +11,9 @@
 -- duck-sqllsp language server (binary expected at `duck-sqllsp` in PATH).
 -- See docs/plugins/lang/dadbod/README.md for the full setup.
 
-local store = require 'plugins.lang.dadbod.store'
-local wiring = require 'plugins.lang.dadbod.wiring'
-local commands = require 'plugins.lang.dadbod.commands'
+local store = require('plugins.lang.dadbod.store')
+local wiring = require('plugins.lang.dadbod.wiring')
+local commands = require('plugins.lang.dadbod.commands')
 
 local M = {}
 
@@ -32,7 +32,9 @@ function M.setup()
   vim.api.nvim_create_autocmd('VimEnter', {
     once = true,
     callback = function()
-      vim.defer_fn(function() wiring.refresh_dadbod() end, 0)
+      vim.defer_fn(function()
+        wiring.refresh_dadbod()
+      end, 0)
     end,
   })
 

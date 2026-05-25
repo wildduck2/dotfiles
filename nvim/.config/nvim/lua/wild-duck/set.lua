@@ -19,7 +19,7 @@ vim.opt.showmode = false
 vim.opt.breakindent = true
 
 -- Save undo history to a central location
-vim.opt.undodir = vim.fn.expand '~/.config/nvim/.undo'
+vim.opt.undodir = vim.fn.expand('~/.config/nvim/.undo')
 vim.opt.undofile = true
 
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
@@ -45,7 +45,7 @@ vim.opt.splitbelow = true
 --  and `:help 'listchars'`
 vim.opt.list = true
 -- vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
-vim.opt.listchars:append 'eol:↴'
+vim.opt.listchars:append('eol:↴')
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
@@ -66,15 +66,21 @@ vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.autoread = true -- reload buffer when file changed on disk
 
+-- 2-space indent everywhere; do not let project .editorconfig override.
+vim.g.editorconfig = false
+
 -- Trigger :checktime so autoread fires while sitting in nvim
-vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI', 'TermLeave' }, {
-  group = vim.api.nvim_create_augroup('AutoReloadOnDiskChange', { clear = true }),
-  callback = function()
-    if vim.fn.mode() ~= 'c' and vim.fn.getcmdwintype() == '' then
-      vim.cmd('checktime')
-    end
-  end,
-})
+vim.api.nvim_create_autocmd(
+  { 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI', 'TermLeave' },
+  {
+    group = vim.api.nvim_create_augroup('AutoReloadOnDiskChange', { clear = true }),
+    callback = function()
+      if vim.fn.mode() ~= 'c' and vim.fn.getcmdwintype() == '' then
+        vim.cmd('checktime')
+      end
+    end,
+  }
+)
 
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
@@ -85,13 +91,25 @@ vim.opt.termguicolors = true
 -- Rounded borders on all floating windows (hover, signature help, etc.)
 vim.o.winborder = 'rounded'
 
-vim.opt.isfname:append '@-@'
+vim.opt.isfname:append('@-@')
 vim.opt.scrolljump = 1
 
 vim.opt.textwidth = 100
 vim.opt.colorcolumn = '100'
 vim.opt.wrap = true
 vim.opt.linebreak = true
+
+-- Spell check for prose-y filetypes only. Code spelling is handled by
+-- typos_lsp on the LSP side; vim.opt.spell here is the editor-side
+-- check (z= replace suggestions, ]s / [s navigation).
+vim.api.nvim_create_autocmd('FileType', {
+  group = vim.api.nvim_create_augroup('ProseSpell', { clear = true }),
+  pattern = { 'markdown', 'gitcommit', 'text', 'tex', 'mdx', 'rst' },
+  callback = function()
+    vim.opt_local.spell = true
+    vim.opt_local.spelllang = { 'en_us' }
+  end,
+})
 
 -- Folding stuff
 -- vim.opt.foldmethod = 'indent'

@@ -1,7 +1,7 @@
 local M = {}
 
 function M.setup()
-  require('zen-mode').setup {
+  require('zen-mode').setup({
     window = {
       backdrop = 0.95, -- 0-1; shade level for non-zen area
       width = 120, -- zen window width in columns; <1 = percentage
@@ -20,11 +20,11 @@ function M.setup()
     },
     on_open = function(win) end, -- callback when zen mode opens
     on_close = function() end, -- callback when zen mode closes
-  }
+  })
 
   -- Zen with line numbers, 105-col wide
   vim.keymap.set('n', '<leader>zz', function()
-    require('zen-mode').setup { window = { width = 105, options = {} } }
+    require('zen-mode').setup({ window = { width = 105, options = {} } })
     require('zen-mode').toggle()
     vim.wo.wrap = false -- disable line wrapping
     vim.wo.number = true -- show absolute line numbers
@@ -32,7 +32,7 @@ function M.setup()
   end)
   -- Minimal zen: no line numbers, 80-col wide
   vim.keymap.set('n', '<leader>zZ', function()
-    require('zen-mode').setup { window = { width = 80, options = {} } }
+    require('zen-mode').setup({ window = { width = 80, options = {} } })
     require('zen-mode').toggle()
     vim.wo.wrap = false
     vim.wo.number = false -- hide line numbers

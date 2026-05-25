@@ -30,7 +30,7 @@ function M.setup()
   vim.api.nvim_set_hl(0, 'NvimTreeSymlink', { fg = 'Yellow', italic = true })
   vim.api.nvim_set_hl(0, 'NvimTreeImageFile', { link = 'Title' })
 
-  require('nvim-tree').setup {
+  require('nvim-tree').setup({
     auto_reload_on_write = true, -- refresh tree after :w
     sort = { sorter = 'case_sensitive' }, -- 'name', 'case_sensitive', 'modification_time'
     filters = { dotfiles = false }, -- true: hide dotfiles
@@ -54,7 +54,8 @@ function M.setup()
       api.config.mappings.default_on_attach(bufnr)
       vim.keymap.set('n', 's', function()
         local node = api.tree.get_node_under_cursor()
-        local path = node.type == 'directory' and node.absolute_path or vim.fn.fnamemodify(node.absolute_path, ':h')
+        local path = node.type == 'directory' and node.absolute_path
+          or vim.fn.fnamemodify(node.absolute_path, ':h')
         vim.fn.jobstart({ 'nautilus', path }, { detach = true })
       end, { buffer = bufnr, desc = 'Open in file explorer' })
     end,
@@ -90,7 +91,7 @@ function M.setup()
         },
       },
     },
-  }
+  })
 end
 
 return M

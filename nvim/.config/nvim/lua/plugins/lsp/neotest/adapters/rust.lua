@@ -30,15 +30,22 @@ function M.filter_dir(name)
 end
 
 function M.is_test_file(file_path)
-  if not file_path:match('%.rs$') then return false end
+  if not file_path:match('%.rs$') then
+    return false
+  end
   local fd = io.open(file_path, 'r')
-  if not fd then return false end
-  local content = fd:read('*a'); fd:close()
-  if not content then return false end
+  if not fd then
+    return false
+  end
+  local content = fd:read('*a')
+  fd:close()
+  if not content then
+    return false
+  end
   return content:find('#%[test%]') ~= nil
-      or content:find('#%[tokio::test%]') ~= nil
-      or content:find('#%[async_std::test%]') ~= nil
-      or content:find('#%[rstest%]') ~= nil
+    or content:find('#%[tokio::test%]') ~= nil
+    or content:find('#%[async_std::test%]') ~= nil
+    or content:find('#%[rstest%]') ~= nil
 end
 
 function M.discover_positions(file_path)
@@ -64,7 +71,9 @@ end
 -- the tree namespaces.
 local function position_to_filter(tree)
   local pos = tree:data()
-  if pos.type == 'file' then return nil end
+  if pos.type == 'file' then
+    return nil
+  end
   local parts = {}
   local node = tree
   while node do
@@ -87,8 +96,14 @@ local function pick_test_binary(file_path)
   local picked
   for line in out:gmatch('[^\n]+') do
     local ok, msg = pcall(vim.json.decode, line)
-    if ok and msg and msg.reason == 'compiler-artifact'
-        and msg.executable and msg.profile and msg.profile.test then
+    if
+      ok
+      and msg
+      and msg.reason == 'compiler-artifact'
+      and msg.executable
+      and msg.profile
+      and msg.profile.test
+    then
       if msg.target and msg.target.src_path == file_path then
         return msg.executable
       end
@@ -100,7 +115,9 @@ end
 
 function M.build_spec(args)
   local tree = args.tree
-  if not tree then return end
+  if not tree then
+    return
+  end
   local pos = tree:data()
   local filter = position_to_filter(tree)
 
@@ -112,10 +129,12 @@ function M.build_spec(args)
     end
 
     local dap_args = { '--exact', '--nocapture' }
-    if filter and pos.type == 'test' then table.insert(dap_args, 1, filter) end
+    if filter and pos.type == 'test' then
+      table.insert(dap_args, 1, filter)
+    end
 
     return {
-      command = { 'true' },  -- placeholder; dap takes over
+      command = { 'true' }, -- placeholder; dap takes over
       context = { mode = 'dap' },
       strategy = {
         type = 'codelldb',
@@ -148,8 +167,7 @@ function M.build_spec(args)
 end
 
 local function strip_ansi(s)
-  return (s:gsub('\27%[[%d;?]*[A-Za-z]', '')
-           :gsub('\r', ''))
+  return (s:gsub('\27%[[%d;?]*[A-Za-z]', ''):gsub('\r', ''))
 end
 
 local function parse_human_output(text)
@@ -164,9 +182,12 @@ local function parse_human_output(text)
     if name and status then
       local s = 'unknown'
       local low = status:lower()
-      if low == 'ok' then s = 'passed'
-      elseif low == 'failed' then s = 'failed'
-      elseif low == 'ignored' then s = 'skipped'
+      if low == 'ok' then
+        s = 'passed'
+      elseif low == 'failed' then
+        s = 'failed'
+      elseif low == 'ignored' then
+        s = 'skipped'
       end
       results[name] = { status = s }
     end
@@ -177,7 +198,9 @@ local function parse_human_output(text)
   local idx = 1
   while true do
     local s_start, s_end, header = text:find('%-%-%-%-%s+(%S+)%s+stdout%s+%-%-%-%-', idx)
-    if not s_start then break end
+    if not s_start then
+      break
+    end
     local next_start = text:find('%-%-%-%-%s+%S+%s+stdout%s+%-%-%-%-', s_end + 1)
     local stop = next_start or text:find('\nfailures:', s_end + 1) or #text
     local body = text:sub(s_end + 1, stop):gsub('^%s+', ''):gsub('%s+$', '')
@@ -208,7 +231,10 @@ function M.results(spec, result, tree)
   local content = ''
   if output_path then
     local fd = io.open(output_path, 'r')
-    if fd then content = fd:read('*a'); fd:close() end
+    if fd then
+      content = fd:read('*a')
+      fd:close()
+    end
   end
   local parsed = parse_human_output(content)
 
@@ -226,7 +252,10 @@ function M.results(spec, result, tree)
         local entry = { status = p.status, short = p.message }
         if p.status == 'failed' and p.message then
           entry.errors = {
-            { message = p.message, line = (p.line and p.line - 1) or (d.range and d.range[1] or 0) },
+            {
+              message = p.message,
+              line = (p.line and p.line - 1) or (d.range and d.range[1] or 0),
+            },
           }
         end
         results[d.id] = entry
@@ -235,8 +264,10 @@ function M.results(spec, result, tree)
           status = 'failed',
           short = 'compile error — see :NeotestOutputPanel',
           errors = {
-            { message = 'cargo compile error — open <leader>TO',
-              line = d.range and d.range[1] or 0 },
+            {
+              message = 'cargo compile error — open <leader>TO',
+              line = d.range and d.range[1] or 0,
+            },
           },
         }
       elseif cargo_failed then
@@ -248,8 +279,10 @@ function M.results(spec, result, tree)
           status = 'failed',
           short = panic or 'cargo test failed',
           errors = {
-            { message = panic or 'see <leader>TO for full output',
-              line = d.range and d.range[1] or 0 },
+            {
+              message = panic or 'see <leader>TO for full output',
+              line = d.range and d.range[1] or 0,
+            },
           },
         }
       else

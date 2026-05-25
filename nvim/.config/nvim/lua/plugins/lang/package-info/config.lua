@@ -1,7 +1,7 @@
 local M = {}
 
 function M.setup()
-  require('package-info').setup {
+  require('package-info').setup({
     -- Colors for version status in virtual text
     highlights = {
       up_to_date = { fg = '#3C4048' }, -- Dim gray for current versions
@@ -17,10 +17,10 @@ function M.setup()
     hide_up_to_date = false, -- Show even if version is current
     hide_unstable_versions = false, -- Include pre-release versions
     package_manager = 'pnpm', -- npm | yarn | pnpm
-  }
+  })
 
   -- Keymaps for package.json management
-  local pi = require 'package-info'
+  local pi = require('package-info')
   local opts = { silent = true, noremap = true }
   vim.keymap.set('n', '<LEADER>ns', pi.show, opts) -- Show version info
   vim.keymap.set('n', '<LEADER>nc', pi.hide, opts) -- Hide version info

@@ -27,31 +27,49 @@ function M.to_dadbod(conn)
     userinfo = userinfo .. ':' .. conn.password
   end
   local host = conn.host or 'localhost'
-  if conn.port and conn.port ~= '' then host = host .. ':' .. conn.port end
+  if conn.port and conn.port ~= '' then
+    host = host .. ':' .. conn.port
+  end
   return string.format('%s://%s@%s/%s', scheme, userinfo, host, conn.database or '')
 end
 
 function M.to_sqls(conn)
   local driver = conn.driver
-  if driver == 'postgres' then driver = 'postgresql' end
+  if driver == 'postgres' then
+    driver = 'postgresql'
+  end
   local dsn
   if driver == 'postgresql' then
     local parts = {}
-    if conn.host then table.insert(parts, 'host=' .. conn.host) end
-    if conn.port and conn.port ~= '' then table.insert(parts, 'port=' .. conn.port) end
-    if conn.user and conn.user ~= '' then table.insert(parts, 'user=' .. conn.user) end
-    if conn.password and conn.password ~= '' then table.insert(parts, 'password=' .. conn.password) end
-    if conn.database and conn.database ~= '' then table.insert(parts, 'dbname=' .. conn.database) end
+    if conn.host then
+      table.insert(parts, 'host=' .. conn.host)
+    end
+    if conn.port and conn.port ~= '' then
+      table.insert(parts, 'port=' .. conn.port)
+    end
+    if conn.user and conn.user ~= '' then
+      table.insert(parts, 'user=' .. conn.user)
+    end
+    if conn.password and conn.password ~= '' then
+      table.insert(parts, 'password=' .. conn.password)
+    end
+    if conn.database and conn.database ~= '' then
+      table.insert(parts, 'dbname=' .. conn.database)
+    end
     if conn.schema and conn.schema ~= '' then
       table.insert(parts, 'search_path=' .. conn.schema)
     end
     table.insert(parts, 'sslmode=disable')
     dsn = table.concat(parts, ' ')
   elseif driver == 'mysql' or driver == 'mariadb' then
-    dsn = string.format('%s:%s@tcp(%s:%s)/%s',
-      conn.user or '', conn.password or '',
-      conn.host or 'localhost', conn.port ~= '' and conn.port or '3306',
-      conn.database or '')
+    dsn = string.format(
+      '%s:%s@tcp(%s:%s)/%s',
+      conn.user or '',
+      conn.password or '',
+      conn.host or 'localhost',
+      conn.port ~= '' and conn.port or '3306',
+      conn.database or ''
+    )
   elseif driver == 'sqlite3' or driver == 'sqlite' then
     driver = 'sqlite3'
     dsn = conn.database or ''

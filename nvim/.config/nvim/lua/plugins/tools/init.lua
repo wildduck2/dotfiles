@@ -1,3 +1,3 @@
 return {
-  require 'plugins.tools.silicon',
+  require('plugins.tools.silicon'),
 }

@@ -14,11 +14,11 @@ function M.setup()
   -- every DAP package is fetched on first nvim load and any time the list
   -- below changes. Runs after VeryLazy so mason itself is ready.
   local dap_packages = {
-    'codelldb',          -- rust / c / c++
-    'js-debug-adapter',  -- node / chrome (vscode-js-debug)
-    'delve',             -- go
-    'debugpy',           -- python
-    'elixir-ls',         -- elixir (LSP + debug adapter in one package)
+    'codelldb', -- rust / c / c++
+    'js-debug-adapter', -- node / chrome (vscode-js-debug)
+    'delve', -- go
+    'debugpy', -- python
+    'elixir-ls', -- elixir (LSP + debug adapter in one package)
   }
 
   local ok_reg, registry = pcall(require, 'mason-registry')
@@ -87,23 +87,46 @@ function M.setup()
 
   -- Use filled-circle glyphs that render in any terminal (no nerd font
   -- needed). Distinct colors per state so you can see at a glance.
-  vim.api.nvim_set_hl(0, 'DapBreakpointSign', { fg = '#e06c75' })           -- red
-  vim.api.nvim_set_hl(0, 'DapBreakpointCondSign', { fg = '#e5c07b' })       -- yellow
-  vim.api.nvim_set_hl(0, 'DapLogPointSign', { fg = '#61afef' })             -- blue
-  vim.api.nvim_set_hl(0, 'DapStoppedSign', { fg = '#98c379' })              -- green
-  vim.api.nvim_set_hl(0, 'DapStoppedLine', { bg = '#31353f' })              -- subtle line bg
-  vim.api.nvim_set_hl(0, 'DapBreakpointRejectedSign', { fg = '#5c6370' })   -- grey
+  vim.api.nvim_set_hl(0, 'DapBreakpointSign', { fg = '#e06c75' }) -- red
+  vim.api.nvim_set_hl(0, 'DapBreakpointCondSign', { fg = '#e5c07b' }) -- yellow
+  vim.api.nvim_set_hl(0, 'DapLogPointSign', { fg = '#61afef' }) -- blue
+  vim.api.nvim_set_hl(0, 'DapStoppedSign', { fg = '#98c379' }) -- green
+  vim.api.nvim_set_hl(0, 'DapStoppedLine', { bg = '#31353f' }) -- subtle line bg
+  vim.api.nvim_set_hl(0, 'DapBreakpointRejectedSign', { fg = '#5c6370' }) -- grey
 
-  vim.fn.sign_define('DapBreakpoint',          { text = '●', texthl = 'DapBreakpointSign',         numhl = 'DapBreakpointSign' })
-  vim.fn.sign_define('DapBreakpointCondition', { text = '●', texthl = 'DapBreakpointCondSign',     numhl = 'DapBreakpointCondSign' })
-  vim.fn.sign_define('DapLogPoint',            { text = '◆', texthl = 'DapLogPointSign',           numhl = 'DapLogPointSign' })
-  vim.fn.sign_define('DapStopped',             { text = '▶', texthl = 'DapStoppedSign', linehl = 'DapStoppedLine', numhl = 'DapStoppedSign' })
-  vim.fn.sign_define('DapBreakpointRejected',  { text = '○', texthl = 'DapBreakpointRejectedSign', numhl = 'DapBreakpointRejectedSign' })
+  vim.fn.sign_define(
+    'DapBreakpoint',
+    { text = '●', texthl = 'DapBreakpointSign', numhl = 'DapBreakpointSign' }
+  )
+  vim.fn.sign_define(
+    'DapBreakpointCondition',
+    { text = '●', texthl = 'DapBreakpointCondSign', numhl = 'DapBreakpointCondSign' }
+  )
+  vim.fn.sign_define(
+    'DapLogPoint',
+    { text = '◆', texthl = 'DapLogPointSign', numhl = 'DapLogPointSign' }
+  )
+  vim.fn.sign_define(
+    'DapStopped',
+    { text = '▶', texthl = 'DapStoppedSign', linehl = 'DapStoppedLine', numhl = 'DapStoppedSign' }
+  )
+  vim.fn.sign_define(
+    'DapBreakpointRejected',
+    { text = '○', texthl = 'DapBreakpointRejectedSign', numhl = 'DapBreakpointRejectedSign' }
+  )
 
-  dap.listeners.before.attach.dapui_config = function() dapui.open() end
-  dap.listeners.before.launch.dapui_config = function() dapui.open() end
-  dap.listeners.before.event_terminated.dapui_config = function() dapui.close() end
-  dap.listeners.before.event_exited.dapui_config = function() dapui.close() end
+  dap.listeners.before.attach.dapui_config = function()
+    dapui.open()
+  end
+  dap.listeners.before.launch.dapui_config = function()
+    dapui.open()
+  end
+  dap.listeners.before.event_terminated.dapui_config = function()
+    dapui.close()
+  end
+  dap.listeners.before.event_exited.dapui_config = function()
+    dapui.close()
+  end
 
   require('plugins.lsp.dap.adapters').setup()
 
@@ -137,15 +160,26 @@ function M.setup()
   map('<leader>Xi', dap.step_into, 'Step into')
   map('<leader>Xo', dap.step_out, 'Step out')
   map('<leader>Xb', dap.toggle_breakpoint, 'Toggle breakpoint')
-  map('<leader>XB', function() dap.set_breakpoint(vim.fn.input('Condition: ')) end, 'Conditional breakpoint')
-  map('<leader>Xl', function() dap.set_breakpoint(nil, nil, vim.fn.input('Log message: ')) end, 'Log point')
+  map('<leader>XB', function()
+    dap.set_breakpoint(vim.fn.input('Condition: '))
+  end, 'Conditional breakpoint')
+  map('<leader>Xl', function()
+    dap.set_breakpoint(nil, nil, vim.fn.input('Log message: '))
+  end, 'Log point')
   map('<leader>XL', dap.run_last, 'Run last')
   map('<leader>Xr', dap.repl.toggle, 'Toggle REPL')
   map('<leader>Xt', dap.terminate, 'Terminate session')
-  map('<leader>Xq', function() dap.clear_breakpoints(); dap.terminate() end, 'Clear breakpoints + quit')
+  map('<leader>Xq', function()
+    dap.clear_breakpoints()
+    dap.terminate()
+  end, 'Clear breakpoints + quit')
   map('<leader>Xu', dapui.toggle, 'Toggle DAP UI')
-  map('<leader>Xh', function() dapui.eval(nil, { enter = true }) end, 'Hover eval (under cursor)')
-  vmap('<leader>Xe', function() dapui.eval(nil, { enter = true }) end, 'Eval expression')
+  map('<leader>Xh', function()
+    dapui.eval(nil, { enter = true })
+  end, 'Hover eval (under cursor)')
+  vmap('<leader>Xe', function()
+    dapui.eval(nil, { enter = true })
+  end, 'Eval expression')
   map('<leader>Xj', dap.down, 'Stack down')
   map('<leader>Xk', dap.up, 'Stack up')
 
@@ -165,7 +199,9 @@ function M.setup()
       return
     end
     table.sort(items, function(a, b)
-      if a.name == b.name then return a.line < b.line end
+      if a.name == b.name then
+        return a.line < b.line
+      end
       return a.name < b.name
     end)
     local cur_buf = vim.api.nvim_get_current_buf()
@@ -175,7 +211,8 @@ function M.setup()
     if dir == 'next' then
       for _, it in ipairs(items) do
         if (it.name == cur_name and it.line > cur_line) or it.name > cur_name then
-          target = it; break
+          target = it
+          break
         end
       end
       target = target or items[1]
@@ -183,7 +220,8 @@ function M.setup()
       for i = #items, 1, -1 do
         local it = items[i]
         if (it.name == cur_name and it.line < cur_line) or it.name < cur_name then
-          target = it; break
+          target = it
+          break
         end
       end
       target = target or items[#items]
@@ -193,8 +231,12 @@ function M.setup()
     vim.cmd('normal! zz')
   end
 
-  map('<leader>X]', function() bp_jump('next') end, 'Next breakpoint')
-  map('<leader>X[', function() bp_jump('prev') end, 'Prev breakpoint')
+  map('<leader>X]', function()
+    bp_jump('next')
+  end, 'Next breakpoint')
+  map('<leader>X[', function()
+    bp_jump('prev')
+  end, 'Prev breakpoint')
   map('<leader>Xv', function()
     require('dap').list_breakpoints()
     vim.cmd('copen')

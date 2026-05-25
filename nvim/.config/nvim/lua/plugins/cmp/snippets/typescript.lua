@@ -1,4 +1,4 @@
-local ls = require 'luasnip'
+local ls = require('luasnip')
 
 local fmta = require('luasnip.extras.fmt').fmta
 local r = ls.restore_node
@@ -94,20 +94,39 @@ local general_snips = {
   s('imp', fmta("import { <items> } from '<from>';", { items = i(1, ''), from = i(2, '') })),
   s('impd', fmta("import <name> from '<from>';", { name = i(1, ''), from = i(2, '') })),
 
-  s('af', fmta('async function <name>(<args>): Promise<<Ret>> {\n  <body>\n}',
-    { name = i(1, 'run'), args = i(2, ''), Ret = i(3, 'void'), body = i(4, '') })),
+  s(
+    'af',
+    fmta(
+      'async function <name>(<args>): Promise<<Ret>> {\n  <body>\n}',
+      { name = i(1, 'run'), args = i(2, ''), Ret = i(3, 'void'), body = i(4, '') }
+    )
+  ),
 
-  s('arr', fmta('const <name> = (<args>): <Ret> => <body>;',
-    { name = i(1, 'fn'), args = i(2, ''), Ret = i(3, 'void'), body = i(4, '') })),
+  s(
+    'arr',
+    fmta(
+      'const <name> = (<args>): <Ret> => <body>;',
+      { name = i(1, 'fn'), args = i(2, ''), Ret = i(3, 'void'), body = i(4, '') }
+    )
+  ),
 
-  s('try', fmta([[
+  s(
+    'try',
+    fmta(
+      [[
   try {
     <body>
   } catch (<err>) {
     <handle>
-  }]], { body = i(1, ''), err = i(2, 'error'), handle = i(3, 'console.error(error)') })),
+  }]],
+      { body = i(1, ''), err = i(2, 'error'), handle = i(3, 'console.error(error)') }
+    )
+  ),
 
-  s('fetch', fmta([[
+  s(
+    'fetch',
+    fmta(
+      [[
   const response = await fetch(<url>, {
     method: '<method>',
     headers: { 'Content-Type': 'application/json' },
@@ -115,13 +134,18 @@ local general_snips = {
   });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   const data = await response.json();]],
-    {
-      url = i(1, "'/api/endpoint'"),
-      method = c(2, { t 'GET', t 'POST', t 'PUT', t 'DELETE', t 'PATCH' }),
-      body = i(3, '// body: JSON.stringify({})'),
-    })),
+      {
+        url = i(1, "'/api/endpoint'"),
+        method = c(2, { t('GET'), t('POST'), t('PUT'), t('DELETE'), t('PATCH') }),
+        body = i(3, '// body: JSON.stringify({})'),
+      }
+    )
+  ),
 
-  s('zod', fmta([[
+  s(
+    'zod',
+    fmta(
+      [[
   import { z } from 'zod';
 
   export const <name>Schema = z.object({
@@ -129,34 +153,55 @@ local general_snips = {
   });
 
   export type <Type> = z.infer<typeof <name2>Schema>;]],
-    { name = i(1, 'User'), fields = i(2, ''), Type = i(1, 'User'), name2 = i(1, 'User') })),
+      { name = i(1, 'User'), fields = i(2, ''), Type = i(1, 'User'), name2 = i(1, 'User') }
+    )
+  ),
 
-  s('intf', fmta('export interface <Name> {\n  <body>\n}',
-    { Name = i(1, 'Name'), body = i(2, '') })),
+  s(
+    'intf',
+    fmta('export interface <Name> {\n  <body>\n}', { Name = i(1, 'Name'), body = i(2, '') })
+  ),
 
-  s('typ', fmta('export type <Name> = <body>;',
-    { Name = i(1, 'Name'), body = i(2, '') })),
+  s('typ', fmta('export type <Name> = <body>;', { Name = i(1, 'Name'), body = i(2, '') })),
 
-  s('enum', fmta([[
+  s(
+    'enum',
+    fmta(
+      [[
   export enum <Name> {
     <body>
-  }]], { Name = i(1, 'Status'), body = i(2, '') })),
+  }]],
+      { Name = i(1, 'Status'), body = i(2, '') }
+    )
+  ),
 
-  s('cls', fmta([[
+  s(
+    'cls',
+    fmta(
+      [[
   export class <Name> {
     constructor(<args>) {<assign>}
 
     <body>
-  }]], { Name = i(1, 'Service'), args = i(2, ''), assign = i(3, ''), body = i(4, '') })),
+  }]],
+      { Name = i(1, 'Service'), args = i(2, ''), assign = i(3, ''), body = i(4, '') }
+    )
+  ),
 
-  s('swc', fmta([[
+  s(
+    'swc',
+    fmta(
+      [[
   switch (<expr>) {
     case <case1>:
       <body1>
       break;
     default:
       <def>
-  }]], { expr = i(1, ''), case1 = i(2, ''), body1 = i(3, ''), def = i(4, '') })),
+  }]],
+      { expr = i(1, ''), case1 = i(2, ''), body1 = i(3, ''), def = i(4, '') }
+    )
+  ),
 
   s('log', fmta("console.log('<label>:', <val>);", { label = i(1, ''), val = i(2, '') })),
 }

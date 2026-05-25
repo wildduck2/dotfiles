@@ -2,9 +2,13 @@ local M = {}
 
 local function debug_adapter()
   local mason = vim.fn.stdpath('data') .. '/mason/packages/elixir-ls/debug_adapter.sh'
-  if vim.fn.executable(mason) == 1 then return mason end
+  if vim.fn.executable(mason) == 1 then
+    return mason
+  end
   local exe = vim.fn.exepath('elixir-ls-debug')
-  if exe ~= '' then return exe end
+  if exe ~= '' then
+    return exe
+  end
   return mason
 end
 

@@ -1,10 +1,10 @@
 local M = {}
 
 function M.setup()
-  local custom_formatters = require 'plugins.conform.formatters'
-  local conform = require 'conform'
+  local custom_formatters = require('plugins.conform.formatters')
+  local conform = require('conform')
 
-  conform.setup {
+  conform.setup({
     notify_on_error = true, -- Show error notifications on format fail
     formatters = custom_formatters, -- Custom formatter overrides
 
@@ -46,14 +46,14 @@ function M.setup()
       end
       return { lsp_fallback = true }
     end,
-  }
+  })
 
   -- Manual format keymap (normal + visual mode)
   vim.keymap.set({ 'n', 'v' }, '<leader>f', function()
-    conform.format {
+    conform.format({
       lsp_fallback = true,
       timeout_ms = 1000,
-    }
+    })
   end, { desc = '[F]ormat buffer' })
 end
 

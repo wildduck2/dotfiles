@@ -1,5 +1,5 @@
 return {
-  require 'plugins.colorscheme.tokyonight',
+  require('plugins.colorscheme.tokyonight'),
 
   -- Alternatives (uncomment one and comment tokyonight to switch)
   -- require 'plugins.colorscheme.catppuccin',

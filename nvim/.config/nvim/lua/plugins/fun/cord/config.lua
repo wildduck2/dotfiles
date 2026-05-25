@@ -44,29 +44,55 @@ M.opts = {
   -- Status text templates per activity type
   text = {
     default = nil,
-    workspace = function(opts) return 'In ' .. opts.workspace end,
+    workspace = function(opts)
+      return 'In ' .. opts.workspace
+    end,
     viewing = function(opts)
-      local parent = vim.fn.expand '%:h:t'
-      local file = parent ~= '' and parent ~= '.' and (parent .. '/' .. opts.filename) or opts.filename
+      local parent = vim.fn.expand('%:h:t')
+      local file = parent ~= '' and parent ~= '.' and (parent .. '/' .. opts.filename)
+        or opts.filename
       return 'Viewing ' .. file .. ' [' .. opts.cursor_line .. ':' .. opts.cursor_char .. ']'
     end,
     editing = function(opts)
-      local parent = vim.fn.expand '%:h:t'
-      local file = parent ~= '' and parent ~= '.' and (parent .. '/' .. opts.filename) or opts.filename
+      local parent = vim.fn.expand('%:h:t')
+      local file = parent ~= '' and parent ~= '.' and (parent .. '/' .. opts.filename)
+        or opts.filename
       local lines = vim.api.nvim_buf_line_count(0)
       return 'Editing ' .. file .. ' [' .. opts.cursor_line .. '/' .. lines .. ']'
     end,
-    file_browser = function(opts) return 'Browsing files in ' .. opts.name end,
-    plugin_manager = function(opts) return 'Managing plugins in ' .. opts.name end,
-    lsp = function(opts) return 'Configuring LSP in ' .. opts.name end,
-    docs = function(opts) return 'Reading ' .. opts.name end,
-    vcs = function(opts) return 'Committing changes in ' .. opts.name end,
-    notes = function(opts) return 'Taking notes in ' .. opts.name end,
-    debug = function(opts) return 'Debugging in ' .. opts.name end,
-    test = function(opts) return 'Testing in ' .. opts.name end,
-    diagnostics = function(opts) return 'Fixing problems in ' .. opts.name end,
-    games = function(opts) return 'Playing ' .. opts.name end,
-    terminal = function(opts) return 'Running commands in ' .. opts.name end,
+    file_browser = function(opts)
+      return 'Browsing files in ' .. opts.name
+    end,
+    plugin_manager = function(opts)
+      return 'Managing plugins in ' .. opts.name
+    end,
+    lsp = function(opts)
+      return 'Configuring LSP in ' .. opts.name
+    end,
+    docs = function(opts)
+      return 'Reading ' .. opts.name
+    end,
+    vcs = function(opts)
+      return 'Committing changes in ' .. opts.name
+    end,
+    notes = function(opts)
+      return 'Taking notes in ' .. opts.name
+    end,
+    debug = function(opts)
+      return 'Debugging in ' .. opts.name
+    end,
+    test = function(opts)
+      return 'Testing in ' .. opts.name
+    end,
+    diagnostics = function(opts)
+      return 'Fixing problems in ' .. opts.name
+    end,
+    games = function(opts)
+      return 'Playing ' .. opts.name
+    end,
+    terminal = function(opts)
+      return 'Running commands in ' .. opts.name
+    end,
     dashboard = 'Home',
   },
 

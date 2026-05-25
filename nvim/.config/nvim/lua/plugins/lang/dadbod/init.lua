@@ -19,10 +19,10 @@ return {
     dependencies = { 'tpope/vim-dadbod' },
     cmd = { 'DBUI', 'DBUIToggle', 'DBUIAddConnection', 'DBUIFindBuffer' },
     keys = {
-      { '<leader>db', '<cmd>DBUIToggle<cr>',         desc = '[D]atabase: toggle UI' },
-      { '<leader>df', '<cmd>DBUIFindBuffer<cr>',     desc = '[D]atabase: [f]ind buffer in UI' },
-      { '<leader>dr', '<cmd>DBUIRenameBuffer<cr>',   desc = '[D]atabase: [r]ename query buffer' },
-      { '<leader>dq', '<cmd>DBUILastQueryInfo<cr>',  desc = '[D]atabase: last [q]uery info' },
+      { '<leader>db', '<cmd>DBUIToggle<cr>', desc = '[D]atabase: toggle UI' },
+      { '<leader>df', '<cmd>DBUIFindBuffer<cr>', desc = '[D]atabase: [f]ind buffer in UI' },
+      { '<leader>dr', '<cmd>DBUIRenameBuffer<cr>', desc = '[D]atabase: [r]ename query buffer' },
+      { '<leader>dq', '<cmd>DBUILastQueryInfo<cr>', desc = '[D]atabase: last [q]uery info' },
     },
     init = function()
       require('plugins.lang.dadbod.db_manager').setup()
@@ -48,10 +48,18 @@ return {
         pattern = { 'sql', 'mysql', 'plsql' },
         callback = function(ev)
           local opts = { buffer = ev.buf, silent = true }
-          vim.keymap.set('n', '<leader>S', '<Plug>(DBUI_ExecuteQuery)',
-            vim.tbl_extend('force', opts, { desc = 'SQL: execute query' }))
-          vim.keymap.set('v', '<leader>S', '<Plug>(DBUI_ExecuteQuery)',
-            vim.tbl_extend('force', opts, { desc = 'SQL: execute selection' }))
+          vim.keymap.set(
+            'n',
+            '<leader>S',
+            '<Plug>(DBUI_ExecuteQuery)',
+            vim.tbl_extend('force', opts, { desc = 'SQL: execute query' })
+          )
+          vim.keymap.set(
+            'v',
+            '<leader>S',
+            '<Plug>(DBUI_ExecuteQuery)',
+            vim.tbl_extend('force', opts, { desc = 'SQL: execute selection' })
+          )
         end,
       })
     end,

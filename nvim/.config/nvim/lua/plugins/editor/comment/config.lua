@@ -1,7 +1,7 @@
 local M = {}
 
 function M.setup()
-  require('nvim_comment').setup {
+  require('nvim_comment').setup({
     -- true: add space between comment marker and text
     marker_padding = true,
     -- true: allow commenting empty lines
@@ -22,7 +22,7 @@ function M.setup()
     hook = function()
       require('ts_context_commentstring.internal').update_commentstring()
     end,
-  }
+  })
 end
 
 return M

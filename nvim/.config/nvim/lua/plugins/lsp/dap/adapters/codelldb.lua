@@ -2,7 +2,9 @@ local M = {}
 
 local function codelldb_path()
   local mason = vim.fn.stdpath('data') .. '/mason/packages/codelldb/extension/adapter/codelldb'
-  if vim.fn.executable(mason) == 1 then return mason end
+  if vim.fn.executable(mason) == 1 then
+    return mason
+  end
   return vim.fn.exepath('codelldb')
 end
 
@@ -14,36 +16,43 @@ end
 
 local function rust_cargo_target()
   local co = coroutine.running()
-  vim.system({ 'cargo', 'metadata', '--no-deps', '--format-version', '1' }, { text = true }, function(out)
-    vim.schedule(function()
-      local ok, meta = pcall(vim.json.decode, out.stdout or '')
-      if not ok or not meta or not meta.packages then
-        coroutine.resume(co, vim.fn.input('Binary: ', vim.fn.getcwd() .. '/target/debug/', 'file'))
-        return
-      end
-      local target_dir = meta.target_directory or (vim.fn.getcwd() .. '/target')
-      local bins = {}
-      for _, pkg in ipairs(meta.packages) do
-        for _, t in ipairs(pkg.targets or {}) do
-          for _, kind in ipairs(t.kind or {}) do
-            if kind == 'bin' or kind == 'example' then
-              local sub = kind == 'example' and '/examples/' or '/'
-              table.insert(bins, target_dir .. '/debug' .. sub .. t.name)
+  vim.system(
+    { 'cargo', 'metadata', '--no-deps', '--format-version', '1' },
+    { text = true },
+    function(out)
+      vim.schedule(function()
+        local ok, meta = pcall(vim.json.decode, out.stdout or '')
+        if not ok or not meta or not meta.packages then
+          coroutine.resume(
+            co,
+            vim.fn.input('Binary: ', vim.fn.getcwd() .. '/target/debug/', 'file')
+          )
+          return
+        end
+        local target_dir = meta.target_directory or (vim.fn.getcwd() .. '/target')
+        local bins = {}
+        for _, pkg in ipairs(meta.packages) do
+          for _, t in ipairs(pkg.targets or {}) do
+            for _, kind in ipairs(t.kind or {}) do
+              if kind == 'bin' or kind == 'example' then
+                local sub = kind == 'example' and '/examples/' or '/'
+                table.insert(bins, target_dir .. '/debug' .. sub .. t.name)
+              end
             end
           end
         end
-      end
-      if #bins == 0 then
-        coroutine.resume(co, vim.fn.input('Binary: ', target_dir .. '/debug/', 'file'))
-      elseif #bins == 1 then
-        coroutine.resume(co, bins[1])
-      else
-        vim.ui.select(bins, { prompt = 'Pick rust binary' }, function(choice)
-          coroutine.resume(co, choice or bins[1])
-        end)
-      end
-    end)
-  end)
+        if #bins == 0 then
+          coroutine.resume(co, vim.fn.input('Binary: ', target_dir .. '/debug/', 'file'))
+        elseif #bins == 1 then
+          coroutine.resume(co, bins[1])
+        else
+          vim.ui.select(bins, { prompt = 'Pick rust binary' }, function(choice)
+            coroutine.resume(co, choice or bins[1])
+          end)
+        end
+      end)
+    end
+  )
   return coroutine.yield()
 end
 
@@ -77,7 +86,9 @@ function M.setup()
       program = pick_exe(vim.fn.getcwd() .. '/target/debug'),
       cwd = '${workspaceFolder}',
       stopOnEntry = false,
-      args = function() return vim.split(vim.fn.input('Args: '), ' +') end,
+      args = function()
+        return vim.split(vim.fn.input('Args: '), ' +')
+      end,
     },
     {
       name = 'Attach to process',
@@ -96,7 +107,9 @@ function M.setup()
       program = pick_exe(),
       cwd = '${workspaceFolder}',
       stopOnEntry = false,
-      args = function() return vim.split(vim.fn.input('Args: '), ' +') end,
+      args = function()
+        return vim.split(vim.fn.input('Args: '), ' +')
+      end,
     },
     {
       name = 'Attach to process',

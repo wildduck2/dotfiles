@@ -1,7 +1,7 @@
 local M = {}
 
 function M.setup()
-  require('trouble').setup {
+  require('trouble').setup({
     -- 'bottom'|'top'|'left'|'right' panel position
     position = 'bottom',
     -- Panel height in rows (when bottom/top)
@@ -70,14 +70,17 @@ function M.setup()
     include_declaration = { 'lsp_references', 'lsp_implementations', 'lsp_definitions' },
     -- Custom nerd font icons per severity level
     signs = {
-      error = '', warning = '', hint = '', information = '', other = '',
+      error = '',
+      warning = '',
+      hint = '',
+      information = '',
+      other = '',
     },
     -- false = use custom signs above; true = use vim diag
     use_diagnostic_signs = false,
     -- Telescope integration picker theme
     telescope = { theme = 'dropdown' },
-  }
-
+  })
 end
 
 return M

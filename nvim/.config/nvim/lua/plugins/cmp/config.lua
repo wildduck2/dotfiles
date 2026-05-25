@@ -1,11 +1,11 @@
 local M = {}
 
 function M.setup()
-  local cmp = require 'cmp'
-  local luasnip = require 'luasnip'
-  luasnip.config.setup {}
+  local cmp = require('cmp')
+  local luasnip = require('luasnip')
+  luasnip.config.setup({})
 
-  cmp.setup {
+  cmp.setup({
     -- Snippet expansion via LuaSnip
     snippet = {
       expand = function(args)
@@ -29,13 +29,13 @@ function M.setup()
     completion = { completeopt = 'menu,menuone,noinsert' },
 
     -- Keybindings for completion menu
-    mapping = cmp.mapping.preset.insert {
+    mapping = cmp.mapping.preset.insert({
       ['<C-n>'] = cmp.mapping.select_next_item(), -- Next suggestion
       ['<C-p>'] = cmp.mapping.select_prev_item(), -- Previous suggestion
       ['<C-b>'] = cmp.mapping.scroll_docs(-4), -- Scroll docs up
       ['<C-f>'] = cmp.mapping.scroll_docs(4), -- Scroll docs down
-      ['<C-y>'] = cmp.mapping.confirm { select = true }, -- Accept completion
-      ['<C-Space>'] = cmp.mapping.complete {}, -- Trigger completion manually
+      ['<C-y>'] = cmp.mapping.confirm({ select = true }), -- Accept completion
+      ['<C-Space>'] = cmp.mapping.complete({}), -- Trigger completion manually
       -- Jump forward in snippet placeholders
       ['<C-l>'] = cmp.mapping(function()
         if luasnip.expand_or_locally_jumpable() then
@@ -48,7 +48,7 @@ function M.setup()
           luasnip.jump(-1)
         end
       end, { 'i', 's' }),
-    },
+    }),
 
     -- Completion sources in priority order
     sources = {
@@ -57,7 +57,7 @@ function M.setup()
       { name = 'luasnip' }, -- Snippet completions
       { name = 'path' }, -- Filesystem path completions
     },
-  }
+  })
 end
 
 return M

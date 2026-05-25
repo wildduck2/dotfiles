@@ -8,7 +8,14 @@ function M.setup()
 
   -- Direct adapter wiring (no dap-vscode-js). js-debug-adapter speaks DAP
   -- over a server socket; dap interpolates ${port} on launch.
-  for _, type_name in ipairs({ 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost', 'node' }) do
+  for _, type_name in ipairs({
+    'pwa-node',
+    'pwa-chrome',
+    'pwa-msedge',
+    'node-terminal',
+    'pwa-extensionHost',
+    'node',
+  }) do
     dap.adapters[type_name] = {
       type = 'server',
       host = 'localhost',

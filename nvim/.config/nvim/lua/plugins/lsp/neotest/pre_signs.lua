@@ -9,7 +9,9 @@ local SIGN_NAME = 'neotest_ready'
 local SIGN_GROUP_PREFIX = 'neotest_ready_buf_'
 
 local function define_sign_once()
-  if vim.fn.sign_getdefined(SIGN_NAME)[1] then return end
+  if vim.fn.sign_getdefined(SIGN_NAME)[1] then
+    return
+  end
   vim.api.nvim_set_hl(0, 'NeotestReady', { fg = '#5c6370' })
   vim.fn.sign_define(SIGN_NAME, {
     text = '',
@@ -22,9 +24,9 @@ end
 local matchers = {
   rust = function(line)
     return line:match('^%s*#%[%s*test%s*%]')
-        or line:match('^%s*#%[%s*tokio::test')
-        or line:match('^%s*#%[%s*async_std::test')
-        or line:match('^%s*#%[%s*rstest')
+      or line:match('^%s*#%[%s*tokio::test')
+      or line:match('^%s*#%[%s*async_std::test')
+      or line:match('^%s*#%[%s*rstest')
   end,
   cpp = function(line)
     return line:match('^%s*TEST[_FP]*%s*%(')
@@ -35,10 +37,16 @@ local matchers = {
 }
 
 local function scan(bufnr)
-  if not vim.api.nvim_buf_is_valid(bufnr) then return end
-  if vim.bo[bufnr].buftype ~= '' then return end
+  if not vim.api.nvim_buf_is_valid(bufnr) then
+    return
+  end
+  if vim.bo[bufnr].buftype ~= '' then
+    return
+  end
   local matcher = matchers[vim.bo[bufnr].filetype]
-  if not matcher then return end
+  if not matcher then
+    return
+  end
 
   define_sign_once()
   local group = SIGN_GROUP_PREFIX .. bufnr
@@ -53,12 +61,12 @@ local function scan(bufnr)
       if vim.bo[bufnr].filetype == 'rust' then
         for j = i + 1, math.min(i + 4, #lines) do
           if lines[j]:match('^%s*fn%s') or lines[j]:match('^%s*async%s+fn%s') then
-            target = j; break
+            target = j
+            break
           end
         end
       end
-      pcall(vim.fn.sign_place, 0, group, SIGN_NAME, bufnr,
-        { lnum = target, priority = 5 })
+      pcall(vim.fn.sign_place, 0, group, SIGN_NAME, bufnr, { lnum = target, priority = 5 })
     end
   end
 end
@@ -69,7 +77,9 @@ end
 
 function M.scan_all_buffers()
   for _, b in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.api.nvim_buf_is_loaded(b) then scan(b) end
+    if vim.api.nvim_buf_is_loaded(b) then
+      scan(b)
+    end
   end
 end
 
@@ -91,7 +101,9 @@ function M.setup()
       callback = function(ev)
         local bufnr = ev.buf
         -- Quick filetype gate; matchers table covers what we support.
-        vim.defer_fn(function() scan(bufnr) end, 20)
+        vim.defer_fn(function()
+          scan(bufnr)
+        end, 20)
       end,
     }
   )
@@ -108,7 +120,9 @@ function M.setup()
 
   -- Immediate sweep in case setup() itself runs after VimEnter (e.g.
   -- :Lazy reload neotest mid-session).
-  vim.schedule(function() M.scan_all_buffers() end)
+  vim.schedule(function()
+    M.scan_all_buffers()
+  end)
 end
 
 return M

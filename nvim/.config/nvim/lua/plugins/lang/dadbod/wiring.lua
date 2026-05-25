@@ -6,8 +6,8 @@
 --     and accepts the same shape over didChangeConfiguration to update
 --     while running.
 
-local store = require 'plugins.lang.dadbod.store'
-local urls = require 'plugins.lang.dadbod.urls'
+local store = require('plugins.lang.dadbod.store')
+local urls = require('plugins.lang.dadbod.urls')
 
 local M = {}
 
@@ -21,7 +21,9 @@ function M.refresh_dadbod()
   if active then
     local url = urls.to_dadbod(active)
     vim.g.db = url
-    pcall(function() vim.b.db = url end)
+    pcall(function()
+      vim.b.db = url
+    end)
   end
 end
 
@@ -52,7 +54,9 @@ end
 
 function M.refresh_duck_sqllsp()
   local clients = vim.lsp.get_clients({ name = 'duck_sqllsp' })
-  if #clients == 0 then return false end
+  if #clients == 0 then
+    return false
+  end
   local settings = build_settings()
   for _, client in ipairs(clients) do
     client.settings = vim.tbl_deep_extend('force', client.settings or {}, settings)

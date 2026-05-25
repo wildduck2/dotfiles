@@ -1,7 +1,7 @@
 local M = {}
 
 function M.setup()
-  require('gitsigns').setup {
+  require('gitsigns').setup({
     -- Sign column symbols for each diff type
     signs = {
       add = { text = '+' }, -- new lines
@@ -73,7 +73,7 @@ function M.setup()
     },
     -- Runs when gitsigns attaches to a buffer
     on_attach = function(bufnr)
-      local gitsigns = require 'gitsigns'
+      local gitsigns = require('gitsigns')
       local function map(mode, l, r, opts)
         opts = opts or {}
         opts.buffer = bufnr
@@ -84,16 +84,16 @@ function M.setup()
       map('n', ']c', function()
         if vim.wo.diff then
           -- Use native diff jump in diff mode
-          vim.cmd.normal { ']c', bang = true }
+          vim.cmd.normal({ ']c', bang = true })
         else
-          gitsigns.nav_hunk 'next'
+          gitsigns.nav_hunk('next')
         end
       end)
       map('n', '[c', function()
         if vim.wo.diff then
-          vim.cmd.normal { '[c', bang = true }
+          vim.cmd.normal({ '[c', bang = true })
         else
-          gitsigns.nav_hunk 'prev'
+          gitsigns.nav_hunk('prev')
         end
       end)
 
@@ -102,10 +102,10 @@ function M.setup()
       map('n', '<leader>hr', gitsigns.reset_hunk) -- discard hunk under cursor
       -- Visual mode: stage/reset selected line range
       map('v', '<leader>hs', function()
-        gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        gitsigns.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') })
       end)
       map('v', '<leader>hr', function()
-        gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') })
       end)
       map('n', '<leader>hS', gitsigns.stage_buffer) -- stage entire buffer
       map('n', '<leader>hu', gitsigns.undo_stage_hunk) -- unstage last staged hunk
@@ -113,19 +113,19 @@ function M.setup()
       map('n', '<leader>hp', gitsigns.preview_hunk) -- floating preview of hunk diff
       -- Show full commit blame for current line
       map('n', '<leader>hb', function()
-        gitsigns.blame_line { full = true }
+        gitsigns.blame_line({ full = true })
       end)
       map('n', '<leader>tb', gitsigns.toggle_current_line_blame) -- toggle inline blame
       map('n', '<leader>hd', gitsigns.diffthis) -- diff buffer vs index (staged)
       -- Diff buffer vs previous commit (~)
       map('n', '<leader>hD', function()
-        gitsigns.diffthis '~'
+        gitsigns.diffthis('~')
       end)
       map('n', '<leader>td', gitsigns.toggle_deleted) -- toggle deleted lines display
       -- Text object: select hunk (for operators/visual)
       map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
     end,
-  }
+  })
 end
 
 return M

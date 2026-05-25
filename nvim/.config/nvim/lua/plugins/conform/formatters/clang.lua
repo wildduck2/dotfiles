@@ -1,4 +1,4 @@
-local util = require 'conform.util'
+local util = require('conform.util')
 
 ---@type conform.FileFormatterConfig
 return {

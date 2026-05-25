@@ -23,16 +23,23 @@ local cache_path = vim.fn.stdpath('cache') .. '/neotest_gtest_binaries.json'
 
 local function load_cache()
   local fd = io.open(cache_path, 'r')
-  if not fd then return {} end
-  local raw = fd:read('*a'); fd:close()
-  if not raw or raw == '' then return {} end
+  if not fd then
+    return {}
+  end
+  local raw = fd:read('*a')
+  fd:close()
+  if not raw or raw == '' then
+    return {}
+  end
   local ok, decoded = pcall(vim.json.decode, raw)
   return ok and decoded or {}
 end
 
 local function save_cache(tbl)
   local fd = io.open(cache_path, 'w')
-  if not fd then return end
+  if not fd then
+    return
+  end
   fd:write(vim.json.encode(tbl))
   fd:close()
 end
@@ -66,13 +73,15 @@ local function resolve_binary(opts, file)
   if opts.binary then
     local b = type(opts.binary) == 'function' and opts.binary(file) or opts.binary
     if b and vim.fn.executable(b) == 1 then
-      binary_cache[file] = b; save_cache(binary_cache)
+      binary_cache[file] = b
+      save_cache(binary_cache)
       return b
     end
   end
   for _, p in ipairs(default_binary_paths(file)) do
     if vim.fn.executable(p) == 1 then
-      binary_cache[file] = p; save_cache(binary_cache)
+      binary_cache[file] = p
+      save_cache(binary_cache)
       return p
     end
   end
@@ -89,7 +98,9 @@ end
 
 function M.root(dir)
   -- Treat the closest cmake / make / git root as the project root.
-  return lib.files.match_root_pattern('CMakeLists.txt', 'Makefile', 'compile_commands.json', '.git')(dir)
+  return lib.files.match_root_pattern('CMakeLists.txt', 'Makefile', 'compile_commands.json', '.git')(
+    dir
+  )
 end
 
 function M.filter_dir(name)
@@ -98,24 +109,50 @@ end
 
 function M.is_test_file(file_path)
   local ext = file_path:match('%.([^./]+)$')
-  if not (ext == 'c' or ext == 'cc' or ext == 'cpp' or ext == 'cxx'
-       or ext == 'h' or ext == 'hpp' or ext == 'hh' or ext == 'hxx') then
+  if
+    not (
+      ext == 'c'
+      or ext == 'cc'
+      or ext == 'cpp'
+      or ext == 'cxx'
+      or ext == 'h'
+      or ext == 'hpp'
+      or ext == 'hh'
+      or ext == 'hxx'
+    )
+  then
     return false
   end
   local base = vim.fn.fnamemodify(file_path, ':t:r'):lower()
-  if base:match('_test$') or base:match('%.test$') or base:match('^test_')
-     or base:match('_tests$') or base:match('^tests?$') then
+  if
+    base:match('_test$')
+    or base:match('%.test$')
+    or base:match('^test_')
+    or base:match('_tests$')
+    or base:match('^tests?$')
+  then
     return true
   end
   -- Fallback 1: scan for gtest header include
   local fd = io.open(file_path, 'r')
-  if not fd then return false end
-  local content = fd:read('*a'); fd:close()
-  if not content then return false end
-  if content:find('gtest/gtest%.h', 1, true) then return true end
+  if not fd then
+    return false
+  end
+  local content = fd:read('*a')
+  fd:close()
+  if not content then
+    return false
+  end
+  if content:find('gtest/gtest%.h', 1, true) then
+    return true
+  end
   -- Fallback 2: any TEST( / TEST_F( / TEST_P( macro call
-  if content:find('\nTEST%s*%(') or content:find('^TEST%s*%(')
-     or content:find('TEST_F%s*%(') or content:find('TEST_P%s*%(') then
+  if
+    content:find('\nTEST%s*%(')
+    or content:find('^TEST%s*%(')
+    or content:find('TEST_F%s*%(')
+    or content:find('TEST_P%s*%(')
+  then
     return true
   end
   return false
@@ -128,7 +165,9 @@ end
 -- `TEST_P(...)` declaration line.
 function M.discover_positions(file_path)
   local lines = vim.fn.readfile(file_path)
-  if not lines then return nil end
+  if not lines then
+    return nil
+  end
 
   local Tree = require('neotest.types').Tree
 
@@ -181,20 +220,34 @@ function M.discover_positions(file_path)
     table.insert(list, branch)
   end
 
-  return Tree.from_list(list, function(p) return p.id end)
+  return Tree.from_list(list, function(p)
+    return p.id
+  end)
 end
 
 local function xml_unescape(s)
-  if not s then return s end
-  return (s:gsub('&quot;', '"'):gsub('&apos;', "'"):gsub('&lt;', '<')
-            :gsub('&gt;', '>'):gsub('&amp;', '&'):gsub('&#10;', '\n')
-            :gsub('&#13;', ''):gsub('&#9;', '\t'))
+  if not s then
+    return s
+  end
+  return (
+    s:gsub('&quot;', '"')
+      :gsub('&apos;', "'")
+      :gsub('&lt;', '<')
+      :gsub('&gt;', '>')
+      :gsub('&amp;', '&')
+      :gsub('&#10;', '\n')
+      :gsub('&#13;', '')
+      :gsub('&#9;', '\t')
+  )
 end
 
 local function parse_gtest_xml(path)
   local fd = io.open(path, 'r')
-  if not fd then return {} end
-  local xml = fd:read('*a'); fd:close()
+  if not fd then
+    return {}
+  end
+  local xml = fd:read('*a')
+  fd:close()
   local results = {}
   local consumed = {}
 
@@ -202,7 +255,7 @@ local function parse_gtest_xml(path)
   -- ranges so the long-form pattern below cannot re-consume them.
   for s, attrs, e in xml:gmatch('()<testcase([^/>]*)/>()') do
     local suite = attrs:match('classname="([^"]+)"')
-    local name  = attrs:match('name="([^"]+)"')
+    local name = attrs:match('name="([^"]+)"')
     if suite and name then
       results[suite .. '.' .. name] = { status = 'passed' }
     end
@@ -218,7 +271,7 @@ local function parse_gtest_xml(path)
   -- Long-form: <testcase attrs>...</testcase>
   for attrs, body in buf:gmatch('<testcase([^>]*)>(.-)</testcase>') do
     local suite = attrs:match('classname="([^"]+)"')
-    local name  = attrs:match('name="([^"]+)"')
+    local name = attrs:match('name="([^"]+)"')
     if suite and name then
       local id = suite .. '.' .. name
       local status = 'passed'
@@ -241,7 +294,9 @@ end
 
 function M.build_spec(args)
   local tree = args.tree
-  if not tree then return end
+  if not tree then
+    return
+  end
   local pos = tree:data()
   local file = pos.path
   local opts = M._opts or {}
@@ -265,7 +320,9 @@ function M.build_spec(args)
 
   local xml = vim.fn.tempname() .. '.xml'
   local cmd = { bin, '--gtest_output=xml:' .. xml, '--gtest_color=no' }
-  if filter then table.insert(cmd, '--gtest_filter=' .. filter) end
+  if filter then
+    table.insert(cmd, '--gtest_filter=' .. filter)
+  end
 
   -- DAP strategy: hand back a config dap can launch via codelldb.
   local strategy
@@ -314,7 +371,10 @@ function M.results(spec, result, tree)
     local content = ''
     if result.output then
       local fd = io.open(result.output, 'r')
-      if fd then content = fd:read('*a') or ''; fd:close() end
+      if fd then
+        content = fd:read('*a') or ''
+        fd:close()
+      end
     end
     local msg = content ~= '' and content:sub(1, 1000) or 'gtest binary produced no XML report'
     for _, node in tree:iter_nodes() do

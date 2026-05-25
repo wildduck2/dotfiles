@@ -5,7 +5,7 @@
 -- Errors still get a modal because the user is more likely to miss a
 -- transient toast for a failed action.
 
-local store = require 'plugins.lang.dadbod.store'
+local store = require('plugins.lang.dadbod.store')
 
 local M = {}
 
@@ -19,7 +19,9 @@ end
 
 function M.error_modal(lines)
   local width = 30
-  for _, l in ipairs(lines) do width = math.max(width, #l) end
+  for _, l in ipairs(lines) do
+    width = math.max(width, #l)
+  end
   width = math.min(width + 4, math.floor(vim.o.columns * 0.6))
   local buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
@@ -40,7 +42,9 @@ function M.error_modal(lines)
   vim.keymap.set('n', 'q', '<cmd>close<cr>', { buffer = buf, silent = true })
   vim.keymap.set('n', '<esc>', '<cmd>close<cr>', { buffer = buf, silent = true })
   vim.defer_fn(function()
-    if vim.api.nvim_win_is_valid(win) then vim.api.nvim_win_close(win, true) end
+    if vim.api.nvim_win_is_valid(win) then
+      vim.api.nvim_win_close(win, true)
+    end
   end, 4000)
 end
 
@@ -59,13 +63,21 @@ function M.list_modal()
     if c.driver == 'sqlite3' or c.driver == 'sqlite' then
       detail = (c.driver or '?') .. ' ' .. (c.database or '')
     else
-      detail = string.format('%s %s@%s:%s/%s',
-        c.driver or '?', c.user or '', c.host or '', c.port or '', c.database or '')
+      detail = string.format(
+        '%s %s@%s:%s/%s',
+        c.driver or '?',
+        c.user or '',
+        c.host or '',
+        c.port or '',
+        c.database or ''
+      )
     end
     table.insert(lines, string.format('%s %-20s %s', marker, c.name, detail))
   end
   local width = 30
-  for _, l in ipairs(lines) do width = math.max(width, #l) end
+  for _, l in ipairs(lines) do
+    width = math.max(width, #l)
+  end
   local buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
   vim.bo[buf].modifiable = false
@@ -89,19 +101,30 @@ end
 -- optional?, hidden?}. Calls `done(table)` after the last step.
 function M.prompt_chain(steps, done, acc)
   acc = acc or {}
-  if #steps == 0 then done(acc) return end
+  if #steps == 0 then
+    done(acc)
+    return
+  end
   local step = steps[1]
   local rest = { unpack(steps, 2) }
   if step.hidden then
     local value = vim.fn.inputsecret(step.prompt, step.default or '')
-    if value == nil then return end
-    if value ~= '' or step.optional then acc[step.key] = value end
+    if value == nil then
+      return
+    end
+    if value ~= '' or step.optional then
+      acc[step.key] = value
+    end
     M.prompt_chain(rest, done, acc)
     return
   end
   vim.ui.input({ prompt = step.prompt, default = step.default or '' }, function(value)
-    if value == nil then return end
-    if value ~= '' or step.optional then acc[step.key] = value end
+    if value == nil then
+      return
+    end
+    if value ~= '' or step.optional then
+      acc[step.key] = value
+    end
     M.prompt_chain(rest, done, acc)
   end)
 end
@@ -116,7 +139,9 @@ function M.pick_connection(prompt, cb)
     table.insert(items, c.name .. '  (' .. (c.driver or '?') .. ')')
   end
   vim.ui.select(items, { prompt = prompt }, function(_, idx)
-    if not idx then return end
+    if not idx then
+      return
+    end
     cb(store.state.connections[idx], idx)
   end)
 end
