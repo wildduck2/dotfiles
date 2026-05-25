@@ -29,6 +29,7 @@ M.servers = {
   },
   ts_ls = {
     init_options = {
+      hostInfo = 'neovim',
       preferences = {
         disableSuggestions = false,
         includeCompletionsForModuleExports = false,
@@ -41,17 +42,33 @@ M.servers = {
     -- package.json so one tsserver instance handles every package in a
     -- pnpm / turborepo / nx repo. Cuts memory and avoids cross-package
     -- "Cannot find module" errors.
-    root_dir = function(fname)
-      local util = require('lspconfig.util')
-      return util.root_pattern(
+    --
+    -- nvim 0.11+ signature: function(bufnr, on_dir). The old
+    -- function(fname) signature silently failed to attach.
+    root_dir = function(bufnr, on_dir)
+      local monorepo = vim.fs.root(bufnr, {
         'pnpm-workspace.yaml',
         'turbo.json',
         'nx.json',
         'lerna.json',
-        'rush.json'
-      )(fname) or util.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json', '.git')(
-        fname
-      )
+        'rush.json',
+      })
+      if monorepo then
+        on_dir(monorepo)
+        return
+      end
+      local project = vim.fs.root(bufnr, {
+        'tsconfig.json',
+        'jsconfig.json',
+        'package-lock.json',
+        'yarn.lock',
+        'pnpm-lock.yaml',
+        'bun.lockb',
+        'bun.lock',
+        'package.json',
+        '.git',
+      })
+      on_dir(project or vim.fn.getcwd())
     end,
   },
   tailwindcss = {},
