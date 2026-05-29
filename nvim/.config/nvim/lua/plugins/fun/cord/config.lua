@@ -130,10 +130,14 @@ M.opts = {
 
   -- Extensions
   extensions = {
-    -- Persist elapsed time across nvim sessions
+    -- Persist elapsed time across restarts, but only for the current day
     persistent_timer = {
       scope = 'global',
       mode = 'all',
+      file = vim.fn.stdpath 'data'
+        .. '/cord/extensions/persistent_timer/'
+        .. os.date '%Y-%m-%d'
+        .. '.json',
       save_on = { 'exit', 'focus_change', 'periodic' },
       save_interval = 30,
     },

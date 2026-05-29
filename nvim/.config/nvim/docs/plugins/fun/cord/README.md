@@ -27,7 +27,7 @@ The full opts tree is in `config.lua`. The interesting ones:
 | `display.flavor` | `'dark'` | `'dark'` or `'light'`. |
 | `display.view` | `'full'` | `'full'` or `'compact'`. |
 | `timestamp.enabled` | `true` | Show elapsed time. |
-| `timestamp.reset_on_*` | `false` | Don't reset on idle/file change/etc. |
+| `timestamp.reset_on_*` | `false` | Keep one elapsed timer without resetting on idle or file changes. |
 | `idle.enabled` | `true` | Detect AFK. |
 | `idle.timeout` | `300000` (5 min) | ms before going idle. |
 | `idle.tooltip` | "Idle emoji" | Hover text while idle. |
@@ -35,7 +35,7 @@ The full opts tree is in `config.lua`. The interesting ones:
 | `text.<activity>` | functions returning a string | Workspace, file_browser, plugin_manager, lsp, vcs, notes, debug, test, diagnostics, games, terminal, dashboard. |
 | `buttons[1]` | "View Repository" -> `opts.repo_url or 'https://github.com/wildduck'` | Single profile button. |
 | `assets.<lang>` | per-language icon override | Currently `rust`, `typescript`, `lua`. |
-| `extensions.persistent_timer` | save on `exit/focus_change/periodic`, every 30s | Survives nvim restarts. |
+| `extensions.persistent_timer` | date-based JSON file, saved on `exit/focus_change/periodic` | Persists today's timer across restarts without carrying over older days. |
 | `extensions.visibility` | blacklist mode | Add workspace names, glob, or paths to hide from Discord. |
 | `advanced.server.timeout` | `300000` (5 min) | IPC timeout. |
 | `advanced.discord.reconnect` | `enabled = true`, every `5000` ms | Auto-reconnect. |

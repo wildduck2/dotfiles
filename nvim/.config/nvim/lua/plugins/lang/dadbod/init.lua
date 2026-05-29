@@ -18,6 +18,7 @@ return {
     'kristijanhusak/vim-dadbod-ui',
     dependencies = { 'tpope/vim-dadbod' },
     cmd = { 'DBUI', 'DBUIToggle', 'DBUIAddConnection', 'DBUIFindBuffer' },
+    ft = { 'sql', 'mysql', 'plsql' },
     keys = {
       { '<leader>db', '<cmd>DBUIToggle<cr>', desc = '[D]atabase: toggle UI' },
       { '<leader>df', '<cmd>DBUIFindBuffer<cr>', desc = '[D]atabase: [f]ind buffer in UI' },
@@ -51,13 +52,13 @@ return {
           vim.keymap.set(
             'n',
             '<leader>S',
-            '<Plug>(DBUI_ExecuteQuery)',
-            vim.tbl_extend('force', opts, { desc = 'SQL: execute query' })
+            '<cmd>%DB<cr>',
+            vim.tbl_extend('force', opts, { desc = 'SQL: execute buffer' })
           )
           vim.keymap.set(
-            'v',
+            'x',
             '<leader>S',
-            '<Plug>(DBUI_ExecuteQuery)',
+            ":DB<cr>",
             vim.tbl_extend('force', opts, { desc = 'SQL: execute selection' })
           )
         end,

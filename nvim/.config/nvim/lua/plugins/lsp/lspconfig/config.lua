@@ -98,9 +98,23 @@ M.servers = {
   -- @duck-sqllsp). Binary installed to ~/.local/bin/duck-sqllsp.
   -- Connections are pushed in via plugins/lang/dadbod/db_manager at
   -- LspAttach time so the server gets the same list as dadbod-ui.
+  --
+  -- root_dir: explicitly walk up looking for the project's
+  -- `.duck-sqllsp.toml` (or `.git`). Without this the server may
+  -- launch with no rootUri set, which means it can't load the
+  -- per-project formatter / connection / dialect config. Found-or-not,
+  -- the server falls back to deriving root from the opened file at
+  -- did_open time, but setting root_dir up-front gets the config into
+  -- the very first format request instead of the second.
   duck_sqllsp = {
     filetypes = { 'sql', 'mysql', 'plsql' },
     cmd = { 'duck-sqllsp', 'server' },
+    -- nvim 0.11's vim.lsp.config takes `root_markers` (not the legacy
+    -- lspconfig.util.root_pattern). Walks upward from the opened file
+    -- looking for any of these markers; the first one's parent dir
+    -- becomes rootUri, which the server uses to find .duck-sqllsp.toml.
+    root_markers = { '.duck-sqllsp.toml', '.duck-sqllsp.json', '.git' },
+    single_file_support = true,
   },
 }
 
