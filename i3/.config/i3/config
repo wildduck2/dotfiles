@@ -187,7 +187,10 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 20
 # Custom Key Bindings
 # -------------------------------------------
 bindsym $mod+Shift+period exec systemctl suspend
-bindsym Ctrl+Print exec --no-startup-id flameshot gui
+# Interactive selection spanning both screens (QT_OPENGL=software avoids Qt6 multi-monitor segfault)
+bindsym Ctrl+Print exec --no-startup-id env QT_OPENGL=software flameshot gui
+# Instant capture of BOTH screens (full virtual desktop) to clipboard + ~/Pictures/Screenshots
+bindsym Print exec --no-startup-id flameshot full -c -p ~/Pictures/Screenshots/
 # Lock screen (i3lock-color with Catppuccin theme)
 bindsym $mod+Ctrl+l exec --no-startup-id ~/.config/i3/lock.sh
 bindsym $mod+x exec --no-startup-id ~/.config/i3/lock.sh

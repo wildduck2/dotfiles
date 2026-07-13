@@ -99,18 +99,6 @@ vim.opt.colorcolumn = '100'
 vim.opt.wrap = true
 vim.opt.linebreak = true
 
--- Spell check for prose-y filetypes only. Code spelling is handled by
--- typos_lsp on the LSP side; vim.opt.spell here is the editor-side
--- check (z= replace suggestions, ]s / [s navigation).
-vim.api.nvim_create_autocmd('FileType', {
-  group = vim.api.nvim_create_augroup('ProseSpell', { clear = true }),
-  pattern = { 'markdown', 'gitcommit', 'text', 'tex', 'mdx', 'rst' },
-  callback = function()
-    vim.opt_local.spell = true
-    vim.opt_local.spelllang = { 'en_us' }
-  end,
-})
-
 -- Folding stuff
 -- vim.opt.foldmethod = 'indent'
 -- vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'

@@ -19,6 +19,9 @@ M.servers = {
   rust_analyzer = {
     settings = {
       ['rust-analyzer'] = {
+        lens = {
+          enable = false,
+        },
         inlayHints = {
           chainingHints = { enable = true },
           typeHints = { enable = true },
@@ -77,9 +80,6 @@ M.servers = {
   jsonls = {},
   yamlls = {},
   prismals = {},
-  typos_lsp = {
-    filetypes = { 'markdown', 'text', 'gitcommit' },
-  },
   biome = {
     capabilities = {
       general = {
@@ -246,26 +246,6 @@ local function on_attach(event)
     map('<leader>th', function()
       vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = buf }))
     end, '[T]oggle Inlay [H]ints')
-  end
-
-  -- Code lens: refresh on enter/save so the inline "N references" / "run test"
-  -- annotations stay current. <leader>cl runs the lens under cursor.
-  if
-    client
-    and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_codeLens, buf)
-    and not vim.b[buf]._lsp_codelens_registered
-  then
-    vim.b[buf]._lsp_codelens_registered = true
-    local cl_group = vim.api.nvim_create_augroup('lsp-codelens-' .. buf, { clear = true })
-    vim.api.nvim_create_autocmd({ 'BufEnter', 'InsertLeave', 'BufWritePost' }, {
-      group = cl_group,
-      buffer = buf,
-      callback = function()
-        vim.lsp.codelens.refresh({ bufnr = buf })
-      end,
-    })
-    vim.lsp.codelens.refresh({ bufnr = buf })
-    map('<leader>cl', vim.lsp.codelens.run, '[C]ode [L]ens run')
   end
 end
 

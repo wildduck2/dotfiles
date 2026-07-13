@@ -800,3 +800,60 @@
     "oid" "OID" "xml" "XML"
     "btree" "BTREE" "hash" "HASH" "gin" "GIN"
     "gist" "GIST" "brin" "BRIN" "spgist" "SPGIST"))
+
+
+; ---- Quoted identifier fixups ------------------------------------------
+; tree-sitter-sql grammar parses "foo" in column-name + constraint-name
+; positions as (literal), which the earlier `(literal) @string` rule
+; would otherwise color as a string. Re-capture in known identifier
+; positions so they read as column / constraint names, not strings.
+
+; column_definition name: "id" / "name" / ...
+((column_definition name: (literal) @variable.member)
+  (#set! "priority" 130))
+
+; Generic safety net: any (literal) whose text starts with a double
+; quote IS a delimited identifier per SQL standard, never a string
+; literal. Catches positions the column_definition pattern above
+; missed (constraint names, index names, schema-qualified refs).
+((literal) @variable
+  (#lua-match? @variable "^\".*\"$")
+  (#set! "priority" 125))
+
+; ---- Dollar-quote delimiter ---------------------------------------------
+; Color $$ / $tag$ as @string.special so the body markers stand out
+; from surrounding SQL keywords.
+(dollar_quote) @string.special
+
+; ---- Function call refinement ------------------------------------------
+; `schema.fn(...)` -- schema part reads as @namespace rather than @type.
+((invocation
+  (object_reference
+    schema: (identifier) @namespace
+    name: (identifier) @function.call))
+  (#set! "priority" 130))
+
+
+; ---- CREATE FUNCTION / PROCEDURE name + schema --------------------------
+; In `CREATE OR REPLACE FUNCTION app.foo(...)` the existing
+; `(object_reference name: (identifier)) @type` rule colors `foo` as
+; a type. Override: in a function-definition context, schema reads as
+; @namespace and the function name reads as @function.
+((create_function
+  (object_reference
+    schema: (identifier) @namespace
+    name: (identifier) @function))
+  (#set! "priority" 135))
+
+((create_function
+  (object_reference
+    name: (identifier) @function))
+  (#set! "priority" 135))
+
+; ---- Schema-qualified object refs ---------------------------------------
+; `public.users` / `app.memberships` -- color the schema part as
+; @namespace instead of @type so it reads visually distinct from the
+; table/view name. The existing rule colors BOTH as @type.
+((object_reference
+  schema: (identifier) @namespace)
+  (#set! "priority" 130))

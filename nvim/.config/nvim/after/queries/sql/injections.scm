@@ -1,11 +1,8 @@
-; Re-inject the SQL grammar into PL/pgSQL function bodies (the text
-; between `$$ ... $$`). Without this the body is one big string literal
-; and renders as a single colour.
-
-((function_body) @injection.content
-  (#set! injection.language "sql")
-  (#set! injection.include-children))
-
-((dollar_quote) @injection.content
-  (#set! injection.language "sql")
-  (#set! injection.include-children))
+; Injections for SQL files. PL/pgSQL bodies and SQL function bodies
+; are ALREADY parsed by the sql grammar -- do NOT re-inject `sql`
+; into them or treesitter recurses infinitely (stack overflow at
+; languagetree.lua:1059).
+;
+; Future: inject `plpgsql` into PL/pgSQL bodies once a treesitter
+; plpgsql grammar is bundled. Until then, leave the body as plain
+; sql (the inner grammar still tokenises it).

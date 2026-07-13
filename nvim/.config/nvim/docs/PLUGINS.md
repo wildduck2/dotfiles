@@ -80,7 +80,6 @@ The `module` column links to the per-module README under
 | williamboman/mason-lspconfig.nvim | Mason <-> lspconfig bridge | [lsp](plugins/lsp/README.md) |
 | WhoIsSethDaniel/mason-tool-installer.nvim | Ensures non-LSP tools are installed via mason | [lsp](plugins/lsp/README.md) |
 | j-hui/fidget.nvim | LSP progress notifications | [lsp](plugins/lsp/README.md) |
-| VidocqH/lsp-lens.nvim | Code lens (refs/impls counts above symbols) | [lsp](plugins/lsp/README.md) |
 | hedyhli/outline.nvim | Symbol outline panel (`:Outline`) | [lsp](plugins/lsp/README.md) |
 | folke/todo-comments.nvim | Highlight and search `TODO:`, `FIX:`, `NOTE:` | [lsp](plugins/lsp/README.md) |
 | folke/trouble.nvim | Diagnostics/refs/symbols list panel | [lsp/trouble](plugins/lsp/README.md) |
@@ -205,7 +204,6 @@ The `module` column links to the per-module README under
 - **lazydev.nvim** -- Lua workspace setup for nvim runtime when editing
   `*.lua`.
 - **luvit-meta** -- `vim.uv` type stubs loaded on demand via lazydev.
-- **lsp-lens.nvim** -- inline code lens (loaded on `LspAttach`).
 - **nvim-lsp-endhints** -- end-of-line inlay hints with custom prefix `=> `,
   truncated at 40 chars.
 - **trouble.nvim** -- diagnostics/LSP results panel. `<leader>xx`,
