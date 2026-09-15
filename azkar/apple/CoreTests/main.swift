@@ -1,4 +1,4 @@
-// Tests for src/Core. Run with: ./build.sh test
+// Tests for apple/Core. Run with: apple/build.sh test
 import Foundation
 
 clockTests()

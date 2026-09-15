@@ -13,23 +13,23 @@ app="$HOME/Applications/Azkar.app"
 label="com.wildduck.azkar"
 agent="$HOME/Library/LaunchAgents/$label.plist"
 swiftc=(swiftc -swift-version 5)
-core=("$here"/src/Core/*.swift)
+core=("$here"/Core/*.swift)
 # Everything except main.swift, so the UI tests can link it.
-lib=("${core[@]}" "$here"/src/App/*.swift "$here"/src/Window/*.swift)
+lib=("${core[@]}" "$here"/macOS/App/*.swift "$here"/macOS/Window/*.swift)
 
 run_tests() {
   mkdir -p "$build"
-  "${swiftc[@]}" "${core[@]}" "$here"/tests/core/*.swift -o "$build/tests"
+  "${swiftc[@]}" "${core[@]}" "$here"/CoreTests/*.swift -o "$build/tests"
   "$build/tests"
   # UI tests briefly show cards in the top-right corner.
-  "${swiftc[@]}" -framework AppKit -framework Carbon "${lib[@]}" "$here"/tests/ui/*.swift -o "$build/ui-tests"
+  "${swiftc[@]}" -framework AppKit -framework Carbon "${lib[@]}" "$here"/macOS/UITests/*.swift -o "$build/ui-tests"
   "$build/ui-tests"
 }
 
 make_icon() {
   local icns="$build/AppIcon.icns"
-  if [ "$icns" -nt "$here/tools/icon.swift" ]; then return; fi
-  "${swiftc[@]}" -framework AppKit "$here/tools/icon.swift" -o "$build/icon"
+  if [ "$icns" -nt "$here/macOS/tools/icon.swift" ]; then return; fi
+  "${swiftc[@]}" -framework AppKit "$here/macOS/tools/icon.swift" -o "$build/icon"
   "$build/icon" "$build/AppIcon.iconset"
   iconutil -c icns "$build/AppIcon.iconset" -o "$icns"
 }
@@ -40,7 +40,7 @@ build_app() {
   rm -rf "$out"
   mkdir -p "$out/Contents/MacOS" "$out/Contents/Resources"
   cp "$build/AppIcon.icns" "$out/Contents/Resources/"
-  "${swiftc[@]}" -O -framework AppKit -framework Carbon "${lib[@]}" "$here/src/main.swift" -o "$out/Contents/MacOS/Azkar"
+  "${swiftc[@]}" -O -framework AppKit -framework Carbon "${lib[@]}" "$here/macOS/main.swift" -o "$out/Contents/MacOS/Azkar"
   cat >"$out/Contents/Info.plist" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -84,13 +84,13 @@ EOF
 
 link_config() {
   # ~/.config/azkar -> dotfiles/azkar/.config/azkar
-  [ -e "$HOME/.config/azkar" ] || stow -d "$here/.." -t "$HOME" azkar
+  [ -e "$HOME/.config/azkar" ] || stow -d "$here/../.." -t "$HOME" azkar
 }
 
 case "${1:-install}" in
   test) run_tests ;;
   build) run_tests && build_app ;;
-  format) swift format -i -r "$here/src" "$here/tests" "$here/tools" ;;
+  format) swift format -i -r "$here/Core" "$here/CoreTests" "$here/macOS" ;;
   install)
     run_tests
     build_app

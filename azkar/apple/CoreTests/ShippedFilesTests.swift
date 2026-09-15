@@ -2,7 +2,7 @@ import Foundation
 
 /// The azkar.json and config.json in .config/azkar.
 func shippedFilesTests() {
-  let pkg = URL(fileURLWithPath: #filePath)  // azkar/tests/core/ShippedFilesTests.swift
+  let pkg = URL(fileURLWithPath: #filePath)  // azkar/apple/CoreTests/ShippedFilesTests.swift
     .deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
   do {
     let data = try Data(contentsOf: pkg.appendingPathComponent(".config/azkar/azkar.json"))

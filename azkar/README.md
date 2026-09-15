@@ -26,12 +26,12 @@ the last good version and shows the error in the menu and on the Today page.
 ## Install
 
 ```sh
-./build.sh            # run tests, build, install to ~/Applications, start now and at login
-./build.sh test       # tests only
-./build.sh uninstall  # stop and remove the app + LaunchAgent (config stays)
+apple/build.sh            # run tests, build, install to ~/Applications, start now and at login
+apple/build.sh test       # tests only
+apple/build.sh uninstall  # stop and remove the app + LaunchAgent (config stays)
 ```
 
-`build.sh` also runs `stow azkar` if `~/.config/azkar` doesn't exist yet. Only `.config/azkar`
+`apple/build.sh` also runs `stow azkar` if `~/.config/azkar` doesn't exist yet. Only `.config/azkar`
 is linked into `$HOME` (see `.stow-local-ignore`). Needs the Xcode command-line tools (`swiftc`).
 
 ## `~/.config/azkar/config.json`
@@ -75,33 +75,37 @@ typo نَبَيِّنَا → نَبِيِّنَا, the three Quls split into se
 ## Layout
 
 ```
-src/main.swift       entry point (single instance; a second launch opens the running one's window)
-src/Core/            pure logic, no AppKit (tested by tests/core)
-  Clock              HH:mm parsing/formatting, time windows
-  Hotkey             "ctrl+alt+z" <-> key code + modifiers
-  Config             config.json decoding and the canonical encoding the window writes
-  Library            azkar.json
-  Picker             which zikr comes next, and today's progress
-  Tick               show a card now, or skip (paused, locked, quiet hours, stack full)
-  TapCounter         ×N repetitions on one card
-src/App/             AppKit
-  AppDelegate        timer, actions; +Files (reload/save), +Window, +Menus (📿 menu, app menu)
-  CardWindow         one card: panel, ×, count badge, progress bar
-  CardStack          cards top-right on the primary display
-  GlobalHotkey       Carbon RegisterEventHotKey
-  Paths, Session+Style
-src/Window/          the app window (SwiftUI)
-  SettingsModel      what the window shows and edits
-  MainWindow         the NSWindow; Dock icon while open
-  AzkarView          sidebar + TodayPage, SchedulePage, CardsPage, AzkarPage
-  Components         Tile, Row, Footnote;  ShortcutRecorder
-tests/core/          Core tests, one file per area
-tests/ui/            clicks, ×, hotkey, placement and settings-model tests on the real AppKit classes
-tools/icon.swift     draws the app icon at build time
+apple/                  the Swift apps
+  build.sh              build, test, install (see Install)
+  Core/                 pure logic, no AppKit (tested by CoreTests)
+    Clock               HH:mm parsing/formatting, time windows
+    Hotkey              "ctrl+alt+z" <-> key code + modifiers
+    Config              config.json decoding and the canonical encoding the window writes
+    Library             azkar.json
+    Picker              which zikr comes next, and today's progress
+    Tick                show a card now, or skip (paused, locked, quiet hours, stack full)
+    TapCounter          ×N repetitions on one card
+  CoreTests/            Core tests, one file per area
+  macOS/
+    main.swift          entry point (single instance; a second launch opens the running one's window)
+    App/                AppKit
+      AppDelegate       timer, actions; +Files (reload/save), +Window, +Menus (📿 menu, app menu)
+      CardWindow        one card: panel, ×, count badge, progress bar
+      CardStack         cards top-right on the primary display
+      GlobalHotkey      Carbon RegisterEventHotKey
+      Paths, Session+Style
+    Window/             the app window (SwiftUI)
+      SettingsModel     what the window shows and edits
+      MainWindow        the NSWindow; Dock icon while open
+      AzkarView         sidebar + TodayPage, SchedulePage, CardsPage, AzkarPage
+      Components        Tile, Row, Footnote;  ShortcutRecorder
+    UITests/            clicks, ×, hotkey, placement and settings-model tests on the real AppKit classes
+    tools/icon.swift    draws the app icon at build time
+docs/superpowers/       design spec and implementation plans for the Swift + Kotlin Multiplatform apps
 ```
 
-Swift is formatted with `swift format` (2 spaces, 120 columns, see `.swift-format`):
-`./build.sh format`.
+Swift is formatted with `swift format` (2 spaces, 120 columns, see `apple/.swift-format`):
+`apple/build.sh format`.
 
 Progress through today's morning/evening lists and the pause state live in
 `~/.local/state/azkar/state.json`.
