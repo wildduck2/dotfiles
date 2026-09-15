@@ -4,6 +4,7 @@ import Foundation
 clockTests()
 hotkeyTests()
 configTests()
+libraryTests()
 pickerTests()
 tickTests()
 tapCounterTests()

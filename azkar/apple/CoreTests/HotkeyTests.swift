@@ -10,6 +10,8 @@ func hotkeyTests() {
   eq(Hotkey.parse("z"), nil, "a hotkey needs a modifier")
   eq(Hotkey.parse("ctrl+foo"), nil, "unknown key")
   eq(Hotkey.parse("ctrl+alt"), nil, "a hotkey needs a key")
+  eq(Hotkey.parse("ctrl+z+x"), nil, "only one key")
+  eq(Hotkey.parse(" ctrl ++ z ")?.spec, "ctrl+z", "spaces and empty parts are ignored")
   eq(Hotkey.parse("Command+Shift+1")?.spec, "shift+cmd+1", "spec is normalized, in display order")
   eq(Hotkey.parse("ctrl+alt+z")?.spec, "ctrl+alt+z", "default spec")
   eq(

@@ -7,6 +7,7 @@ func clockTests() {
   eq(parseClock("12:60"), nil, "rejects minute 60")
   eq(parseClock("noon"), nil, "rejects garbage")
   eq(minuteOfDay(at(14, 15, 30), cal), 930, "minute of day")
+  eq(dayKey(at(4, 23, 59), cal), "2026-09-04", "day key is yyyy-MM-dd")
 
   // time windows
   let morning = TimeWindow(start: 300, end: 660)

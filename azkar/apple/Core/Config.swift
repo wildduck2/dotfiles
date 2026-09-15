@@ -29,6 +29,12 @@ struct Config: Equatable {
   /// Also open the window when starting at login.
   var showWindowAtLogin = false
 
+  /// JSONSerialization returns booleans as NSNumber too, so `true as? Double` is 1. Only real numbers count.
+  private static func isNumber(_ v: Any) -> Bool {
+    guard let n = v as? NSNumber else { return false }
+    return CFGetTypeID(n) != CFBooleanGetTypeID()
+  }
+
   /// Missing keys keep their defaults; `null` disables a time window.
   static func decode(_ data: Data) throws -> Config {
     let json: Any
@@ -41,11 +47,11 @@ struct Config: Equatable {
 
     var c = Config()
     if let v = dict["intervalMinutes"] {
-      guard let n = v as? Double, n > 0 else { throw ConfigError("intervalMinutes must be a number > 0") }
+      guard isNumber(v), let n = v as? Double, n > 0 else { throw ConfigError("intervalMinutes must be a number > 0") }
       c.intervalMinutes = n
     }
     if let v = dict["maxStack"] {
-      guard let n = v as? Int, n >= 1 else { throw ConfigError("maxStack must be a whole number >= 1") }
+      guard isNumber(v), let n = v as? Int, n >= 1 else { throw ConfigError("maxStack must be a whole number >= 1") }
       c.maxStack = n
     }
     if let v = dict["hotkey"] {
@@ -72,7 +78,7 @@ struct Config: Equatable {
       c[keyPath: path] = b.boolValue
     }
     if let v = dict["fontSize"] {
-      guard let n = v as? Double, n > 0 else { throw ConfigError("fontSize must be a number > 0") }
+      guard isNumber(v), let n = v as? Double, n > 0 else { throw ConfigError("fontSize must be a number > 0") }
       c.fontSize = n
     }
     for (key, path) in [("sabah", \Config.sabah), ("masaa", \Config.masaa), ("quietHours", \Config.quietHours)] {

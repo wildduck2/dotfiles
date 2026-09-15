@@ -75,6 +75,27 @@ func configTests() {
   }
   expectError("not json", mentioning: "JSON") { _ = try Config.decode(Data("{nope".utf8)) }
 
+  // JSON booleans and strings are not numbers; whole numbers may be written with a fraction or an exponent.
+  expectError("a boolean is not an interval", mentioning: "intervalMinutes") {
+    _ = try Config.decode(Data(#"{"intervalMinutes": true}"#.utf8))
+  }
+  expectError("a boolean is not a max stack", mentioning: "maxStack") {
+    _ = try Config.decode(Data(#"{"maxStack": true}"#.utf8))
+  }
+  expectError("a boolean is not a font size", mentioning: "fontSize") {
+    _ = try Config.decode(Data(#"{"fontSize": true}"#.utf8))
+  }
+  expectError("a string is not a number", mentioning: "fontSize") {
+    _ = try Config.decode(Data(#"{"fontSize": "22"}"#.utf8))
+  }
+  do {
+    eq(try Config.decode(Data(#"{"maxStack": 3.0}"#.utf8)).maxStack, 3, "3.0 is a whole number")
+    eq(try Config.decode(Data(#"{"maxStack": 1e2}"#.utf8)).maxStack, 100, "1e2 is a whole number")
+  } catch {
+    failed += 1
+    print("FAIL whole numbers threw \(error)")
+  }
+
   // encoding (what the settings window writes)
   do {
     var c = Config()
@@ -100,5 +121,42 @@ func configTests() {
   } catch {
     failed += 1
     print("FAIL encode round-trip threw \(error)")
+  }
+
+  // The exact bytes. kotlin/shared ConfigTest has the same text and number table, so both apps write the same file.
+  let defaults = """
+    {
+      "intervalMinutes": 3,
+      "hotkey": "ctrl+alt+z",
+      "order": "random",
+      "repeatGeneral": false,
+      "maxStack": 5,
+      "sabah": { "start": "05:00", "end": "11:00" },
+      "masaa": { "start": "15:30", "end": "21:00" },
+      "quietHours": { "start": "23:30", "end": "05:00" },
+      "fontSize": 22,
+      "sound": false,
+      "showCount": true,
+      "openAtLogin": true,
+      "showWindowAtLogin": false
+    }
+
+    """
+  eq(
+    String(decoding: Config().encode(), as: UTF8.self), defaults, "defaults are written in the settings window's layout"
+  )
+
+  let numbers: [(Double, String)] = [
+    (3, "3"), (0.5, "0.5"), (26.5, "26.5"), (0.1 + 0.2, "0.30000000000000004"), (0.0001, "0.0001"),
+    (0.00001, "1e-05"), (1.5e-7, "1.5e-07"), (12345678.5, "12345678.5"), (99999999999999.5, "99999999999999.5"),
+    (1e15, "1000000000000000.0"), (9_007_199_254_740_992, "9007199254740992.0"),
+    (9_007_199_254_740_994, "9.007199254740994e+15"), (1.25e16, "1.25e+16"), (1e100, "1e+100"),
+  ]
+  for (n, text) in numbers {
+    var c = Config()
+    c.fontSize = n
+    check(
+      String(decoding: c.encode(), as: UTF8.self).contains("\n  \"fontSize\": \(text),\n"),
+      "fontSize \(text) is written as Swift writes it")
   }
 }
