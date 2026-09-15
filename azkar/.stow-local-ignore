@@ -1,0 +1,12 @@
+# Only .config/azkar is linked into $HOME; the rest is the app's source.
+^/\.stow-local-ignore
+^/\.gitignore
+^/\.swift-format
+^/\.build
+^/src
+^/tests
+^/tools
+^/build\.sh
+^/README\.md
+^/docs
+\.DS_Store
