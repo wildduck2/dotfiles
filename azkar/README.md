@@ -23,6 +23,15 @@ to menu-bar only. The login agent starts it with `--background`, so no window at
 Hand edits to the JSON files still work and are picked up within ~2 seconds; a broken file keeps
 the last good version and shows the error in the menu and on the Today page.
 
+## Other platforms (in progress)
+
+`kotlin/` is becoming a Kotlin Multiplatform version for Android, iOS, Windows and Linux, built in stages (see
+`docs/superpowers/`). So far it has the core logic, ported from `apple/Core` and tested with the same cases:
+
+```sh
+cd kotlin && ./gradlew jvmTest   # Gradle runs on JDK 17+ and downloads the JDK 21 toolchain if it's missing
+```
+
 ## Install
 
 ```sh
@@ -85,6 +94,7 @@ apple/                  the Swift apps
     Picker              which zikr comes next, and today's progress
     Tick                show a card now, or skip (paused, locked, quiet hours, stack full)
     TapCounter          ×N repetitions on one card
+    Plan                the reminders ahead, for iPhone notifications
   CoreTests/            Core tests, one file per area
   macOS/
     main.swift          entry point (single instance; a second launch opens the running one's window)
@@ -101,11 +111,17 @@ apple/                  the Swift apps
       Components        Tile, Row, Footnote;  ShortcutRecorder
     UITests/            clicks, ×, hotkey, placement and settings-model tests on the real AppKit classes
     tools/icon.swift    draws the app icon at build time
+kotlin/                 Kotlin Multiplatform (Gradle)
+  shared/               com.wildduck.azkar.core: apple/Core ported file by file (Hotkey without key codes)
+    src/commonTest/     the same test cases as apple/CoreTests
+    src/jvmTest/        ShippedFilesTest: the real .config/azkar files
 docs/superpowers/       design spec and implementation plans for the Swift + Kotlin Multiplatform apps
 ```
 
 Swift is formatted with `swift format` (2 spaces, 120 columns, see `apple/.swift-format`):
 `apple/build.sh format`.
+
+Kotlin follows the official Kotlin style (4 spaces, 120 columns, see `kotlin/.editorconfig`).
 
 Progress through today's morning/evening lists and the pause state live in
 `~/.local/state/azkar/state.json`.

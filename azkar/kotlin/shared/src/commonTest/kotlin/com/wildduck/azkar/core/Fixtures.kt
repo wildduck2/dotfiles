@@ -3,10 +3,16 @@ package com.wildduck.azkar.core
 
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
+import kotlin.time.Instant
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 
 /** A time on a day in September 2026 (the tests use UTC wherever a time zone is needed). */
 fun at(day: Int, h: Int, m: Int): LocalDateTime = LocalDateTime(2026, 9, day, h, m)
+
+/** The same time as an Instant, in UTC. */
+fun instant(day: Int, h: Int, m: Int): Instant = at(day, h, m).toInstant(TimeZone.UTC)
 
 fun z(text: String): Zikr = Zikr(text)
 
