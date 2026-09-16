@@ -27,6 +27,11 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.compose.ui.test)
+        }
+        jvmTest.dependencies {
+            // The UI tests draw for real, so they need this machine's Compose backend (Skia, AWT).
+            implementation(compose.desktop.currentOs)
         }
     }
 }
