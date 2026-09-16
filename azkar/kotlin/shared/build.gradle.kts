@@ -3,6 +3,8 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.composeCompiler)
 }
 
 kotlin {
@@ -15,12 +17,24 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(libs.kotlinx.datetime)
+            api(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization.json)
+            api(compose.runtime)
+            api(compose.foundation)
+            api(compose.ui)
+            api(libs.compose.material3)
+            api(compose.components.resources)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
     }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.wildduck.azkar.resources"
+    generateResClass = always
 }
 
 val azkarPackage: File = rootDir.parentFile

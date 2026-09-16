@@ -2,6 +2,7 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
+        google()
     }
 }
 
@@ -13,9 +14,11 @@ plugins {
 dependencyResolutionManagement {
     repositories {
         mavenCentral()
+        google()
     }
 }
 
 rootProject.name = "azkar"
 
 include(":shared")
+include(":desktopApp")
