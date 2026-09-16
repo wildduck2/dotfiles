@@ -22,3 +22,4 @@ rootProject.name = "azkar"
 
 include(":shared")
 include(":desktopApp")
+include(":androidApp")

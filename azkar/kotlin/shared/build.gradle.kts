@@ -5,12 +5,14 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.androidLibrary)
 }
 
 kotlin {
     jvmToolchain(21)
 
     jvm()
+    androidTarget()
     iosArm64()
     iosSimulatorArm64()
 
@@ -33,6 +35,15 @@ kotlin {
             // The UI tests draw for real, so they need this machine's Compose backend (Skia, AWT).
             implementation(compose.desktop.currentOs)
         }
+    }
+}
+
+android {
+    namespace = "com.wildduck.azkar.shared"
+    compileSdk = 37
+
+    defaultConfig {
+        minSdk = 26
     }
 }
 
