@@ -9,7 +9,10 @@ import com.wildduck.azkar.core.Library
 import com.wildduck.azkar.core.Picker
 import com.wildduck.azkar.core.Session
 import com.wildduck.azkar.core.TimeWindow
+import com.wildduck.azkar.core.TickDecision
 import com.wildduck.azkar.core.dayKey
+import com.wildduck.azkar.core.decideTick
+import com.wildduck.azkar.core.minuteOfDay
 import kotlin.math.min
 import kotlin.random.Random
 import kotlin.time.Instant
@@ -98,6 +101,31 @@ class AzkarController(
         val pick = Picker.next(now.toLocalDateTime(timeZone()), ui.config, ui.library, state, random)
         save(pick.state)
         return pick.card
+    }
+
+    /**
+     * One reminder: the next card, or why there isn't one. The desktop passes the cards already on screen and
+     * whether the screen is locked; a phone passes the notifications it has posted.
+     */
+    fun fire(
+        now: Instant,
+        onScreen: Int,
+        locked: Boolean = false,
+        random: (Int) -> Int = { Random.nextInt(it) },
+    ): Fired {
+        val config = _ui.value.config
+        val quiet = config.quietHours?.contains(minuteOfDay(now.toLocalDateTime(timeZone()))) ?: false
+        val decision = decideTick(
+            paused = state.paused,
+            locked = locked,
+            quiet = quiet,
+            stackCount = onScreen,
+            maxStack = config.maxStack,
+        )
+        return when (decision) {
+            TickDecision.Show -> pick(now, random)?.let { Fired.Show(it) } ?: Fired.Skip("nothing to show")
+            is TickDecision.Skip -> Fired.Skip(decision.reason)
+        }
     }
 
     fun setPaused(paused: Boolean) = save(state.copy(paused = paused))

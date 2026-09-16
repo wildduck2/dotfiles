@@ -55,7 +55,6 @@ private class Fixture(config: String? = """{"intervalMinutes": 3}""", locked: Bo
         controller = controller,
         stack = stack,
         now = { clock },
-        timeZone = { TimeZone.UTC },
         locked = { this.locked },
         onCard = { chimed += it },
     )

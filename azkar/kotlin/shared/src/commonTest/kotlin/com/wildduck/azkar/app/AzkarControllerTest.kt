@@ -197,4 +197,35 @@ class AzkarControllerTest {
         val c = controller(FakeStorage(state = "not json"))
         assertEquals(AppState(), c.state, "an unreadable state.json starts from a fresh state")
     }
+
+    @Test
+    fun oneReminderAtATime() {
+        val c = controller(FakeStorage(config = """{"intervalMinutes": 3, "maxStack": 2}"""))
+        val fired = c.fire(instant(14, 6, 0), onScreen = 0, random = firstIndex)
+        assertEquals(
+            "s1",
+            (fired as? Fired.Show)?.card?.zikr?.text,
+            "the next zikr in today's morning list: $fired",
+        )
+        assertEquals(Fired.Skip("stack full"), c.fire(instant(14, 6, 3), onScreen = 2), "two are already waiting")
+        assertEquals(
+            Fired.Skip("screen locked"),
+            c.fire(instant(14, 6, 3), onScreen = 0, locked = true),
+            "not onto a locked screen",
+        )
+        c.setPaused(true)
+        assertEquals(Fired.Skip("paused"), c.fire(instant(14, 6, 3), onScreen = 0), "nothing while paused")
+    }
+
+    @Test
+    fun quietHoursAndAnEmptyLibraryAreSaidOutLoud() {
+        val quiet = controller(FakeStorage(config = """{"quietHours": {"start": "05:00", "end": "07:00"}}"""))
+        assertEquals(Fired.Skip("quiet hours"), quiet.fire(instant(14, 6, 0), onScreen = 0), "in the quiet hours")
+        val empty = controller(FakeStorage(azkar = """{"sabah": [], "masaa": [], "general": []}"""))
+        assertEquals(
+            Fired.Skip("nothing to show"),
+            empty.fire(instant(14, 6, 0), onScreen = 0),
+            "an azkar.json with no azkar in it",
+        )
+    }
 }

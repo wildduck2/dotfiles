@@ -27,15 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.Canvas
 import com.wildduck.azkar.app.CardOnScreen
-import com.wildduck.azkar.core.Session
-
-/** The heading on a card, in Arabic. */
-val Session.title: String
-    get() = when (this) {
-        Session.Sabah -> "أذكار الصباح"
-        Session.Masaa -> "أذكار المساء"
-        Session.General -> "ذِكْر"
-    }
+import com.wildduck.azkar.app.cardHeader
 
 /** The card's width everywhere: on screen and in the settings preview. */
 val cardWidth = 440.dp
@@ -55,10 +47,7 @@ fun CardView(
 ) {
     val accent = card.card.session.accent
     val zikr = card.card.zikr
-    var header = card.card.session.title
-    val position = card.card.position
-    val total = card.card.total
-    if (position != null && total != null) header += "  ·  $position من $total"
+    val header = cardHeader(card.card)
 
     Column(
         modifier
