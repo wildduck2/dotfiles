@@ -1,5 +1,6 @@
 # Azkar on every platform it ships to: the Swift apps on macOS, and the Kotlin apps for Linux,
-# Windows and iOS. jpackage only builds for the machine it runs on, so each installer has its own job.
+# Windows, Android and iOS. jpackage only builds for the machine it runs on, so each installer has
+# its own job.
 name: azkar
 
 on:
@@ -15,7 +16,7 @@ concurrency:
 
 jobs:
   linux:
-    name: Linux — tests and .deb
+    name: Linux — tests, .deb and the Android .apk
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -31,15 +32,24 @@ jobs:
       - name: Install the packaging tools
         run: sudo apt-get update && sudo apt-get install -y fakeroot binutils
         working-directory: .
+      # The phone app is built here too: it is the same shared code, and the SDK is a download away.
+      - name: Install the Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: platforms;android-37.0 build-tools;37.0.0
       # The shared UI tests draw for real, so they need a display to draw on.
       - name: Tests
-        run: xvfb-run -a ./gradlew :shared:jvmTest :desktopApp:test
+        run: xvfb-run -a ./gradlew :shared:jvmTest :desktopApp:test :androidApp:testDebugUnitTest
       - name: Package
-        run: ./gradlew :desktopApp:packageDeb
+        run: ./gradlew :desktopApp:packageDeb :androidApp:assembleDebug
       - uses: actions/upload-artifact@v4
         with:
           name: azkar-linux-deb
           path: azkar/kotlin/desktopApp/build/compose/binaries/main/deb/*.deb
+      - uses: actions/upload-artifact@v4
+        with:
+          name: azkar-android-apk
+          path: azkar/kotlin/androidApp/build/outputs/apk/debug/*.apk
 
   windows:
     name: Windows — tests and .msi

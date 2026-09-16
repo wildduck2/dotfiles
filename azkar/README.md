@@ -41,7 +41,8 @@ cd kotlin
 
 Gradle runs on JDK 17+ and downloads the JDK 21 toolchain if it's missing. jpackage only builds for the
 machine it runs on, which is why CI has one job per platform (`.github/workflows/azkar.yml`, at the root of
-this repo: Linux tests + `.deb`, Windows tests + `.msi`, macOS Swift tests + the iOS simulator tests).
+this repo: Linux tests + `.deb` + the Android `.apk`, Windows tests + `.msi`, macOS Swift tests + the iOS
+simulator tests).
 
 Started with `--background` — what the login entry does — Azkar goes straight to the tray: beads, with the
 number of waiting cards in the middle, and the same menu as 📿 on macOS (status line, today's progress,
@@ -85,6 +86,56 @@ The tests cover everything that isn't the desktop itself. These are the things o
   and on the Today page, and the last good settings stay in use.
 - "Open at login": log out and back in — Azkar starts in the tray with no window.
 - Launching Azkar again opens the running app's window instead of starting a second one.
+
+## Android
+
+`kotlin/androidApp` is that same shared code with a notification where the desktop has a card. Point Gradle
+at an Android SDK and build it:
+
+```sh
+cd kotlin
+export ANDROID_HOME=/opt/homebrew/share/android-commandlinetools  # wherever the SDK is
+./gradlew :androidApp:testDebugUnitTest  # the phone's own tests
+./gradlew :androidApp:assembleDebug      # androidApp/build/outputs/apk/debug/androidApp-debug.apk
+./gradlew :androidApp:installDebug       # onto a phone or emulator adb can see
+```
+
+`com.wildduck.azkar`, minSdk 26 (Android 8). A reminder is a notification: the heading
+("أذكار الصباح · 7 من 25"), the zikr, and a **Count** button for a zikr said more than once — each press
+moves the badge on (×3 → 1/3 → 2/3) and the last one takes the notification away. Tapping it opens the
+same zikr as a full-screen card, which counts the same way. The sound setting picks the chiming or the
+silent channel (Android won't let a channel's sound change afterwards, hence two); the interval, the
+morning/evening windows, quiet hours, the order and `maxStack` all mean what they mean on the desktop.
+
+Nothing ticks on a phone: Android holds one `AlarmManager` alarm at a time, each reminder sets the next
+one, and a reboot or an app update sets it again. Force-stopping Azkar — or a battery optimiser doing it
+for you — stops reminders until the app is opened again.
+
+### Where the files are
+
+`config.json`, `azkar.json` and `state.json` sit in the app's own storage
+(`/data/data/com.wildduck.azkar/files`), in the same format as everywhere else, where only Azkar (or
+`adb shell run-as`) can reach them. The azkar that ship in the APK are copied out on the first run. That is
+why the phone's settings pages have no "Show the folder", no "Edit azkar.json" and no "Open at login" — and
+why the next alarm and the last notification id are kept in SharedPreferences instead of `state.json`,
+which belongs to all three apps.
+
+### What the phone asks for
+
+| permission             | asked                             | refused                                              |
+| ---------------------- | --------------------------------- | ---------------------------------------------------- |
+| notifications          | at the first launch (Android 13+) | the Today page says so, with a button to the setting |
+| `SCHEDULE_EXACT_ALARM` | from the Today page (Android 12+) | reminders still arrive, a few minutes late           |
+| start after a reboot   | granted by installing             | —                                                    |
+
+### What to check on a phone
+
+- A reminder arrives an interval after the app is first opened, and keeps coming with it closed.
+- **Count** ticks the repetitions off one press at a time; the last press clears the notification.
+- Tapping a reminder opens the card: tapping the card counts, **×** clears it, back just puts it away.
+- Pause, quiet hours and the morning/evening windows behave as on the desktop, and the Today page
+  counts down to the next reminder.
+- After a reboot, reminders come back without opening the app.
 
 ## Install
 
@@ -184,6 +235,13 @@ kotlin/                 Kotlin Multiplatform (Gradle)
     Triggers, Portal    the key names and the D-Bus interfaces those backends need
     SingleInstance      one Azkar at a time; a second launch opens this one's window
     Chime, Placement, Tray, CardWindows
+  androidApp/           the phone app (the same Compose UI, with notifications instead of cards)
+    AzkarApp            the controller, the alarm and the notifications, for whatever woke the process
+    MainActivity        the window, the card a tapped reminder opens, and the permissions to ask for
+    AlarmReceiver       the alarm, the Count button, and setting it all again after a reboot
+    Alarms              one AlarmManager alarm at a time (exact when the phone allows it)
+    Notifier            posting a reminder: the two channels, the badge, the progress and the buttons
+    Notifications, Reminders, Cards, AndroidStorage, Prefs
 docs/superpowers/       design spec and implementation plans for the Swift + Kotlin Multiplatform apps
 ```
 
