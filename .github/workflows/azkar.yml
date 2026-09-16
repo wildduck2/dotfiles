@@ -1,0 +1,87 @@
+# Azkar on every platform it ships to: the Swift apps on macOS, and the Kotlin apps for Linux,
+# Windows and iOS. jpackage only builds for the machine it runs on, so each installer has its own job.
+name: azkar
+
+on:
+  push:
+    paths: ["azkar/**", ".github/workflows/azkar.yml"]
+  pull_request:
+    paths: ["azkar/**", ".github/workflows/azkar.yml"]
+  workflow_dispatch:
+
+concurrency:
+  group: azkar-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux:
+    name: Linux — tests and .deb
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: azkar/kotlin
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+      # jpackage builds the .deb with dpkg-deb, as root-owned files, through fakeroot.
+      - name: Install the packaging tools
+        run: sudo apt-get update && sudo apt-get install -y fakeroot binutils
+        working-directory: .
+      # The shared UI tests draw for real, so they need a display to draw on.
+      - name: Tests
+        run: xvfb-run -a ./gradlew :shared:jvmTest :desktopApp:test
+      - name: Package
+        run: ./gradlew :desktopApp:packageDeb
+      - uses: actions/upload-artifact@v4
+        with:
+          name: azkar-linux-deb
+          path: azkar/kotlin/desktopApp/build/compose/binaries/main/deb/*.deb
+
+  windows:
+    name: Windows — tests and .msi
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: azkar/kotlin
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+      # jpackage makes the .msi with the WiX toolset that ships with the runner image.
+      - name: Put WiX on the PATH
+        shell: pwsh
+        run: if ($env:WIX) { Add-Content -Path $env:GITHUB_PATH -Value (Join-Path $env:WIX 'bin') }
+        working-directory: .
+      - name: Tests
+        run: ./gradlew :shared:jvmTest :desktopApp:test
+      - name: Package
+        run: ./gradlew :desktopApp:packageMsi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: azkar-windows-msi
+          path: azkar/kotlin/desktopApp/build/compose/binaries/main/msi/*.msi
+
+  apple:
+    name: macOS — Swift tests and iOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Swift tests
+        run: ./build.sh test
+        working-directory: azkar/apple
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+      # The iOS simulator tests are the ones that can't run on a Mac without Xcode, so they run here.
+      - name: Kotlin tests, including the iOS simulator
+        run: ./gradlew :shared:jvmTest :shared:iosSimulatorArm64Test :shared:compileKotlinIosArm64
+        working-directory: azkar/kotlin

@@ -23,14 +23,68 @@ to menu-bar only. The login agent starts it with `--background`, so no window at
 Hand edits to the JSON files still work and are picked up within ~2 seconds; a broken file keeps
 the last good version and shows the error in the menu and on the Today page.
 
-## Other platforms (in progress)
+## Windows and Linux
 
-`kotlin/` is becoming a Kotlin Multiplatform version for Android, iOS, Windows and Linux, built in stages (see
-`docs/superpowers/`). So far it has the core logic, ported from `apple/Core` and tested with the same cases:
+`kotlin/` is the same app in Kotlin Multiplatform: the core logic ported file by file from `apple/Core`, a
+shared Compose UI for the five pages and the cards, and a desktop app for Windows and Linux (it runs on
+macOS too, for development). It reads and writes exactly the same `config.json`, `azkar.json` and
+`state.json`, so the Mac, the PC and the phone all understand each other's files.
 
 ```sh
-cd kotlin && ./gradlew jvmTest   # Gradle runs on JDK 17+ and downloads the JDK 21 toolchain if it's missing
+cd kotlin
+./gradlew :desktopApp:run                  # run it
+./gradlew jvmTest :desktopApp:test         # every test (prefix with `xvfb-run -a` on a Linux box with no display)
+./gradlew :desktopApp:createDistributable  # a folder you can run without installing
+./gradlew :desktopApp:packageDeb           # on Linux:   desktopApp/build/compose/binaries/main/deb/*.deb
+./gradlew :desktopApp:packageMsi           # on Windows: desktopApp/build/compose/binaries/main/msi/*.msi
 ```
+
+Gradle runs on JDK 17+ and downloads the JDK 21 toolchain if it's missing. jpackage only builds for the
+machine it runs on, which is why CI has one job per platform (`.github/workflows/azkar.yml`, at the root of
+this repo: Linux tests + `.deb`, Windows tests + `.msi`, macOS Swift tests + the iOS simulator tests).
+
+Started with `--background` — what the login entry does — Azkar goes straight to the tray: beads, with the
+number of waiting cards in the middle, and the same menu as 📿 on macOS (status line, today's progress,
+count/dismiss, show one now, pause, Open Azkar…, Quit). A second launch doesn't start a second Azkar; it
+asks the one already running to open its window.
+
+### Where the files are
+
+| file                        | Linux                                          | Windows                       | macOS                  |
+| --------------------------- | ---------------------------------------------- | ----------------------------- | ---------------------- |
+| `config.json`, `azkar.json` | `$XDG_CONFIG_HOME/azkar` (`~/.config/azkar`)   | `%APPDATA%\azkar`             | `~/.config/azkar`      |
+| `state.json`                | `$XDG_STATE_HOME/azkar` (`~/.local/state/azkar`) | `%LOCALAPPDATA%\azkar`      | `~/.local/state/azkar` |
+| open at login               | `~/.config/autostart/com.wildduck.azkar.desktop` | `HKCU\…\CurrentVersion\Run` → `Azkar` | the LaunchAgent plist |
+
+The first run writes the `azkar.json` that ships with the app next to `config.json`, so it can be edited by
+hand as on macOS. `openAtLogin` and `showWindowAtLogin` work the same way; everything else in the config
+table above applies unchanged.
+
+### The global shortcut
+
+| session        | how                                      | can Azkar change it?      |
+| -------------- | ---------------------------------------- | ------------------------- |
+| Windows        | `RegisterHotKey`                         | yes, on the Cards page    |
+| Linux, X11     | `XGrabKey` (also with Caps/Num Lock on)  | yes, on the Cards page    |
+| Linux, Wayland | the XDG `GlobalShortcuts` portal         | no — the desktop owns it  |
+
+On Wayland the desktop asks once to allow the shortcut and then owns it: Azkar shows the trigger the portal
+reports and points at the keyboard settings (GNOME: Settings → Keyboard) instead of recording keys itself.
+With no portal at all — a bare compositor — there is no global shortcut, and the settings page says so;
+clicking a card still counts it. See-through, frameless cards need a compositor too: without one the card
+sits in a plain rectangle.
+
+### What to check by hand
+
+The tests cover everything that isn't the desktop itself. These are the things only a real session shows:
+
+- A card appears ~5 s after launch, top-right, clear of the panel or taskbar, and later ones stack below it.
+- Clicking a card counts one repetition (×3 → 1/3, 2/3, gone); **×** closes it; the tray count follows.
+- The global shortcut counts the oldest card while another app has the keyboard.
+- Editing `config.json` by hand is picked up within ~2 seconds; a broken file becomes a problem in the menu
+  and on the Today page, and the last good settings stay in use.
+- "Open at login": log out and back in — Azkar starts in the tray with no window.
+- Launching Azkar again opens the running app's window instead of starting a second one.
 
 ## Install
 
@@ -112,9 +166,24 @@ apple/                  the Swift apps
     UITests/            clicks, ×, hotkey, placement and settings-model tests on the real AppKit classes
     tools/icon.swift    draws the app icon at build time
 kotlin/                 Kotlin Multiplatform (Gradle)
-  shared/               com.wildduck.azkar.core: apple/Core ported file by file (Hotkey without key codes)
-    src/commonTest/     the same test cases as apple/CoreTests
+  shared/               what every platform shares
+    core/               apple/Core ported file by file (Hotkey without key codes)
+    app/                the app without a screen: AzkarController (files, progress, status, problems),
+                        CardStack (cards and where they go), StateFile, Storage, Features, KeyNames
+    ui/                 the Compose UI: AzkarWindow (Today, Schedule, Cards, Azkar, General), CardView,
+                        Theme, Components, ShortcutRecorder
+    src/commonTest/     the same test cases as apple/CoreTests, plus the controller, the cards and the window
     src/jvmTest/        ShippedFilesTest: the real .config/azkar files
+  desktopApp/           the Windows and Linux app (Compose for Desktop, packaged by jpackage)
+    Main                --background, single instance, the tray, the window and one window per card
+    Loop                one tick a second: reload the files, refresh the status, show the next zikr
+    DesktopPaths        where the files live on each desktop
+    FileStorage         reading and writing them safely (and the azkar that ship with the app)
+    Autostart           the autostart entry, the Windows Run value, the menu entry
+    Shortcuts           which backend this session gets: WindowsShortcut, X11Shortcut, PortalShortcut
+    Triggers, Portal    the key names and the D-Bus interfaces those backends need
+    SingleInstance      one Azkar at a time; a second launch opens this one's window
+    Chime, Placement, Tray, CardWindows
 docs/superpowers/       design spec and implementation plans for the Swift + Kotlin Multiplatform apps
 ```
 
