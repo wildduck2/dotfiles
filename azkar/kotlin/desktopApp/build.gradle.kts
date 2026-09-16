@@ -28,6 +28,13 @@ dependencies {
     testImplementation(libs.dbus.java.unixsocket)
 }
 
+// The azkar that ship with the app: the very same file the macOS app installs.
+val shippedAzkar: File = rootDir.parentFile.resolve(".config/azkar/azkar.json")
+
+tasks.named<Copy>("processResources") {
+    from(shippedAzkar)
+}
+
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
     testLogging {
