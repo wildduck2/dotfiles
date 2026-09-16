@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.wildduck.azkar.app.COUNT_BUTTON
 import com.wildduck.azkar.app.CardOnScreen
 import com.wildduck.azkar.app.Features
 import com.wildduck.azkar.app.ProblemAction
@@ -25,6 +26,7 @@ import com.wildduck.azkar.app.ProblemKey
 import com.wildduck.azkar.app.ShortcutMode
 import com.wildduck.azkar.app.UiState
 import com.wildduck.azkar.core.Card
+import com.wildduck.azkar.core.Config
 import com.wildduck.azkar.core.Order
 import com.wildduck.azkar.core.Session
 import com.wildduck.azkar.core.Zikr
@@ -100,47 +102,51 @@ fun CardsPage(ui: UiState, features: Features, actions: AzkarActions) {
             )
         }
 
-        if (features.cards) {
-            Section("Cards") {
-                StepperRow(
-                    title = "Cards on screen at most",
-                    color = Accents.pink,
-                    value = config.maxStack.toString(),
-                    range = 1..10,
-                    current = config.maxStack,
-                    onChange = { actions.setConfig(config.copy(maxStack = it)) },
+        // A phone shows a reminder as a notification, and the card only when one is tapped — but the
+        // count, the text size and how it looks are the same settings either way.
+        Section(if (features.cards) "Cards" else "Reminders") {
+            StepperRow(
+                title = if (features.cards) "Cards on screen at most" else "Reminders on screen at most",
+                color = Accents.pink,
+                value = config.maxStack.toString(),
+                range = 1..10,
+                current = config.maxStack,
+                onChange = { actions.setConfig(config.copy(maxStack = it)) },
+            )
+            RowDivider()
+            SettingsRow("Text size", Accents.grey) {
+                Slider(
+                    value = config.fontSize.toFloat(),
+                    onValueChange = {
+                        actions.setConfig(config.copy(fontSize = it.roundToInt().toDouble()))
+                    },
+                    valueRange = 14f..36f,
+                    modifier = Modifier.width(180.dp),
                 )
-                RowDivider()
-                SettingsRow("Text size", Accents.grey) {
-                    Slider(
-                        value = config.fontSize.toFloat(),
-                        onValueChange = {
-                            actions.setConfig(config.copy(fontSize = it.roundToInt().toDouble()))
-                        },
-                        valueRange = 14f..36f,
-                        modifier = Modifier.width(180.dp),
-                    )
-                    Text(
-                        config.fontSize.roundToInt().toString(),
-                        Modifier.width(26.dp),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.End,
-                    )
-                }
-                Box(Modifier.fillMaxWidth().padding(14.dp), contentAlignment = Alignment.Center) {
-                    CardView(
-                        card = preview,
-                        fontSize = config.fontSize,
-                        hint = config.hotkey.display(features.keyStyle),
-                        onTap = {},
-                        onClose = {},
-                        modifier = Modifier.widthIn(max = cardWidth),
-                    )
-                }
+                Text(
+                    config.fontSize.roundToInt().toString(),
+                    Modifier.width(26.dp),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.End,
+                )
+            }
+            Box(Modifier.fillMaxWidth().padding(14.dp), contentAlignment = Alignment.Center) {
+                CardView(
+                    card = preview,
+                    fontSize = config.fontSize,
+                    hint = hint(config, features),
+                    onTap = {},
+                    onClose = {},
+                    modifier = Modifier.widthIn(max = cardWidth),
+                )
             }
         }
     }
 }
+
+/** The shortcut, or the Count button on a phone, which is what else counts a zikr there. */
+private fun hint(config: Config, features: Features): String =
+    if (features.shortcut) config.hotkey.display(features.keyStyle) else COUNT_BUTTON
 
 /** Roughly what a card looks like at the chosen text size. */
 private val preview =

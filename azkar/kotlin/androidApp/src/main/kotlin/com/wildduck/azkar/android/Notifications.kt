@@ -47,3 +47,6 @@ fun counted(target: Int, done: Int): Boolean = counter(target, done).isComplete
 private fun counter(target: Int, done: Int): TapCounter = TapCounter(target).also { counter ->
     repeat(done) { counter.tap() }
 }
+
+/** How far the count has got, for the card a tapped reminder opens. */
+fun tapFraction(target: Int, done: Int): Double = counter(target, done).fraction

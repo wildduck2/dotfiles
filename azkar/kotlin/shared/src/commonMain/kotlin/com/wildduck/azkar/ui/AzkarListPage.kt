@@ -63,7 +63,10 @@ fun AzkarListPage(ui: UiState, features: Features, actions: AzkarActions) {
                 )
             }
             Spacer(Modifier.weight(1f))
-            OutlinedButton(onClick = { actions.editAzkar() }) { Text("Edit azkar.json") }
+            // The file is inside the app on a phone: there is nothing to open it with.
+            if (features.files) {
+                OutlinedButton(onClick = { actions.editAzkar() }) { Text("Edit azkar.json") }
+            }
         }
 
         LazyColumn(

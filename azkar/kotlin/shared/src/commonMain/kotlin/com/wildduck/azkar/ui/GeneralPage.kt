@@ -71,26 +71,41 @@ fun GeneralPage(ui: UiState, features: Features, actions: AzkarActions) {
             }
         }
 
-        Section(
-            footer = "Changes are saved to config.json straight away. Quitting stops reminders until you " +
-                "open Azkar again or next log in.",
-        ) {
-            Row(
-                Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-            ) {
-                OutlinedButton(onClick = { actions.perform(ProblemAction.ShowConfigFolder) }) {
-                    Text("Show the folder")
-                }
-                Spacer(Modifier.weight(1f))
-                TextButton(
-                    onClick = { actions.quit() },
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
+        // A phone keeps its files inside the app and stops it itself, so there is nothing to press here.
+        if (features.files || features.quit) {
+            Section(footer = closing(features)) {
+                Row(
+                    Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
-                    Text("Quit Azkar")
+                    if (features.files) {
+                        OutlinedButton(onClick = { actions.perform(ProblemAction.ShowConfigFolder) }) {
+                            Text("Show the folder")
+                        }
+                    }
+                    Spacer(Modifier.weight(1f))
+                    if (features.quit) {
+                        TextButton(
+                            onClick = { actions.quit() },
+                            colors = ButtonDefaults.textButtonColors(
+                                contentColor = MaterialTheme.colorScheme.error,
+                            ),
+                        ) {
+                            Text("Quit Azkar")
+                        }
+                    }
                 }
             }
+        } else {
+            Footnote(closing(features))
         }
     }
+}
+
+private fun closing(features: Features): String = if (features.quit) {
+    "Changes are saved to config.json straight away. Quitting stops reminders until you open Azkar again " +
+        "or next log in."
+} else {
+    "Changes are saved straight away. Reminders keep coming with Azkar closed; they stop if you force it to stop."
 }

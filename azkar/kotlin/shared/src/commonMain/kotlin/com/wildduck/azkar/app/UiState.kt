@@ -20,26 +20,40 @@ data class Features(
     val sound: Boolean = true,
     /** The waiting cards are counted next to the tray icon. */
     val showCount: Boolean = true,
+    /** The three files can be opened by hand; inside a phone app's storage they can't. */
+    val files: Boolean = true,
+    /** The app can be quit. On a phone the system decides when an app stops. */
+    val quit: Boolean = true,
 ) {
     companion object {
         val linux = Features(KeyStyle.Linux)
         val windows = Features(KeyStyle.Windows)
         val macOS = Features(KeyStyle.Apple)
-        val android =
-            Features(KeyStyle.Windows, shortcut = false, openAtLogin = false, cards = false, showCount = false)
-        val ios =
-            Features(KeyStyle.Apple, shortcut = false, openAtLogin = false, cards = false, showCount = false)
+        val android = phone(KeyStyle.Windows)
+        val ios = phone(KeyStyle.Apple)
+
+        /** A phone: notifications instead of cards, and no shortcut, login item, tray count, files or quitting. */
+        private fun phone(keyStyle: KeyStyle) = Features(
+            keyStyle,
+            shortcut = false,
+            openAtLogin = false,
+            cards = false,
+            showCount = false,
+            files = false,
+            quit = false,
+        )
     }
 }
 
 /** The things that can be wrong, in the order they are shown. One of each at a time. */
-enum class ProblemKey { Config, Azkar, Shortcut, Login, Notifications, Instance }
+enum class ProblemKey { Config, Azkar, Shortcut, Login, Notifications, Alarms, Instance }
 
 /** A button offered next to a problem, when something can be done about it. */
 enum class ProblemAction(val label: String) {
     ShowConfigFolder("Show the folder"),
     OpenShortcutSettings("Open keyboard settings"),
     OpenNotificationSettings("Open notification settings"),
+    OpenAlarmSettings("Allow exact alarms"),
     TryAgain("Try again"),
 }
 

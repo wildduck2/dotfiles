@@ -212,8 +212,9 @@ private class DesktopActions(
                 if (!openShortcutSettings(paths.os)) {
                     controller.setNotice("Change it in your desktop's keyboard settings.")
                 }
-            // Notifications are a phone thing; on the desktop a card is the reminder.
-            ProblemAction.OpenNotificationSettings -> open()
+            // Notifications and exact alarms are phone things: here a card is the reminder, and the app's
+            // own timer is as exact as it gets. Show the window, so at least something happens.
+            ProblemAction.OpenNotificationSettings, ProblemAction.OpenAlarmSettings -> open()
             ProblemAction.TryAgain -> retry()
         }
     }

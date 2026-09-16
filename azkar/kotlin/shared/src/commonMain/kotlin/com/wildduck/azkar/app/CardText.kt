@@ -27,3 +27,6 @@ fun cardHeader(card: Card, separator: String = "  ·  "): String {
 /** The zikr as one piece of text: what to say, with its note under it. */
 fun cardBody(zikr: Zikr): String =
     listOfNotNull(zikr.text, zikr.note?.takeIf { it.isNotBlank() }).joinToString("\n\n")
+
+/** What counts a zikr where there is no global shortcut: the Count button on the reminder. */
+const val COUNT_BUTTON = "زر العدّ"

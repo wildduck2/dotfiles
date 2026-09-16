@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The notification icon: a misbaha, the same ring of beads the desktop tray draws. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M9.90,4.50 a2.1,2.1 0 1,0 4.2,0 a2.1,2.1 0 1,0 -4.2,0 M15.20,6.70 a2.1,2.1 0 1,0 4.2,0 a2.1,2.1 0 1,0 -4.2,0 M17.40,12.00 a2.1,2.1 0 1,0 4.2,0 a2.1,2.1 0 1,0 -4.2,0 M15.20,17.30 a2.1,2.1 0 1,0 4.2,0 a2.1,2.1 0 1,0 -4.2,0 M9.90,19.50 a2.1,2.1 0 1,0 4.2,0 a2.1,2.1 0 1,0 -4.2,0 M4.60,17.30 a2.1,2.1 0 1,0 4.2,0 a2.1,2.1 0 1,0 -4.2,0 M2.40,12.00 a2.1,2.1 0 1,0 4.2,0 a2.1,2.1 0 1,0 -4.2,0 M4.60,6.70 a2.1,2.1 0 1,0 4.2,0 a2.1,2.1 0 1,0 -4.2,0" />
+</vector>

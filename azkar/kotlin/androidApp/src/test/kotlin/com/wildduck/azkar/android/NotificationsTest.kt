@@ -13,6 +13,13 @@ class NotificationsTest {
     private val card = Card(Zikr("سبحان الله", count = 3, note = "ثلاثًا"), Session.Sabah, position = 7, total = 25)
 
     @Test
+    fun theCardAndTheNotificationCountTheSame() {
+        assertEquals(0.0, tapFraction(3, 0), 1e-9, "nothing said yet")
+        assertEquals(1.0 / 3, tapFraction(3, 1), 1e-9)
+        assertEquals(1.0, tapFraction(3, 3), 1e-9, "and full once it is said")
+    }
+
+    @Test
     fun theChannelFollowsTheSoundSetting() {
         assertEquals(CHIME_CHANNEL, channel(sound = true), "a chime with the reminder")
         assertEquals(

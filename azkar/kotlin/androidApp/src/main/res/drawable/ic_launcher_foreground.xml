@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Inside the 66dp the launcher never crops. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FF45C8C0"
+        android:pathData="M47.70,31.50 a6.3,6.3 0 1,0 12.6,0 a6.3,6.3 0 1,0 -12.6,0 M63.61,38.09 a6.3,6.3 0 1,0 12.6,0 a6.3,6.3 0 1,0 -12.6,0 M70.20,54.00 a6.3,6.3 0 1,0 12.6,0 a6.3,6.3 0 1,0 -12.6,0 M63.61,69.91 a6.3,6.3 0 1,0 12.6,0 a6.3,6.3 0 1,0 -12.6,0 M47.70,76.50 a6.3,6.3 0 1,0 12.6,0 a6.3,6.3 0 1,0 -12.6,0 M31.79,69.91 a6.3,6.3 0 1,0 12.6,0 a6.3,6.3 0 1,0 -12.6,0 M25.20,54.00 a6.3,6.3 0 1,0 12.6,0 a6.3,6.3 0 1,0 -12.6,0 M31.79,38.09 a6.3,6.3 0 1,0 12.6,0 a6.3,6.3 0 1,0 -12.6,0" />
+</vector>

@@ -77,6 +77,30 @@ class WindowTest {
     }
 
     @Test
+    fun aPhoneIsOfferedOnlyWhatAPhoneCanDo() = runComposeUiTest {
+        val c = AzkarController(MemoryStorage(), Features.android) { TimeZone.UTC }
+        setContent {
+            val ui by c.ui.collectAsState()
+            AzkarTheme(dark = true) { AzkarWindow(ui, c.features, ControllerActions(c) { Instant.DISTANT_PAST }) }
+        }
+        onNodeWithText("Cards").performClick()
+        onNodeWithText("Count / close shortcut").assertDoesNotExist()
+        onNodeWithText("Reminders on screen at most").assertIsDisplayed()
+
+        onNodeWithText("Azkar").performClick()
+        onNodeWithText("Edit azkar.json").assertDoesNotExist()
+
+        onNodeWithText("General").performClick()
+        onNodeWithText("Sounds").assertIsDisplayed()
+        onNodeWithText("Open at login").assertDoesNotExist()
+        onNodeWithText("Show the folder").assertDoesNotExist()
+        onNodeWithText("Quit Azkar").assertDoesNotExist()
+
+        onNodeWithText("Today").performClick()
+        onNodeWithText("Dismiss all").assertDoesNotExist()
+    }
+
+    @Test
     fun theRemindersSwitchPausesAndResumes() = runComposeUiTest {
         val storage = MemoryStorage()
         val c = controller(storage)
