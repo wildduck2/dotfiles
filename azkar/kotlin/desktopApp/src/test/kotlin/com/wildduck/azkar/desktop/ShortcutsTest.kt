@@ -50,4 +50,16 @@ class ShortcutsTest {
         assertTrue(problem!!.isNotEmpty(), "and it explains why: $problem")
         shortcuts.close()
     }
+
+    @Test
+    fun theKeyboardSettingsToOffer() {
+        val linux = shortcutSettingsCommands(Os.Linux)
+        assertEquals(
+            listOf("gnome-control-center", "keyboard"),
+            linux.first(),
+            "GNOME first: that is where the portal's own shortcut dialog lives",
+        )
+        assertTrue(linux.any { "systemsettings" in it.first() }, "then KDE")
+        assertEquals(emptyList(), shortcutSettingsCommands(Os.Windows), "on Windows the app holds the shortcut itself")
+    }
 }

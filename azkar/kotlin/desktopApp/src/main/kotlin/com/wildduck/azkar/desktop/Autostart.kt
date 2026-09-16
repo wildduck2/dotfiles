@@ -126,3 +126,6 @@ fun autostartFor(paths: DesktopPaths, command: String): Autostart = when (paths.
 fun launcherCommand(): String =
     ProcessHandle.current().info().command().orElse(null)?.takeIf { "java" !in it.substringAfterLast('/') }
         ?: "azkar"
+
+/** A .deb installs its own menu entry; a folder you unzipped yourself has none, so the app writes one. */
+fun installedSystemWide(command: String): Boolean = command.startsWith("/usr/") || command.startsWith("/opt/")

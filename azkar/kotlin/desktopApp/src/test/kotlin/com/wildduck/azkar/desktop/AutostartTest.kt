@@ -69,4 +69,15 @@ class AutostartTest {
             "quoted, so the spaces in Program Files don't split the command",
         )
     }
+
+    @Test
+    fun aSystemInstallAlreadyHasItsMenuEntry() {
+        assertTrue(installedSystemWide("/usr/bin/azkar"), "installed from a .deb")
+        assertTrue(installedSystemWide("/opt/azkar/bin/azkar"), "where jpackage puts it")
+        assertTrue(
+            !installedSystemWide("/home/wildduck/Apps/azkar/bin/azkar"),
+            "a folder you unzipped yourself needs its own menu entry",
+        )
+        assertTrue(!installedSystemWide("azkar"), "and so does a plain development run")
+    }
 }

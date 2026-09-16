@@ -55,3 +55,28 @@ fun shortcutsFor(backend: ShortcutBackend, events: ShortcutEvents): Shortcuts = 
         "This desktop doesn't let an app take a global shortcut; click a card to count it.",
     )
 }
+
+/**
+ * The keyboard settings to try, in order, when the desktop owns the shortcut and the user wants to change it.
+ * GNOME first: that's where the portal's own shortcut dialog lives.
+ */
+fun shortcutSettingsCommands(os: Os): List<List<String>> = when (os) {
+    Os.Linux -> listOf(
+        listOf("gnome-control-center", "keyboard"),
+        listOf("systemsettings", "kcm_keys"),
+        listOf("systemsettings5", "kcm_keys"),
+        listOf("xfce4-keyboard-settings"),
+    )
+    // Nothing to open: on Windows the app holds the shortcut itself, and on macOS the app in apple/ does.
+    Os.Windows, Os.MacOS -> emptyList()
+}
+
+/** Opens the first keyboard settings panel this desktop has; false when there is none to open. */
+fun openShortcutSettings(os: Os): Boolean = shortcutSettingsCommands(os).any { command ->
+    try {
+        ProcessBuilder(command).start()
+        true
+    } catch (_: Exception) {
+        false
+    }
+}
