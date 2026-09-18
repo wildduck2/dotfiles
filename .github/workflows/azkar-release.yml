@@ -68,7 +68,14 @@ jobs:
       # installable .apk beside it would only be confused with.
       - name: Gather what people can actually install
         run: |
-          find packages -type f ! -name manifest.txt ! -name '*unsigned*' | sort >files.txt
+          find packages -type f ! -name manifest.txt ! -name '*unsigned*' | sort >all.txt
+          # Every runner has an Android SDK, so all three build the same .apk and hand back their own
+          # copy of it — and a release holds one asset per name, so three of them is a failed upload
+          # and, because gh deletes a release whose assets don't all land, no release at all. Keep the
+          # first of each name: sorted, that is the Linux one, from the job that installs the SDK on
+          # purpose and checks the .apk came out.
+          awk -F/ '!seen[$NF]++' all.txt >files.txt
+          comm -13 files.txt all.txt | sed 's/^/a duplicate, left out: /'
           cat files.txt
           test -s files.txt
       - name: Write the release notes
