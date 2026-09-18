@@ -1,0 +1,15 @@
+{
+  "intervalMinutes": 3,
+  "hotkey": "ctrl+alt+z",
+  "order": "random",
+  "repeatGeneral": false,
+  "maxStack": 5,
+  "sabah": { "start": "05:00", "end": "11:00" },
+  "masaa": { "start": "15:30", "end": "21:00" },
+  "quietHours": { "start": "23:30", "end": "05:00" },
+  "fontSize": 18,
+  "sound": true,
+  "showCount": true,
+  "openAtLogin": true,
+  "showWindowAtLogin": false
+}

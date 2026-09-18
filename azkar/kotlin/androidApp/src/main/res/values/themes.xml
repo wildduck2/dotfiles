@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Only the window behind Compose: the app itself is themed in shared/ui/Theme.kt. -->
+<resources>
+    <style name="Theme.Azkar" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/background_light</item>
+    </style>
+</resources>
