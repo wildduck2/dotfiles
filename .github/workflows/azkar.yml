@@ -4,20 +4,29 @@
 name: azkar
 
 on:
+  # Branches only. A release tag goes through azkar-release.yml, which calls this workflow itself,
+  # and two builds of the same commit would only race each other for the runners.
   push:
-    paths: ["azkar/**", ".github/workflows/azkar.yml"]
+    branches: ["**"]
+    paths: ["azkar/**", ".github/workflows/azkar*.yml"]
   pull_request:
-    paths: ["azkar/**", ".github/workflows/azkar.yml"]
+    paths: ["azkar/**", ".github/workflows/azkar*.yml"]
   workflow_dispatch:
+  workflow_call:
     inputs:
-      tag:
-        description: "Publish every package as a release under this tag, e.g. azkar-v1.0.0 (blank: just build)"
-        required: false
-        default: ""
+      version:
+        description: "What to name the packages, e.g. 1.2.0"
+        type: string
+        required: true
 
 concurrency:
   group: azkar-${{ github.ref }}
   cancel-in-progress: true
+
+# Every job runs the same package.sh a laptop runs, so this is the only place a release's version
+# differs from the one in the script.
+env:
+  AZKAR_VERSION: ${{ inputs.version || '1.0.0' }}
 
 jobs:
   linux:
@@ -144,25 +153,3 @@ jobs:
         with:
           name: azkar-macos
           path: azkar/dist/*
-
-  release:
-    name: Publish the packages as a release
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.tag != ''
-    needs: [linux, windows, apple]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          path: packages
-      # One manifest.txt per machine, all called the same thing: they stay in the artifacts.
-      - name: Publish
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          mapfile -t files < <(find packages -type f ! -name manifest.txt | sort)
-          printf '%s\n' "${files[@]}"
-          gh release create "${{ github.event.inputs.tag }}" --title "Azkar ${{ github.event.inputs.tag }}" \
-            --generate-notes "${files[@]}"
