@@ -4,6 +4,7 @@
 #   ./package.sh           every app this host can build
 #   ./package.sh macos     the menu-bar app     .dmg               (macOS)
 #   ./package.sh desktop   the desktop app      .dmg/.deb/.msi     (whichever the host makes)
+#   ./package.sh linux     the desktop app      .deb               (in Docker, from any host)
 #   ./package.sh android   the phone app        .apk               (needs an Android SDK)
 #   ./package.sh ios       both iPhone apps     .ipa + .app.zip    (needs Xcode and XcodeGen)
 #   ./package.sh clean     throw dist/ away
@@ -17,6 +18,12 @@ here="$(cd "$(dirname "$0")" && pwd)"
 dist="$here/dist"
 work="$dist/.work"  # derived data and staging; kept between runs, never packaged
 version="1.0.0"
+
+case "$(uname -m)" in
+  arm64 | aarch64) arch=arm64 ;;
+  x86_64 | amd64) arch=x64 ;;
+  *) arch="$(uname -m)" ;;
+esac
 
 case "$(uname -s)" in
   Darwin) host=macos ;;
@@ -48,7 +55,7 @@ package_macos() {
   cp -R "$here/apple/.build/Azkar.app" "$staging/"
   # So the .dmg opens as the drag-to-install window everyone expects.
   ln -s /Applications "$staging/Applications"
-  local out="$dist/azkar-$version-macos.dmg"
+  local out="$dist/azkar-$version-macos-$arch.dmg"
   rm -f "$out"
   hdiutil create -volname Azkar -srcfolder "$staging" -ov -quiet -format UDZO "$out"
   record "$out" "the menu-bar app — open it and drag Azkar to Applications"
@@ -67,11 +74,10 @@ package_desktop() {
       return
       ;;
   esac
-  local other
-  for other in "macos .dmg:macos" "linux .deb:linux" "windows .msi:windows"; do
-    [ "${other#*:}" = "$host" ] ||
-      skip "desktop ${other%%:*}" "jpackage only builds for the OS it runs on — run this on ${other#*:}"
-  done
+  # jpackage only ever makes an installer for the OS it is running on.
+  [ "$host" = macos ] || skip "desktop .dmg" "jpackage only builds for the OS it runs on — run this on a Mac"
+  [ "$host" = linux ] || skip "desktop .deb" "jpackage only builds for the OS it runs on — or ./package.sh linux, in Docker"
+  [ "$host" = windows ] || skip "desktop .msi" "jpackage only builds for the OS it runs on — run this on Windows"
 
   # A Mac has two Azkars — the menu-bar app is the macOS one, so this is the one that says so.
   local name="$host"
@@ -85,7 +91,7 @@ package_desktop() {
     echo "package.sh: $task produced no .$ext" >&2
     exit 1
   }
-  local out="$dist/azkar-$version-$name.$ext"
+  local out="$dist/azkar-$version-$name-$arch.$ext"
   cp "$src" "$out"
   record "$out" "the desktop app, installed the way $host installs things"
 
@@ -94,7 +100,7 @@ package_desktop() {
     local appdir
     appdir="$(newest "$binaries/app/*")"
     if [ -n "$appdir" ]; then
-      out="$dist/azkar-$version-$name-portable.zip"
+      out="$dist/azkar-$version-$name-$arch-portable.zip"
       rm -f "$out"
       (cd "$(dirname "$appdir")" && zip -qry "$out" "$(basename "$appdir")")
       record "$out" "the desktop app with no installer — unzip it and run it"
@@ -102,6 +108,105 @@ package_desktop() {
   else
     skip "desktop portable .zip" "no zip command on this machine"
   fi
+}
+
+# ---------------------------------------------------------------- the desktop app, in a container
+
+# jpackage can't cross-build, but Docker can hand it a real Linux, so one .deb comes out of any
+# machine that runs Docker. AZKAR_PLATFORM picks the architecture; linux/amd64 is the default,
+# because that is what most Linux desktops are, and linux/arm64 suits a Pi or an ARM VM.
+#
+# Building an architecture the machine doesn't have means emulation, and emulation is not complete:
+# on an Apple Silicon Mac, tar (and so dpkg-deb, and so jpackage) hits syscalls the translator
+# doesn't implement. Hence the preflight below — better a wasted second than a wasted ten minutes.
+package_linux() {
+  local platform="${AZKAR_PLATFORM:-linux/amd64}"
+  local target
+  case "$platform" in
+    */amd64) target=x64 ;;
+    */arm64) target=arm64 ;;
+    *) target="${platform##*/}" ;;
+  esac
+  if ! have docker; then
+    skip "linux .deb" "Docker isn't installed — or run ./package.sh desktop on a Linux box"
+    return
+  fi
+  if ! docker info >/dev/null 2>&1; then
+    skip "linux .deb" "Docker is installed but not running"
+    return
+  fi
+
+  # Kotlin and jpackage want roughly a 3g heap between them, and Docker Desktop's VM defaults to
+  # less. Over that limit the kernel kills the Gradle daemon with no message at all, three minutes
+  # in, so the size is worth checking while it still costs nothing.
+  local vm_mb
+  vm_mb="$(docker info --format '{{.MemTotal}}' 2>/dev/null | awk '{print int($1 / 1048576)}')"
+  if [ -n "$vm_mb" ] && [ "$vm_mb" -lt 3072 ]; then
+    skip "linux .deb" "Docker's VM has ${vm_mb}M and this build needs ~4G: raise it in Docker Desktop, Settings > Resources > Memory"
+    return
+  fi
+
+  local image="azkar-linux-build:$target"
+  echo "Building the Linux packages for $platform in Docker..."
+  # fakeroot and dpkg-deb are what jpackage shells out to for a .deb; binutils is jlink's objcopy.
+  docker build --platform "$platform" -t "$image" - <<'DOCKERFILE'
+FROM eclipse-temurin:21-jdk
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends binutils fakeroot zip \
+ && rm -rf /var/lib/apt/lists/*
+DOCKERFILE
+
+  # Can this platform actually make a .deb here? dpkg-deb shells out to tar, which is exactly what
+  # emulation breaks, and jpackage only reaches dpkg-deb after a full build.
+  if ! docker run --rm --platform "$platform" "$image" bash -euc '
+    mkdir -p /preflight/DEBIAN
+    printf "Package: p\nVersion: 1\nArchitecture: all\nMaintainer: a@b\nDescription: p\n" >/preflight/DEBIAN/control
+    fakeroot dpkg-deb --build /preflight /tmp/p.deb
+  ' >/dev/null 2>&1; then
+    skip "linux .deb" "$platform can't run dpkg-deb on this machine — emulation gap; try AZKAR_PLATFORM=linux/arm64, or build on real Linux"
+    return
+  fi
+
+  docker run --rm --platform "$platform" \
+    -v "$here:/src:ro" -v "$dist:/out" -v "azkar-gradle-$target:/root/.gradle" \
+    -e VERSION="$version" -e TARGET="$target" -e OWNER="$(id -u):$(id -g)" \
+    "$image" bash -euc '
+      # A copy, so the Mac build under kotlin/*/build never meets the Linux one. cp, not tar:
+      # tar is one of the things emulation breaks, and this has to work on an emulated arch too.
+      mkdir -p /work
+      cp -a /src/kotlin /work/kotlin
+      cp -a /src/.config /work/.config
+      rm -rf /work/kotlin/build /work/kotlin/.gradle /work/kotlin/.kotlin /work/kotlin/*/build
+      cd /work/kotlin
+      # The wrapper gives its own download 10 seconds and no retries; a 150MB Gradle over a slow
+      # link wants both. Edited in the copy, so the checked-in wrapper keeps its own settings.
+      props=gradle/wrapper/gradle-wrapper.properties
+      sed -i "s/^networkTimeout=.*/networkTimeout=180000/; s/^retries=.*/retries=3/" $props
+      grep -q "^networkTimeout=" $props || echo "networkTimeout=180000" >> $props
+      grep -q "^retries=" $props || echo "retries=3" >> $props
+      # gradle.properties asks for a 3g heap, which is more than Docker gives its whole VM by
+      # default: the daemon then dies on startup. The copy gets a heap sized to this machine, and
+      # compiles Kotlin in the same JVM rather than starting a second one beside it.
+      mem=$(awk "/MemTotal/ {print int(\$2 / 1024)}" /proc/meminfo)
+      heap=$((mem * 55 / 100))
+      [ "$heap" -gt 3072 ] && heap=3072
+      [ "$heap" -lt 640 ] && heap=640
+      echo "container memory ${mem}M, Gradle heap ${heap}M"
+      sed -i "s/^org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx${heap}m -XX:MaxMetaspaceSize=384m -Dfile.encoding=UTF-8/" gradle.properties
+      ./gradlew --console=plain --no-daemon --max-workers=2 \
+        -Pkotlin.compiler.execution.strategy=in-process \
+        :desktopApp:packageDeb :desktopApp:createDistributable
+      binaries=desktopApp/build/compose/binaries/main
+      deb="/out/azkar-$VERSION-linux-$TARGET.deb"
+      portable="/out/azkar-$VERSION-linux-$TARGET-portable.zip"
+      cp "$(ls $binaries/deb/*.deb | head -1)" "$deb"
+      rm -f "$portable"
+      (cd $binaries/app && zip -qry "$portable" *)
+      # Written by root in the container; handed back to whoever ran the script.
+      chown "$OWNER" "$deb" "$portable"
+    '
+  record "$dist/azkar-$version-linux-$target.deb" "the desktop app for Linux ($target) — sudo apt install ./it"
+  record "$dist/azkar-$version-linux-$target-portable.zip" "the same with no installer — unzip it, run bin/azkar"
 }
 
 # ---------------------------------------------------------------- the phone app (Android)
@@ -226,7 +331,7 @@ summary() {
     for entry in "${made[@]}"; do
       file="${entry%%|*}"
       what="${entry#*|}"
-      printf '  %-42s %6s  %s\n' "$(basename "$file")" "$(du -h "$file" | cut -f1 | tr -d ' ')" "$what"
+      printf '  %-46s %6s  %s\n' "$(basename "$file")" "$(du -h "$file" | cut -f1 | tr -d ' ')" "$what"
     done
   fi
   if [ ${#missing[@]} -gt 0 ]; then
@@ -248,7 +353,7 @@ case "${1:-all}" in
     package_ios
     summary
     ;;
-  macos | desktop | android | ios)
+  macos | desktop | linux | android | ios)
     mkdir -p "$dist" "$work"
     "package_$1"
     summary
@@ -258,7 +363,7 @@ case "${1:-all}" in
     echo "dist/ removed."
     ;;
   *)
-    sed -n '2,13p' "$0"
+    sed -n '2,14p' "$0"
     exit 1
     ;;
 esac

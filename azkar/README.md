@@ -215,11 +215,11 @@ throw it away freely) next to a `manifest.txt` of sha256 sums.
 
 What comes out, by machine:
 
-- **macOS** — `azkar-1.0.0-macos.dmg`, the menu-bar app, as the drag-to-Applications window; and the
-  desktop app as `azkar-1.0.0-macos-desktop.dmg`. (Two different Azkars: the menu-bar one is the macOS
-  app, the desktop one is the Compose app running on a Mac for development.)
-- **Linux** — `azkar-1.0.0-linux.deb`.
-- **Windows** — `azkar-1.0.0-windows.msi`.
+- **macOS** — `azkar-1.0.0-macos-arm64.dmg`, the menu-bar app, as the drag-to-Applications window; and
+  the desktop app as `azkar-1.0.0-macos-desktop-arm64.dmg`. (Two different Azkars: the menu-bar one is
+  the macOS app, the desktop one is the Compose app running on a Mac for development.)
+- **Linux** — `azkar-1.0.0-linux-x64.deb`.
+- **Windows** — `azkar-1.0.0-windows-x64.msi`.
 - **Either desktop** — a `-portable.zip` beside the installer: the same app with no installer and no
   root, unzip it and run it.
 - **Any machine with an Android SDK** — `azkar-1.0.0-android.apk`, signed with the debug key so it
@@ -227,10 +227,33 @@ What comes out, by machine:
 - **A Mac with Xcode** — `azkar-1.0.0-ios.ipa` and `azkar-1.0.0-ios-compose.ipa`, plus a
   `-simulator.app.zip` for each.
 
-No machine makes the whole set, and the script doesn't pretend otherwise: jpackage only builds an
-installer for the OS it runs on, and iOS needs Xcode rather than the command-line tools. Everything the
-host couldn't make is listed at the end of the run with the reason, so a Mac says in so many words that
-the `.deb` wants a Linux box and the `.msi` wants a PC.
+Every desktop package carries the architecture it was built for, because an arm64 `.dmg` will not run on
+an Intel Mac and saying so in the filename is cheaper than finding out later.
+
+No machine makes the whole set in one go, and the script doesn't pretend otherwise: jpackage only builds
+an installer for the OS it runs on, and iOS needs Xcode rather than the command-line tools. Everything
+the host couldn't make is listed at the end of the run with the reason — and where there is a way round
+it, the reason says so.
+
+### Linux without a Linux machine
+
+`./package.sh linux` builds the `.deb` inside a container, so a Mac or a PC can make one:
+
+```sh
+./package.sh linux                               # linux/amd64, which is what most Linux desktops are
+AZKAR_PLATFORM=linux/arm64 ./package.sh linux    # for an ARM box instead (a Pi, an ARM VM)
+```
+
+It needs Docker running **with about 4G of memory** — Docker Desktop's default VM is smaller than the
+heap `gradle.properties` asks for, and over that limit the kernel kills the Gradle daemon without a word,
+so the script checks the size first and says so rather than failing three minutes in (Settings >
+Resources > Memory). Inside the container the heap is sized from `/proc/meminfo` rather than taken from
+`gradle.properties`, since the container is usually the smaller machine.
+
+On an Apple Silicon Mac the amd64 build is emulated, so the first run is slow: Gradle fetches everything
+again inside the container, into an `azkar-gradle-x64` volume that later runs reuse. The container builds
+from a copy of the tree, so its Linux `build/` folders never meet the Mac's — copied with `cp`, because
+`tar` is one of the things emulation breaks.
 
 The two `.ipa`s are unsigned — Xcode builds them without a developer certificate, and a phone won't run
 them until they are re-signed (Xcode, or a sideloading tool). The simulator builds need nothing:
