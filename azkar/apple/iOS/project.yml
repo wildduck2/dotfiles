@@ -38,6 +38,8 @@ targets:
         # Planning the next reminders is all the app asks to do in the background.
         UIBackgroundModes: [fetch]
         BGTaskSchedulerPermittedIdentifiers: [com.wildduck.azkar.refresh]
+    # A shared scheme, so `xcodebuild -scheme Azkar` works without opening Xcode first.
+    scheme: {}
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.wildduck.azkar

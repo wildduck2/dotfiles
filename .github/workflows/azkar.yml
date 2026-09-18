@@ -1,6 +1,6 @@
-# Azkar on every platform it ships to: the Swift apps on macOS, and the Kotlin apps for Linux,
-# Windows, Android and iOS. jpackage only builds for the machine it runs on, so each installer has
-# its own job.
+# Azkar on every platform it ships to: the Swift apps on macOS and iOS, and the Kotlin apps for
+# Linux, Windows, Android and iOS. jpackage only builds for the machine it runs on, so each
+# installer has its own job.
 name: azkar
 
 on:
@@ -79,7 +79,7 @@ jobs:
           path: azkar/kotlin/desktopApp/build/compose/binaries/main/msi/*.msi
 
   apple:
-    name: macOS — Swift tests and iOS
+    name: macOS — Swift tests and both iPhone apps
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
@@ -95,3 +95,24 @@ jobs:
       - name: Kotlin tests, including the iOS simulator
         run: ./gradlew :shared:jvmTest :shared:iosSimulatorArm64Test :shared:compileKotlinIosArm64
         working-directory: azkar/kotlin
+      # Neither .xcodeproj is checked in: each is generated from the project.yml beside it.
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      # Draws the icon both apps share, checks the Swift sources, and generates apple/iOS/Azkar.xcodeproj.
+      - name: Check the SwiftUI iPhone app
+        run: ./build.sh ios
+        working-directory: azkar/apple
+      - name: Build the SwiftUI iPhone app
+        run: >
+          xcodebuild build -project Azkar.xcodeproj -scheme Azkar
+          -sdk iphonesimulator -destination 'generic/platform=iOS Simulator'
+          CODE_SIGNING_ALLOWED=NO
+        working-directory: azkar/apple/iOS
+      # Its build phase runs Gradle for Shared.framework, so it needs the JDK this job already has.
+      - name: Build the Compose iPhone app
+        run: |
+          xcodegen generate
+          xcodebuild build -project AzkarKMP.xcodeproj -scheme AzkarKMP \
+            -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO
+        working-directory: azkar/kotlin/iosApp

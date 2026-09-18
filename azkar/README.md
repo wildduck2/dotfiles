@@ -41,8 +41,8 @@ cd kotlin
 
 Gradle runs on JDK 17+ and downloads the JDK 21 toolchain if it's missing. jpackage only builds for the
 machine it runs on, which is why CI has one job per platform (`.github/workflows/azkar.yml`, at the root of
-this repo: Linux tests + `.deb` + the Android `.apk`, Windows tests + `.msi`, macOS Swift tests + the iOS
-simulator tests).
+this repo: Linux tests + `.deb` + the Android `.apk`, Windows tests + `.msi`, macOS Swift tests, the iOS
+simulator tests and both iPhone apps).
 
 Started with `--background` — what the login entry does — Azkar goes straight to the tray: beads, with the
 number of waiting cards in the middle, and the same menu as 📿 on macOS (status line, today's progress,
@@ -137,12 +137,66 @@ which belongs to all three apps.
   counts down to the next reminder.
 - After a reboot, reminders come back without opening the app.
 
+## iPhone
+
+There are two iPhone apps, and they can be installed side by side: **`apple/iOS`** (SwiftUI, on the same
+`apple/Core` the Mac app is built from, `com.wildduck.azkar`) and **`kotlin/iosApp`** (the shared Compose
+window, on `kotlin/shared`, `com.wildduck.azkar.kmp`, shown as "Azkar KMP"). They read and write the same
+files, so a config.json from either one means the same thing.
+
+```sh
+apple/build.sh ios   # check the SwiftUI app, draw the icon, generate apple/iOS/Azkar.xcodeproj
+cd kotlin/iosApp && xcodegen generate   # and the Compose one (needs `brew install xcodegen`)
+```
+
+Open either `.xcodeproj` in Xcode and run it on a simulator or a phone; both are also built for the
+simulator in CI. Neither project is checked in — each is generated from the `project.yml` beside it.
+
+A reminder is a notification: the heading ("أذكار الصباح · 7 من 25") and the zikr. Tapping it opens that
+zikr as a full-screen card, and tapping the card counts one repetition — ×3 goes 1/3, 2/3, and the last one
+closes it. iOS won't let a delivered notification carry a Count button that does arithmetic, so counting
+happens on the card.
+
+Nothing ticks on a phone. iOS holds at most **64** pending notifications per app, so on every launch, when
+the app comes back to the front, after a settings change, after "Show a zikr now", and whenever iOS grants a
+background refresh, Azkar does the same three things: take today's progress from the reminders that have
+already fired, plan the next 64 (up to 48 hours ahead), and hand them over. With a three-minute interval
+that is about three hours of reminders, which is why the last one says **"Open Azkar to keep reminders
+coming"**.
+
+### Where the files are
+
+`config.json`, `state.json` and `plan.json` live in Application Support inside the app's own container,
+in the same format as everywhere else; `azkar.json` ships in the app. `plan.json` is the reminders already
+handed to iOS — it is a convenience, not a record, and a missing or broken one simply means no plan yet.
+That is why the phone's settings pages have no "Show the folder", no "Edit azkar.json" and no "Open at
+login": there is nothing there to open.
+
+### What the phone asks for
+
+| permission             | asked                        | refused                                               |
+| ---------------------- | ---------------------------- | ----------------------------------------------------- |
+| notifications          | the first time the app plans | the Today page says so, with a button to Settings     |
+| Background App Refresh | granted by installing        | reminders still come; they just stop between openings |
+
+### What to check on a phone
+
+- A reminder arrives an interval after the app is opened, and keeps coming with the app closed.
+- Tapping a reminder opens the card: tapping it counts, **×** closes it, and the count picks up where the
+  badge says it is.
+- Pause, quiet hours and the morning/evening windows behave as on the desktop, and the Today page counts
+  down to the next reminder.
+- Refusing notifications shows the "Needs attention" row, and allowing them again in Settings clears it
+  the next time the app is opened.
+- Both apps installed at once don't tread on each other: two icons, two containers, two sets of reminders.
+
 ## Install
 
 ```sh
 apple/build.sh            # run tests, build, install to ~/Applications, start now and at login
 apple/build.sh test       # tests only
 apple/build.sh uninstall  # stop and remove the app + LaunchAgent (config stays)
+apple/build.sh ios        # check the iPhone app and generate its Xcode project (see iPhone)
 ```
 
 `apple/build.sh` also runs `stow azkar` if `~/.config/azkar` doesn't exist yet. Only `.config/azkar`
@@ -201,6 +255,14 @@ apple/                  the Swift apps
     TapCounter          ×N repetitions on one card
     Plan                the reminders ahead, for iPhone notifications
   CoreTests/            Core tests, one file per area
+  iOS/                  the SwiftUI iPhone app (project.yml -> Azkar.xcodeproj, XcodeGen)
+    App/
+      AzkarApp          @main, the notification delegate, the background refresh
+      Model             the app without a screen: files, plan, progress, problems, actions
+      Files             config.json, state.json and plan.json in Application Support
+      Reminders         UNUserNotificationCenter: permission, and a plan as notifications
+      Pages             Today, Schedule, Reminders, Azkar, General
+      CardSheet         the card a tapped reminder opens; Components: rows, tiles, bindings
   macOS/
     main.swift          entry point (single instance; a second launch opens the running one's window)
     App/                AppKit
@@ -225,6 +287,9 @@ kotlin/                 Kotlin Multiplatform (Gradle)
                         Theme, Components, ShortcutRecorder
     src/commonTest/     the same test cases as apple/CoreTests, plus the controller, the cards and the window
     src/jvmTest/        ShippedFilesTest: the real .config/azkar files
+    src/iosMain/        the parts of the iPhone app only iOS has: IosApp (the controller, the plan
+                        and the notifications), IosStorage, Reminders, NotificationDelegate,
+                        Entry (startAzkar + the Compose view controller)
   desktopApp/           the Windows and Linux app (Compose for Desktop, packaged by jpackage)
     Main                --background, single instance, the tray, the window and one window per card
     Loop                one tick a second: reload the files, refresh the status, show the next zikr
@@ -242,6 +307,7 @@ kotlin/                 Kotlin Multiplatform (Gradle)
     Alarms              one AlarmManager alarm at a time (exact when the phone allows it)
     Notifier            posting a reminder: the two channels, the badge, the progress and the buttons
     Notifications, Reminders, Cards, AndroidStorage, Prefs
+  iosApp/               the Swift shell around the Compose one (project.yml -> AzkarKMP.xcodeproj)
 docs/superpowers/       design spec and implementation plans for the Swift + Kotlin Multiplatform apps
 ```
 
