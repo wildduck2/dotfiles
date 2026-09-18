@@ -40,9 +40,9 @@ import androidx.compose.ui.unit.dp
 import com.wildduck.azkar.core.formatClock
 import com.wildduck.azkar.core.parseClock
 
-/** The coloured square that marks a row, the way System Settings does. */
+/** The coloured square that marks a row, the way System Settings does, with its symbol if it has one. */
 @Composable
-fun Tile(color: Color, modifier: Modifier = Modifier) {
+fun Tile(color: Color, modifier: Modifier = Modifier, glyph: Glyph? = null) {
     Box(
         modifier
             .size(24.dp)
@@ -50,7 +50,10 @@ fun Tile(color: Color, modifier: Modifier = Modifier) {
                 Brush.verticalGradient(listOf(color, color.copy(alpha = 0.72f))),
                 RoundedCornerShape(7.dp),
             ),
-    )
+        contentAlignment = Alignment.Center,
+    ) {
+        if (glyph != null) GlyphMark(glyph)
+    }
 }
 
 /** The explanation under a section. */

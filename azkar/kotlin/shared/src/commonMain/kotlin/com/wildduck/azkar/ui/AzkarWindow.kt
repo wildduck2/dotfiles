@@ -33,12 +33,12 @@ import com.wildduck.azkar.app.Features
 import com.wildduck.azkar.app.UiState
 
 /** The window's pages, in the order they are listed. */
-enum class AzkarTab(val title: String, val color: Color) {
-    Today("Today", Accents.teal),
-    Schedule("Schedule", Accents.orange),
-    Cards("Cards", Accents.pink),
-    Azkar("Azkar", Accents.purple),
-    General("General", Accents.grey),
+enum class AzkarTab(val title: String, val color: Color, val glyph: Glyph) {
+    Today("Today", Accents.teal, Glyph.Clock),
+    Schedule("Schedule", Accents.orange, Glyph.Calendar),
+    Cards("Cards", Accents.pink, Glyph.Cards),
+    Azkar("Azkar", Accents.purple, Glyph.List),
+    General("General", Accents.grey, Glyph.Sliders),
 }
 
 @Composable
@@ -70,7 +70,7 @@ fun AzkarWindow(
                             NavigationBarItem(
                                 selected = page == tab,
                                 onClick = { tab = page },
-                                icon = { Tile(page.color) },
+                                icon = { Tile(page.color, glyph = page.glyph) },
                                 label = { Text(page.title) },
                             )
                         }
@@ -118,7 +118,7 @@ private fun SidebarItem(page: AzkarTab, selected: Boolean, onClick: () -> Unit) 
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        Tile(page.color)
+        Tile(page.color, glyph = page.glyph)
         Text(page.title, style = MaterialTheme.typography.bodyLarge)
     }
 }
