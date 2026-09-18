@@ -202,6 +202,40 @@ apple/build.sh ios        # check the iPhone app and generate its Xcode project 
 `apple/build.sh` also runs `stow azkar` if `~/.config/azkar` doesn't exist yet. Only `.config/azkar`
 is linked into `$HOME` (see `.stow-local-ignore`). Needs the Xcode command-line tools (`swiftc`).
 
+## Packaging
+
+`./package.sh` builds every app this machine can build and leaves the results in `dist/` (git-ignored,
+throw it away freely) next to a `manifest.txt` of sha256 sums.
+
+```sh
+./package.sh          # everything this host can build
+./package.sh macos    # or one at a time: macos, desktop, android, ios
+./package.sh clean    # throw dist/ away
+```
+
+What comes out, by machine:
+
+- **macOS** — `azkar-1.0.0-macos.dmg`, the menu-bar app, as the drag-to-Applications window; and the
+  desktop app as `azkar-1.0.0-macos-desktop.dmg`. (Two different Azkars: the menu-bar one is the macOS
+  app, the desktop one is the Compose app running on a Mac for development.)
+- **Linux** — `azkar-1.0.0-linux.deb`.
+- **Windows** — `azkar-1.0.0-windows.msi`.
+- **Either desktop** — a `-portable.zip` beside the installer: the same app with no installer and no
+  root, unzip it and run it.
+- **Any machine with an Android SDK** — `azkar-1.0.0-android.apk`, signed with the debug key so it
+  installs as it is, and a release APK next to it for signing with your own.
+- **A Mac with Xcode** — `azkar-1.0.0-ios.ipa` and `azkar-1.0.0-ios-compose.ipa`, plus a
+  `-simulator.app.zip` for each.
+
+No machine makes the whole set, and the script doesn't pretend otherwise: jpackage only builds an
+installer for the OS it runs on, and iOS needs Xcode rather than the command-line tools. Everything the
+host couldn't make is listed at the end of the run with the reason, so a Mac says in so many words that
+the `.deb` wants a Linux box and the `.msi` wants a PC.
+
+The two `.ipa`s are unsigned — Xcode builds them without a developer certificate, and a phone won't run
+them until they are re-signed (Xcode, or a sideloading tool). The simulator builds need nothing:
+`xcrun simctl install booted Azkar.app`.
+
 ## `~/.config/azkar/config.json`
 
 | key               | default                                  | notes                                            |
@@ -243,6 +277,7 @@ typo نَبَيِّنَا → نَبِيِّنَا, the three Quls split into se
 ## Layout
 
 ```
+package.sh              every app this machine can build, into dist/ (see Packaging)
 apple/                  the Swift apps
   build.sh              build, test, install (see Install)
   Core/                 pure logic, no AppKit (tested by CoreTests)
