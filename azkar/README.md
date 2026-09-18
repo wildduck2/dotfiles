@@ -372,7 +372,7 @@ kotlin/                 Kotlin Multiplatform (Gradle)
     app/                the app without a screen: AzkarController (files, progress, status, problems),
                         CardStack (cards and where they go), StateFile, Storage, Features, KeyNames
     ui/                 the Compose UI: AzkarWindow (Today, Schedule, Cards, Azkar, General), CardView,
-                        Theme, Components, ShortcutRecorder
+                        Theme, Components, Glyphs (the symbol in each tab's tile), ShortcutRecorder
     src/commonTest/     the same test cases as apple/CoreTests, plus the controller, the cards and the window
     src/jvmTest/        ShippedFilesTest: the real .config/azkar files
     src/iosMain/        the parts of the iPhone app only iOS has: IosApp (the controller, the plan
