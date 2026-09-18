@@ -1,0 +1,3 @@
+# Windows CI checks this out too, where git would hand every text file CRLF. The apps write "\n"
+# on every OS and the tests compare config.json byte for byte, so keep the JSON as it is committed.
+*.json text eol=lf

@@ -75,9 +75,12 @@ class FileStorageTest {
 
     @Test
     fun aFolderItCannotWriteToIsReported() {
+        // A plain file where the folder should be: no OS makes a directory inside one of those.
+        val blocker = dir.resolve("not-a-folder")
+        blocker.writeText("")
         val problems = mutableListOf<String>()
-        val readOnly = DesktopPaths(Os.Linux, mapOf("XDG_CONFIG_HOME" to "/azkar-no-such-root"), dir)
-        val storage = FileStorage(readOnly, onProblem = { problems += it }) { null }
+        val blocked = DesktopPaths(Os.Linux, mapOf("XDG_CONFIG_HOME" to blocker.toString()), dir)
+        val storage = FileStorage(blocked, onProblem = { problems += it }) { null }
         storage.writeConfig("{}")
         assertEquals(1, problems.size, "the app says so instead of falling over: $problems")
         assertTrue("config.json" in problems[0], "and which file it was: ${problems[0]}")

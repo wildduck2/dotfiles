@@ -37,9 +37,12 @@ class DesktopPaths(val os: Os, private val env: Map<String, String?>, private va
     val azkarFile: Path get() = configDir / "azkar.json"
     val stateFile: Path get() = stateDir / "state.json"
 
-    // The XDG spec says a relative path is invalid and must be ignored.
+    // The XDG spec says a relative path is invalid and must be ignored. Absolute is read the way the
+    // spec means it, not the way the host would: "/tmp/cfg" is a path on Linux even when the JVM
+    // running this is on Windows, where java.nio wants a drive letter before it calls anything absolute.
     private fun xdg(name: String, fallback: String): Path =
-        env[name]?.takeIf { it.isNotBlank() }?.let(::Path)?.takeIf { it.isAbsolute } ?: (home / fallback)
+        env[name]?.takeIf { it.isNotBlank() && (it.startsWith("/") || Path(it).isAbsolute) }?.let(::Path)
+            ?: (home / fallback)
 
     private fun appData(name: String, fallback: String): Path =
         env[name]?.takeIf { it.isNotBlank() }?.let(::Path) ?: (home / "AppData" / fallback)

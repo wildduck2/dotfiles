@@ -1,6 +1,9 @@
 # Only .config/azkar is linked into $HOME; the rest is the app's source.
 ^/\.stow-local-ignore
 ^/\.gitignore
+^/\.gitattributes
+^/package\.sh
+^/dist
 ^/apple
 ^/kotlin
 ^/docs
