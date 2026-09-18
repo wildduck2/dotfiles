@@ -42,7 +42,8 @@ cd kotlin
 Gradle runs on JDK 17+ and downloads the JDK 21 toolchain if it's missing. jpackage only builds for the
 machine it runs on, which is why CI has one job per platform (`.github/workflows/azkar.yml`, at the root of
 this repo: Linux tests + `.deb` + the Android `.apk`, Windows tests + `.msi`, macOS Swift tests, the iOS
-simulator tests and both iPhone apps).
+simulator tests and both iPhone apps). Each job runs the same `./package.sh` a laptop does and keeps what
+came out, so between the three of them every package exists — see Packaging.
 
 Started with `--background` — what the login entry does — Azkar goes straight to the tray: beads, with the
 number of waiting cards in the middle, and the same menu as 📿 on macOS (status line, today's progress,
@@ -234,6 +235,13 @@ No machine makes the whole set in one go, and the script doesn't pretend otherwi
 an installer for the OS it runs on, and iOS needs Xcode rather than the command-line tools. Everything
 the host couldn't make is listed at the end of the run with the reason — and where there is a way round
 it, the reason says so.
+
+Three machines between them do make the whole set, which is what CI is for: every job runs this same
+script and uploads what it produced, so a green run has a `azkar-linux`, `azkar-windows` and
+`azkar-macos` artifact covering all six. On CI a skip is a failure rather than a note, since every
+package that job builds is one the runner is equipped for. To publish them, run the workflow by hand
+(Actions > azkar > Run workflow) and give it a tag like `azkar-v1.0.0`: the release job collects all
+three artifacts into one GitHub release.
 
 ### Linux without a Linux machine
 

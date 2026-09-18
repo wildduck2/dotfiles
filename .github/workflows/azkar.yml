@@ -9,6 +9,11 @@ on:
   pull_request:
     paths: ["azkar/**", ".github/workflows/azkar.yml"]
   workflow_dispatch:
+    inputs:
+      tag:
+        description: "Publish every package as a release under this tag, e.g. azkar-v1.0.0 (blank: just build)"
+        required: false
+        default: ""
 
 concurrency:
   group: azkar-${{ github.ref }}
@@ -40,16 +45,24 @@ jobs:
       # The shared UI tests draw for real, so they need a display to draw on.
       - name: Tests
         run: xvfb-run -a ./gradlew :shared:jvmTest :desktopApp:test :androidApp:testDebugUnitTest
+      # The same command as on a laptop, so the files are named the same wherever they were built.
       - name: Package
-        run: ./gradlew :desktopApp:packageDeb :androidApp:assembleDebug
+        run: ./package.sh
+        working-directory: azkar
+      # package.sh reports what it couldn't build and carries on, which is what you want on a
+      # laptop and not what you want here: on this runner every one of these is buildable, so a
+      # missing file is a broken build, not a machine without the tools.
+      - name: Check every package was made
+        shell: bash
+        run: |
+          for pattern in 'azkar-*-linux-*.deb' 'azkar-*-android.apk'; do
+            ls dist/$pattern > /dev/null || { echo "missing: $pattern"; exit 1; }
+          done
+        working-directory: azkar
       - uses: actions/upload-artifact@v4
         with:
-          name: azkar-linux-deb
-          path: azkar/kotlin/desktopApp/build/compose/binaries/main/deb/*.deb
-      - uses: actions/upload-artifact@v4
-        with:
-          name: azkar-android-apk
-          path: azkar/kotlin/androidApp/build/outputs/apk/debug/*.apk
+          name: azkar-linux
+          path: azkar/dist/*
 
   windows:
     name: Windows — tests and .msi
@@ -72,11 +85,23 @@ jobs:
       - name: Tests
         run: ./gradlew :shared:jvmTest :desktopApp:test
       - name: Package
-        run: ./gradlew :desktopApp:packageMsi
+        shell: bash
+        run: ./package.sh
+        working-directory: azkar
+      # package.sh reports what it couldn't build and carries on, which is what you want on a
+      # laptop and not what you want here: on this runner every one of these is buildable, so a
+      # missing file is a broken build, not a machine without the tools.
+      - name: Check every package was made
+        shell: bash
+        run: |
+          for pattern in 'azkar-*-windows-*.msi'; do
+            ls dist/$pattern > /dev/null || { echo "missing: $pattern"; exit 1; }
+          done
+        working-directory: azkar
       - uses: actions/upload-artifact@v4
         with:
-          name: azkar-windows-msi
-          path: azkar/kotlin/desktopApp/build/compose/binaries/main/msi/*.msi
+          name: azkar-windows
+          path: azkar/dist/*
 
   apple:
     name: macOS — Swift tests and both iPhone apps
@@ -98,21 +123,46 @@ jobs:
       # Neither .xcodeproj is checked in: each is generated from the project.yml beside it.
       - name: Install XcodeGen
         run: brew install xcodegen
-      # Draws the icon both apps share, checks the Swift sources, and generates apple/iOS/Azkar.xcodeproj.
-      - name: Check the SwiftUI iPhone app
-        run: ./build.sh ios
-        working-directory: azkar/apple
-      - name: Build the SwiftUI iPhone app
-        run: >
-          xcodebuild build -project Azkar.xcodeproj -scheme Azkar
-          -sdk iphonesimulator -destination 'generic/platform=iOS Simulator'
-          CODE_SIGNING_ALLOWED=NO
-        working-directory: azkar/apple/iOS
-      # Its build phase runs Gradle for Shared.framework, so it needs the JDK this job already has.
-      - name: Build the Compose iPhone app
+      # Draws the icon, checks the Swift sources, generates both .xcodeproj, then builds each iPhone
+      # app for a phone and for the simulator — which is every check the old explicit steps ran, in
+      # Release rather than Debug. The Compose one's build phase runs Gradle for Shared.framework,
+      # so it needs the JDK this job already has.
+      - name: Package
+        run: ./package.sh
+        working-directory: azkar
+      # package.sh reports what it couldn't build and carries on, which is what you want on a
+      # laptop and not what you want here: on this runner every one of these is buildable, so a
+      # missing file is a broken build, not a machine without the tools.
+      - name: Check every package was made
+        shell: bash
         run: |
-          xcodegen generate
-          xcodebuild build -project AzkarKMP.xcodeproj -scheme AzkarKMP \
-            -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
-            CODE_SIGNING_ALLOWED=NO
-        working-directory: azkar/kotlin/iosApp
+          for pattern in 'azkar-*-macos-*.dmg' 'azkar-*-macos-desktop-*.dmg' 'azkar-*-ios.ipa' 'azkar-*-ios-compose.ipa'; do
+            ls dist/$pattern > /dev/null || { echo "missing: $pattern"; exit 1; }
+          done
+        working-directory: azkar
+      - uses: actions/upload-artifact@v4
+        with:
+          name: azkar-macos
+          path: azkar/dist/*
+
+  release:
+    name: Publish the packages as a release
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.tag != ''
+    needs: [linux, windows, apple]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: packages
+      # One manifest.txt per machine, all called the same thing: they stay in the artifacts.
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mapfile -t files < <(find packages -type f ! -name manifest.txt | sort)
+          printf '%s\n' "${files[@]}"
+          gh release create "${{ github.event.inputs.tag }}" --title "Azkar ${{ github.event.inputs.tag }}" \
+            --generate-notes "${files[@]}"
