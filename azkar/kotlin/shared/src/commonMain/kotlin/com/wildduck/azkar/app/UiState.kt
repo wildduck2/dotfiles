@@ -24,16 +24,18 @@ data class Features(
     val files: Boolean = true,
     /** The app can be quit. On a phone the system decides when an app stops. */
     val quit: Boolean = true,
+    /** A reminder carries a Count button. Without one — and without a shortcut — the card itself counts. */
+    val countButton: Boolean = false,
 ) {
     companion object {
         val linux = Features(KeyStyle.Linux)
         val windows = Features(KeyStyle.Windows)
         val macOS = Features(KeyStyle.Apple)
-        val android = phone(KeyStyle.Windows)
+        val android = phone(KeyStyle.Windows, countButton = true)
         val ios = phone(KeyStyle.Apple)
 
         /** A phone: notifications instead of cards, and no shortcut, login item, tray count, files or quitting. */
-        private fun phone(keyStyle: KeyStyle) = Features(
+        private fun phone(keyStyle: KeyStyle, countButton: Boolean = false) = Features(
             keyStyle,
             shortcut = false,
             openAtLogin = false,
@@ -41,6 +43,7 @@ data class Features(
             showCount = false,
             files = false,
             quit = false,
+            countButton = countButton,
         )
     }
 }

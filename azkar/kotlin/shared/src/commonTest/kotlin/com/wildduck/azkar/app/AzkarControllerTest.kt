@@ -218,6 +218,31 @@ class AzkarControllerTest {
     }
 
     @Test
+    fun theRemindersAheadAreOneIntervalApart() {
+        val c = controller(FakeStorage(config = """{"intervalMinutes": 3}"""))
+        val plan = c.plan(instant(14, 6, 0), limit = 3)
+        assertEquals(3, plan.size, "as many reminders as were asked for")
+        assertEquals(instant(14, 6, 3), plan[0].fireAt, "the first one is an interval away")
+        assertEquals(listOf("s1", "s2", "s3"), plan.map { it.card.zikr.text }, "today's morning list, in order")
+        assertEquals(2, plan[1].state.sabah, "each one carries the state it leaves behind")
+        assertEquals(0, c.state.sabah, "planning doesn't move today's progress on by itself")
+    }
+
+    @Test
+    fun theStateComesFromTheRemindersThatHaveFired() {
+        val storage = FakeStorage(config = """{"intervalMinutes": 3}""")
+        val c = controller(storage)
+        val plan = c.plan(instant(14, 6, 0), limit = 3)
+
+        c.commit(plan, instant(14, 6, 7))
+        assertEquals(2, c.state.sabah, "two of the three have fired")
+        assertTrue(storage.state.orEmpty().contains(""""sabah":2"""), "and that is saved: ${storage.state}")
+
+        c.commit(emptyList(), instant(14, 6, 20))
+        assertEquals(2, c.state.sabah, "no plan, nothing to take from it")
+    }
+
+    @Test
     fun quietHoursAndAnEmptyLibraryAreSaidOutLoud() {
         val quiet = controller(FakeStorage(config = """{"quietHours": {"start": "05:00", "end": "07:00"}}"""))
         assertEquals(Fired.Skip("quiet hours"), quiet.fire(instant(14, 6, 0), onScreen = 0), "in the quiet hours")

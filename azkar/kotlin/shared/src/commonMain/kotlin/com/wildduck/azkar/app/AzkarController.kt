@@ -7,6 +7,8 @@ import com.wildduck.azkar.core.Config
 import com.wildduck.azkar.core.ConfigError
 import com.wildduck.azkar.core.Library
 import com.wildduck.azkar.core.Picker
+import com.wildduck.azkar.core.Plan
+import com.wildduck.azkar.core.PlannedReminder
 import com.wildduck.azkar.core.Session
 import com.wildduck.azkar.core.TimeWindow
 import com.wildduck.azkar.core.TickDecision
@@ -129,6 +131,16 @@ class AzkarController(
     }
 
     fun setPaused(paused: Boolean) = save(state.copy(paused = paused))
+
+    /**
+     * The reminders ahead, for a phone that can't run code every few minutes. Planning changes nothing: each
+     * reminder carries the state it leaves behind, and [commit] takes it once the reminder has fired.
+     */
+    fun plan(now: Instant, limit: Int = 64): List<PlannedReminder> =
+        Plan.make(now, timeZone(), _ui.value.config, _ui.value.library, state, limit)
+
+    /** Today's progress, taken from the last reminder that has already fired. */
+    fun commit(plan: List<PlannedReminder>, now: Instant) = save(Plan.commit(plan, now, state))
 
     /** Starts one of today's lists again. */
     fun restart(session: Session, now: Instant) {

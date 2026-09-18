@@ -50,4 +50,18 @@ object Plan {
     /** The state after the last reminder that has fired by `now`, or `current` if none has. */
     fun commit(plan: List<PlannedReminder>, now: Instant, current: AppState): AppState =
         plan.lastOrNull { it.fireAt <= now }?.state ?: current
+
+    /**
+     * Whether a settings change reaches the reminders ahead. Text size and the settings only a desktop has
+     * don't, so changing them doesn't cost 64 rewritten notifications.
+     */
+    fun changedBy(before: Config, after: Config): Boolean =
+        before.copy(
+            fontSize = after.fontSize,
+            maxStack = after.maxStack,
+            hotkey = after.hotkey,
+            showCount = after.showCount,
+            openAtLogin = after.openAtLogin,
+            showWindowAtLogin = after.showWindowAtLogin,
+        ) != after
 }

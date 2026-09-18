@@ -13,8 +13,13 @@ kotlin {
 
     jvm()
     androidTarget()
-    iosArm64()
-    iosSimulatorArm64()
+    // One static framework for the Swift shell to link: a phone app is a phone app, not a plug-in host.
+    for (target in listOf(iosArm64(), iosSimulatorArm64())) {
+        target.binaries.framework {
+            baseName = "Shared"
+            isStatic = true
+        }
+    }
 
     sourceSets {
         commonMain.dependencies {

@@ -81,4 +81,20 @@ func planTests() {
       "after the whole plan, the last reminder's state")
     eq(Plan.commit([], now: at(14, 6, 7), current: start), start, "an empty plan keeps the current state")
   }
+
+  // Which settings changes mean the reminders ahead have to be planned again.
+  do {
+    let config = Config()
+    func changed(_ edit: (inout Config) -> Void) -> Bool {
+      var after = config
+      edit(&after)
+      return Plan.changedBy(config, after)
+    }
+    check(changed { $0.intervalMinutes = 5 }, "a new interval")
+    check(changed { $0.quietHours = nil }, "quiet hours switched off")
+    check(changed { $0.sound = true }, "a reminder's sound is part of it")
+    check(!changed { $0.fontSize = 30 }, "text size isn't")
+    check(!changed { $0.maxStack = 9 }, "nor is how many cards a desktop stacks")
+    check(!changed { _ in }, "nor is no change at all")
+  }
 }

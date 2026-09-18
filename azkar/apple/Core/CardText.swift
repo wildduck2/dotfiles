@@ -4,6 +4,9 @@ import Foundation
 /// What the last reminder of a plan says, since nothing is scheduled after it.
 let keepGoing = "Open Azkar to keep reminders coming"
 
+/// What counts a zikr where there is neither a shortcut nor a button on the reminder: the card itself.
+let tapToCount = "انقر للعدّ"
+
 extension Session {
   /// The heading of a card, in Arabic.
   var title: String {

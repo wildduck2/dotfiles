@@ -31,6 +31,9 @@ fun cardBody(zikr: Zikr): String =
 /** What counts a zikr where there is no global shortcut: the Count button on the reminder. */
 const val COUNT_BUTTON = "زر العدّ"
 
+/** What counts it where there is neither a shortcut nor a button on the reminder: the card itself. */
+const val TAP_TO_COUNT = "انقر للعدّ"
+
 /** What the last reminder of a plan says, since nothing is scheduled after it. */
 const val KEEP_GOING = "Open Azkar to keep reminders coming"
 

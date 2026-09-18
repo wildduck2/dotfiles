@@ -2,6 +2,8 @@ package com.wildduck.azkar.core
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import kotlin.time.Instant
 import kotlinx.datetime.TimeZone
 
@@ -87,5 +89,16 @@ class PlanTest {
             "after the whole plan, the last reminder's state",
         )
         assertEquals(start, Plan.commit(emptyList(), instant(14, 6, 7), start), "an empty plan keeps the current state")
+    }
+
+    @Test
+    fun changedBy() {
+        val config = Config()
+        assertTrue(Plan.changedBy(config, config.copy(intervalMinutes = 5.0)), "a new interval")
+        assertTrue(Plan.changedBy(config, config.copy(quietHours = null)), "quiet hours switched off")
+        assertTrue(Plan.changedBy(config, config.copy(sound = true)), "a reminder's sound is part of it")
+        assertFalse(Plan.changedBy(config, config.copy(fontSize = 30.0)), "text size isn't")
+        assertFalse(Plan.changedBy(config, config.copy(maxStack = 9)), "nor is how many cards a desktop stacks")
+        assertFalse(Plan.changedBy(config, config), "nor is no change at all")
     }
 }

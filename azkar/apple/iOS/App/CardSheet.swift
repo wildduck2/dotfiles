@@ -1,9 +1,6 @@
 // The card a reminder opens: the zikr, big, with a tap for each repetition.
 import SwiftUI
 
-/// The hint under the zikr, since a phone has no shortcut to press.
-let tapToCount = "انقر للعدّ"
-
 struct CardSheet: View {
   let card: Card
   let counter: TapCounter

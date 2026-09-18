@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.wildduck.azkar.app.COUNT_BUTTON
+import com.wildduck.azkar.app.TAP_TO_COUNT
 import com.wildduck.azkar.app.CardOnScreen
 import com.wildduck.azkar.app.Features
 import com.wildduck.azkar.app.ProblemAction
@@ -145,8 +146,11 @@ fun CardsPage(ui: UiState, features: Features, actions: AzkarActions) {
 }
 
 /** The shortcut, or the Count button on a phone, which is what else counts a zikr there. */
-private fun hint(config: Config, features: Features): String =
-    if (features.shortcut) config.hotkey.display(features.keyStyle) else COUNT_BUTTON
+private fun hint(config: Config, features: Features): String = when {
+    features.shortcut -> config.hotkey.display(features.keyStyle)
+    features.countButton -> COUNT_BUTTON
+    else -> TAP_TO_COUNT
+}
 
 /** Roughly what a card looks like at the chosen text size. */
 private val preview =

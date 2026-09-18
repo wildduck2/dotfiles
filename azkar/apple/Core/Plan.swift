@@ -38,4 +38,17 @@ enum Plan {
   static func commit(_ plan: [PlannedReminder], now: Date, current: AppState) -> AppState {
     plan.last { $0.fireAt <= now }?.state ?? current
   }
+
+  /// Whether a settings change reaches the reminders ahead. Text size and the settings only a desktop has
+  /// don't, so changing them doesn't cost 64 rewritten notifications.
+  static func changedBy(_ before: Config, _ after: Config) -> Bool {
+    var stripped = before
+    stripped.fontSize = after.fontSize
+    stripped.maxStack = after.maxStack
+    stripped.hotkey = after.hotkey
+    stripped.showCount = after.showCount
+    stripped.openAtLogin = after.openAtLogin
+    stripped.showWindowAtLogin = after.showWindowAtLogin
+    return stripped != after
+  }
 }
