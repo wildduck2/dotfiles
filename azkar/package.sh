@@ -256,16 +256,30 @@ package_android() {
 # Unsigned: without a developer certificate Xcode can still build the app, and a phone still won't
 # run it. Re-sign the .ipa (Xcode, or a sideloading tool) to put it on a phone; the simulator build
 # needs nothing — `xcrun simctl install booted Azkar.app`.
+# The bundle is named after PRODUCT_NAME, which is not the scheme name: the Compose app's scheme is
+# AzkarKMP and its product is Azkar.app, the same name the SwiftUI one builds.
+built_app() {
+  local app
+  app="$(newest "$1/*.app")"
+  if [ -z "$app" ] || [ ! -d "$app" ]; then
+    echo "xcodebuild left no .app in $1 — see $2" >&2
+    return 1
+  fi
+  echo "$app"
+}
+
 ios_package() {
   local name="$1" dir="$2" project="$3" scheme="$4" label="$5"
   local unsign=(CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="")
-  local derived="$work/$scheme"
+  local derived="$work/$scheme" products app
 
   xcodebuild build -project "$dir/$project" -scheme "$scheme" -configuration Release \
     -sdk iphoneos -derivedDataPath "$derived-device" "${unsign[@]}" >"$work/$scheme-device.log"
+  products="$derived-device/Build/Products/Release-iphoneos"
+  app="$(built_app "$products" "$work/$scheme-device.log")"
   rm -rf "$derived-payload"
   mkdir -p "$derived-payload/Payload"
-  cp -R "$derived-device/Build/Products/Release-iphoneos/$scheme.app" "$derived-payload/Payload/"
+  cp -R "$app" "$derived-payload/Payload/"
   rm -f "$dist/$name.ipa"
   (cd "$derived-payload" && zip -qry "$dist/$name.ipa" Payload)
   record "$dist/$name.ipa" "$label for a phone — unsigned, re-sign it to install"
@@ -273,8 +287,10 @@ ios_package() {
   xcodebuild build -project "$dir/$project" -scheme "$scheme" -configuration Release \
     -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
     -derivedDataPath "$derived-sim" "${unsign[@]}" >"$work/$scheme-sim.log"
+  products="$derived-sim/Build/Products/Release-iphonesimulator"
+  app="$(built_app "$products" "$work/$scheme-sim.log")"
   rm -f "$dist/$name-simulator.app.zip"
-  (cd "$derived-sim/Build/Products/Release-iphonesimulator" && zip -qry "$dist/$name-simulator.app.zip" "$scheme.app")
+  (cd "$products" && zip -qry "$dist/$name-simulator.app.zip" "$(basename "$app")")
   record "$dist/$name-simulator.app.zip" "$label for the simulator — xcrun simctl install booted"
 }
 
