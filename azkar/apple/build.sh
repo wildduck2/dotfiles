@@ -3,6 +3,7 @@
 #   ./build.sh            test, build, install to ~/Applications, start now and at login
 #   ./build.sh test       run the tests only
 #   ./build.sh build      test + build into .build/ without installing
+#   ./build.sh ios        check the iPhone app and draw its icon (Xcode does the rest, in CI)
 #   ./build.sh uninstall  stop it and remove the app and its LaunchAgent
 #   ./build.sh format     format all Swift files (swift format, settings in .swift-format)
 set -euo pipefail
@@ -24,6 +25,40 @@ run_tests() {
   # UI tests briefly show cards in the top-right corner.
   "${swiftc[@]}" -framework AppKit -framework Carbon "${lib[@]}" "$here"/macOS/UITests/*.swift -o "$build/ui-tests"
   "$build/ui-tests"
+}
+
+# Without Xcode there is no iOS SDK, so the iPhone app is checked as far as the command-line
+# tools go: every file has to parse, and the half that never touches UIKit has to type-check
+# against the Mac SDK. CI builds the app itself, for the simulator.
+check_ios() {
+  mkdir -p "$build"
+  "${swiftc[@]}" -parse "$here"/iOS/App/*.swift
+  "${swiftc[@]}" -typecheck "${core[@]}" "$here"/iOS/App/{Files,Reminders,Model}.swift
+  ios_icon
+  if command -v xcodegen >/dev/null; then
+    (cd "$here/iOS" && xcodegen generate)
+  else
+    echo "iOS app checked. Install XcodeGen (brew install xcodegen) to generate iOS/Azkar.xcodeproj."
+  fi
+}
+
+# The one 1024 px icon an iPhone app needs, in an asset catalog under .build/ — generated, like
+# the Xcode project, so neither is checked in.
+ios_icon() {
+  local assets="$build/iOS/Assets.xcassets"
+  local set="$assets/AppIcon.appiconset"
+  mkdir -p "$set"
+  "${swiftc[@]}" -framework AppKit "$here/macOS/tools/icon.swift" -o "$build/icon"
+  "$build/icon" --ios "$set/icon-1024.png"
+  echo '{ "info": { "author": "xcode", "version": 1 } }' >"$assets/Contents.json"
+  cat >"$set/Contents.json" <<'EOF'
+{
+  "images": [
+    { "filename": "icon-1024.png", "idiom": "universal", "platform": "ios", "size": "1024x1024" }
+  ],
+  "info": { "author": "xcode", "version": 1 }
+}
+EOF
 }
 
 make_icon() {
@@ -90,7 +125,8 @@ link_config() {
 case "${1:-install}" in
   test) run_tests ;;
   build) run_tests && build_app ;;
-  format) swift format -i -r "$here/Core" "$here/CoreTests" "$here/macOS" ;;
+  ios) check_ios ;;
+  format) swift format -i -r "$here/Core" "$here/CoreTests" "$here/macOS" "$here/iOS" ;;
   install)
     run_tests
     build_app
@@ -109,7 +145,7 @@ case "${1:-install}" in
     echo "Azkar removed. Config left in ~/.config/azkar."
     ;;
   *)
-    sed -n '2,7p' "$0"
+    sed -n '2,8p' "$0"
     exit 1
     ;;
 esac

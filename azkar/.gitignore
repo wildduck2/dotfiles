@@ -3,3 +3,5 @@
 .kotlin/
 build/
 local.properties
+*.xcodeproj/
+apple/iOS/Info.plist

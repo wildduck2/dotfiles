@@ -9,6 +9,11 @@ struct ConfigError: Error, CustomStringConvertible {
   init(_ description: String) { self.description = description }
 }
 
+/// What went wrong with a file, in words a person can act on.
+func message(_ error: Error) -> String {
+  (error as? ConfigError)?.description ?? error.localizedDescription
+}
+
 struct Config: Equatable {
   var intervalMinutes: Double = 3
   var hotkey = Hotkey.parse("ctrl+alt+z")!

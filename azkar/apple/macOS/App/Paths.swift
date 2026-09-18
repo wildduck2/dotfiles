@@ -1,4 +1,4 @@
-// Where the files live, app-wide notification names, and error text for the menu.
+// Where the files live, and the app-wide notification names.
 import Foundation
 
 enum Paths {
@@ -12,8 +12,4 @@ extension Notification.Name {
   static let azkarHotkey = Notification.Name("com.wildduck.azkar.hotkey")
   /// Posted by a second launch of the app: the running one opens its window instead.
   static let azkarOpen = Notification.Name("com.wildduck.azkar.open")
-}
-
-func message(_ error: Error) -> String {
-  (error as? ConfigError)?.description ?? error.localizedDescription
 }
