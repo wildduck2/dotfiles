@@ -36,12 +36,23 @@ dir="$work/AppDir"
 mkdir -p "$dir/usr" "$dir/usr/share/applications" "$dir/usr/share/icons/hicolor/256x256/apps"
 cp -a "$app" "$dir/usr/azkar"
 
+# The program inside is not called what the package is called: jpackage builds Azkar/bin/Azkar while
+# the .deb installs "azkar". Read the name off the build rather than assume it — an AppRun pointing
+# at a name that is not there is a 70MB file that starts nothing, and says so only when someone runs
+# it on a machine you haven't got.
+launcher="$(ls "$dir/usr/azkar/bin")"
+if [ "$(printf '%s\n' "$launcher" | wc -l)" -ne 1 ] || [ ! -x "$dir/usr/azkar/bin/$launcher" ]; then
+  echo "appimage.sh: expected one program in $app/bin, found:" >&2
+  printf '  %s\n' "$launcher" >&2
+  exit 1
+fi
+
 # AppRun is what the AppImage starts. $0 is a path inside the image once it is mounted, so the app
 # has to be found relative to it and not relative to wherever the file was downloaded to.
-cat >"$dir/AppRun" <<'RUN'
+cat >"$dir/AppRun" <<RUN
 #!/bin/sh
-HERE="$(dirname "$(readlink -f "$0")")"
-exec "$HERE/usr/azkar/bin/azkar" "$@"
+HERE="\$(dirname "\$(readlink -f "\$0")")"
+exec "\$HERE/usr/azkar/bin/$launcher" "\$@"
 RUN
 chmod +x "$dir/AppRun"
 
