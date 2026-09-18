@@ -43,7 +43,8 @@ Gradle runs on JDK 17+ and downloads the JDK 21 toolchain if it's missing. jpack
 machine it runs on, which is why CI has one job per platform (`.github/workflows/azkar.yml`, at the root of
 this repo: Linux tests + `.deb` + the Android `.apk`, Windows tests + `.msi`, macOS Swift tests, the iOS
 simulator tests and both iPhone apps). Each job runs the same `./package.sh` a laptop does and keeps what
-came out, so between the three of them every package exists — see Packaging.
+came out, so between the three of them every package exists — see Packaging. `azkar-release.yml` beside
+it turns a pushed `azkar-v*` tag into a GitHub release built from those same three jobs.
 
 Started with `--background` — what the login entry does — Azkar goes straight to the tray: beads, with the
 number of waiting cards in the middle, and the same menu as 📿 on macOS (status line, today's progress,
@@ -239,9 +240,29 @@ it, the reason says so.
 Three machines between them do make the whole set, which is what CI is for: every job runs this same
 script and uploads what it produced, so a green run has a `azkar-linux`, `azkar-windows` and
 `azkar-macos` artifact covering all six. On CI a skip is a failure rather than a note, since every
-package that job builds is one the runner is equipped for. To publish them, run the workflow by hand
-(Actions > azkar > Run workflow) and give it a tag like `azkar-v1.0.0`: the release job collects all
-three artifacts into one GitHub release.
+package that job builds is one the runner is equipped for.
+
+### Cutting a release
+
+Tag a commit and push the tag. That is the whole of it:
+
+```sh
+git tag azkar-v1.0.0
+git push origin azkar-v1.0.0
+```
+
+`azkar-release.yml` reads the version out of the tag, runs the ordinary build on all three machines with
+`AZKAR_VERSION` set to it — so `azkar-v1.2.0` ships `azkar-1.2.0-*` files — and collects everything into
+one GitHub release, with notes saying which file is for whom and how to get each OS to trust an app
+nobody paid to sign. The tests run as part of it: a release that fails its own tests is not published,
+and neither is a partial one, since the release job waits on all three builds.
+
+Two things stay out of the release and in the run's artifacts: the `manifest.txt` files (one per
+machine, all with the same name) and the unsigned release APK, which no phone will install and which
+the installable `.apk` beside it would only be confused with.
+
+If the tag isn't made yet, Actions > azkar-release > Run workflow takes one and creates it on whatever
+commit it builds.
 
 ### Linux without a Linux machine
 

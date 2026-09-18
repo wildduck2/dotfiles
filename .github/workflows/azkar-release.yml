@@ -1,0 +1,123 @@
+# A release people can download. Tag a commit and push the tag:
+#
+#   git tag azkar-v1.0.0 && git push origin azkar-v1.0.0
+#
+# Every file in the release is built here, from that commit, on a real machine of each kind —
+# nothing is ever uploaded from a laptop. If any of the three builds fails, nothing is published.
+name: azkar-release
+
+on:
+  push:
+    tags: ["azkar-v*"]
+  # The same thing without tagging first: type the tag, and it is made on the commit that is built.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "The tag to release under, e.g. azkar-v1.0.0"
+        required: true
+
+concurrency:
+  # Never cancel a release halfway through publishing it.
+  group: azkar-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  version:
+    name: Read the version out of the tag
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.read.outputs.tag }}
+      version: ${{ steps.read.outputs.version }}
+    steps:
+      - id: read
+        run: |
+          tag="${{ github.event.inputs.tag }}"
+          [ -n "$tag" ] || tag="${{ github.ref_name }}"
+          case "$tag" in
+            azkar-v?*) ;;
+            *)
+              echo "a release tag looks like azkar-v1.0.0, not '$tag'" >&2
+              exit 1
+              ;;
+          esac
+          echo "tag=$tag" >>"$GITHUB_OUTPUT"
+          echo "version=${tag#azkar-v}" >>"$GITHUB_OUTPUT"
+
+  # The ordinary build, told what to call the packages. The tests run too: a release that fails
+  # its own tests is not a release.
+  build:
+    name: Build
+    needs: version
+    uses: ./.github/workflows/azkar.yml
+    with:
+      version: ${{ needs.version.outputs.version }}
+
+  publish:
+    name: Publish the release
+    needs: [version, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: packages
+      # Out of the release, still in the run's artifacts: one manifest.txt per machine, all called
+      # the same thing, and the unsigned Android build, which no phone will install and which the
+      # installable .apk beside it would only be confused with.
+      - name: Gather what people can actually install
+        run: |
+          find packages -type f ! -name manifest.txt ! -name '*unsigned*' | sort >files.txt
+          cat files.txt
+          test -s files.txt
+      - name: Write the release notes
+        env:
+          VERSION: ${{ needs.version.outputs.version }}
+        run: |
+          {
+            echo "Azkar $VERSION, built on GitHub's own macOS, Windows and Linux runners from"
+            echo "\`${GITHUB_SHA:0:7}\`."
+            echo
+            echo "### What to download"
+            echo
+            echo "| File | For |"
+            echo "| --- | --- |"
+            while IFS= read -r file; do
+              name="$(basename "$file")"
+              case "$name" in
+                *-macos-desktop-*.dmg) for_what="macOS — the app in a window" ;;
+                *-macos-*.dmg) for_what="macOS — the app in the menu bar" ;;
+                *.msi) for_what="Windows" ;;
+                *.deb) for_what="Debian, Ubuntu, Mint — \`sudo apt install ./$name\`" ;;
+                *-android.apk) for_what="an Android phone" ;;
+                *-ios-compose.ipa) for_what="an iPhone — the Compose app" ;;
+                *-ios.ipa) for_what="an iPhone — the SwiftUI app" ;;
+                *-simulator.app.zip) for_what="the iOS simulator — \`xcrun simctl install booted\`" ;;
+                *-portable.zip) for_what="the same app with no installer — unzip it and run \`bin/azkar\`" ;;
+                *) for_what="" ;;
+              esac
+              echo "| \`$name\` | $for_what |"
+            done <files.txt
+            echo
+            echo "### Your machine will not trust any of this"
+            echo
+            echo "None of it is signed by a paid developer account, so each OS says so the first time:"
+            echo
+            echo "- **macOS** — right-click the app and choose Open, or"
+            echo "  \`xattr -dr com.apple.quarantine /Applications/Azkar.app\`."
+            echo "- **Windows** — SmartScreen warns; More info, then Run anyway."
+            echo "- **Android** — allow installs from wherever you downloaded it when the phone asks."
+            echo "- **iPhone** — the .ipa has no signature at all and needs re-signing with your own"
+            echo "  Apple ID before it will install: AltStore, Sideloadly or Xcode."
+          } >notes.md
+          cat notes.md
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.version.outputs.tag }}
+          VERSION: ${{ needs.version.outputs.version }}
+        run: |
+          mapfile -t files <files.txt
+          gh release create "$TAG" --title "Azkar $VERSION" --notes-file notes.md "${files[@]}"
+          gh release view "$TAG" --json url --jq .url

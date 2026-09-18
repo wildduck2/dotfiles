@@ -17,7 +17,9 @@ set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
 dist="$here/dist"
 work="$dist/.work"  # derived data and staging; kept between runs, never packaged
-version="1.0.0"
+# The packages are named after this. CI sets it from the release tag, so azkar-v1.2.0 ships
+# azkar-1.2.0-*; on a laptop it is whatever the app currently calls itself.
+version="${AZKAR_VERSION:-1.0.0}"
 
 case "$(uname -m)" in
   arm64 | aarch64) arch=arm64 ;;
