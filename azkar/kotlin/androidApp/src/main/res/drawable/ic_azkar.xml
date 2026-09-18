@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- The notification icon: a misbaha, the same ring of beads the desktop tray draws. -->
+<!-- The notification icon: the same ring of beads, filling its box the way a status bar wants. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
     <path
+        android:fillType="nonZero"
         android:fillColor="#FFFFFFFF"
-        android:pathData="M9.90,4.50 a2.1,2.1 0 1,0 4.2,0 a2.1,2.1 0 1,0 -4.2,0 M15.20,6.70 a2.1,2.1 0 1,0 4.2,0 a2.1,2.1 0 1,0 -4.2,0 M17.40,12.00 a2.1,2.1 0 1,0 4.2,0 a2.1,2.1 0 1,0 -4.2,0 M15.20,17.30 a2.1,2.1 0 1,0 4.2,0 a2.1,2.1 0 1,0 -4.2,0 M9.90,19.50 a2.1,2.1 0 1,0 4.2,0 a2.1,2.1 0 1,0 -4.2,0 M4.60,17.30 a2.1,2.1 0 1,0 4.2,0 a2.1,2.1 0 1,0 -4.2,0 M2.40,12.00 a2.1,2.1 0 1,0 4.2,0 a2.1,2.1 0 1,0 -4.2,0 M4.60,6.70 a2.1,2.1 0 1,0 4.2,0 a2.1,2.1 0 1,0 -4.2,0" />
+        android:pathData="M9.34,3.86 a2.66,2.66 0 1,0 5.33,0 a2.66,2.66 0 1,0 -5.33,0
+              M14.12,5.42 a2.66,2.66 0 1,0 5.33,0 a2.66,2.66 0 1,0 -5.33,0
+              M17.07,9.49 a2.66,2.66 0 1,0 5.33,0 a2.66,2.66 0 1,0 -5.33,0
+              M17.07,14.51 a2.66,2.66 0 1,0 5.33,0 a2.66,2.66 0 1,0 -5.33,0
+              M14.12,18.58 a2.66,2.66 0 1,0 5.33,0 a2.66,2.66 0 1,0 -5.33,0
+              M9.34,20.14 a2.66,2.66 0 1,0 5.33,0 a2.66,2.66 0 1,0 -5.33,0
+              M4.55,18.58 a2.66,2.66 0 1,0 5.33,0 a2.66,2.66 0 1,0 -5.33,0
+              M1.60,14.51 a2.66,2.66 0 1,0 5.33,0 a2.66,2.66 0 1,0 -5.33,0
+              M1.60,9.49 a2.66,2.66 0 1,0 5.33,0 a2.66,2.66 0 1,0 -5.33,0
+              M4.55,5.42 a2.66,2.66 0 1,0 5.33,0 a2.66,2.66 0 1,0 -5.33,0" />
 </vector>
