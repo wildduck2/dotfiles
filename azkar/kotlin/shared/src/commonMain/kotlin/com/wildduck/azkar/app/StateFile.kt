@@ -6,14 +6,33 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
+/** Today's progress as it sits in a file — state.json, and inside each reminder of plan.json. */
 @Serializable
-private data class Stored(
+internal data class StoredState(
     val day: String = "",
     val sabah: Int = 0,
     val masaa: Int = 0,
     val general: Int = 0,
     val lastGeneral: Int? = null,
     val paused: Boolean = false,
+)
+
+internal fun AppState.stored(): StoredState = StoredState(
+    day = day,
+    sabah = sabah,
+    masaa = masaa,
+    general = general,
+    lastGeneral = lastGeneral,
+    paused = paused,
+)
+
+internal fun StoredState.state(): AppState = AppState(
+    day = day,
+    sabah = sabah,
+    masaa = masaa,
+    general = general,
+    lastGeneral = lastGeneral,
+    paused = paused,
 )
 
 object StateFile {
@@ -28,30 +47,12 @@ object StateFile {
     /** Progress is not worth an error: anything unreadable starts the day fresh. */
     fun decode(text: String?): AppState {
         val stored = try {
-            text?.let { json.decodeFromString(Stored.serializer(), it) }
+            text?.let { json.decodeFromString(StoredState.serializer(), it) }
         } catch (_: SerializationException) {
             null
         } ?: return AppState()
-        return AppState(
-            day = stored.day,
-            sabah = stored.sabah,
-            masaa = stored.masaa,
-            general = stored.general,
-            lastGeneral = stored.lastGeneral,
-            paused = stored.paused,
-        )
+        return stored.state()
     }
 
-    fun encode(state: AppState): String =
-        json.encodeToString(
-            Stored.serializer(),
-            Stored(
-                day = state.day,
-                sabah = state.sabah,
-                masaa = state.masaa,
-                general = state.general,
-                lastGeneral = state.lastGeneral,
-                paused = state.paused,
-            ),
-        )
+    fun encode(state: AppState): String = json.encodeToString(StoredState.serializer(), state.stored())
 }

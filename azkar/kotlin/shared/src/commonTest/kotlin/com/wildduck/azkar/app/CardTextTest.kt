@@ -20,6 +20,16 @@ class CardTextTest {
     }
 
     @Test
+    fun theLastReminderOfAPlanSaysHowToKeepThemComing() {
+        assertEquals("text", notificationBody(Zikr("text")), "a reminder with more coming says nothing extra")
+        assertEquals(
+            "text\n\nOpen Azkar to keep reminders coming",
+            notificationBody(Zikr("text"), last = true),
+            "the last one of a plan says how to keep them coming",
+        )
+    }
+
+    @Test
     fun theNoteGoesUnderTheZikr() {
         assertEquals("text", cardBody(Zikr("text")), "just the zikr")
         assertEquals("text\n\nnote", cardBody(Zikr("text", note = "note")), "the note is part of what you read")

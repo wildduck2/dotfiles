@@ -30,3 +30,10 @@ fun cardBody(zikr: Zikr): String =
 
 /** What counts a zikr where there is no global shortcut: the Count button on the reminder. */
 const val COUNT_BUTTON = "زر العدّ"
+
+/** What the last reminder of a plan says, since nothing is scheduled after it. */
+const val KEEP_GOING = "Open Azkar to keep reminders coming"
+
+/** A notification's body. The last one of a plan also says how to keep them coming. */
+fun notificationBody(zikr: Zikr, last: Boolean = false): String =
+    if (last) cardBody(zikr) + "\n\n" + KEEP_GOING else cardBody(zikr)

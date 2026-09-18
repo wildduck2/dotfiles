@@ -80,9 +80,8 @@ final class CardWindow: NSPanel {
     hasShadow = true
     appearance = NSAppearance(named: .darkAqua)
 
-    var header = card.session.title
-    if let p = card.position, let t = card.total { header += "  ·  \(p) من \(t)" }
-    let title = Self.label(header, size: 12, weight: .semibold, color: card.session.accent, align: .right)
+    let title = Self.label(
+      cardHeader(card), size: 12, weight: .semibold, color: card.session.accent, align: .right)
     let body = Self.arabic(card.zikr.text, size: fontSize, color: .labelColor)
     let note = card.zikr.note.map { Self.arabic($0, size: 12, color: .secondaryLabelColor) }
     let footer = Self.label("انقر أو \(hint)", size: 11, weight: .regular, color: .tertiaryLabelColor, align: .left)
