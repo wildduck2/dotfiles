@@ -270,13 +270,26 @@ built_app() {
   echo "$app"
 }
 
+# xcodebuild says a great deal and none of it matters while it is working, so it goes to a log —
+# and the end of that log is printed when the build fails, which is the only time anyone wants it.
+# Without this a failed iPhone build on CI is a bare "exit code 65" and nothing else.
+xcode() {
+  local log="$1"
+  shift
+  if ! xcodebuild "$@" >"$log" 2>&1; then
+    echo "xcodebuild failed. The last 40 lines of $(basename "$log"):" >&2
+    tail -40 "$log" >&2
+    return 1
+  fi
+}
+
 ios_package() {
   local name="$1" dir="$2" project="$3" scheme="$4" label="$5"
   local unsign=(CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="")
   local derived="$work/$scheme" products app
 
-  xcodebuild build -project "$dir/$project" -scheme "$scheme" -configuration Release \
-    -sdk iphoneos -derivedDataPath "$derived-device" "${unsign[@]}" >"$work/$scheme-device.log"
+  xcode "$work/$scheme-device.log" build -project "$dir/$project" -scheme "$scheme" \
+    -configuration Release -sdk iphoneos -derivedDataPath "$derived-device" "${unsign[@]}"
   products="$derived-device/Build/Products/Release-iphoneos"
   app="$(built_app "$products" "$work/$scheme-device.log")"
   rm -rf "$derived-payload"
@@ -286,14 +299,17 @@ ios_package() {
   (cd "$derived-payload" && zip -qry "$dist/$name.ipa" Payload)
   record "$dist/$name.ipa" "$label for a phone — unsigned, re-sign it to install"
 
-  xcodebuild build -project "$dir/$project" -scheme "$scheme" -configuration Release \
-    -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
-    -derivedDataPath "$derived-sim" "${unsign[@]}" >"$work/$scheme-sim.log"
+  # arm64 only. A generic simulator destination asks for x86_64 as well, and shared/ builds its
+  # framework for iosArm64 and iosSimulatorArm64 — there is no Intel target for the script phase to
+  # find, so the whole build stops there. Every Mac that runs a current Xcode is arm64 anyway.
+  xcode "$work/$scheme-sim.log" build -project "$dir/$project" -scheme "$scheme" \
+    -configuration Release -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
+    ARCHS=arm64 -derivedDataPath "$derived-sim" "${unsign[@]}"
   products="$derived-sim/Build/Products/Release-iphonesimulator"
   app="$(built_app "$products" "$work/$scheme-sim.log")"
   rm -f "$dist/$name-simulator.app.zip"
   (cd "$products" && zip -qry "$dist/$name-simulator.app.zip" "$(basename "$app")")
-  record "$dist/$name-simulator.app.zip" "$label for the simulator — xcrun simctl install booted"
+  record "$dist/$name-simulator.app.zip" "$label for an arm64 simulator — xcrun simctl install booted"
 }
 
 package_ios() {

@@ -227,7 +227,8 @@ What comes out, by machine:
 - **Any machine with an Android SDK** — `azkar-1.0.0-android.apk`, signed with the debug key so it
   installs as it is, and a release APK next to it for signing with your own.
 - **A Mac with Xcode** — `azkar-1.0.0-ios.ipa` and `azkar-1.0.0-ios-compose.ipa`, plus a
-  `-simulator.app.zip` for each.
+  `-simulator.app.zip` for each. The simulator builds are arm64 only: `shared/` has no Intel target
+  for the Kotlin framework, and a generic simulator destination would ask for one.
 
 Every desktop package carries the architecture it was built for, because an arm64 `.dmg` will not run on
 an Intel Mac and saying so in the filename is cheaper than finding out later.
