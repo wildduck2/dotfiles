@@ -96,6 +96,7 @@ jobs:
                 *-macos-desktop-*.dmg) for_what="macOS — the app in a window" ;;
                 *-macos-*.dmg) for_what="macOS — the app in the menu bar" ;;
                 *.msi) for_what="Windows" ;;
+                *.AppImage) for_what="any Linux — \`chmod +x $name\`, then run it" ;;
                 *.deb) for_what="Debian, Ubuntu, Mint — \`sudo apt install ./$name\`" ;;
                 *-android.apk) for_what="an Android phone" ;;
                 *-ios-compose.ipa) for_what="an iPhone — the Compose app" ;;

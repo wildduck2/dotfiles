@@ -220,7 +220,8 @@ What comes out, by machine:
 - **macOS** — `azkar-1.0.0-macos-arm64.dmg`, the menu-bar app, as the drag-to-Applications window; and
   the desktop app as `azkar-1.0.0-macos-desktop-arm64.dmg`. (Two different Azkars: the menu-bar one is
   the macOS app, the desktop one is the Compose app running on a Mac for development.)
-- **Linux** — `azkar-1.0.0-linux-x64.deb`.
+- **Linux** — `azkar-1.0.0-linux-x64.deb`, and `azkar-1.0.0-linux-x64.AppImage`: one file that runs
+  on any distro, with no installer, no root and no package manager. `chmod +x` it and run it.
 - **Windows** — `azkar-1.0.0-windows-x64.msi`.
 - **Either desktop** — a `-portable.zip` beside the installer: the same app with no installer and no
   root, unzip it and run it.
@@ -240,7 +241,7 @@ it, the reason says so.
 
 Three machines between them do make the whole set, which is what CI is for: every job runs this same
 script and uploads what it produced, so a green run has a `azkar-linux`, `azkar-windows` and
-`azkar-macos` artifact covering all six. On CI a skip is a failure rather than a note, since every
+`azkar-macos` artifact covering every platform between them. On CI a skip is a failure rather than a note, since every
 package that job builds is one the runner is equipped for.
 
 ### Cutting a release
@@ -267,7 +268,8 @@ commit it builds.
 
 ### Linux without a Linux machine
 
-`./package.sh linux` builds the `.deb` inside a container, so a Mac or a PC can make one:
+`./package.sh linux` builds the `.deb` and the `.AppImage` inside a container, so a Mac or a PC can
+make them:
 
 ```sh
 ./package.sh linux                               # linux/amd64, which is what most Linux desktops are
@@ -388,6 +390,7 @@ kotlin/                 Kotlin Multiplatform (Gradle)
     Triggers, Portal    the key names and the D-Bus interfaces those backends need
     SingleInstance      one Azkar at a time; a second launch opens this one's window
     Chime, Placement, Tray, CardWindows
+    tools/              Icon.java draws the app icon; appimage.sh wraps the build up as an AppImage
   androidApp/           the phone app (the same Compose UI, with notifications instead of cards)
     AzkarApp            the controller, the alarm and the notifications, for whatever woke the process
     MainActivity        the window, the card a tapped reminder opens, and the permissions to ask for

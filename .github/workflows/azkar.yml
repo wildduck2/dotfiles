@@ -64,7 +64,7 @@ jobs:
       - name: Check every package was made
         shell: bash
         run: |
-          for pattern in 'azkar-*-linux-*.deb' 'azkar-*-android.apk'; do
+          for pattern in 'azkar-*-linux-*.deb' 'azkar-*-linux-*.AppImage' 'azkar-*-android.apk'; do
             ls dist/$pattern > /dev/null || { echo "missing: $pattern"; exit 1; }
           done
         working-directory: azkar

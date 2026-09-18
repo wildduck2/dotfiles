@@ -4,7 +4,7 @@
 #   ./package.sh           every app this host can build
 #   ./package.sh macos     the menu-bar app     .dmg               (macOS)
 #   ./package.sh desktop   the desktop app      .dmg/.deb/.msi     (whichever the host makes)
-#   ./package.sh linux     the desktop app      .deb               (in Docker, from any host)
+#   ./package.sh linux     the desktop app      .deb + .AppImage   (in Docker, from any host)
 #   ./package.sh android   the phone app        .apk               (needs an Android SDK)
 #   ./package.sh ios       both iPhone apps     .ipa + .app.zip    (needs Xcode and XcodeGen)
 #   ./package.sh clean     throw dist/ away
@@ -97,18 +97,33 @@ package_desktop() {
   cp "$src" "$out"
   record "$out" "the desktop app, installed the way $host installs things"
 
-  # The same app as a folder: no installer, no root, unzip and run bin/azkar.
-  if have zip; then
-    local appdir
-    appdir="$(newest "$binaries/app/*")"
-    if [ -n "$appdir" ]; then
-      out="$dist/azkar-$version-$name-$arch-portable.zip"
-      rm -f "$out"
-      (cd "$(dirname "$appdir")" && zip -qry "$out" "$(basename "$appdir")")
-      record "$out" "the desktop app with no installer — unzip it and run it"
-    fi
-  else
+  # The same folder jpackage installs, straight out of the build: what the portable .zip and the
+  # AppImage are both made from.
+  local appdir
+  appdir="$(newest "$binaries/app/*")"
+
+  # No installer, no root, unzip and run bin/azkar.
+  if ! have zip; then
     skip "desktop portable .zip" "no zip command on this machine"
+  elif [ -n "$appdir" ]; then
+    out="$dist/azkar-$version-$name-$arch-portable.zip"
+    rm -f "$out"
+    (cd "$(dirname "$appdir")" && zip -qry "$out" "$(basename "$appdir")")
+    record "$out" "the desktop app with no installer — unzip it and run it"
+  fi
+
+  # And the one file that runs on a distro nobody thought about: Arch, Fedora, openSUSE, anything.
+  if [ "$host" != linux ]; then
+    skip "linux .AppImage" "an AppImage is a Linux thing — ./package.sh linux builds one in Docker"
+  elif ! have curl; then
+    skip "linux .AppImage" "no curl on this machine to fetch appimagetool"
+  elif [ -n "$appdir" ]; then
+    out="$dist/azkar-$version-linux-$arch.AppImage"
+    if "$here/kotlin/desktopApp/tools/appimage.sh" "$appdir" "$out" "$arch"; then
+      record "$out" "one file, any distro — chmod +x it and run it"
+    else
+      skip "linux .AppImage" "appimagetool wouldn't build it — the reason is printed above"
+    fi
   fi
 }
 
@@ -154,7 +169,7 @@ package_linux() {
   docker build --platform "$platform" -t "$image" - <<'DOCKERFILE'
 FROM eclipse-temurin:21-jdk
 RUN apt-get update \
- && apt-get install -y --no-install-recommends binutils fakeroot zip \
+ && apt-get install -y --no-install-recommends binutils fakeroot zip curl file \
  && rm -rf /var/lib/apt/lists/*
 DOCKERFILE
 
@@ -204,11 +219,22 @@ DOCKERFILE
       cp "$(ls $binaries/deb/*.deb | head -1)" "$deb"
       rm -f "$portable"
       (cd $binaries/app && zip -qry "$portable" *)
+      # The AppImage is the nice-to-have of the three: if it does not build, the .deb and the zip
+      # still go home. Its own failure is printed by the script.
+      appimage="/out/azkar-$VERSION-linux-$TARGET.AppImage"
+      rm -f "$appimage"
+      bash desktopApp/tools/appimage.sh "$(ls -d $binaries/app/*)" "$appimage" "$TARGET" || true
       # Written by root in the container; handed back to whoever ran the script.
       chown "$OWNER" "$deb" "$portable"
+      if [ -f "$appimage" ]; then chown "$OWNER" "$appimage"; fi
     '
   record "$dist/azkar-$version-linux-$target.deb" "the desktop app for Linux ($target) — sudo apt install ./it"
   record "$dist/azkar-$version-linux-$target-portable.zip" "the same with no installer — unzip it, run bin/azkar"
+  if [ -f "$dist/azkar-$version-linux-$target.AppImage" ]; then
+    record "$dist/azkar-$version-linux-$target.AppImage" "one file, any distro — chmod +x it and run it"
+  else
+    skip "linux .AppImage" "appimagetool didn't produce one in the container — the reason is above"
+  fi
 }
 
 # ---------------------------------------------------------------- the phone app (Android)
