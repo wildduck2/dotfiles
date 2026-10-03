@@ -1,7 +1,41 @@
 local M = {}
 
+-- TypeScript 7 is the Go compiler: it ships no tsserver.js, so ts_ls cannot start
+-- in a repo pinned to it ("Could not find a valid TypeScript installation").
+-- `ttscserver` is the LSP host that replaces it, and it also loads the ttsc plugin
+-- sidecars, so typia and nestia generated types resolve in the editor the same way
+-- they do in a build.
+--
+-- Repo-local by design: the server must match the project's own ttsc version, so it
+-- is never installed through Mason.
+local function find_ttscserver(from)
+  local start = from and from ~= '' and from or vim.uv.cwd()
+  for dir in vim.fs.parents(start .. '/.') do
+    local bin = dir .. '/node_modules/.bin/ttscserver'
+    if vim.uv.fs_stat(bin) then
+      return bin, dir
+    end
+  end
+end
+
+M.find_ttscserver = find_ttscserver
+
 -- LSP server configurations. See docs/plugins/lsp/lspconfig/README.md.
 M.servers = {
+  ttsc = {
+    filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+    cmd = function(dispatchers, config)
+      local root = config and config.root_dir
+      local bin = find_ttscserver(root)
+      return vim.lsp.rpc.start({ bin, '--stdio' }, dispatchers, { cwd = root })
+    end,
+    root_dir = function(bufnr, on_dir)
+      local _, root = find_ttscserver(vim.api.nvim_buf_get_name(bufnr))
+      if root then
+        on_dir(root)
+      end
+    end,
+  },
   clangd = {},
   lua_ls = {
     settings = {
@@ -49,6 +83,11 @@ M.servers = {
     -- nvim 0.11+ signature: function(bufnr, on_dir). The old
     -- function(fname) signature silently failed to attach.
     root_dir = function(bufnr, on_dir)
+      -- A ttsc repo pins TypeScript 7, which has no tsserver for this to drive.
+      -- ttsc owns those buffers; attaching both would also double every diagnostic.
+      if find_ttscserver(vim.api.nvim_buf_get_name(bufnr)) then
+        return
+      end
       local monorepo = vim.fs.root(bufnr, {
         'pnpm-workspace.yaml',
         'turbo.json',
@@ -294,7 +333,9 @@ function M.setup()
   -- ~/.local/bin via `cargo install` (or `install -m 0755 target/release/...`).
   local ensure = {}
   for name, _ in pairs(M.servers or {}) do
-    if name ~= 'duck_sqllsp' then
+    -- ttsc comes from the project's own node_modules, so its version tracks the
+    -- repo rather than a Mason install.
+    if name ~= 'duck_sqllsp' and name ~= 'ttsc' then
       table.insert(ensure, name)
     end
   end

@@ -46,7 +46,7 @@ function M.setup()
       width = 45, -- tree panel width in columns
       preserve_window_proportions = true, -- true: keep window sizes on open/close
     },
-    git = { enable = true, ignore = false }, -- ignore=false: show git-ignored files
+    git = { enable = true, ignore = false, timeout = 4000 }, -- ignore=false: show git-ignored files; timeout raised: git status on this repo (external drive) takes ~500-600ms, over the 400ms default, which was tripping the 5-timeout auto-disable
     filesystem_watchers = { enable = true, debounce_delay = 50 }, -- live update on external file changes
     actions = { open_file = { resize_window = true } },
     on_attach = function(bufnr)
