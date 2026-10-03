@@ -14,12 +14,12 @@ if [[ ! -d "$ZINIT_HOME" ]]; then
 fi
 source "$ZINIT_HOME/zinit.zsh"
 
-# Oh My Zsh (theme only — plugins handled by Zinit)
+# Oh My Zsh (theme only: plugins handled by Zinit)
 ZSH_THEME="robbyrussell"
 plugins=()
 source "$ZSH/oh-my-zsh.sh"
 
-# Zinit plugins (turbo mode — deferred loading)
+# Zinit plugins (turbo mode: deferred loading)
 zinit ice wait lucid
 zinit light zsh-users/zsh-syntax-highlighting
 zinit ice wait lucid
@@ -39,7 +39,7 @@ zinit snippet OMZP::archlinux
 zinit ice wait lucid
 zinit snippet OMZP::command-not-found
 
-# Completion (use -C to skip rebuild if cache is fresh — saves ~100ms)
+# Completion (use -C to skip rebuild if cache is fresh: saves ~100ms)
 autoload -Uz compinit
 if [[ -n "$HOME/.zcompdump"(#qN.mh+24) ]]; then
   compinit
@@ -72,6 +72,21 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 alias ls='ls --color'
 alias vim='nvim'
 alias c='clear'
+# -a '' auto-starts the daemon (emacs.service) if it isn't already running,
+# instead of failing with a connection error.
+alias emacs='emacsclient -t -a ""'
+
+# Yaak's WebKit view renders blank on NVIDIA unless the DMA-BUF renderer is off
+alias yaak-app='WEBKIT_DISABLE_DMABUF_RENDERER=1 yaak-app'
+
+# yazi: cd into the folder yazi was in when you quit with q
+y() {
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  yazi "$@" --cwd-file="$tmp"
+  IFS= read -r -d '' cwd < "$tmp"
+  [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+  rm -f -- "$tmp"
+}
 
 # fzf (cache the output instead of eval on every shell)
 if [[ -f "$HOME/.zsh/_fzf_cache.zsh" ]] && [[ "$HOME/.zsh/_fzf_cache.zsh" -nt "$(command -v fzf)" ]]; then
@@ -92,7 +107,7 @@ elif command -v zoxide >/dev/null 2>&1; then
   zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 fi
 
-# NVM (lazy-loaded — sourcing nvm.sh on every shell adds ~200ms)
+# NVM (lazy-loaded: sourcing nvm.sh on every shell adds ~200ms)
 if [[ -s "$NVM_DIR/nvm.sh" ]]; then
   _nvm_lazy_load() {
     unset -f nvm node npm npx yarn 2>/dev/null
@@ -112,7 +127,7 @@ fi
 # Bun completions (optional)
 [[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
 
-# Pyenv (lazy-loaded — eval on every shell adds ~100ms)
+# Pyenv (lazy-loaded: eval on every shell adds ~100ms)
 if [[ -d "$PYENV_ROOT/bin" ]]; then
   _pyenv_lazy_load() {
     unset -f pyenv python python3 pip pip3 2>/dev/null
@@ -152,3 +167,6 @@ PERL5LIB="/home/wildduck/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5
 PERL_LOCAL_LIB_ROOT="/home/wildduck/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
 PERL_MB_OPT="--install_base \"/home/wildduck/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/home/wildduck/perl5"; export PERL_MM_OPT;
+
+# bun completions
+[ -s "/home/wildduck/.bun/_bun" ] && source "/home/wildduck/.bun/_bun"
