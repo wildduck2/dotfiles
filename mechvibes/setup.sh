@@ -12,7 +12,7 @@ header "Mechvibes"
 check_arch
 
 # -- Install (AUR) --------------------------------------------------------
-aur_install mechvibes-bin
+aur_install mechvibes
 
 # -- Stow ------------------------------------------------------------------
 stow_package mechvibes

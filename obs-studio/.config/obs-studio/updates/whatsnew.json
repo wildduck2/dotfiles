@@ -1,7 +1,8 @@
 [
-	{
-		"version": "30.2.0",
-		"url": "https://obsproject.com/startup/obs-studio-30-2",
-		"increment": 1
-	}
+  {
+    "version": "32.2",
+    "Beta": 2,
+    "url": "https:\/\/obsproject.com\/startup\/obs-studio-32-2-beta",
+    "increment": 0
+  }
 ]
