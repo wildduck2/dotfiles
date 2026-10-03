@@ -7,3 +7,24 @@ node_modules/
 .cache/
 nvim/.config/nvim/.undo/
 old/
+# yazi plugins/flavors come from package.toml via `ya pkg install`; keep only the local ones
+yazi/.config/yazi/plugins/*
+!yazi/.config/yazi/plugins/dir-size.yazi/
+!yazi/.config/yazi/plugins/chafa-preview.yazi/
+yazi/.config/yazi/flavors/
+
+# Runtime data apps write into stowed folders (caches, cookies, logs)
+mechvibes/.config/Mechvibes/*
+!mechvibes/.config/Mechvibes/config.json
+obs-studio/.config/obs-studio/logs/
+obs-studio/.config/obs-studio/profiler_data/
+obs-studio/.config/obs-studio/plugin_config/obs-browser/
+obs-studio/.config/obs-studio/plugin_config/rtmp-services/
+*.bak
+
+# ~/.local/bin is a stow link into sway, so tools installed there (uv, posting, ...) land here
+sway/.local/bin/*
+!sway/.local/bin/sway-amd
+
+# Created by banana-cursor/setup.sh, points at an absolute home path
+banana-cursor/.icons/default/cursors
