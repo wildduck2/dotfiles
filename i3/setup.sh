@@ -19,7 +19,7 @@ info "Installing i3 and desktop packages"
 pkg_install \
   i3-wm i3status dmenu \
   picom feh flameshot imagemagick \
-  pulseaudio pavucontrol \
+  pipewire pipewire-pulse pavucontrol \
   xorg-xbacklight xorg-xdpyinfo \
   network-manager-applet blueman \
   gnome-settings-daemon gnome-keyring polkit-gnome \
@@ -29,10 +29,52 @@ pkg_install \
   arandr
 
 # -- AUR packages ----------------------------------------------------------
+# i3lock-color is a drop-in replacement for i3lock (same binary, more
+# features) and the two packages conflict -- remove plain i3lock first so
+# yay doesn't hit an unresolvable conflict prompt under --noconfirm.
+if is_pkg_installed_exact i3lock; then
+  info "Removing i3lock (superseded by i3lock-color)"
+  sudo pacman -R --noconfirm i3lock || warn "Failed to remove i3lock -- i3lock-color install may fail"
+fi
+
 info "Installing AUR packages"
-aur_install trayer i3lock-color gnome-screensaver-no-watchdog \
-  obs-studio-tytan652 obs-pipewire-audio-capture \
-  google-chrome yaak-bin mechvibes-bin
+aur_install trayer i3lock-color gnome-screensaver-no-watchdog
+
+# obs-studio-tytan652 pulls in vlc-plugin-luajit (via ffmpeg-obs), which
+# conflicts with vlc-plugin-lua (provided-for by vlc-plugin-luajit, so
+# vlc-gui-qt/vlc stay satisfied after the swap), and needs ffmpeg-obs in
+# place of system ffmpeg (ffmpeg-obs provides ffmpeg, so firefox/freerdp/
+# opencv etc. keep resolving), and conflicts with the official obs-studio
+# package directly. These removals must happen immediately before this
+# specific install with no other yay call in between: yay's own dependency
+# resolution can silently reinstall vlc-plugin-lua to "fix" vlc-gui-qt's
+# now-missing dependency before we get here, re-triggering the conflict.
+#
+# Plain `pacman -R` refuses these: vlc-plugin-lua is required by the
+# installed vlc-gui-qt, and obs-studio is required by the installed
+# obs-pipewire-audio-capture. -Rdd skips that dependency check -- safe here
+# because the AUR replacements below provide the same virtual packages and
+# obs-pipewire-audio-capture gets reinstalled against obs-studio-tytan652
+# right after.
+for conflict_pkg in vlc-plugin-lua obs-studio ffmpeg; do
+  if is_pkg_installed_exact "$conflict_pkg"; then
+    info "Removing $conflict_pkg (superseded by an obs-studio-tytan652 build dep)"
+    sudo pacman -Rdd --noconfirm "$conflict_pkg" || true
+    # Verify explicitly -- a silent failure here (e.g. a stray lock file,
+    # a second dependent package we haven't accounted for) leaves the old
+    # package in place and the AUR install below fails on the same conflict
+    # again with a confusing error far away from the actual cause.
+    if is_pkg_installed_exact "$conflict_pkg"; then
+      err "$conflict_pkg is still installed after removal attempt -- obs-studio-tytan652 install will hit the same conflict"
+      err "  Check for a lock (/var/lib/pacman/db.lck) or another dependent: pacman -Qi $conflict_pkg | grep 'Required By'"
+      exit 1
+    fi
+  fi
+done
+aur_install obs-studio-tytan652
+aur_install obs-pipewire-audio-capture
+
+aur_install google-chrome yaak-bin mechvibes
 
 # -- OBS Virtual Camera (v4l2loopback) ------------------------------------
 info "Setting up OBS virtual camera support"
