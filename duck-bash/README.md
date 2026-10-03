@@ -24,6 +24,7 @@ Scripts are stowed to `~/.config/duck-bash/`.
 | `install-nvim.sh` | Install latest Neovim from GitHub | curl | [Neovim releases](https://github.com/neovim/neovim/releases) |
 | `python-clean.sh` | Remove orphaned pip packages | pip, pacman | Keeps pacman-managed packages |
 | `qr-with-image.sh` | Generate QR code with embedded image | [qrencode](https://fukuchi.org/works/qrencode/), [ImageMagick](https://imagemagick.org/) | Overlays image on QR center |
+| `remove-unneeded.sh` | Uninstall duplicate tools we don't use | pacman | Edit the `UNNEEDED` list; pacman confirms first |
 | `screenshot.sh` | Screenshot with selection | [flameshot](https://flameshot.org/) | Full screen, area select, or monitor |
 | `sys-package-manager-clean.sh` | Clean pacman/yay caches | pacman, [paccache](https://man.archlinux.org/man/paccache.8), yay | Keeps 3 package versions |
 | `system-clean.sh` | Full system cleanup | pacman, journalctl, npm, pip | Caches, orphans, journals, tmp |
