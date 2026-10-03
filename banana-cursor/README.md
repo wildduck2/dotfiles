@@ -27,15 +27,19 @@ cd ~/dotfiles
 
 1. Downloads `Banana-Blue.tar.xz` from GitHub releases (v2.0.0)
 2. Extracts to `~/.icons/Banana-Blue/`
-3. Stows GTK3 settings (`~/.config/gtk-3.0/settings.ini`) and X resources (`~/.Xresources`)
+3. Stows X resources (`~/.Xresources`)
 4. Sets `~/.icons/default/cursors` symlink
 5. Applies cursor via `xrdb` and `gsettings` (if available)
+
+GTK3/GTK4 `settings.ini` (which also declares `gtk-cursor-theme-name`) is
+owned by the [`theme`](../theme) module instead — run that too if you
+want the cursor name/size to stick in GTK apps.
 
 ## Configuration
 
 - **Theme**: Banana-Blue
 - **Size**: 24px
-- **Applied via**: GTK3 settings.ini, Xresources, default cursor symlink
+- **Applied via**: GTK settings.ini (see `theme` module), Xresources, default cursor symlink
 
 ## Supported sizes
 

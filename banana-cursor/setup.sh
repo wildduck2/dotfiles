@@ -34,7 +34,9 @@ else
   rm -rf "$TMP_DIR"
 fi
 
-# -- Stow (GTK3 settings, Xresources, default cursor symlink) -------------
+# -- Stow (Xresources, default cursor symlink) ------------------------------
+# GTK3 settings.ini (cursor-theme-name/size + dark theme) lives in the
+# `theme` module instead -- stow can't split ownership of one file.
 stow_package banana-cursor
 
 # -- Set cursor for X11 ---------------------------------------------------
