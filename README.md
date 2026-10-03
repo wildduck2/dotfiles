@@ -39,9 +39,13 @@ The base setup installs these tools automatically:
 | [bash](bash/) | Bash fallback shell | `.bashrc`, `.bash_profile` | [GNU Bash](https://www.gnu.org/software/bash/) |
 | [zsh](zsh/) | Primary shell (Oh My Zsh + Zinit + fzf + zoxide) | `.zshrc`, `.zshenv` | [Zsh](https://www.zsh.org/) |
 | [tmux](tmux/) | Terminal multiplexer (TPM, vim-tmux-navigator, Tokyo Night) | `tmux.conf` | [tmux](https://github.com/tmux/tmux) |
+| [yazi](yazi/) | File manager (Tokyo Night, folder sizes, git markers, previews) | `yazi.toml`, `keymap.toml`, `init.lua` | [yazi](https://github.com/sxyazi/yazi) |
+| [yaak](yaak/) | API client (Tokyo Night, NVIDIA launcher fix, bundled plugins) | `yaak.desktop`, settings via `setup.sh` | [yaak](https://yaak.app) |
+| [pacsea](pacsea/) | Package manager TUI (Rust, Tokyo Night, install/remove/update/downgrade) | `settings.conf`, `theme.conf` | [Pacsea](https://github.com/Firstp1ck/Pacsea) |
 | [kitty](kitty/) | GPU terminal (JetBrainsMono Bold Italic, Catppuccin colors) | `kitty.conf` | [Kitty](https://sw.kovidgoyal.net/kitty/) |
 | [terminator](terminator/) | GTK terminal (Berkeley Mono, Catppuccin colors) | `config` | [Terminator](https://gnome-terminator.org/) |
 | [nvim](nvim/) | Neovim IDE (74 plugins, 16 LSPs, lazy.nvim) | `lua/` | [Neovim](https://neovim.io/) |
+| [emacs](emacs/) | Doom Emacs IDE (Tokyo Night, LSP, opt-in -- `./setup.sh emacs`) | `.config/doom/` | [Doom Emacs](https://github.com/doomemacs/doomemacs) |
 | [i3](i3/) | Window manager (Catppuccin, gaps, i3lock, picom) | `config` | [i3wm](https://i3wm.org/) |
 | [picom](picom/) | Compositor (GLX, dual_kawase blur, glass opacity) | `picom.conf` | [Picom](https://github.com/yshui/picom) |
 | [htop](htop/) | Process viewer | `htoprc` | [htop](https://htop.dev/) |
@@ -98,6 +102,12 @@ Catppuccin Mocha palette on a TokyoNight Storm background (`#1a1b26`) shared acr
 
 See [nvim/README.md](nvim/) for the full plugin list and keybinding reference.
 
+## Doom Emacs
+
+Opt-in module (`./setup.sh emacs`) -- a second, full-IDE editor alongside nvim. `doom-tokyo-night` theme, `lsp-mode` + Tree-sitter for TypeScript/JS/web, Rust, C/C++, and Elixir, `vertico`/`corfu` completion, `magit`, `treemacs`, `vterm`, runs as a systemd `--user` daemon (`emacsclient -c`).
+
+See [emacs/README.md](emacs/) for module coverage and keybindings.
+
 ## Requirements
 
 - **[Arch Linux](https://archlinux.org/)** (pacman)
@@ -129,6 +139,7 @@ See [nvim/README.md](nvim/) for the full plugin list and keybinding reference.
 | `prefix+\|` | Vertical split |
 | `Ctrl+h/j/k/l` | Navigate panes (seamless with nvim via [vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator)) |
 | `Shift+Left/Right` | Switch windows |
+| `prefix+Ctrl+s` / `prefix+Ctrl+r` | Save / restore sessions ([tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect), autosaved by [tmux-continuum](https://github.com/tmux-plugins/tmux-continuum)) |
 
 ### Neovim (Leader = Space) -- [Neovim Docs](https://neovim.io/doc/user/)
 
