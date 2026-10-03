@@ -1,0 +1,39 @@
+[[mgr.prepend_keymap]]
+on   = "l"
+run  = "plugin smart-enter"
+desc = "Enter the child directory, or open the file"
+
+[[mgr.prepend_keymap]]
+on   = "p"
+run  = "plugin smart-paste"
+desc = "Paste into the hovered directory or CWD"
+
+[[mgr.prepend_keymap]]
+on   = "T"
+run  = "plugin toggle-pane max-preview"
+desc = "Maximize or restore the preview pane"
+
+[[mgr.prepend_keymap]]
+on   = ["c", "m"]
+run  = "plugin chmod"
+desc = "Chmod on selected files"
+
+[[mgr.prepend_keymap]]
+on   = "C"
+run  = "plugin ouch zip"
+desc = "Compress selected files"
+
+[[mgr.prepend_keymap]]
+on   = ["g", "."]
+run  = "cd ~/dotfiles"
+desc = "Go to dotfiles"
+
+[[mgr.prepend_keymap]]
+on   = ["g", "w"]
+run  = "cd /run/media/wildduck/duck/wildduck"
+desc = "Go to wildduck workspace"
+
+[[mgr.prepend_keymap]]
+on   = ["g", "i"]
+run  = "cd /run/media/wildduck/duck/wildduck/COMPANIES/iryss"
+desc = "Go to iryss"

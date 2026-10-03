@@ -1,0 +1,13 @@
+[flavor]
+dark  = "tokyo-night"
+light = "tokyo-night"
+
+# Give clean files a blank sign the same width as the others so sizes line up
+[git]
+clean_sign   = "  "
+unknown_sign = "  "
+
+# Flat status blocks to match lualine and the tmux bar (the flavor uses rounded pills)
+[status]
+sep_left  = { open = "", close = "" }
+sep_right = { open = "", close = "" }
