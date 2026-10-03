@@ -1,0 +1,10 @@
+[Desktop Entry]
+Categories=Development;
+Comment=Play with APIs, intuitively
+Exec=env WEBKIT_DISABLE_DMABUF_RENDERER=1 yaak-app-client
+Icon=yaak-app-client
+Name=Yaak
+StartupWMClass=yaak-app-client
+Terminal=false
+Type=Application
+GenericName=API Client
