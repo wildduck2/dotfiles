@@ -1,0 +1,71 @@
+#+title: Config
+#+author: wildduck
+#+startup: overview
+
+This is the literate source for =~/.config/doom=. It's tangled and loaded by
+=config.el= (a one-line stub: ~(org-babel-load-file ...)~) every time Doom
+starts, so editing this file *is* editing your config -- no separate build
+step to remember. See ~SPC h r r~ (~doom/reload~) after a change here.
+
+* Table of Contents
+- [[#theme][Theme]]
+- [[#editor][Editor]]
+- [[#lsp][LSP]]
+- [[#org][Org]]
+
+* Theme
+:PROPERTIES:
+:CUSTOM_ID: theme
+:END:
+
+Terminal-only setup (launched via ~emacsclient -t~, see ~zsh/.zshrc~) -- no
+~doom-font~/~doom-big-font~ here, those only affect GUI frames. Font is
+whatever the terminal emulator (kitty) renders; Emacs just needs a
+true-color-capable terminal (kitty is) to show ~doom-tokyo-night~ accurately.
+
+[[https://emacsthemes.com/themes/doom-tokyo-night][doom-tokyo-night]], bundled
+in =doom-themes= (no extra package needed). =treemacs= gets the =doom-colors=
+icon theme so its file-tree icons follow whatever =doom-theme= is active
+(icons render using the terminal's own Nerd Font glyphs in a TUI frame).
+
+#+begin_src emacs-lisp
+(setq doom-theme 'doom-tokyo-night)
+(setq doom-themes-treemacs-theme "doom-colors")
+#+end_src
+
+* Editor
+:PROPERTIES:
+:CUSTOM_ID: editor
+:END:
+
+Relative line numbers -- same vim-motion muscle memory as the =nvim= module.
+
+#+begin_src emacs-lisp
+(setq display-line-numbers-type 'relative)
+#+end_src
+
+* LSP
+:PROPERTIES:
+:CUSTOM_ID: lsp
+:END:
+
+No inline codelens (reference/definition counts above functions) -- the same
+call as removing =lsp-lens.nvim= from the =nvim= config; it was more clutter
+than signal there too. Sideline diagnostics, hover docs, and the breadcrumb
+stay on.
+
+#+begin_src emacs-lisp
+(setq lsp-lens-enable nil)
+(setq lsp-ui-sideline-enable t
+      lsp-ui-doc-enable t
+      lsp-headerline-breadcrumb-enable t)
+#+end_src
+
+* Org
+:PROPERTIES:
+:CUSTOM_ID: org
+:END:
+
+#+begin_src emacs-lisp
+(setq org-directory "~/org/")
+#+end_src
