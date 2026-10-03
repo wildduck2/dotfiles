@@ -107,6 +107,18 @@ check_internet() {
   fi
 }
 
+# Strict install check: pacman -Qi falls back to resolving a name through
+# a package's Provides, so once a conflict has already been swapped out
+# (e.g. i3lock-color providing i3lock) it keeps reporting the old literal
+# name as "installed" -- pacman -R/-Rdd then fails with "target not found"
+# since there's nothing installed under that exact name. Use this instead
+# of `pacman -Qi "$pkg" &>/dev/null` when you specifically need to know
+# whether the literal package (not a provider) is present, e.g. before
+# removing it.
+is_pkg_installed_exact() {
+  [[ "$(pacman -Qq "$1" 2>/dev/null)" == "$1" ]]
+}
+
 # Verify a required command exists, exit if not
 require_cmd() {
   local cmd="$1"
@@ -203,8 +215,23 @@ aur_install() {
     return 1
   fi
   duck_wait "Installing from AUR: ${missing[*]}" "~30-60s"
-  if ! yay -S --needed --noconfirm "${missing[@]}"; then
-    err "Failed to install AUR packages: ${missing[*]}"
+  # Install one at a time (not one big yay batch): when several requested
+  # packages have AUR-to-AUR runtime deps on each other (e.g. trayer needs
+  # gtk2, obs-pipewire-audio-capture needs obs-studio), yay builds a whole
+  # batch before installing any of it, so a dependency's own runtime-dep
+  # check fails because the package it needs was only built, not installed
+  # yet. Separate invocations force each package to finish installing
+  # before the next one's dependency check runs.
+  local failed=()
+  for pkg in "${missing[@]}"; do
+    if ! pacman -Qi "$pkg" &>/dev/null; then
+      if ! yay -S --needed --noconfirm "$pkg"; then
+        failed+=("$pkg")
+      fi
+    fi
+  done
+  if [[ ${#failed[@]} -gt 0 ]]; then
+    err "Failed to install AUR packages: ${failed[*]}"
     return 1
   fi
   ok "Installed (AUR): ${missing[*]}"
@@ -279,6 +306,21 @@ pip_install() {
 }
 
 # -- Stow ------------------------------------------------------------------
+# Every package dir carries its own setup.sh/README.md alongside the actual
+# dotfiles. Without a global ignore list, stow tries to symlink those into
+# $HOME too, and every package collides on the same setup.sh/README.md target.
+# GNU stow only reads ~/.stow-global-ignore (not one inside the stow dir), so
+# link the repo's copy into place before any stow invocation.
+ensure_stow_ignore() {
+  if [[ "${_STOW_IGNORE_LINKED:-}" == "1" ]]; then return 0; fi
+  local src="$DOTFILES_DIR/.stow-global-ignore"
+  local dest="$HOME/.stow-global-ignore"
+  if [[ -f "$src" ]] && [[ ! -e "$dest" || -L "$dest" ]]; then
+    ln -sf "$src" "$dest"
+  fi
+  export _STOW_IGNORE_LINKED=1
+}
+
 # Stow a package. Handles both .config-based and home-level dotfiles.
 # Backs up existing non-symlink targets before stowing.
 stow_package() {
@@ -286,20 +328,31 @@ stow_package() {
   cd "$DOTFILES_DIR"
 
   require_cmd stow "Install with: sudo pacman -S stow"
+  ensure_stow_ignore
 
   # Back up any conflicting files/dirs that stow would overwrite.
+  # Stow's warning line looks like:
+  #   * cannot stow dotfiles/zsh/.zshenv over existing target .zshenv since neither a link nor a directory and --adopt not specified
+  # Extract just the target path between "existing target" and "since" --
+  # a plain `grep | sed 's/.*: //'` doesn't match (there's no colon in that
+  # line) and leaves $target as the whole sentence, and word-splitting an
+  # unquoted multi-line $conflicts in a `for` loop then treats every word
+  # (including the source path, e.g. "dotfiles/zsh/.zshenv") as its own
+  # candidate target, backing up -- i.e. renaming -- unrelated files
+  # including the repo's own source file.
   local conflicts
-  conflicts=$(stow -n -R "$pkg" 2>&1 | grep "existing target" | sed 's/.*: //' || true)
+  conflicts=$(stow -n -R "$pkg" 2>&1 | sed -n 's/.*existing target \(.*\) since.*/\1/p')
 
   local backup_count=0
-  for target in $conflicts; do
+  while IFS= read -r target; do
+    [[ -z "$target" ]] && continue
     local full="$HOME/$target"
     if [[ -e "$full" ]] && [[ ! -L "$full" ]]; then
       warn "Backing up $full -> ${full}.bak"
       mv "$full" "${full}.bak"
       backup_count=$((backup_count + 1))
     fi
-  done
+  done <<< "$conflicts"
   [[ $backup_count -gt 0 ]] && info "$backup_count file(s) backed up (check *.bak files in \$HOME)"
 
   step "Stowing $pkg"
