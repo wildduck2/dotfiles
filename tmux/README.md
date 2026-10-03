@@ -56,6 +56,8 @@ The prefix is rebound from `Ctrl+b` to `Ctrl+d`.
 | `prefix + r` | Reload config |
 | `prefix + I` | Install TPM plugins |
 | `prefix + D` | Open TODO.md in nvim |
+| `prefix + Ctrl+s` | Save sessions now (tmux-resurrect) |
+| `prefix + Ctrl+r` | Restore last saved sessions |
 | `Ctrl+f` | fzf tmux sessionizer |
 
 ## Plugins (via TPM)
@@ -67,6 +69,8 @@ The prefix is rebound from `Ctrl+b` to `Ctrl+d`.
 | [catppuccin-tmux](https://github.com/catppuccin/tmux) | Catppuccin Mocha theme |
 | [tokyo-night-tmux](https://github.com/janoamaral/tokyo-night-tmux) | Tokyo Night status bar |
 | [tmux-yank](https://github.com/tmux-plugins/tmux-yank) | System clipboard integration |
+| [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect) | Save/restore sessions, windows, panes and their programs |
+| [tmux-continuum](https://github.com/tmux-plugins/tmux-continuum) | Autosave every 15 min, auto-restore when tmux starts after a reboot |
 
 ## Settings
 
