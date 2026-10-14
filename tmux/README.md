@@ -7,6 +7,7 @@ Tmux setup with vim-style navigation, Tokyo Night / Catppuccin theming, and vim-
 - **[tmux](https://github.com/tmux/tmux)** >= 3.0
 - **[zsh](https://www.zsh.org/)** (set as default shell in tmux)
 - **[xclip](https://github.com/astrand/xclip)** (clipboard support for tmux-yank)
+- **Clipboard sync** (`clipboard-sync.sh`): copies arriving over SSH or from nvim (OSC 52) reach the system clipboard even in Terminator, which ignores OSC 52
 - **bc** (version comparison in vim-tmux-navigator)
 - **[TPM](https://github.com/tmux-plugins/tpm)** (Tmux Plugin Manager, auto-installed by setup.sh)
 
