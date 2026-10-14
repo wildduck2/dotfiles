@@ -8,7 +8,8 @@ function M.setup_peek()
     syntax = true, -- Syntax highlighting in preview
     theme = 'dark', -- Preview theme: 'dark' | 'light'
     update_on_change = true, -- Live-update on buffer change
-    app = 'browser', -- Open in browser (vs 'webview')
+    -- A new window lands next to nvim; 'browser' added a tab to Chrome on whatever workspace it lives on
+    app = { 'google-chrome-stable', '--new-window' },
     filetype = { 'markdown' }, -- Filetypes to enable preview for
     throttle_at = 200000, -- Throttle updates above this size
     throttle_time = 'auto', -- Throttle interval: 'auto' | ms

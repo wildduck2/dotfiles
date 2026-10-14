@@ -46,7 +46,7 @@ calls in `config.lua` if you run a different WM.
 | `syntax` | `true` | Syntax highlighting in preview. |
 | `theme` | `'dark'` | Or `'light'`. |
 | `update_on_change` | `true` | Live update. |
-| `app` | `'browser'` | Or `'webview'`. |
+| `app` | `{ 'google-chrome-stable', '--new-window' }` | New Chrome window next to nvim; `'browser'` only added a tab to the existing window. |
 | `filetype` | `{ 'markdown' }` | Activate only for these fts. |
 | `throttle_at` | `200000` | Throttle past this many chars. |
 | `throttle_time` | `'auto'` | Or ms number. |
