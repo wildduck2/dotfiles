@@ -54,6 +54,7 @@ The `module` column links to the per-module README under
 | vyfor/cord.nvim | Discord rich presence | [fun/cord](plugins/fun/cord/README.md) |
 | letieu/hacker.nvim | Typing animation for "look busy" | [fun/hacker](plugins/fun/hacker/README.md) |
 | ty-labs/randiverse.nvim | Random data generators (uuid, email, ip, ...) | [fun/randiverse](plugins/fun/randiverse/README.md) |
+| gentleeduck/duck-diff | Diff viewer in an app window for local changes, refs and commits | [git/duck-diff](plugins/git/duck-diff/README.md) |
 | tpope/vim-fugitive | Full Git porcelain inside vim | [git/fugitive](plugins/git/fugitive/README.md) |
 | lewis6991/gitsigns.nvim | Git sign column, hunks, blame, diffs | [git/gitsigns](plugins/git/gitsigns/README.md) |
 | windwp/nvim-ts-autotag | Auto-close and auto-rename HTML/JSX tags | [lang/autotag](plugins/lang/autotag/README.md) |
