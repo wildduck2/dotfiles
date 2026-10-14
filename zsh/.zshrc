@@ -124,6 +124,9 @@ fi
 # Deno env (if installed)
 [[ -f "$HOME/.deno/env" ]] && source "$HOME/.deno/env"
 
+# ani-cli settings (stowed by the ani-cli module)
+[[ -f "$HOME/.config/ani-cli/env.zsh" ]] && source "$HOME/.config/ani-cli/env.zsh"
+
 # Bun completions (optional)
 [[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
 
