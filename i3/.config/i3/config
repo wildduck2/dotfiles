@@ -212,7 +212,7 @@ exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
 exec --no-startup-id blueman-applet
 # exec --no-startup-id trayer --edge top --align right --SetDockType true --expand true --widthtype request
-exec --no-startup-id ~/.config/i3/monitor-setup.sh
+exec --no-startup-id ~/.config/i3/monitor-watch.sh
 
 exec --no-startup-id mechvibes --disable-gpu --no-sandbox
 exec --no-startup-id pactl load-module module-null-sink sink_name=OBS_VirtualMic sink_properties=device.description=OBS_VirtualMic

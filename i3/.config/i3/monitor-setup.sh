@@ -18,3 +18,6 @@ else
         [ "$out" = "$INTERNAL" ] || xrandr --output "$out" --off
     done
 fi
+
+# A new output starts black, so repaint the wallpaper across the new layout
+[ -x "$HOME/.fehbg" ] && "$HOME/.fehbg"
