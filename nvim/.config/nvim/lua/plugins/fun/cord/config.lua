@@ -44,9 +44,8 @@ M.opts = {
   -- Status text templates per activity type
   text = {
     default = nil,
-    workspace = function(opts)
-      return 'In ' .. opts.workspace
-    end,
+    -- Keep the real project folder private
+    workspace = 'In the best project ever',
     viewing = function(opts)
       local parent = vim.fn.expand('%:h:t')
       local file = parent ~= '' and parent ~= '.' and (parent .. '/' .. opts.filename)
@@ -100,9 +99,7 @@ M.opts = {
   buttons = {
     {
       label = 'View Repository',
-      url = function(opts)
-        return opts.repo_url or 'https://github.com/wildduck'
-      end,
+      url = 'https://github.com/wildduck',
     },
   },
 
