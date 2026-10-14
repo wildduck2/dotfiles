@@ -29,7 +29,7 @@ Default mappings from `api.config.mappings.default_on_attach(bufnr)` plus:
 
 | Key | Action |
 | --- | --- |
-| `s` | open under cursor in the system file manager (`nautilus`) |
+| `s` | folders: open in `nautilus`; markdown: open and preview with peek; other files: `xdg-open` |
 
 Replace `nautilus` in `config.lua` if you use a different DE.
 

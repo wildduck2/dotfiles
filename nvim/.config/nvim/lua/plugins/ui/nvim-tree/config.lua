@@ -54,10 +54,16 @@ function M.setup()
       api.config.mappings.default_on_attach(bufnr)
       vim.keymap.set('n', 's', function()
         local node = api.tree.get_node_under_cursor()
-        local path = node.type == 'directory' and node.absolute_path
-          or vim.fn.fnamemodify(node.absolute_path, ':h')
-        vim.fn.jobstart({ 'nautilus', path }, { detach = true })
-      end, { buffer = bufnr, desc = 'Open in file explorer' })
+        if node.type == 'directory' then
+          vim.fn.jobstart({ 'nautilus', node.absolute_path }, { detach = true })
+        elseif node.absolute_path:match('%.md$') then
+          -- xdg-open would just reopen markdown in nvim, so preview it instead
+          api.node.open.edit(node)
+          vim.cmd('PeekOpen')
+        else
+          vim.fn.jobstart({ 'xdg-open', node.absolute_path }, { detach = true })
+        end
+      end, { buffer = bufnr, desc = 'Open with system app (markdown: preview)' })
     end,
     renderer = {
       root_folder_label = false, -- false: hide root folder path label

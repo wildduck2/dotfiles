@@ -410,7 +410,7 @@ Buffer-local inside the nvim-tree buffer (in addition to defaults from
 
 | Mode | Keys | Action |
 | --- | --- | --- |
-| n | `s` | open node path in `nautilus` (Linux file manager) |
+| n | `s` | folder: `nautilus`; markdown: peek preview; file: `xdg-open` |
 
 ## 24. Terminal (toggleterm)
 

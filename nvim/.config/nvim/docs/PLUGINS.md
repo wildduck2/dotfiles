@@ -242,7 +242,7 @@ The `module` column links to the per-module README under
 - **lualine.nvim** -- statusline with mode mapping, branch, diagnostics,
   diff, filename, filetype, progress, location.
 - **nvim-tree.lua + nvim-web-devicons** -- file tree. `<leader>pv` toggle,
-  `<leader>l` focus. Inside the tree, `s` opens path in `nautilus`.
+  `<leader>l` focus. Inside the tree, `s` opens folders in `nautilus`, previews markdown, xdg-opens other files.
 - **snacks.nvim** -- only the `indent` module is enabled; renders the
   primary indent guides (scope handled by indent-blankline.nvim).
 - **toggleterm.nvim** -- terminals open in tabs (`direction = 'tab'`).
