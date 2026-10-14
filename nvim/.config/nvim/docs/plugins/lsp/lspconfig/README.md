@@ -32,7 +32,9 @@ Every server below is auto-installed via `mason-tool-installer` EXCEPT
 | `clangd` | c, c++ | `{}` defaults; see also `plugins/lang/clangd-extensions/` |
 | `lua_ls` | lua | `runtime.version = LuaJIT`; `workspace.checkThirdParty = false`; `workspace.library` filled lazily in `setup()` with `${3rd}/luv/library` + `nvim_get_runtime_file('', true)`; `completion.callSnippet = 'Replace'` |
 | `rust_analyzer` | rust | inlay hints (chaining, type, parameter) enabled |
-| `ts_ls` | js/ts | `disableSuggestions = false`; `includeCompletionsForModuleExports = false`; `includeCompletionsWithObjectLiteralMethodSnippets = false`; `includePackageJsonAutoImports = 'off'`; `maxTsServerMemory = 4096`. Reduces tsserver load on large repos. |
+| `ts7` | js/ts | TypeScript 7's own server (`tsc --lsp --stdio`). Uses the project's `node_modules/typescript` when it is 7+, else the latest release `setup.sh` installs to `~/.local/share/nvim/typescript7`. Skips ttsc repos and projects pinned below 7. |
+| `ttsc` | js/ts | Repos with `node_modules/.bin/ttscserver`: TS 7 plus the ttsc plugins (typia, nestia). |
+| `ts_ls` | js/ts | Only projects whose `node_modules/typescript` is below 7; `disableSuggestions = false`; `includeCompletionsForModuleExports = false`; `includeCompletionsWithObjectLiteralMethodSnippets = false`; `includePackageJsonAutoImports = 'off'`; `maxTsServerMemory = 4096`. Reduces tsserver load on large repos. |
 | `tailwindcss` | -- | defaults |
 | `cssls` | -- | defaults |
 | `html` | -- | defaults |
@@ -40,7 +42,7 @@ Every server below is auto-installed via `mason-tool-installer` EXCEPT
 | `yamlls` | -- | defaults |
 | `prismals` | -- | defaults |
 | `typos_lsp` | `markdown`, `text`, `gitcommit` | spell checker, restricted to prose filetypes |
-| `biome` | -- | `capabilities.general.positionEncodings = { 'utf-16' }`. `on_attach` also strips biome diagnostics so ts_ls owns them. |
+| `biome` | -- | `capabilities.general.positionEncodings = { 'utf-16' }`. `on_attach` also strips biome diagnostics so the TypeScript server owns them. |
 | `bashls` | -- | defaults |
 | `dockerls` | -- | defaults |
 | `docker_compose_language_service` | -- | defaults |
@@ -80,7 +82,7 @@ duplicates.
 ### Biome diagnostics override
 
 If `client.name == 'biome'`, sets
-`client.server_capabilities.diagnosticProvider = nil` so ts_ls owns JS/TS
+`client.server_capabilities.diagnosticProvider = nil` so the TypeScript server (ts7, ttsc or ts_ls) owns JS/TS
 diagnostics (avoids double-reporting).
 
 ### duck_sqllsp highlights override

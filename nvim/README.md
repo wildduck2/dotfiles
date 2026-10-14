@@ -186,7 +186,9 @@ All auto-installed via Mason:
 | `lua_ls` | Lua |
 | `clangd` | C / C++ |
 | `rust_analyzer` | Rust |
-| `ts_ls` | TypeScript / JavaScript |
+| `ts7` | TypeScript / JavaScript (TypeScript 7, the default) |
+| `ttsc` | TypeScript in ttsc repos (typia, nestia) |
+| `ts_ls` | TypeScript / JavaScript in projects pinned below TypeScript 7 |
 | `tailwindcss` | Tailwind CSS |
 | `cssls` | CSS |
 | `html` | HTML |

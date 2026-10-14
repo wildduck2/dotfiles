@@ -48,6 +48,17 @@ else
   fi
 fi
 
+# -- TypeScript 7 -----------------------------------------------------------
+# The ts7 LSP falls back to this copy for projects without their own TypeScript.
+# Rerunning setup moves it to the newest release.
+header "TypeScript 7"
+TS7_HOME="$HOME/.local/share/nvim/typescript7"
+if command_exists npm && npm install --silent --prefix "$TS7_HOME" typescript@latest; then
+  ok "TypeScript $("$TS7_HOME/node_modules/.bin/tsc" --version | awk '{print $2}') for the ts7 LSP"
+else
+  warn "TypeScript 7 install failed -- run: npm install --prefix $TS7_HOME typescript@latest"
+fi
+
 # -- Formatters ------------------------------------------------------------
 header "Formatters"
 

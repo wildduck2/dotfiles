@@ -20,6 +20,36 @@ end
 
 M.find_ttscserver = find_ttscserver
 
+-- TypeScript 7 serves LSP from its own compiler (`tsc --lsp --stdio`). A project that
+-- pins TS 7 uses its own copy; one with no TypeScript of its own uses the latest
+-- release nvim/setup.sh installs here. Only projects still pinned below 7 keep ts_ls.
+local TS7_HOME = vim.fn.stdpath('data') .. '/typescript7'
+
+-- Major version of the nearest node_modules/typescript, and the dir holding it.
+local function local_typescript(from)
+  local start = from and from ~= '' and from or vim.uv.cwd()
+  for dir in vim.fs.parents(start .. '/.') do
+    local pkg = dir .. '/node_modules/typescript/package.json'
+    if vim.uv.fs_stat(pkg) then
+      local ok, data = pcall(vim.json.decode, table.concat(vim.fn.readfile(pkg), '\n'))
+      return ok and tonumber((data.version or ''):match('^(%d+)')) or nil, dir
+    end
+  end
+end
+
+-- The servers start at the monorepo root, so judge the TypeScript installed there.
+-- A package's own older copy (bun isolated installs, a stale catalog) would pick
+-- ts_ls while the root it runs in holds TS 7, which ts_ls cannot drive.
+local function server_root(bufnr)
+  local name = vim.api.nvim_buf_get_name(bufnr)
+  return vim.fs.root(bufnr, { 'pnpm-workspace.yaml', 'turbo.json', 'nx.json', 'lerna.json', 'rush.json' })
+    or vim.fs.root(bufnr, { 'tsconfig.json', 'jsconfig.json', 'package.json', '.git' })
+    or vim.fs.dirname(name)
+end
+
+M.local_typescript = local_typescript
+M.server_root = server_root
+
 -- LSP server configurations. See docs/plugins/lsp/lspconfig/README.md.
 M.servers = {
   ttsc = {
@@ -34,6 +64,27 @@ M.servers = {
       if root then
         on_dir(root)
       end
+    end,
+  },
+  ts7 = {
+    filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+    cmd = function(dispatchers, config)
+      local root = config and config.root_dir
+      local major, dir = local_typescript(root)
+      local bin = (major and major >= 7) and (dir .. '/node_modules/.bin/tsc')
+        or (TS7_HOME .. '/node_modules/.bin/tsc')
+      return vim.lsp.rpc.start({ bin, '--lsp', '--stdio' }, dispatchers, { cwd = root })
+    end,
+    root_dir = function(bufnr, on_dir)
+      if find_ttscserver(vim.api.nvim_buf_get_name(bufnr)) then
+        return
+      end
+      local root = server_root(bufnr)
+      local major = local_typescript(root)
+      if major and major < 7 then
+        return
+      end
+      on_dir(root)
     end,
   },
   clangd = {},
@@ -83,9 +134,10 @@ M.servers = {
     -- nvim 0.11+ signature: function(bufnr, on_dir). The old
     -- function(fname) signature silently failed to attach.
     root_dir = function(bufnr, on_dir)
-      -- A ttsc repo pins TypeScript 7, which has no tsserver for this to drive.
-      -- ttsc owns those buffers; attaching both would also double every diagnostic.
-      if find_ttscserver(vim.api.nvim_buf_get_name(bufnr)) then
+      -- TypeScript 7 has no tsserver for this to drive, so ts_ls only takes projects
+      -- still pinned below 7; ttsc and ts7 own the rest.
+      local major = local_typescript(server_root(bufnr))
+      if find_ttscserver(vim.api.nvim_buf_get_name(bufnr)) or not major or major >= 7 then
         return
       end
       local monorepo = vim.fs.root(bufnr, {
@@ -229,7 +281,7 @@ local function on_attach(event)
     })
   end
 
-  -- ts_ls owns JS/TS diagnostics; suppress biome's to avoid duplicates.
+  -- The TypeScript server (ts7, ttsc or ts_ls) owns JS/TS diagnostics; suppress biome's to avoid duplicates.
   if client and client.name == 'biome' then
     client.server_capabilities.diagnosticProvider = nil
   end
@@ -333,9 +385,9 @@ function M.setup()
   -- ~/.local/bin via `cargo install` (or `install -m 0755 target/release/...`).
   local ensure = {}
   for name, _ in pairs(M.servers or {}) do
-    -- ttsc comes from the project's own node_modules, so its version tracks the
-    -- repo rather than a Mason install.
-    if name ~= 'duck_sqllsp' and name ~= 'ttsc' then
+    -- ttsc and ts7 come from node_modules (the project's, or nvim/setup.sh's TS 7),
+    -- so their versions track the project rather than a Mason install.
+    if name ~= 'duck_sqllsp' and name ~= 'ttsc' and name ~= 'ts7' then
       table.insert(ensure, name)
     end
   end
