@@ -14,14 +14,14 @@
 #   ./setup.sh --verify       Verify all tools are installed
 #
 # Available modules:
-#   base audio bash zsh tmux yazi ani-cli kitty terminator picom nvim i3 duck-bash htop neofetch theme
+#   base audio net bash zsh tmux yazi ani-cli kitty terminator picom nvim i3 duck-bash htop neofetch theme
 #
 set -euo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$DOTFILES_DIR/scripts/helpers.sh"
 
-ALL_MODULES=(audio bash zsh tmux yazi ani-cli yaak pacsea kitty terminator picom nvim i3 sway hyprland duck-bash htop btop neofetch mechvibes obs-studio banana-cursor theme)
+ALL_MODULES=(audio net bash zsh tmux yazi ani-cli yaak pacsea kitty terminator picom nvim i3 sway hyprland duck-bash htop btop neofetch mechvibes obs-studio banana-cursor theme)
 DRY_RUN=0
 VERIFY_ONLY=0
 
@@ -40,6 +40,7 @@ Usage:
 Available modules:
   base         Base packages (git, stow, curl, wget, yay, rust, bun, go, claude-code)
   audio        PipeWire Bluetooth audio (A2DP music, mSBC calls, auto profile switch)
+  net          Firewall (LAN trusted) + sshd + ~/.ssh/config
   bash         Bash shell config (.bashrc, .bash_profile)
   zsh          ZSH shell (Oh My Zsh, Zinit, fzf, zoxide, NVM)
   tmux         Terminal multiplexer (TPM, vim-tmux-navigator, resurrect + continuum)
@@ -147,6 +148,7 @@ setup_base() {
 }
 
 setup_audio()      { bash "$DOTFILES_DIR/audio/setup.sh"; }
+setup_net()        { bash "$DOTFILES_DIR/net/setup.sh"; }
 setup_bash()       { bash "$DOTFILES_DIR/bash/setup.sh"; }
 setup_zsh()        { bash "$DOTFILES_DIR/zsh/setup.sh"; }
 setup_tmux()       { bash "$DOTFILES_DIR/tmux/setup.sh"; }
@@ -248,7 +250,7 @@ run_verify() {
   _check google-chrome-stable; _check discord; _check firefox; _check obs; _check yaak-app; _check yaak; _check pacsea; _check downgrade
 
   info "Utilities:"
-  _check htop; _check btop; _check neofetch; _check jq; _check yt-dlp; _check qrencode; _check wpctl; _check bluetoothctl; _check mpv; _check ani-cli
+  _check htop; _check btop; _check neofetch; _check jq; _check yt-dlp; _check qrencode; _check wpctl; _check bluetoothctl; _check firewall-cmd; _check ssh; _check mpv; _check ani-cli
 
   echo ""
   if [[ $checks -eq $total ]]; then
@@ -287,7 +289,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
   # Validate all module names first
   for module in "${MODULES[@]}"; do
     case "$module" in
-      base|audio|bash|zsh|tmux|yazi|ani-cli|yaak|pacsea|kitty|terminator|picom|nvim|emacs|i3|sway|hyprland|htop|btop|neofetch|duck-bash|mechvibes|obs-studio|banana-cursor|theme) ;;
+      base|audio|net|bash|zsh|tmux|yazi|ani-cli|yaak|pacsea|kitty|terminator|picom|nvim|emacs|i3|sway|hyprland|htop|btop|neofetch|duck-bash|mechvibes|obs-studio|banana-cursor|theme) ;;
       *) err "Unknown module: $module"
          echo "Available: ${ALL_MODULES[*]}"
          echo "Run ./setup.sh --help for details"
@@ -307,6 +309,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
     case "$module" in
       base)       setup_base ;;
       audio)      setup_base && setup_audio ;;
+      net)        setup_base && setup_net ;;
       bash)       setup_base && setup_bash ;;
       zsh)        setup_base && setup_zsh ;;
       tmux)       setup_base && setup_tmux ;;
@@ -359,6 +362,9 @@ setup_base
 
 # 1b. Audio (PipeWire + Bluetooth headset settings)
 setup_audio
+
+# 1c. Network (firewall LAN access, sshd, ssh config)
+setup_net
 
 # 2. Shells (bash as fallback, zsh as primary)
 setup_bash

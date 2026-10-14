@@ -28,3 +28,6 @@ sway/.local/bin/*
 
 # Created by banana-cursor/setup.sh, points at an absolute home path
 banana-cursor/.icons/default/cursors
+# Only the ssh config is tracked; keys and known_hosts never belong here
+net/.ssh/*
+!net/.ssh/config

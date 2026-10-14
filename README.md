@@ -42,6 +42,7 @@ The base setup installs these tools automatically:
 | [yazi](yazi/) | File manager (Tokyo Night, folder sizes, git markers, previews) | `yazi.toml`, `keymap.toml`, `init.lua` | [yazi](https://github.com/sxyazi/yazi) |
 | [ani-cli](ani-cli/) | Anime in the terminal (mpv, 720p or 480p sub, downloads) | `env.zsh` | [ani-cli](https://github.com/pystardust/ani-cli) |
 | [audio](audio/) | PipeWire Bluetooth audio (A2DP music, mSBC calls, auto profile switch) | `51-bluez-calls.conf` | [WirePlumber](https://pipewire.pages.freedesktop.org/wireplumber/) |
+| [net](net/) | Firewall (LAN trusted), sshd, SSH config, OSC 52 clipboard notes | `.ssh/config` | [firewalld](https://firewalld.org/) |
 | [yaak](yaak/) | API client (Tokyo Night, NVIDIA launcher fix, bundled plugins) | `yaak.desktop`, settings via `setup.sh` | [yaak](https://yaak.app) |
 | [pacsea](pacsea/) | Package manager TUI (Rust, Tokyo Night, install/remove/update/downgrade) | `settings.conf`, `theme.conf` | [Pacsea](https://github.com/Firstp1ck/Pacsea) |
 | [kitty](kitty/) | GPU terminal (JetBrainsMono Bold Italic, Catppuccin colors) | `kitty.conf` | [Kitty](https://sw.kovidgoyal.net/kitty/) |
