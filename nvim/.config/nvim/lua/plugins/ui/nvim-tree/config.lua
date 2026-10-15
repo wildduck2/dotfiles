@@ -86,12 +86,12 @@ function M.setup()
             arrow_closed = '',
           },
           git = {
-            unstaged = '',
+            unstaged = '', -- octicon diff-modified (a dot in a box), as duck-diff shows changes
             staged = '✓',
             unmerged = '',
             renamed = '➜',
             untracked = '',
-            deleted = '',
+            deleted = '', -- octicon diff-removed (a minus in a box)
             ignored = '◌',
           },
         },
