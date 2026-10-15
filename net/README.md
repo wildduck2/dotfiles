@@ -46,4 +46,12 @@ infocmp -a xterm-kitty | ssh <host> 'mkdir -p ~/.terminfo && tic -x -o ~/.termin
 
 ## Images and text to the Mac clipboard
 
-Terminal paste over ssh is text only, so `Ctrl+Alt+V` in kitty runs `~/.config/net/clip-to-mac.sh`, which copies this machine's clipboard (image or text) into the Mac's clipboard. Paste it on the Mac as usual (Cmd+V, or Ctrl+V in Claude Code). Set `CLIP_TO_MAC_HOST` to target another ssh host.
+Terminal paste over ssh is text only, so an image has to land in the Mac's own clipboard for a Mac app
+(Claude Code, for one) to paste it. In kitty, `Ctrl+V` in a window running ssh does that by itself: an
+image on this machine's clipboard is copied into the remote clipboard (`clip-to-mac.sh --image-only`,
+once per image), then Ctrl+V goes through as usual. Text and every other window paste as before.
+The ssh connection to the Mac is reused (`ControlMaster` in `.ssh/config`), so this takes a fraction
+of a second after the first time.
+
+Run `~/.config/net/clip-to-mac.sh` by hand to send the clipboard, image or text, to `CLIP_TO_MAC_HOST`
+(default `mac`).
