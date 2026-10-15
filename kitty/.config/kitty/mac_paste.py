@@ -1,6 +1,6 @@
-# Ctrl+V in a window running ssh: an image on this machine's clipboard is put into the remote
-# machine's clipboard first, so programs there (Claude Code on the Mac) paste it. Text paste over
-# ssh already works, so for text, and in every other window, this is a plain Ctrl+V.
+# Ctrl+V pastes the newest copy, whatever it is. An image is put on the clipboard of the machine the
+# window is ssh'd into (Claude Code on the Mac reads it from there) and Ctrl+V is sent to the program;
+# text is pasted as kitty always pastes, so a copied image never shadows text copied after it.
 import os
 import subprocess
 
@@ -32,13 +32,25 @@ def ssh_destination(window):
     return None
 
 
+def clipboard_kind():
+    try:
+        out = subprocess.run([SCRIPT, '--kind'], capture_output=True, text=True, timeout=5, check=False)
+        return out.stdout.strip()
+    except (OSError, subprocess.SubprocessError):
+        return 'text'
+
+
 @result_handler(no_ui=True)
 def handle_result(args, answer, target_window_id, boss):
     window = boss.window_id_map.get(target_window_id)
     if window is None:
         return
-    host = ssh_destination(window)
-    if host:
-        # Waits for the copy so the Ctrl+V below finds the image already there.
-        subprocess.run([SCRIPT, '--image-only', host], timeout=20, check=False)
-    window.write_to_child(b'\x16')
+    if clipboard_kind() == 'image':
+        host = ssh_destination(window)
+        if host:
+            # Waits for the copy so the Ctrl+V below finds the image already there.
+            subprocess.run([SCRIPT, '--image-only', host], timeout=20, check=False)
+        # The program reads the image off its own clipboard when it sees Ctrl+V.
+        window.write_to_child(b'\x16')
+        return
+    boss.paste_from_clipboard()

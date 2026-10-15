@@ -2,12 +2,17 @@
 # Push this machine's clipboard (image or text) into the Mac's clipboard.
 # Terminal paste over ssh is text-only, so images have to go through osascript on the Mac.
 #   clip-to-mac.sh                    image or text to $CLIP_TO_MAC_HOST (default: mac)
-#   clip-to-mac.sh --image-only HOST  only an image, and only once per image (kitty's Ctrl+V)
+#   clip-to-mac.sh --image-only HOST  only an image (kitty's Ctrl+V), every time, so the newest copy wins
+#   clip-to-mac.sh --kind             print image or text: what kitty's Ctrl+V should do with the clipboard
 set -euo pipefail
 
 ONLY_IMAGE=0
+KIND=0
 if [ "${1:-}" = --image-only ]; then
   ONLY_IMAGE=1
+  shift
+elif [ "${1:-}" = --kind ]; then
+  KIND=1
   shift
 fi
 HOST="${1:-${CLIP_TO_MAC_HOST:-mac}}"
@@ -21,19 +26,19 @@ else
   get() { xclip -selection clipboard -t "$1" -o; }
 fi
 
+if [ "$KIND" = 1 ]; then
+  if grep -qx 'image/png' <<<"$types"; then echo image; else echo text; fi
+  exit 0
+fi
+
 notify() { notify-send -t 2000 "clip-to-mac" "$1" 2>/dev/null || echo "$1"; }
 
 if grep -qx 'image/png' <<<"$types"; then
   image=$(mktemp)
   trap 'rm -f "$image"' EXIT
   get image/png >"$image"
-  # Pasting the same screenshot twice should not send it twice.
-  stamp="${XDG_RUNTIME_DIR:-/tmp}/clip-to-mac.$(printf %s "$HOST" | tr -c 'a-zA-Z0-9.' _)"
-  sum=$(sha256sum "$image" | cut -d' ' -f1)
-  if [ "$ONLY_IMAGE" = 1 ] && [ "$(cat "$stamp" 2>/dev/null)" = "$sum" ]; then exit 0; fi
   ssh -o BatchMode=yes -o ConnectTimeout=5 "$HOST" 'f=$(mktemp -t clip) && cat > "$f" &&
     osascript -e "set the clipboard to (read (POSIX file \"$f\") as «class PNGf»)" >/dev/null; rm -f "$f"' <"$image"
-  printf %s "$sum" >"$stamp"
   [ "$ONLY_IMAGE" = 1 ] || notify "Image sent to the Mac clipboard"
 elif [ "$ONLY_IMAGE" = 0 ]; then
   get UTF8_STRING | ssh -o BatchMode=yes "$HOST" pbcopy
