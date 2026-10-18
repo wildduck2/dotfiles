@@ -103,7 +103,7 @@ show_dry_run() {
 
 setup_base() {
   header "Base Packages"
-  pkg_install git base-devel stow curl wget unzip xclip wl-clipboard fontconfig go
+  pkg_install git base-devel stow curl wget unzip xclip wl-clipboard fontconfig go man-db man-pages
 
   # -- Bundled fonts (Berkeley Mono, etc.) --
   install_bundled_fonts
