@@ -127,6 +127,9 @@ fi
 # ani-cli settings (stowed by the ani-cli module)
 [[ -f "$HOME/.config/ani-cli/env.zsh" ]] && source "$HOME/.config/ani-cli/env.zsh"
 
+# nq: query any command's output as a table with Nushell
+[[ -f "$HOME/.config/nushell/nq.zsh" ]] && source "$HOME/.config/nushell/nq.zsh"
+
 # Bun completions (optional)
 [[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
 

@@ -41,6 +41,7 @@ The base setup installs these tools automatically:
 | [tmux](tmux/) | Terminal multiplexer (TPM, vim-tmux-navigator, Tokyo Night) | `tmux.conf` | [tmux](https://github.com/tmux/tmux) |
 | [yazi](yazi/) | File manager (Tokyo Night, folder sizes, git markers, previews) | `yazi.toml`, `keymap.toml`, `init.lua` | [yazi](https://github.com/sxyazi/yazi) |
 | [ani-cli](ani-cli/) | Anime in the terminal (mpv, 720p or 480p sub, downloads) | `env.zsh` | [ani-cli](https://github.com/pystardust/ani-cli) |
+| [nushell](nushell/) | Query any command output as a table (`nq` helper) | `nq.zsh`, `nq.nu`, `config.nu` | [Nushell](https://www.nushell.sh/) |
 | [claude](claude/) | Claude Code: global CLAUDE.md, settings, 50 skills, superpowers plugin | `CLAUDE.md`, `settings.json`, `skills/` | [Claude Code](https://claude.com/claude-code) |
 | [audio](audio/) | PipeWire Bluetooth audio (A2DP music, mSBC calls, auto profile switch) | `51-bluez-calls.conf` | [WirePlumber](https://pipewire.pages.freedesktop.org/wireplumber/) |
 | [net](net/) | Firewall (LAN trusted), sshd, SSH config, OSC 52 clipboard notes | `.ssh/config` | [firewalld](https://firewalld.org/) |

@@ -14,14 +14,14 @@
 #   ./setup.sh --verify       Verify all tools are installed
 #
 # Available modules:
-#   base claude audio net bash zsh tmux yazi ani-cli kitty terminator picom nvim i3 duck-bash htop neofetch theme
+#   base claude audio net bash zsh tmux yazi ani-cli nushell kitty terminator picom nvim i3 duck-bash htop neofetch theme
 #
 set -euo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$DOTFILES_DIR/scripts/helpers.sh"
 
-ALL_MODULES=(claude audio net bash zsh tmux yazi ani-cli yaak pacsea kitty terminator picom nvim i3 sway hyprland duck-bash htop btop neofetch mechvibes obs-studio banana-cursor theme)
+ALL_MODULES=(claude audio net bash zsh tmux yazi ani-cli nushell yaak pacsea kitty terminator picom nvim i3 sway hyprland duck-bash htop btop neofetch mechvibes obs-studio banana-cursor theme)
 DRY_RUN=0
 VERIFY_ONLY=0
 
@@ -47,6 +47,7 @@ Available modules:
   tmux         Terminal multiplexer (TPM, vim-tmux-navigator, resurrect + continuum)
   yazi         File manager (Tokyo Night, folder sizes, git markers, previews)
   ani-cli      Anime in the terminal (mpv, 720p or 480p sub, downloads to ~/Videos/anime)
+  nushell      Query any command output as a table (nq helper)
   yaak         API client + yaak CLI (Tokyo Night, NVIDIA launcher fix, bundled plugins)
   pacsea       Package manager TUI (Rust, Tokyo Night, install/remove/update/downgrade)
   kitty        Kitty terminal (JetBrainsMono Nerd Font)
@@ -156,6 +157,7 @@ setup_zsh()        { bash "$DOTFILES_DIR/zsh/setup.sh"; }
 setup_tmux()       { bash "$DOTFILES_DIR/tmux/setup.sh"; }
 setup_yazi()       { bash "$DOTFILES_DIR/yazi/setup.sh"; }
 setup_ani_cli()    { bash "$DOTFILES_DIR/ani-cli/setup.sh"; }
+setup_nushell()    { bash "$DOTFILES_DIR/nushell/setup.sh"; }
 setup_yaak()       { bash "$DOTFILES_DIR/yaak/setup.sh"; }
 setup_pacsea()     { bash "$DOTFILES_DIR/pacsea/setup.sh"; }
 setup_kitty()      { bash "$DOTFILES_DIR/kitty/setup.sh"; }
@@ -252,7 +254,7 @@ run_verify() {
   _check google-chrome-stable; _check discord; _check firefox; _check obs; _check yaak-app; _check yaak; _check pacsea; _check downgrade
 
   info "Utilities:"
-  _check htop; _check btop; _check neofetch; _check jq; _check yt-dlp; _check qrencode; _check wpctl; _check bluetoothctl; _check firewall-cmd; _check ssh; _check mpv; _check ani-cli
+  _check htop; _check btop; _check neofetch; _check jq; _check yt-dlp; _check qrencode; _check wpctl; _check bluetoothctl; _check firewall-cmd; _check ssh; _check mpv; _check ani-cli; _check nu
 
   echo ""
   if [[ $checks -eq $total ]]; then
@@ -291,7 +293,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
   # Validate all module names first
   for module in "${MODULES[@]}"; do
     case "$module" in
-      base|claude|audio|net|bash|zsh|tmux|yazi|ani-cli|yaak|pacsea|kitty|terminator|picom|nvim|emacs|i3|sway|hyprland|htop|btop|neofetch|duck-bash|mechvibes|obs-studio|banana-cursor|theme) ;;
+      base|claude|audio|net|bash|zsh|tmux|yazi|ani-cli|nushell|yaak|pacsea|kitty|terminator|picom|nvim|emacs|i3|sway|hyprland|htop|btop|neofetch|duck-bash|mechvibes|obs-studio|banana-cursor|theme) ;;
       *) err "Unknown module: $module"
          echo "Available: ${ALL_MODULES[*]}"
          echo "Run ./setup.sh --help for details"
@@ -318,6 +320,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
       tmux)       setup_base && setup_tmux ;;
       yazi)       setup_base && setup_yazi ;;
       ani-cli)    setup_base && setup_ani_cli ;;
+      nushell)    setup_base && setup_nushell ;;
       yaak)       setup_base && setup_yaak ;;
       pacsea)     setup_base && setup_pacsea ;;
       kitty)      setup_base && setup_kitty ;;
@@ -384,6 +387,9 @@ setup_yazi
 
 # 3b2. Anime player (needs yay from base)
 setup_ani_cli
+
+# 3b3. Table queries over command output
+setup_nushell
 
 # 3c. API client (needs yay from base)
 setup_yaak
