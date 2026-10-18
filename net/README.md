@@ -34,7 +34,7 @@ Servers must listen on `0.0.0.0`, not `localhost`:
 | Next.js | `next dev -H 0.0.0.0` |
 | drizzle-kit | `drizzle-kit studio --host 0.0.0.0` |
 
-Then open `http://192.168.1.6:<port>` (Linux) or `http://192.168.1.28:<port>` (Mac).
+Then open `http://192.168.1.6:<port>` (Linux) or `http://wildducks-MacBook-Air.local:<port>` (Mac).
 
 ## kitty over SSH
 
