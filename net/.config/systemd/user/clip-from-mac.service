@@ -1,0 +1,12 @@
+[Unit]
+Description=Copies made on the Mac land on this machine's clipboard
+# The Mac sleeps and comes back; this keeps trying instead of giving up after a few failures.
+StartLimitIntervalSec=0
+
+[Service]
+ExecStart=%h/.config/net/clip-from-mac.sh
+Restart=always
+RestartSec=20
+
+[Install]
+WantedBy=default.target

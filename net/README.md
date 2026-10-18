@@ -55,3 +55,12 @@ of a second after the first time.
 
 Run `~/.config/net/clip-to-mac.sh` by hand to send the clipboard, image or text, to `CLIP_TO_MAC_HOST`
 (default `mac`).
+
+## Images and text from the Mac clipboard
+
+The other way runs by itself: whatever is copied on the Mac (Cmd+C in any app, a screenshot to the
+clipboard, a copy in its terminal) lands on this machine's clipboard a moment later. The
+`clip-from-mac` user service runs `clip-from-mac.sh`, which sends `mac-clipboard-watch.js` to the Mac over
+ssh and sets this clipboard from each change it reports, so nothing is installed on the Mac. It starts
+again on its own when the Mac sleeps or leaves the network, and skips what `clip-to-mac.sh` has just sent
+so a copy never bounces back. `systemctl --user status clip-from-mac` shows whether it is connected.

@@ -16,6 +16,8 @@ elif [ "${1:-}" = --kind ]; then
   shift
 fi
 HOST="${1:-${CLIP_TO_MAC_HOST:-mac}}"
+# Read by clip-from-mac.sh, which would otherwise hand what was just sent straight back.
+LAST="${XDG_RUNTIME_DIR:-/tmp}/clip-to-mac.last"
 
 if [ -n "${WAYLAND_DISPLAY:-}" ]; then
   types=$(wl-paste --list-types 2>/dev/null || true)
@@ -45,6 +47,7 @@ if grep -qx 'image/png' <<<"$types"; then
   err=$(ssh -o BatchMode=yes -o ConnectTimeout=5 "$HOST" 'f=$(mktemp -t clip) && cat > "$f" &&
     osascript -e "set the clipboard to (read (POSIX file \"$f\") as «class PNGf»)" >/dev/null; rm -f "$f"' \
     <"$image" 2>&1 >/dev/null) || fail "${err##*: }"
+  sha256sum <"$image" | cut -d' ' -f1 >"$LAST"
   [ "$ONLY_IMAGE" = 1 ] || notify "Image sent to the Mac clipboard"
 elif [ "$ONLY_IMAGE" = 0 ]; then
   text=$(mktemp)
@@ -53,5 +56,6 @@ elif [ "$ONLY_IMAGE" = 0 ]; then
   # pbcopy reads bytes in the session's locale, which an ssh command does not set.
   err=$(ssh -o BatchMode=yes -o ConnectTimeout=5 "$HOST" 'LANG=en_US.UTF-8 pbcopy' <"$text" 2>&1 >/dev/null) ||
     fail "${err##*: }"
+  sha256sum <"$text" | cut -d' ' -f1 >"$LAST"
   notify "Text sent to the Mac clipboard"
 fi
