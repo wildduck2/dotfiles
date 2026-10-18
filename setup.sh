@@ -14,14 +14,14 @@
 #   ./setup.sh --verify       Verify all tools are installed
 #
 # Available modules:
-#   base audio net bash zsh tmux yazi ani-cli kitty terminator picom nvim i3 duck-bash htop neofetch theme
+#   base claude audio net bash zsh tmux yazi ani-cli kitty terminator picom nvim i3 duck-bash htop neofetch theme
 #
 set -euo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$DOTFILES_DIR/scripts/helpers.sh"
 
-ALL_MODULES=(audio net bash zsh tmux yazi ani-cli yaak pacsea kitty terminator picom nvim i3 sway hyprland duck-bash htop btop neofetch mechvibes obs-studio banana-cursor theme)
+ALL_MODULES=(claude audio net bash zsh tmux yazi ani-cli yaak pacsea kitty terminator picom nvim i3 sway hyprland duck-bash htop btop neofetch mechvibes obs-studio banana-cursor theme)
 DRY_RUN=0
 VERIFY_ONLY=0
 
@@ -39,6 +39,7 @@ Usage:
 
 Available modules:
   base         Base packages (git, stow, curl, wget, yay, rust, bun, go, claude-code)
+  claude       Claude Code (global CLAUDE.md, settings, skills, superpowers plugin)
   audio        PipeWire Bluetooth audio (A2DP music, mSBC calls, auto profile switch)
   net          Firewall (LAN trusted) + sshd + ~/.ssh/config
   bash         Bash shell config (.bashrc, .bash_profile)
@@ -147,6 +148,7 @@ setup_base() {
   fi
 }
 
+setup_claude()     { bash "$DOTFILES_DIR/claude/setup.sh"; }
 setup_audio()      { bash "$DOTFILES_DIR/audio/setup.sh"; }
 setup_net()        { bash "$DOTFILES_DIR/net/setup.sh"; }
 setup_bash()       { bash "$DOTFILES_DIR/bash/setup.sh"; }
@@ -289,7 +291,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
   # Validate all module names first
   for module in "${MODULES[@]}"; do
     case "$module" in
-      base|audio|net|bash|zsh|tmux|yazi|ani-cli|yaak|pacsea|kitty|terminator|picom|nvim|emacs|i3|sway|hyprland|htop|btop|neofetch|duck-bash|mechvibes|obs-studio|banana-cursor|theme) ;;
+      base|claude|audio|net|bash|zsh|tmux|yazi|ani-cli|yaak|pacsea|kitty|terminator|picom|nvim|emacs|i3|sway|hyprland|htop|btop|neofetch|duck-bash|mechvibes|obs-studio|banana-cursor|theme) ;;
       *) err "Unknown module: $module"
          echo "Available: ${ALL_MODULES[*]}"
          echo "Run ./setup.sh --help for details"
@@ -308,6 +310,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
   for module in "${MODULES[@]}"; do
     case "$module" in
       base)       setup_base ;;
+      claude)     setup_base && setup_claude ;;
       audio)      setup_base && setup_audio ;;
       net)        setup_base && setup_net ;;
       bash)       setup_base && setup_bash ;;
@@ -359,6 +362,9 @@ echo ""
 
 # 1. Base packages (git, stow, etc.)
 setup_base
+
+# 1a. Claude Code config (claude itself comes from base)
+setup_claude
 
 # 1b. Audio (PipeWire + Bluetooth headset settings)
 setup_audio

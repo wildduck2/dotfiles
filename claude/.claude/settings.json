@@ -1,0 +1,59 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(git status *)",
+      "Bash(git stash *)",
+      "Bash(bunx vitest *)",
+      "Bash(bunx tsc *)",
+      "Bash(bunx tsc-alias *)",
+      "Bash(bunx biome *)",
+      "Bash(bun run *)",
+      "Bash(bun install *)",
+      "Bash(npm view *)",
+      "Bash(docker exec *)",
+      "Bash(dmesg)",
+      "Read(//tmp/**)",
+      "Read(//proc/**)",
+      "WebFetch(domain:raw.githubusercontent.com)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '(.tool_response.filePath // .tool_input.file_path) // empty' | { read -r f; [ -n \"$f\" ] && [ -f \"$f\" ] && grep -q '—' \"$f\" && jq -n --arg f \"$f\" '{decision:\"block\",reason:(\"Em dash found in \\($f). Global rule: no em dashes. Replace every — with a comma, colon, parentheses, or a plain hyphen, then continue.\")}'; } || true",
+            "timeout": 10,
+            "statusMessage": "Checking for em dashes"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    }
+  },
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "xhigh"
+    }
+  },
+  "tui": "fullscreen",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "auto",
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true,
+  "model": "opus"
+}
