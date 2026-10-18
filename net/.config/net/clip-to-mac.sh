@@ -32,15 +32,26 @@ if [ "$KIND" = 1 ]; then
 fi
 
 notify() { notify-send -t 2000 "clip-to-mac" "$1" 2>/dev/null || echo "$1"; }
+# A send that fails says so (Ctrl+V would otherwise paste nothing, with no reason given) and exits non-zero.
+fail() {
+  notify-send -u critical -t 5000 "clip-to-mac" "Could not send to $HOST: $1" 2>/dev/null || echo "Could not send to $HOST: $1" >&2
+  exit 1
+}
 
 if grep -qx 'image/png' <<<"$types"; then
   image=$(mktemp)
   trap 'rm -f "$image"' EXIT
   get image/png >"$image"
-  ssh -o BatchMode=yes -o ConnectTimeout=5 "$HOST" 'f=$(mktemp -t clip) && cat > "$f" &&
-    osascript -e "set the clipboard to (read (POSIX file \"$f\") as «class PNGf»)" >/dev/null; rm -f "$f"' <"$image"
+  err=$(ssh -o BatchMode=yes -o ConnectTimeout=5 "$HOST" 'f=$(mktemp -t clip) && cat > "$f" &&
+    osascript -e "set the clipboard to (read (POSIX file \"$f\") as «class PNGf»)" >/dev/null; rm -f "$f"' \
+    <"$image" 2>&1 >/dev/null) || fail "${err##*: }"
   [ "$ONLY_IMAGE" = 1 ] || notify "Image sent to the Mac clipboard"
 elif [ "$ONLY_IMAGE" = 0 ]; then
-  get UTF8_STRING | ssh -o BatchMode=yes "$HOST" pbcopy
+  text=$(mktemp)
+  trap 'rm -f "$text"' EXIT
+  get UTF8_STRING >"$text"
+  # pbcopy reads bytes in the session's locale, which an ssh command does not set.
+  err=$(ssh -o BatchMode=yes -o ConnectTimeout=5 "$HOST" 'LANG=en_US.UTF-8 pbcopy' <"$text" 2>&1 >/dev/null) ||
+    fail "${err##*: }"
   notify "Text sent to the Mac clipboard"
 fi

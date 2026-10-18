@@ -48,8 +48,11 @@ def handle_result(args, answer, target_window_id, boss):
     if clipboard_kind() == 'image':
         host = ssh_destination(window)
         if host:
-            # Waits for the copy so the Ctrl+V below finds the image already there.
-            subprocess.run([SCRIPT, '--image-only', host], timeout=20, check=False)
+            # Waits for the copy so the Ctrl+V below finds the image already there. A failed send has
+            # already said why; Ctrl+V then would paste whatever the Mac held before.
+            sent = subprocess.run([SCRIPT, '--image-only', host], timeout=20, check=False)
+            if sent.returncode != 0:
+                return
         # The program reads the image off its own clipboard when it sees Ctrl+V.
         window.write_to_child(b'\x16')
         return
