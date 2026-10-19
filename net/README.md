@@ -47,11 +47,16 @@ infocmp -a xterm-kitty | ssh <host> 'mkdir -p ~/.terminfo && tic -x -o ~/.termin
 ## Images and text to the Mac clipboard
 
 Terminal paste over ssh is text only, so an image has to land in the Mac's own clipboard for a Mac app
-(Claude Code, for one) to paste it. In kitty, `Ctrl+V` in a window running ssh does that by itself: an
-image on this machine's clipboard is copied into the remote clipboard (`clip-to-mac.sh --image-only`,
-once per image), then Ctrl+V goes through as usual. Text and every other window paste as before.
-The ssh connection to the Mac is reused (`ControlMaster` in `.ssh/config`), so this takes a fraction
-of a second after the first time.
+(Claude Code, for one) to paste it. The `clip-to-mac` user service does that on every copy:
+`clip-to-mac-watch.sh` waits for this clipboard to change (`clipnotify`) and sends what it holds, image or
+text, with `clip-to-mac.sh --quiet`. So Ctrl+V in Claude Code on the Mac pastes an image copied here from an
+ssh session in any terminal, Terminator as much as kitty, whatever address the ssh named. A send that fails
+because the Mac is asleep is skipped and written to the journal: `journalctl --user -u clip-to-mac`.
+
+In kitty, `Ctrl+V` in a window running ssh also sends the image itself before passing Ctrl+V on
+(`clip-to-mac.sh --image-only`), so the paste never races the copy; text pastes as kitty always does. The
+ssh connection to the Mac is reused (`ControlMaster` in `.ssh/config`), so a send takes a fraction of a
+second after the first.
 
 Run `~/.config/net/clip-to-mac.sh` by hand to send the clipboard, image or text, to `CLIP_TO_MAC_HOST`
 (default `mac`).
@@ -62,5 +67,6 @@ The other way runs by itself: whatever is copied on the Mac (Cmd+C in any app, a
 clipboard, a copy in its terminal) lands on this machine's clipboard a moment later. The
 `clip-from-mac` user service runs `clip-from-mac.sh`, which sends `mac-clipboard-watch.js` to the Mac over
 ssh and sets this clipboard from each change it reports, so nothing is installed on the Mac. It starts
-again on its own when the Mac sleeps or leaves the network, and skips what `clip-to-mac.sh` has just sent
-so a copy never bounces back. `systemctl --user status clip-from-mac` shows whether it is connected.
+again on its own when the Mac sleeps or leaves the network. Each side notes what it last received, so a
+copy never bounces back: this one skips what `clip-to-mac.sh` has just sent, and the watcher skips what this
+has just set. `systemctl --user status clip-from-mac` shows whether it is connected.

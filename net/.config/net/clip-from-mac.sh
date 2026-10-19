@@ -10,6 +10,8 @@ HOST="${1:-${CLIP_TO_MAC_HOST:-mac}}"
 WATCH="$(dirname "$(readlink -f "$0")")/mac-clipboard-watch.js"
 # What clip-to-mac.sh sent last, by sha256; it comes straight back as a change on the Mac and is skipped.
 LAST="${XDG_RUNTIME_DIR:-/tmp}/clip-to-mac.last"
+# What this put on the clipboard last, by sha256, for clip-to-mac-watch.sh: it came from the Mac, so it is not sent back.
+FROM_MAC="${XDG_RUNTIME_DIR:-/tmp}/clip-from-mac.last"
 
 if [ -n "${WAYLAND_DISPLAY:-}" ]; then
   put_image() { wl-copy --type image/png; }
@@ -34,7 +36,9 @@ ssh -o BatchMode=yes -o ConnectTimeout=5 -o ServerAliveInterval=15 -o ServerAliv
   'osascript -l JavaScript -' <"$WATCH" |
   while read -r kind data; do
     base64 -d <<<"$data" >"$payload" || continue
-    [ -f "$LAST" ] && [ "$(sha256sum <"$payload" | cut -d' ' -f1)" = "$(cat "$LAST")" ] && continue
+    sum=$(sha256sum <"$payload" | cut -d' ' -f1)
+    [ -f "$LAST" ] && [ "$sum" = "$(cat "$LAST")" ] && continue
+    echo "$sum" >"$FROM_MAC"
     case "$kind" in
       image) put_image <"$payload" ;;
       # A copy in the Mac's terminal already arrived through the terminal itself (OSC 52).

@@ -35,10 +35,10 @@ stow_package net
 chmod 600 "$SCRIPT_DIR/.ssh/config"
 sudo systemctl enable --now sshd.service
 
-# -- Clipboard from the Mac ------------------------------------------------
-pkg_install xclip
+# -- One clipboard with the Mac ---------------------------------------------
+pkg_install xclip clipnotify
 systemctl --user daemon-reload
-systemctl --user enable --now clip-from-mac.service
-ok "Copies on the Mac reach this clipboard"
+systemctl --user enable --now clip-from-mac.service clip-to-mac.service
+ok "Copies on the Mac reach this clipboard, and copies here reach the Mac"
 
 ok "Network setup complete"

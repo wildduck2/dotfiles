@@ -1,0 +1,12 @@
+[Unit]
+Description=Copies made here land on the Mac's clipboard
+# The Mac sleeps and comes back; a send that fails is skipped, and this keeps running.
+StartLimitIntervalSec=0
+
+[Service]
+ExecStart=%h/.config/net/clip-to-mac-watch.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
