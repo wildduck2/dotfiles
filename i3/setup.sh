@@ -24,7 +24,7 @@ pkg_install \
   network-manager-applet blueman \
   gnome-settings-daemon gnome-keyring polkit-gnome \
   ntfs-3g fontconfig \
-  ttf-jetbrains-mono-nerd \
+  ttf-jetbrains-mono-nerd adwaita-fonts \
   kitty terminator discord firefox xdotool xss-lock \
   arandr
 
@@ -99,25 +99,6 @@ stow_package i3
 bash "$SCRIPT_DIR/asus-keys.sh"
 systemctl --user daemon-reload
 systemctl --user enable --now key-popups.service
-
-# -- Blurred wallpaper for lock screen -------------------------------------
-WALLPAPER="$HOME/.config/i3/bgs/bg.jpg"
-BLURRED="$HOME/.config/i3/bgs/bg-blurred.png"
-
-if [[ -f "$WALLPAPER" ]]; then
-  if command_exists magick; then
-    info "Generating blurred wallpaper for lock screen"
-    if magick "$WALLPAPER" -blur 0x16 -brightness-contrast -10x-5 "$BLURRED"; then
-      ok "Blurred wallpaper saved to $BLURRED"
-    else
-      warn "Failed to generate blurred wallpaper"
-    fi
-  else
-    warn "ImageMagick (magick) not found -- cannot generate blurred wallpaper"
-  fi
-else
-  warn "No wallpaper found at $WALLPAPER -- place one there and re-run"
-fi
 
 # -- Verify ----------------------------------------------------------------
 header "Verification"
