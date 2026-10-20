@@ -184,10 +184,9 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id $keys volume +5
 bindsym XF86AudioLowerVolume exec --no-startup-id $keys volume -5
 bindsym XF86AudioMute exec --no-startup-id $keys mute
 bindsym XF86AudioMicMute exec --no-startup-id $keys mic
-# The firmware steps the screen itself, so these only show where it landed. Its keyboard light and fan keys
-# never reach i3: key-popups.service shows theirs.
-bindsym XF86MonBrightnessUp exec --no-startup-id $keys brightness
-bindsym XF86MonBrightnessDown exec --no-startup-id $keys brightness
+# The keyboard light and fan keys never reach i3: key-popups.service shows theirs.
+bindsym XF86MonBrightnessUp exec --no-startup-id $keys brightness +5
+bindsym XF86MonBrightnessDown exec --no-startup-id $keys brightness -5
 bindsym XF86TouchpadToggle exec --no-startup-id $keys touchpad
 bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
 bindsym XF86AudioPause exec --no-startup-id playerctl play-pause

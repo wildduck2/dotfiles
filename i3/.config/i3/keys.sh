@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # What the laptop's and the Redragon's special keys do, each followed by a popup that replaces the last one:
-#   keys.sh volume +5|-5, mute, mic, brightness, kbd, profile, airplane, touchpad
-# The firmware itself steps brightness, the keyboard light and the power profile, so those only report.
+#   keys.sh volume +5|-5, mute, mic, brightness +5|-5, kbd, profile, airplane, touchpad
+# The firmware itself steps the keyboard light and the power profile, so those only report.
 set -uo pipefail
 
 show() {
@@ -34,17 +34,19 @@ speaker() {
 }
 
 brightness() {
-  local dev="" candidate before now percent icon=notification-display-brightness-full
+  local dev="" candidate max next percent icon=notification-display-brightness-full
   for candidate in /sys/class/backlight/*; do [[ -e $candidate ]] && dev=$candidate && break; done
   [[ -n $dev ]] || return
-  # The key reaches here about when the firmware changes the level, so wait for it to land.
-  before=$(<"$dev/actual_brightness")
-  for _ in 1 2 3 4 5 6; do
-    now=$(<"$dev/actual_brightness")
-    [[ $now != "$before" ]] && break
-    sleep 0.05
-  done
-  percent=$((now * 100 / $(<"$dev/max_brightness")))
+  max=$(<"$dev/max_brightness")
+  next=$(($(<"$dev/actual_brightness") + max * $1 / 100))
+  # Never fully dark: a black screen leaves nothing to find the key by.
+  ((next < 1)) && next=1
+  ((next > max)) && next=$max
+  # logind lets the session's own user write it. This panel applies the level and still answers with an
+  # error, so the popup shows the level read back rather than trusting the answer.
+  busctl call org.freedesktop.login1 /org/freedesktop/login1/session/auto org.freedesktop.login1.Session \
+    SetBrightness ssu backlight "$(basename "$dev")" "$next" >/dev/null 2>&1
+  percent=$(($(<"$dev/actual_brightness") * 100 / max))
   ((percent < 75)) && icon=notification-display-brightness-high
   ((percent < 50)) && icon=notification-display-brightness-medium
   ((percent < 25)) && icon=notification-display-brightness-low
@@ -69,7 +71,7 @@ mic)
     show notification-microphone-sensitivity-high "Microphone on" "$(described sources)"
   fi
   ;;
-brightness) brightness ;;
+brightness) brightness "${2:-+5}" ;;
 kbd)
   # brightness_hw_changed holds the level the keyboard's own key last set, 0 to 3.
   level=$(</sys/class/leds/asus::kbd_backlight/brightness_hw_changed)
@@ -101,7 +103,7 @@ touchpad)
   fi
   ;;
 *)
-  echo "usage: keys.sh volume +5|-5, mute, mic, brightness, kbd, profile, airplane, touchpad" >&2
+  echo "usage: keys.sh volume +5|-5, mute, mic, brightness +5|-5, kbd, profile, airplane, touchpad" >&2
   exit 2
   ;;
 esac
