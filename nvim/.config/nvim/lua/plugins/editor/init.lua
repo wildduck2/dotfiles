@@ -4,6 +4,7 @@ return {
   require('plugins.editor.refactoring'),
   require('plugins.editor.mini'),
   require('plugins.editor.undotree'),
+  require('plugins.editor.auto-session'),
   require('plugins.editor.ufo'),
   require('plugins.editor.supermaven'),
   require('plugins.editor.indent-blankline'),
