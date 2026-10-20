@@ -29,9 +29,9 @@ Default mappings from `api.config.mappings.default_on_attach(bufnr)` plus:
 
 | Key | Action |
 | --- | --- |
-| `s` | folders: open in `nautilus`; markdown: open in the editor; other files: `xdg-open` |
+| `s` | folders: `yazi` in a new tmux window, or a new kitty window outside tmux; markdown: open in the editor; other files: `xdg-open` |
 
-Replace `nautilus` in `config.lua` if you use a different DE.
+Replace `kitty` in `config.lua` if you use a different terminal.
 
 ## Custom highlights
 

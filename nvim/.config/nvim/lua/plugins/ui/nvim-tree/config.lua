@@ -55,14 +55,17 @@ function M.setup()
       vim.keymap.set('n', 's', function()
         local node = api.tree.get_node_under_cursor()
         if node.type == 'directory' then
-          vim.fn.jobstart({ 'nautilus', node.absolute_path }, { detach = true })
+          -- yazi in a new tmux window when nvim runs inside tmux, otherwise in a new kitty window
+          local yazi = vim.env.TMUX and { 'tmux', 'new-window', '-c', node.absolute_path, 'yazi', node.absolute_path }
+            or { 'kitty', '--directory', node.absolute_path, 'yazi', node.absolute_path }
+          vim.fn.jobstart(yazi, { detach = true })
         elseif node.absolute_path:match('%.md$') then
           -- xdg-open would only start a second nvim for markdown, so it opens here
           api.node.open.edit(node)
         else
           vim.fn.jobstart({ 'xdg-open', node.absolute_path }, { detach = true })
         end
-      end, { buffer = bufnr, desc = 'Open with system app (markdown: in the editor)' })
+      end, { buffer = bufnr, desc = 'Open: folder in yazi, markdown in the editor, else the system app' })
     end,
     renderer = {
       root_folder_label = false, -- false: hide root folder path label

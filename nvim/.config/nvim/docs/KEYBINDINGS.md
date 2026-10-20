@@ -410,7 +410,7 @@ Buffer-local inside the nvim-tree buffer (in addition to defaults from
 
 | Mode | Keys | Action |
 | --- | --- | --- |
-| n | `s` | folder: `nautilus`; markdown: open in the editor; file: `xdg-open` |
+| n | `s` | folder: `yazi` (new tmux window, or kitty outside tmux); markdown: open in the editor; file: `xdg-open` |
 
 ## 24. Terminal (toggleterm)
 

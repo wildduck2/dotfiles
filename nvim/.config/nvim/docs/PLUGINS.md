@@ -241,7 +241,7 @@ The `module` column links to the per-module README under
 - **lualine.nvim** -- statusline with mode mapping, branch, diagnostics,
   diff, filename, filetype, progress, location.
 - **nvim-tree.lua + nvim-web-devicons** -- file tree. `<leader>pv` toggle,
-  `<leader>l` focus. Inside the tree, `s` opens folders in `nautilus`, previews markdown, xdg-opens other files.
+  `<leader>l` focus. Inside the tree, `s` opens folders in `yazi`, markdown in the editor, and xdg-opens other files.
 - **snacks.nvim** -- only the `indent` module is enabled; renders the
   primary indent guides (scope handled by indent-blankline.nvim).
 - **toggleterm.nvim** -- terminals open in tabs (`direction = 'tab'`).
@@ -312,8 +312,8 @@ External CLI binaries used elsewhere:
   general dotfiles dependency.
 - `gh` -- GitHub CLI, used for `<leader>P*` push/pull operations indirectly
   by the user.
-- `nautilus` -- GNOME file explorer; nvim-tree's `s` keybinding shells out to
-  it.
+- `yazi` -- file manager; nvim-tree's `s` opens a folder in it, in a new tmux
+  window or, outside tmux, a new `kitty` window.
 - `make` -- build dependency of `telescope-fzf-native.nvim` and LuaSnip
   (`install_jsregexp`).
 - `git` -- used by lazy.nvim to clone plugin specs and by fugitive/gitsigns.
