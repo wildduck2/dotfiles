@@ -177,11 +177,17 @@ bar {
 # -------------------------------------------
 # Media & Hardware Keys
 # -------------------------------------------
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
-bindsym XF86MonBrightnessUp exec xbacklight -inc 20
-bindsym XF86MonBrightnessDown exec xbacklight -dec 20
+# Volume and mute act on whatever output and microphone are in use now, the headset or the speakers; sink 0
+# named nothing once PipeWire numbered its sinks. The Redragon's wheel sends the same keys.
+bindsym XF86AudioRaiseVolume exec --no-startup-id wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym XF86AudioMute exec --no-startup-id wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym XF86AudioMicMute exec --no-startup-id wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+bindsym XF86MonBrightnessUp exec --no-startup-id ~/.config/i3/brightness.sh +5
+bindsym XF86MonBrightnessDown exec --no-startup-id ~/.config/i3/brightness.sh -5
+bindsym XF86KbdBrightnessUp exec --no-startup-id asusctl leds next
+bindsym XF86KbdBrightnessDown exec --no-startup-id asusctl leds prev
+bindsym XF86KbdLightOnOff exec --no-startup-id asusctl leds next
 
 # -------------------------------------------
 # Custom Key Bindings
