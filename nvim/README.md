@@ -67,7 +67,7 @@ nvim/.config/nvim/
         ├── utils/                  # Plenary, undotree, tmux-navigator, mini, ufo, silicon
         ├── fun/                    # Hacker.nvim, randiverse, cellular-automaton
         ├── languages/              # Rust, C/C++, package-info, dbee
-        ├── markdown/               # Obsidian, MDX, peek (preview)
+        ├── markdown/               # Obsidian, MDX
         ├── discord/                # Discord Rich Presence (cord.nvim)
         └── supermaven/             # AI code completion
 ```
@@ -161,7 +161,6 @@ plugins/{module}/
 | nvim-dbee | Database explorer |
 | obsidian.nvim | Obsidian vault integration |
 | vim-mdx-js | MDX syntax support |
-| peek.nvim | Markdown live preview |
 
 ### Colorschemes
 TokyoNight, Catppuccin, Rose Pine, OneDark, Kanagawa, Gruvbuddy (via colorbuddy), Transparent
@@ -393,7 +392,7 @@ Key settings configured in `wild-duck/set.lua`:
 neovim git base-devel stow
 
 # Language runtimes
-nodejs npm python python-pip go rust cargo deno
+nodejs npm python python-pip go rust cargo
 
 # Formatters
 stylua prettier shfmt

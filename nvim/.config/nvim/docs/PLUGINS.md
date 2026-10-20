@@ -65,7 +65,6 @@ The `module` column links to the per-module README under
 | MunifTanjim/nui.nvim | UI primitives (used by package-info) | [lang/package-info](plugins/lang/package-info/README.md) |
 | epwalsh/obsidian.nvim | Obsidian vault integration for markdown | [lang/markdown](plugins/lang/markdown/README.md) |
 | davidmh/mdx.nvim | MDX filetype support | [lang/markdown](plugins/lang/markdown/README.md) |
-| toppair/peek.nvim | Browser preview of markdown (`:PeekOpen`) | [lang/markdown](plugins/lang/markdown/README.md) |
 | vuki656/package-info.nvim | Inline package.json version info | [lang/package-info](plugins/lang/package-info/README.md) |
 | rust-lang/rust.vim | Rust language support (`rustfmt_autosave`) | [lang/rust](plugins/lang/rust/README.md) |
 | mrcjkb/rustaceanvim | rust-analyzer integration with extras | [lang/rust](plugins/lang/rust/README.md) |
@@ -183,8 +182,7 @@ The `module` column links to the per-module README under
   connections and pushes them into both dadbod and `duck-sqllsp`.
   Completion / hover / format / diagnostics for SQL all come from
   duck-sqllsp.
-- **obsidian.nvim + mdx.nvim + peek.nvim** -- markdown stack. Peek renders to
-  a browser via `:PeekOpen` (uses `i3-msg` to split the window manager).
+- **obsidian.nvim + mdx.nvim** -- markdown stack.
 - **rust.vim + rustaceanvim** -- Rust support. rustaceanvim adds RustLsp
   bindings under `<leader>r*` and overrides `K`/`<leader>ca`. The spec is
   currently commented out in `plugins/lang/init.lua`.
@@ -316,9 +314,6 @@ External CLI binaries used elsewhere:
   by the user.
 - `nautilus` -- GNOME file explorer; nvim-tree's `s` keybinding shells out to
   it.
-- `i3-msg` -- used by peek.nvim's `:PeekOpen`/`:PeekClose` user commands to
-  split the i3 window manager.
-- `deno` -- build dependency of `peek.nvim` (`deno task build:fast`).
 - `make` -- build dependency of `telescope-fzf-native.nvim` and LuaSnip
   (`install_jsregexp`).
 - `git` -- used by lazy.nvim to clone plugin specs and by fugitive/gitsigns.

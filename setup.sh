@@ -94,7 +94,7 @@ show_dry_run() {
   echo "  - Install AUR packages via yay (if available)"
   echo "  - Clone git repos (Oh My Zsh, Zinit, TPM, NVM)"
   echo "  - Install yay (AUR helper) if not present"
-  echo "  - Install language runtimes (Rust, Go, Bun, Deno)"
+  echo "  - Install language runtimes (Rust, Go, Bun)"
   echo "  - Install Claude Code CLI"
   echo "  - Install npm/pip/go packages"
   echo "  - Stow config files into \$HOME"
@@ -222,7 +222,7 @@ run_verify() {
   _check yay
 
   info "Language runtimes:"
-  _check rustc; _check cargo; _check go; _check bun; _check node; _check npm; _check python; _check deno
+  _check rustc; _check cargo; _check go; _check bun; _check node; _check npm; _check python
 
   info "CLI tools:"
   _check claude; _check fzf; _check fd; _check rg; _check zoxide; _check tmux; _check yazi

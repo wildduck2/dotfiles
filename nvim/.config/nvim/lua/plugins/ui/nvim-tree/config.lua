@@ -57,13 +57,12 @@ function M.setup()
         if node.type == 'directory' then
           vim.fn.jobstart({ 'nautilus', node.absolute_path }, { detach = true })
         elseif node.absolute_path:match('%.md$') then
-          -- xdg-open would just reopen markdown in nvim, so preview it instead
+          -- xdg-open would only start a second nvim for markdown, so it opens here
           api.node.open.edit(node)
-          vim.cmd('PeekOpen')
         else
           vim.fn.jobstart({ 'xdg-open', node.absolute_path }, { detach = true })
         end
-      end, { buffer = bufnr, desc = 'Open with system app (markdown: preview)' })
+      end, { buffer = bufnr, desc = 'Open with system app (markdown: in the editor)' })
     end,
     renderer = {
       root_folder_label = false, -- false: hide root folder path label

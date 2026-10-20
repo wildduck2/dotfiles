@@ -121,9 +121,6 @@ if [[ -s "$NVM_DIR/nvm.sh" ]]; then
   yarn() { _nvm_lazy_load; yarn "$@"; }
 fi
 
-# Deno env (if installed)
-[[ -f "$HOME/.deno/env" ]] && source "$HOME/.deno/env"
-
 # Stop git status from rewriting .git/index: IRYSS syncs its .git from the Mac into a
 # receive-only Syncthing folder, and any local write there blocks the next sync
 export GIT_OPTIONAL_LOCKS=0

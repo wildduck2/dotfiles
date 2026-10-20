@@ -22,10 +22,6 @@ export BUN_INSTALL="$HOME/.bun"
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d "$PYENV_ROOT/bin" ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 
-# Deno (optional, if you actually use it)
-export DENO_INSTALL="$HOME/.deno"
-[[ -d "$DENO_INSTALL/bin" ]] && export PATH="$DENO_INSTALL/bin:$PATH"
-
 # Cargo (Rust)
 export CARGO_HOME="${CARGO_HOME:-$HOME/.cargo}"
 [[ -d "$CARGO_HOME/bin" ]] && export PATH="$CARGO_HOME/bin:$PATH"

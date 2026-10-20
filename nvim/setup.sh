@@ -34,20 +34,6 @@ else
   source "$HOME/.cargo/env" 2>/dev/null || true
 fi
 
-# Deno (for peek.nvim markdown preview)
-if command_exists deno; then
-  ok "Deno already installed"
-else
-  info "Installing Deno"
-  if pkg_install deno 2>/dev/null; then
-    ok "Deno installed via pacman"
-  elif safe_curl https://deno.land/install.sh "Deno installer" | sh; then
-    ok "Deno installed via install script"
-  else
-    warn "Deno installation failed -- peek.nvim markdown preview will not work"
-  fi
-fi
-
 # -- TypeScript 7 -----------------------------------------------------------
 # The ts7 LSP falls back to this copy for projects without their own TypeScript.
 # Rerunning setup moves it to the newest release.

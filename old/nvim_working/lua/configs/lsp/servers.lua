@@ -161,27 +161,6 @@ M.servers = {
     sqlls = {},
     -- sqls = {},
     mdx_analyzer = {},
-    denols = {
-        cmd = { "deno", "lsp" },
-        root_dir = require("lspconfig").util.root_pattern("deno.json", "deno.jsonc"),
-        filetype = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "svelte" },
-        init_options = {
-            config = {
-                enable = true,
-                lint = true,
-                unstable = true,
-                suggest = {
-                    imports = {
-                        hosts = {
-                            ["https://deno.land"] = true,
-                            ["https://cdn.nest.land"] = true,
-                            ["https://crux.land"] = true,
-                        },
-                    },
-                },
-            },
-        },
-    },
 
 }
 

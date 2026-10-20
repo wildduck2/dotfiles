@@ -77,10 +77,9 @@ Fast plugin manager loading additional plugins and OMZ snippets.
 | `NVM_DIR` | ~/.nvm |
 | `BUN_INSTALL` | ~/.bun |
 | `PYENV_ROOT` | ~/.pyenv |
-| `DENO_INSTALL` | ~/.deno |
 | `CARGO_HOME` | ~/.cargo |
 
-PATH additions (if directories exist): `~/.local/bin`, `~/bin`, cargo, deno, pyenv, bun
+PATH additions (if directories exist): `~/.local/bin`, `~/bin`, cargo, pyenv, bun
 
 ## Tool Integrations
 
@@ -90,7 +89,6 @@ PATH additions (if directories exist): `~/.local/bin`, `~/bin`, cargo, deno, pye
 | **[zoxide](https://github.com/ajeetdsouza/zoxide)** | Replaces `cd` via `eval "$(zoxide init --cmd cd zsh)"` |
 | **[NVM](https://github.com/nvm-sh/nvm)** | Node version manager (lazy-loaded for fast shell startup) |
 | **[pyenv](https://github.com/pyenv/pyenv)** | Python version manager, `eval "$(pyenv init - zsh)"` |
-| **[Deno](https://deno.land/)** | Env sourced from `~/.deno/env` if present |
 | **[Bun](https://bun.sh/)** | Completions sourced from `~/.bun/_bun` if present |
 | **[Cargo](https://doc.rust-lang.org/cargo/)** | PATH set in `.zshenv` |
 

@@ -410,7 +410,7 @@ Buffer-local inside the nvim-tree buffer (in addition to defaults from
 
 | Mode | Keys | Action |
 | --- | --- | --- |
-| n | `s` | folder: `nautilus`; markdown: peek preview; file: `xdg-open` |
+| n | `s` | folder: `nautilus`; markdown: open in the editor; file: `xdg-open` |
 
 ## 24. Terminal (toggleterm)
 
@@ -467,12 +467,7 @@ From `plugins/lang/package-info/config.lua`. Active in `package.json` buffers.
 | n | `<leader>ni` | `package-info.install` |
 | n | `<leader>np` | `package-info.change_version` -- pick a version |
 
-## 29. Markdown (peek.nvim)
-
-No keymaps. User commands `:PeekOpen` and `:PeekClose` defined in
-`plugins/lang/markdown/config.lua`. Active for `markdown` filetype.
-
-## 30. Supermaven (AI ghost text)
+## 29. Supermaven (AI ghost text)
 
 From `plugins/editor/supermaven/config.lua`. These are insert-mode keys handled
 by the plugin (not `vim.keymap.set`); they only fire when a suggestion is on
@@ -484,7 +479,7 @@ screen.
 | i | `<C-]>` | clear suggestion |
 | i | `<C-j>` | accept next word |
 
-## 31. randiverse (random data generators)
+## 30. randiverse (random data generators)
 
 From `plugins/fun/randiverse/config.lua`. Generators inserted via
 `:Randiverse <command>`; keymaps are registered by the plugin itself when
@@ -505,7 +500,7 @@ From `plugins/fun/randiverse/config.lua`. Generators inserted via
 | n | `<leader>rU` | random uuid |
 | n | `<leader>rw` | random word |
 
-## 32. Fun: cellular-automaton, hacker, cord
+## 31. Fun: cellular-automaton, hacker, cord
 
 | Mode | Keys | Action | Source |
 | --- | --- | --- | --- |
