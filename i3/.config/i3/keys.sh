@@ -92,7 +92,8 @@ airplane)
   fi
   ;;
 touchpad)
-  pad=$(xinput list --name-only | grep -m1 -i touchpad)
+  # By id: a disabled device is listed as "∼ <name>", which no longer matches its name.
+  pad=$(xinput list | grep -i -m1 touchpad | sed -n 's/.*id=\([0-9]*\).*/\1/p')
   if [[ $(xinput list-props "$pad" | awk -F: '/Device Enabled/ { gsub(/[ \t]/, "", $2); print $2 }') == 1 ]]; then
     xinput disable "$pad" && show input-touchpad-off "Touchpad off"
   else
