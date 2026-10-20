@@ -20,4 +20,4 @@ else
 fi
 
 # A new output starts black, so repaint the wallpaper across the new layout
-[ -x "$HOME/.fehbg" ] && "$HOME/.fehbg"
+feh --no-fehbg --bg-fill "$HOME/.config/i3/bgs/bg.jpg"

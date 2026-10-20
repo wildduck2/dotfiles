@@ -6,7 +6,7 @@ Catppuccin Mocha themed i3 config with gaps, blurred lock screen, and smart mult
 
 - `config` — i3 config (Catppuccin Mocha colors, gaps, vim-style keybindings, autostart)
 - `startup.sh` — auto-launch apps on login with monitor detection
-- `lock.sh` — blurred screenshot lock screen using i3lock-color
+- `lock.sh`: i3lock-color over the blurred wallpaper, started by xss-lock before every suspend, hibernate or lid close
 - `i3status.conf` — status bar config
 - `bgs/` — wallpaper directory (place `bg.jpg` here)
 

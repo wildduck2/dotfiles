@@ -217,7 +217,8 @@ exec --no-startup-id clipmenud
 exec --no-startup-id xsetroot -cursor_name left_ptr
 exec --no-startup-id xrdb -merge ~/.Xresources
 exec --no-startup-id gnome-settings-daemon
-exec --no-startup-id gnome-screensaver
+# Locks before any suspend, hibernate or lid close, so the machine always wakes to the lock screen.
+exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.config/i3/lock.sh --nofork
 exec --no-startup-id nm-applet
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
@@ -229,6 +230,6 @@ exec --no-startup-id mechvibes --disable-gpu --no-sandbox
 exec --no-startup-id pactl load-module module-null-sink sink_name=OBS_VirtualMic sink_properties=device.description=OBS_VirtualMic
 exec --no-startup-id ~/.config/i3/startup.sh
 
-exec_always --no-startup-id feh --bg-fill ~/.config/i3/bgs/bg.jpg
+exec_always --no-startup-id feh --no-fehbg --bg-fill ~/.config/i3/bgs/bg.jpg
 # Kill existing picom before restarting to avoid flicker
 # exec_always --no-startup-id "killall picom; picom --log-level=info --config ~/.config/picom/picom.conf"

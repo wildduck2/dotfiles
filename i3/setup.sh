@@ -25,7 +25,7 @@ pkg_install \
   gnome-settings-daemon gnome-keyring polkit-gnome \
   ntfs-3g fontconfig \
   ttf-jetbrains-mono-nerd \
-  kitty terminator discord firefox xdotool \
+  kitty terminator discord firefox xdotool xss-lock \
   arandr
 
 # -- AUR packages ----------------------------------------------------------
@@ -38,7 +38,7 @@ if is_pkg_installed_exact i3lock; then
 fi
 
 info "Installing AUR packages"
-aur_install trayer i3lock-color gnome-screensaver-no-watchdog
+aur_install trayer i3lock-color
 
 # obs-studio-tytan652 pulls in vlc-plugin-luajit (via ffmpeg-obs), which
 # conflicts with vlc-plugin-lua (provided-for by vlc-plugin-luajit, so
@@ -117,27 +117,6 @@ if [[ -f "$WALLPAPER" ]]; then
   fi
 else
   warn "No wallpaper found at $WALLPAPER -- place one there and re-run"
-fi
-
-# -- GNOME screensaver config ----------------------------------------------
-if command_exists gsettings; then
-  if [[ -f "$BLURRED" ]]; then
-    info "Configuring GNOME screensaver with blurred wallpaper"
-    gsettings set org.gnome.desktop.screensaver picture-uri "file://$BLURRED"
-    gsettings set org.gnome.desktop.screensaver picture-options 'zoom'
-    gsettings set org.gnome.desktop.screensaver lock-enabled true
-    gsettings set org.gnome.desktop.screensaver lock-delay 0
-    gsettings set org.gnome.desktop.background picture-uri "file://$WALLPAPER"
-    gsettings set org.gnome.desktop.background picture-uri-dark "file://$WALLPAPER"
-  elif [[ -f "$WALLPAPER" ]]; then
-    info "Configuring GNOME screensaver with wallpaper (no blur)"
-    gsettings set org.gnome.desktop.screensaver picture-uri "file://$WALLPAPER"
-    gsettings set org.gnome.desktop.screensaver picture-options 'zoom'
-    gsettings set org.gnome.desktop.screensaver lock-enabled true
-    gsettings set org.gnome.desktop.screensaver lock-delay 0
-  fi
-else
-  warn "gsettings not found -- skipping screensaver config"
 fi
 
 # -- Verify ----------------------------------------------------------------
