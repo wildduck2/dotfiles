@@ -14,14 +14,14 @@
 #   ./setup.sh --verify       Verify all tools are installed
 #
 # Available modules:
-#   base claude audio net bash zsh tmux yazi ani-cli nushell kitty terminator picom nvim i3 duck-bash htop neofetch theme
+#   base claude audio power net bash zsh tmux yazi ani-cli nushell kitty terminator picom nvim i3 duck-bash htop neofetch theme
 #
 set -euo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$DOTFILES_DIR/scripts/helpers.sh"
 
-ALL_MODULES=(claude audio net bash zsh tmux yazi ani-cli nushell yaak pacsea kitty terminator picom nvim i3 sway hyprland duck-bash htop btop neofetch mechvibes obs-studio banana-cursor theme)
+ALL_MODULES=(claude audio power net bash zsh tmux yazi ani-cli nushell yaak pacsea kitty terminator picom nvim i3 sway hyprland duck-bash htop btop neofetch mechvibes obs-studio banana-cursor theme)
 DRY_RUN=0
 VERIFY_ONLY=0
 
@@ -41,6 +41,7 @@ Available modules:
   base         Base packages (git, stow, curl, wget, yay, rust, bun, go, claude-code)
   claude       Claude Code (global CLAUDE.md, settings, skills, superpowers plugin)
   audio        PipeWire Bluetooth audio (A2DP music, mSBC calls, auto profile switch)
+  power        Hibernation that survives days in Windows (swapfile as big as RAM, resume= in GRUB)
   net          Firewall (LAN trusted) + sshd + ~/.ssh/config
   bash         Bash shell config (.bashrc, .bash_profile)
   zsh          ZSH shell (Oh My Zsh, Zinit, fzf, zoxide, NVM)
@@ -151,6 +152,7 @@ setup_base() {
 
 setup_claude()     { bash "$DOTFILES_DIR/claude/setup.sh"; }
 setup_audio()      { bash "$DOTFILES_DIR/audio/setup.sh"; }
+setup_power()      { bash "$DOTFILES_DIR/power/setup.sh"; }
 setup_net()        { bash "$DOTFILES_DIR/net/setup.sh"; }
 setup_bash()       { bash "$DOTFILES_DIR/bash/setup.sh"; }
 setup_zsh()        { bash "$DOTFILES_DIR/zsh/setup.sh"; }
@@ -293,7 +295,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
   # Validate all module names first
   for module in "${MODULES[@]}"; do
     case "$module" in
-      base|claude|audio|net|bash|zsh|tmux|yazi|ani-cli|nushell|yaak|pacsea|kitty|terminator|picom|nvim|emacs|i3|sway|hyprland|htop|btop|neofetch|duck-bash|mechvibes|obs-studio|banana-cursor|theme) ;;
+      base|claude|audio|power|net|bash|zsh|tmux|yazi|ani-cli|nushell|yaak|pacsea|kitty|terminator|picom|nvim|emacs|i3|sway|hyprland|htop|btop|neofetch|duck-bash|mechvibes|obs-studio|banana-cursor|theme) ;;
       *) err "Unknown module: $module"
          echo "Available: ${ALL_MODULES[*]}"
          echo "Run ./setup.sh --help for details"
@@ -314,6 +316,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
       base)       setup_base ;;
       claude)     setup_base && setup_claude ;;
       audio)      setup_base && setup_audio ;;
+      power)      setup_base && setup_power ;;
       net)        setup_base && setup_net ;;
       bash)       setup_base && setup_bash ;;
       zsh)        setup_base && setup_zsh ;;
@@ -371,6 +374,9 @@ setup_claude
 
 # 1b. Audio (PipeWire + Bluetooth headset settings)
 setup_audio
+
+# 1c. Hibernation (swapfile and resume=)
+setup_power
 
 # 1c. Network (firewall LAN access, sshd, ssh config)
 setup_net

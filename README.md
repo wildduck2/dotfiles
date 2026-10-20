@@ -44,6 +44,7 @@ The base setup installs these tools automatically:
 | [nushell](nushell/) | Query any command output as a table (`nq` helper) | `nq.zsh`, `nq.nu`, `config.nu` | [Nushell](https://www.nushell.sh/) |
 | [claude](claude/) | Claude Code: global CLAUDE.md, settings, 50 skills, superpowers plugin | `CLAUDE.md`, `settings.json`, `skills/` | [Claude Code](https://claude.com/claude-code) |
 | [audio](audio/) | PipeWire Bluetooth audio (A2DP music, mSBC calls, auto profile switch) | `51-bluez-calls.conf` | [WirePlumber](https://pipewire.pages.freedesktop.org/wireplumber/) |
+| [power](power/) | Hibernation that survives days in Windows (swapfile as big as RAM, `resume=` in GRUB) | `setup.sh` | [Arch wiki: Hibernation](https://wiki.archlinux.org/title/Power_management/Suspend_and_hibernate#Hibernation) |
 | [net](net/) | Firewall (LAN trusted), sshd, SSH config, OSC 52 clipboard notes | `.ssh/config` | [firewalld](https://firewalld.org/) |
 | [yaak](yaak/) | API client (Tokyo Night, NVIDIA launcher fix, bundled plugins) | `yaak.desktop`, settings via `setup.sh` | [yaak](https://yaak.app) |
 | [pacsea](pacsea/) | Package manager TUI (Rust, Tokyo Night, install/remove/update/downgrade) | `settings.conf`, `theme.conf` | [Pacsea](https://github.com/Firstp1ck/Pacsea) |
