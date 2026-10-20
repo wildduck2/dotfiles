@@ -1,0 +1,12 @@
+[Unit]
+Description=Popups for the keys the laptop's firmware handles itself (fan profile, keyboard light)
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+ExecStart=%h/.config/i3/key-popups.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,9 @@
+# Mic mute and the touchpad toggle arrive as key codes above 255, which X drops. F20 and F21 are what X reads
+# as XF86AudioMicMute and XF86TouchpadToggle.
+evdev:input:b0003v0B05p19B6*
+ KEYBOARD_KEY_ff31007c=f20
+ KEYBOARD_KEY_ff31006b=f21
+
+evdev:name:Asus WMI hotkeys:*
+ KEYBOARD_KEY_7c=f20
+ KEYBOARD_KEY_6b=f21

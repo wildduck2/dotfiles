@@ -95,6 +95,11 @@ chmod +x "$SCRIPT_DIR/.config/i3/startup.sh" 2>/dev/null || true
 # NOTE: picom is stowed by its own module (picom/setup.sh), not here
 stow_package i3
 
+# -- Special keys ----------------------------------------------------------
+bash "$SCRIPT_DIR/asus-keys.sh"
+systemctl --user daemon-reload
+systemctl --user enable --now key-popups.service
+
 # -- Blurred wallpaper for lock screen -------------------------------------
 WALLPAPER="$HOME/.config/i3/bgs/bg.jpg"
 BLURRED="$HOME/.config/i3/bgs/bg-blurred.png"

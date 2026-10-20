@@ -1,0 +1,58 @@
+# Notifications and the key popups from i3/keys.sh, in i3's Catppuccin Mocha colours. Sized for the 2560x1600
+# panel, which X reports at 96 dpi, so smaller text came out tiny.
+[global]
+    font = JetBrainsMono Nerd Font 13
+    width = 440
+    height = (0, 260)
+    origin = top-right
+    offset = (20, 48)
+    padding = 16
+    horizontal_padding = 18
+    text_icon_padding = 16
+    line_height = 3
+    frame_width = 2
+    frame_color = "#89b4fa"
+    separator_color = frame
+    gap_size = 8
+    corner_radius = 12
+    icon_theme = "Tokyonight-Dark, Adwaita"
+    enable_recursive_icon_lookup = true
+    icon_position = left
+    vertical_alignment = center
+    # Icons are looked up at this size, and the theme draws its own from 48 up, so 64 stays sharp.
+    min_icon_size = 64
+    max_icon_size = 64
+    progress_bar = true
+    progress_bar_height = 10
+    progress_bar_frame_width = 1
+    progress_bar_min_width = 340
+    progress_bar_max_width = 440
+    progress_bar_corner_radius = 5
+    markup = full
+    format = "<b><span size='large'>%s</span></b>\n<span foreground='#a6adc8'>%b</span>"
+    ellipsize = end
+    word_wrap = yes
+
+[urgency_low]
+    background = "#1e1e2e"
+    foreground = "#cdd6f4"
+    highlight = "#89b4fa"
+    timeout = 4
+
+[urgency_normal]
+    background = "#1e1e2e"
+    foreground = "#cdd6f4"
+    highlight = "#89b4fa"
+    timeout = 8
+
+[urgency_critical]
+    background = "#1e1e2e"
+    foreground = "#cdd6f4"
+    frame_color = "#f38ba8"
+    highlight = "#f38ba8"
+    timeout = 0
+
+# Holding a key fires dozens of these, none worth keeping in the history.
+[osd]
+    appname = osd
+    history_ignore = yes
