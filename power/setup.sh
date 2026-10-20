@@ -28,13 +28,15 @@ if ! grep -q "^$SWAPFILE " /etc/fstab; then
   echo "$SWAPFILE none swap defaults,pri=10 0 0" | sudo tee -a /etc/fstab >/dev/null
   ok "Added $SWAPFILE to /etc/fstab"
 fi
-swapon --show=NAME --noheadings | grep -qx "$SWAPFILE" || sudo swapon -p 10 "$SWAPFILE"
+swapon --show=NAME --noheadings | grep -x "$SWAPFILE" >/dev/null || sudo swapon -p 10 "$SWAPFILE"
 
 # -- Where to resume from ----------------------------------------------------
 # A swapfile is named by its filesystem and its first block, which a reboot never moves.
 ROOT_UUID=$(findmnt -no UUID -T "$SWAPFILE")
-# The physical start of the first extent: the third colon-separated field of filefrag's row 0.
-OFFSET=$(sudo filefrag -v "$SWAPFILE" | awk -F: '$1 ~ /^ *0$/ { split($3, at, "[.][.]"); gsub(/ /, "", at[1]); print at[1]; exit }')
+# The physical start of the first extent: the third colon-separated field of filefrag's row 0. awk reads to
+# the end, since filefrag cut off by pipefail fails the whole script.
+OFFSET=$(sudo filefrag -v "$SWAPFILE" | awk -F: '!found && $1 ~ /^ *0$/ { split($3, at, "[.][.]"); gsub(/ /, "", at[1]); print at[1]; found = 1 }')
+[[ -n $OFFSET ]] || { err "Could not read where $SWAPFILE starts"; exit 1; }
 RESUME="resume=UUID=$ROOT_UUID resume_offset=$OFFSET"
 CURRENT=$(sed -n 's/^GRUB_CMDLINE_LINUX_DEFAULT="\(.*\)"$/\1/p' /etc/default/grub)
 WANTED=$(echo "$CURRENT" | sed -E 's/ ?resume(_offset)?=[^ ]*//g; s/^ //')
