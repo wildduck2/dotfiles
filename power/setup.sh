@@ -47,6 +47,12 @@ if [[ $CURRENT != "$WANTED" ]]; then
   ok "GRUB resumes from $SWAPFILE (offset $OFFSET)"
 fi
 
+# The running kernel moves to the swapfile too: it otherwise keeps the partition a past hibernate named, so the
+# next hibernate writes there while the boot after it looks in the swapfile, and comes up fresh.
+MAJMIN=$(findmnt -no MAJ:MIN -T "$SWAPFILE" | tr -d ' ')
+echo "$OFFSET" | sudo tee /sys/power/resume_offset >/dev/null
+echo "$MAJMIN" | sudo tee /sys/power/resume >/dev/null
+
 # The systemd initramfs hook reads resume= itself; a busybox one needs the resume hook.
 if ! grep -qE '^HOOKS=.*\b(systemd|resume)\b' /etc/mkinitcpio.conf; then
   warn "mkinitcpio has neither the systemd nor the resume hook: add resume after filesystems, then mkinitcpio -P"
