@@ -80,9 +80,9 @@ kbd)
   ;;
 profile)
   case $(</sys/firmware/acpi/platform_profile) in
-  quiet) show notification-power "Quiet" "Fans low, slower" ;;
-  balanced) show notification-power "Balanced" ;;
-  performance) show notification-power "Performance" "Fans high, fastest" ;;
+  quiet) show "$HOME/.config/i3/icons/profile-quiet.svg" "Quiet" "Fans low, slower" ;;
+  balanced) show "$HOME/.config/i3/icons/profile-balanced.svg" "Balanced" "Fans and speed in between" ;;
+  performance) show "$HOME/.config/i3/icons/profile-performance.svg" "Performance" "Fans high, fastest" ;;
   *) show notification-power "$(</sys/firmware/acpi/platform_profile)" ;;
   esac
   ;;
