@@ -23,15 +23,19 @@ for line in open('/usr/include/linux/input-event-codes.h'):
 
 
 def special(code):
-    # F1-F12, F13-F24, and everything from KEY_MUTE up: media, brightness, vendor and launch keys.
-    return code in range(59, 69) or code in (87, 88) or code >= 113
+    # F1-F12, F13-F24, and everything from KEY_MUTE up: media, brightness, vendor and launch keys. Mouse,
+    # touchpad and joystick buttons share that range and are left out.
+    buttons = code in range(0x100, 0x160) or code in range(0x2C0, 0x300)
+    return (code in range(59, 69) or code in (87, 88) or code >= 113) and not buttons
 
 
 devices = {}
 for path in sorted(glob.glob('/dev/input/event*')):
     with open(f'/sys/class/input/{os.path.basename(path)}/device/name') as handle:
         name = handle.read().strip()
-    if os.path.exists(f'/sys/class/input/{os.path.basename(path)}/device/capabilities/key'):
+    if os.path.exists(f'/sys/class/input/{os.path.basename(path)}/device/capabilities/key') and not any(
+        word in name for word in ('Touchpad', 'Mouse')
+    ):
         devices[os.open(path, os.O_RDONLY | os.O_NONBLOCK)] = name
 
 seconds = int(sys.argv[1]) if len(sys.argv) > 1 else 40
