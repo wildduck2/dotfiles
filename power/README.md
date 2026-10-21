@@ -18,9 +18,12 @@ A hibernated Linux still holds every mounted filesystem in memory, as it was. If
 them meanwhile, Linux resumes over a disk that has changed under it and can wreck it. So, while Linux is
 hibernated:
 
-- **`duck` (`nvme1n1p1`, NTFS) and `New Volume` (`sda3`, exFAT) are Linux's.** Either keep Windows off them
-  (Disk Management: right-click the disk, Offline, and Online again only once Linux is shut down rather than
-  hibernated), or close what Linux has open on them and unmount them before hibernating.
+- **`duck` (`nvme1n1p1`, NTFS) is Linux's.** Either keep Windows off it (Disk Management: right-click the disk,
+  Offline, and Online again only once Linux is shut down rather than hibernated), or close what Linux has open
+  on it and unmount it before hibernating.
+- **`New Volume` (`sda3`, exFAT) is shared:** Minecraft plays from it on both systems. The hibernate key
+  (`i3/.config/i3/hibernate.sh`) unmounts it first and refuses, with a popup, while anything still has it open.
+  A hibernate started any other way (`systemctl hibernate`, low battery) leaves it mounted.
 - **Turn off Windows Fast Startup**, from an administrator prompt: `powercfg /h off`. It leaves Windows'
   own partitions half-mounted on every shutdown.
 - The Windows partitions (`OS`, `RESTORE`) are never mounted in Linux, so Windows may use them freely.
