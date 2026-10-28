@@ -2,7 +2,8 @@
 
 `kevinhwang91/nvim-ufo` -- fancy folds powered by Treesitter or indent. Combined
 with the global fold options set in `init` (foldcolumn = 1, foldlevel/start = 99,
-foldenable = false) so files open fully unfolded but with the column ready.
+foldenable = true) so files open fully unfolded but with the column ready.
+`foldenable` must stay on: ufo computes no folds while it is off.
 
 ## Files
 
@@ -16,7 +17,7 @@ foldenable = false) so files open fully unfolded but with the column ready.
 | Option | Value |
 | --- | --- |
 | `foldcolumn` | `'1'` |
-| `foldenable` | `false` |
+| `foldenable` | `true` |
 | `foldlevel` | `99` |
 | `foldlevelstart` | `99` |
 | `fillchars` | `fold: ,foldopen:-,foldsep:│,diff:` |
@@ -25,11 +26,12 @@ foldenable = false) so files open fully unfolded but with the column ready.
 
 | Key | Action |
 | --- | --- |
-| `<leader>fR` | `ufo.openAllFolds` |
-| `<leader>fM` | `ufo.closeAllFolds` |
-| `<leader>fm` | toggle fold under cursor (open if closed, close if open) |
+| `zR` | `ufo.openAllFolds` |
+| `zM` | `ufo.closeAllFolds` |
 
-These compose with the standard vim fold motions (`zo`, `zc`, `zM`, `zR`, etc).
+The rest are the standard vim fold keys (`za` toggles the fold under the
+cursor, `zo`, `zc`, etc). Folds are kept off `<leader>f`, since `<leader>f` is
+Format and a mapping that is also a prefix fires early when typed fast.
 
 ## Configurable knobs
 

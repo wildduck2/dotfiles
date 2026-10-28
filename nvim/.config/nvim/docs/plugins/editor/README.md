@@ -9,6 +9,6 @@ General editing enhancements. Each module is independent.
 | refactoring | ThePrimeagen/refactoring.nvim (no custom config) | [refactoring](refactoring/README.md) |
 | mini | `mini.ai` enhanced textobjects + `mini.surround` | [mini](mini/README.md) |
 | undotree | Toggle undo history panel with `<leader>u` | [undotree](undotree/README.md) |
-| ufo | Treesitter-based folds with `<leader>fm/fR/fM` | [ufo](ufo/README.md) |
+| ufo | Treesitter-based folds, `zR`/`zM` remapped to ufo | [ufo](ufo/README.md) |
 | supermaven | AI inline completion (`<Tab>` to accept) | [supermaven](supermaven/README.md) |
 | indent-blankline | Indent guides | [indent-blankline](indent-blankline/README.md) |

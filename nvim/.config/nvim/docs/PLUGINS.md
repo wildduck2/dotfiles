@@ -144,7 +144,7 @@ The `module` column links to the per-module README under
 - **supermaven-nvim** -- AI inline completions; `<Tab>` accept, `<C-]>`
   clear, `<C-j>` accept next word.
 - **nvim-ufo + promise-async** -- treesitter+indent fold provider; opens with
-  large foldlevel by default. Keymaps: `<leader>fR`/`fM`/`fm`.
+  large foldlevel by default. `zR`/`zM` remapped to ufo.
 - **undotree** -- `<leader>u` toggles the undo tree panel.
 
 ### fun (non-essential)

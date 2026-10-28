@@ -446,9 +446,8 @@ From `plugins/editor/ufo/config.lua`.
 
 | Mode | Keys | Action |
 | --- | --- | --- |
-| n | `<leader>fR` | `require('ufo').openAllFolds` |
-| n | `<leader>fM` | `require('ufo').closeAllFolds` |
-| n | `<leader>fm` | toggle fold under cursor (`zc` if open else `zo`) |
+| n | `zR` | `require('ufo').openAllFolds` |
+| n | `zM` | `require('ufo').closeAllFolds` |
 
 Standard fold keys also work: `zo`, `zO`, `zc`, `zC`, `za`, `zA`, `zm`, `zM`,
 `zr`, `zR`. See `wild-duck/set.lua` for a reminder block.
@@ -611,14 +610,14 @@ disambiguates after `timeoutlen` (300ms).
 | --- | --- |
 | `<leader>e` | open diagnostic float |
 
-### `<leader>f*` -- format / fold
+### `<leader>f` -- format
 
 | Keys | Action |
 | --- | --- |
 | `<leader>f`  | conform format buffer (n/v) |
-| `<leader>fR` | ufo open all folds |
-| `<leader>fM` | ufo close all folds |
-| `<leader>fm` | ufo toggle fold under cursor |
+
+Keep `<leader>f` free of longer mappings: as both a mapping and a prefix it
+fires Format when the keys arrive in one burst.
 
 ### `<leader>g*` -- git
 

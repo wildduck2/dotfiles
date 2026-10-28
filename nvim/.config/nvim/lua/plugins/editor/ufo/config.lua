@@ -9,19 +9,9 @@ function M.setup()
     end,
   })
 
-  -- Fold keymaps
-  vim.keymap.set('n', '<leader>fR', require('ufo').openAllFolds)
-  vim.keymap.set('n', '<leader>fM', require('ufo').closeAllFolds)
-  -- toggle fold under cursor (open if closed, close if open)
-  vim.keymap.set('n', '<leader>fm', function()
-    local line = vim.fn.line('.')
-    local foldClosed = vim.fn.foldclosed(line)
-    if foldClosed == -1 then
-      vim.cmd('normal! zc')
-    else
-      vim.cmd('normal! zo')
-    end
-  end)
+  -- native zR/zM rewrite foldlevel, which ufo needs left at 99
+  vim.keymap.set('n', 'zR', require('ufo').openAllFolds, { desc = 'Open all folds' })
+  vim.keymap.set('n', 'zM', require('ufo').closeAllFolds, { desc = 'Close all folds' })
 end
 
 return M
