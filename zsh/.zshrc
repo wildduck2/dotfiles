@@ -177,3 +177,7 @@ PERL_MM_OPT="INSTALL_BASE=/home/wildduck/perl5"; export PERL_MM_OPT;
 
 # bun completions
 [ -s "/home/wildduck/.bun/_bun" ] && source "/home/wildduck/.bun/_bun"
+export PATH="$HOME/.local/bin:$PATH"
+export FERNFLOWER_JAR_PATH="/home/wildduck/.local/share/vineflower/vineflower.jar"
+export ANDROID_HOME=$HOME/Android/Sdk
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools
