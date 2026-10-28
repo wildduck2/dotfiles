@@ -19,6 +19,7 @@
       "WebFetch(domain:raw.githubusercontent.com)"
     ]
   },
+  "model": "claude-opus-4-8",
   "hooks": {
     "PostToolUse": [
       {
@@ -35,13 +36,20 @@
     ]
   },
   "enabledPlugins": {
-    "superpowers@claude-plugins-official": true
+    "superpowers@claude-plugins-official": true,
+    "android-reverse-engineering@android-reverse-engineering-skill": true
   },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
       "source": {
         "source": "github",
         "repo": "anthropics/claude-plugins-official"
+      }
+    },
+    "android-reverse-engineering-skill": {
+      "source": {
+        "source": "github",
+        "repo": "SimoneAvogadro/android-reverse-engineering-skill"
       }
     }
   },
@@ -53,7 +61,7 @@
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
+  "switchModelsOnFlag": true,
   "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": true,
-  "model": "opus"
+  "agentPushNotifEnabled": true
 }
