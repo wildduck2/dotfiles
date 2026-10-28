@@ -1,7 +1,7 @@
 {
     "name": "Untitled",
     "DesktopAudioDevice1": {
-        "prev_ver": 537001984,
+        "prev_ver": 537001986,
         "name": "Desktop Audio",
         "uuid": "84820b25-dfbf-404f-8262-1585feacea0b",
         "id": "pulse_output_capture",
@@ -32,7 +32,7 @@
         "private_settings": {}
     },
     "AuxAudioDevice1": {
-        "prev_ver": 537001984,
+        "prev_ver": 537001986,
         "name": "Mic/Aux",
         "uuid": "355508b0-f19a-4846-92b7-867f837cc255",
         "id": "pulse_input_capture",
@@ -63,7 +63,7 @@
         "private_settings": {},
         "filters": [
             {
-                "prev_ver": 537001984,
+                "prev_ver": 537001986,
                 "name": "Noise Suppression",
                 "uuid": "852c37e4-70ac-4bee-bd2a-64bfb23452a8",
                 "id": "noise_suppress_filter",
@@ -87,7 +87,7 @@
                 "private_settings": {}
             },
             {
-                "prev_ver": 537001984,
+                "prev_ver": 537001986,
                 "name": "Compressor",
                 "uuid": "817db38e-e702-4a57-86e0-f9fc3a79a36e",
                 "id": "compressor_filter",
@@ -117,7 +117,7 @@
                 "private_settings": {}
             },
             {
-                "prev_ver": 537001984,
+                "prev_ver": 537001986,
                 "name": "Expander",
                 "uuid": "16788baa-be18-4d93-99a7-82de2c2e7141",
                 "id": "expander_filter",
@@ -150,7 +150,7 @@
     },
     "sources": [
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "MONITOR_2",
             "uuid": "d5c1b765-092b-4cea-a386-218f2a091bce",
             "id": "xshm_input_v2",
@@ -177,7 +177,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "MONITOR_1",
             "uuid": "4e87eaff-6524-4467-97f4-306433ecd1b9",
             "id": "xshm_input_v2",
@@ -203,7 +203,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "DISCORD_CALL_AUDIO",
             "uuid": "06975351-f85e-45c3-8d96-84dbf58f8805",
             "id": "pipewire_audio_application_capture",
@@ -234,7 +234,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "KEYBOARD_AUDIO",
             "uuid": "6c5cda7a-d23a-45c5-b7ca-49554fd0dd71",
             "id": "pipewire_audio_application_capture",
@@ -265,7 +265,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "MUSIC_AUDIO",
             "uuid": "c06d7013-7e9c-4c5b-a289-26b476489a15",
             "id": "pipewire_audio_application_capture",
@@ -294,7 +294,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "STARTING_VIDEO",
             "uuid": "e8ae92cb-9543-4706-aa2a-84c1632cb507",
             "id": "browser_source",
@@ -328,7 +328,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "BE_BACK_VIDEO",
             "uuid": "2a31e1e9-dfca-47b2-a711-4b525ad99563",
             "id": "browser_source",
@@ -362,7 +362,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "ENDING_VIDEO",
             "uuid": "0023e204-c233-4626-9278-b4495349d635",
             "id": "browser_source",
@@ -396,7 +396,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "STREAMING_LAYOUT",
             "uuid": "d38f6d3e-49f2-472c-b603-8120337344c7",
             "id": "browser_source",
@@ -430,7 +430,7 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 537001984,
+                    "prev_ver": 537001986,
                     "name": "Crop/Pad",
                     "uuid": "4ca52238-53de-470d-97c8-a8cf05183291",
                     "id": "crop_filter",
@@ -461,7 +461,7 @@
             ]
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "Video Capture Device (V4L2)",
             "uuid": "a1013c64-5b26-4c33-9235-653e027dfb3f",
             "id": "v4l2_input",
@@ -492,7 +492,7 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 537001984,
+                    "prev_ver": 537001986,
                     "name": "Crop/Pad",
                     "uuid": "08bfed83-d729-42b8-aa4f-6eb085d3e7a7",
                     "id": "crop_filter",
@@ -522,7 +522,7 @@
             ]
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "FOLLOW_ALERT",
             "uuid": "6918bf53-05e2-4375-b20a-dbb0fa11eab8",
             "id": "browser_source",
@@ -554,7 +554,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "TWITCH_CHAT",
             "uuid": "38218a0e-36cd-4ddd-9379-3a6be04b2f95",
             "id": "browser_source",
@@ -588,7 +588,7 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 537001984,
+                    "prev_ver": 537001986,
                     "name": "Crop/Pad",
                     "uuid": "b376d9a2-0a09-474c-98c8-20a84a03de86",
                     "id": "crop_filter",
@@ -619,7 +619,7 @@
             ]
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "MAIN_RECORDING",
             "uuid": "3c36af05-7a75-4f4c-a3a4-99f4790de386",
             "id": "scene",
@@ -631,7 +631,7 @@
                     {
                         "name": "MONITOR_2",
                         "source_uuid": "d5c1b765-092b-4cea-a386-218f2a091bce",
-                        "visible": false,
+                        "visible": true,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -686,7 +686,7 @@
                     {
                         "name": "MONITOR_1",
                         "source_uuid": "4e87eaff-6524-4467-97f4-306433ecd1b9",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -1042,7 +1042,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "STARTING",
             "uuid": "30ac962c-b125-4cdd-8d66-30a50c518165",
             "id": "scene",
@@ -1245,7 +1245,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "BE_BACK",
             "uuid": "6b87287d-56b1-49d1-a6ea-9e86dca36a17",
             "id": "scene",
@@ -1448,7 +1448,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "ENDING",
             "uuid": "1875dd32-7bd8-42ec-ad49-4e04e2e3ee07",
             "id": "scene",
@@ -1651,7 +1651,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "MAIN_STREAMING",
             "uuid": "d99a8616-4386-408e-b46c-a3c095c9baca",
             "id": "scene",
@@ -1663,7 +1663,7 @@
                     {
                         "name": "MONITOR_2",
                         "source_uuid": "d5c1b765-092b-4cea-a386-218f2a091bce",
-                        "visible": false,
+                        "visible": true,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -1718,7 +1718,7 @@
                     {
                         "name": "MONITOR_1",
                         "source_uuid": "4e87eaff-6524-4467-97f4-306433ecd1b9",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -2361,7 +2361,7 @@
     ],
     "groups": [
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "AUDIO",
             "uuid": "efd9697d-6599-4793-9325-738f26eb1c34",
             "id": "group",
@@ -2565,7 +2565,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "DISPLAY",
             "uuid": "d6761d7d-db97-476b-b436-8e2e3038f697",
             "id": "group",
@@ -2579,7 +2579,7 @@
                     {
                         "name": "MONITOR_2",
                         "source_uuid": "d5c1b765-092b-4cea-a386-218f2a091bce",
-                        "visible": false,
+                        "visible": true,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -2634,7 +2634,7 @@
                     {
                         "name": "MONITOR_1",
                         "source_uuid": "4e87eaff-6524-4467-97f4-306433ecd1b9",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -2712,7 +2712,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 537001984,
+            "prev_ver": 537001986,
             "name": "STREAMING_CAM",
             "uuid": "72f3df66-2b62-4198-919d-89290eada274",
             "id": "group",
@@ -2859,7 +2859,7 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 537001984,
+                    "prev_ver": 537001986,
                     "name": "Crop/Pad",
                     "uuid": "0d77b054-0a98-4f07-aee6-ae0540a81330",
                     "id": "crop_filter",
@@ -2939,7 +2939,7 @@
     "saved_projectors": [],
     "preview_locked": false,
     "scaling_enabled": false,
-    "scaling_level": -2,
+    "scaling_level": -13,
     "scaling_off_x": 0.0,
     "scaling_off_y": 0.0,
     "virtual-camera": {
