@@ -5,6 +5,7 @@ setup\.sh
 README\.md
 LICENSE
 asus-keys\.sh
+internal-mic\.sh
 key-probe\.py
 hwdb
 

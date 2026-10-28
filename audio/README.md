@@ -17,6 +17,6 @@ cd ~/dotfiles
 
 ## Notes
 
-- The laptop's built-in mic (ROG Strix G614FR, AMD ACP digital mic) is not detected by Linux, so the headphone mic or a wired headset is the only mic.
+- The laptop's built-in mic (ROG Strix G614FR) is a digital mic on the AMD audio coprocessor. Its kernel driver only starts on models it lists, and the G614FR is missing, so `internal-mic.sh` (run by `setup.sh` on this model) rebuilds the driver with the model added, through DKMS so kernel updates keep it.
 - If calls start cutting out (`corrupted SCO packet` in `journalctl -k`), set `bluez5.enable-msbc = false` in `51-bluez-calls.conf` to fall back to CVSD.
 - Profiles can be switched by hand in pavucontrol's Configuration tab.

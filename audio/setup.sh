@@ -24,4 +24,9 @@ if command_exists systemctl; then
   systemctl --user restart wireplumber 2>/dev/null || true
 fi
 
+# The G614FR's built-in mic needs its driver taught the model.
+if grep -q G614FR /sys/class/dmi/id/product_name 2>/dev/null; then
+  bash "$SCRIPT_DIR/internal-mic.sh"
+fi
+
 ok "Audio setup complete"
