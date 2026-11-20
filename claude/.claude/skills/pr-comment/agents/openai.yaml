@@ -1,0 +1,3 @@
+interface:
+  display_name: "PR Comment"
+  short_description: "Post a PR finding the way the user writes them"

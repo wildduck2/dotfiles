@@ -1,0 +1,3 @@
+interface:
+  display_name: "Flow Boards"
+  short_description: "Draw and patch the IRYSS flow boards on Excalidraw"
