@@ -1,7 +1,8 @@
-# sway config — direct port of i3 config for Wayland
+# sway config - Wayland port kept in parity with i3 (~/.config/i3/config)
 #
-# Force AMD iGPU (card1) — skip NVIDIA proprietary driver
-# AMD = pci-0000:6a:00.0 = /dev/dri/card1
+# This machine is NVIDIA (RTX 5070 Ti Laptop), so start sway with:  sway --unsupported-gpu
+# Keep i3 installed as a fallback. Anything X11-only in i3 is swapped for a Wayland tool here,
+# and the shared logic (keys.sh, hibernate.sh, lock.sh, startup.sh) lives in this package.
 
 # -------------------------------------------
 # Catppuccin Mocha Theme
@@ -53,9 +54,13 @@ gaps inner 2
 gaps outer 0
 smart_gaps off
 
-# Remove window borders
+# Remove window borders (native and Xwayland)
 for_window [app_id=".*"] border pixel 0
 for_window [class=".*"] border pixel 0
+
+# Flameshot's capture surface: float it fullscreen and borderless so it behaves like the
+# X11 overlay (dimmed whole screen) instead of being tiled as an ordinary window.
+for_window [app_id="flameshot"] floating enable, border none, fullscreen enable
 
 # Use Mouse+$mod to drag floating windows
 floating_modifier $mod
@@ -76,19 +81,19 @@ input type:touchpad {
 }
 
 # -------------------------------------------
-# Output / Monitors — max resolution & refresh rate
+# Output / Monitors - max resolution & refresh rate
 # -------------------------------------------
-# External monitor on the LEFT — 1920x1080 max Hz
+# External monitor on the LEFT (name varies by port, so set them all)
 output DP-5 mode 1920x1080@120.000Hz position 0 0
 output DP-1 mode 1920x1080@120.000Hz position 0 0
 output DP-2 mode 1920x1080@120.000Hz position 0 0
 output DP-3 mode 1920x1080@120.000Hz position 0 0
 output DP-1-3 mode 1920x1080@120.000Hz position 0 0
 
-# Laptop display on the RIGHT — 2560x1600 max Hz
+# Laptop display on the RIGHT
 output eDP-1 mode 2560x1600@240.000Hz position 1920 0
 
-# Adaptive sync (VRR) for smooth rendering
+# Adaptive sync (VRR)
 output * adaptive_sync on
 
 # Wallpaper on all outputs
@@ -104,7 +109,7 @@ workspace 5 output eDP-1
 # -------------------------------------------
 bindsym $mod+Return exec terminator
 bindsym $mod+q kill
-# dmenu: Mod+d for .desktop apps, Mod+Shift+d for all binaries
+# dmenu: Mod+d for apps, Mod+Shift+d for all binaries
 bindsym $mod+d exec --no-startup-id dmenu_path | dmenu | xargs swaymsg exec --
 bindsym $mod+Shift+d exec --no-startup-id dmenu_run
 
@@ -171,6 +176,8 @@ bindsym $mod+m move workspace to output left
 # Key Bindings - Sway Management
 # -------------------------------------------
 bindsym $mod+Shift+c reload
+# i3 had "restart" here; sway has no X session to restart, so reload covers it.
+bindsym $mod+Shift+r reload
 bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit sway?' -b 'Yes, exit sway' 'swaymsg exit'
 
 # -------------------------------------------
@@ -194,56 +201,79 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # -------------------------------------------
-# Bar (swaybar + i3status)
+# Bar (waybar) - swaybar's Wayland tray cannot show the apps' native menus, waybar can.
 # -------------------------------------------
-bar {
-    status_command i3status -c ~/.config/sway/i3status.conf
-    position top
-
-    colors {
-      background         $base
-      statusline         $text
-      focused_statusline $text
-      focused_separator  $base
-
-      # target           border bg        text
-      focused_workspace  $base  $mauve    $crust
-      active_workspace   $base  $surface2 $text
-      inactive_workspace $base  $base     $text
-      urgent_workspace   $base  $red      $crust
-    }
-}
+# Started from the Autostart section below. Config/styles in ~/.config/waybar/.
+# No bar {} block here, that would launch swaybar as a second bar.
 
 # -------------------------------------------
 # Media & Hardware Keys
 # -------------------------------------------
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym XF86MonBrightnessUp exec brightnessctl set +5%
-bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+# Same popups as i3: keys.sh drives volume/mute/mic/brightness/touchpad (wpctl/pactl/busctl, all
+# Wayland-safe; its touchpad case uses swaymsg here instead of xinput).
+set $keys ~/.config/sway/keys.sh
+bindsym XF86AudioRaiseVolume exec --no-startup-id $keys volume +5
+bindsym XF86AudioLowerVolume exec --no-startup-id $keys volume -5
+bindsym XF86AudioMute exec --no-startup-id $keys mute
+bindsym XF86AudioMicMute exec --no-startup-id $keys mic
+bindsym XF86MonBrightnessUp exec --no-startup-id $keys brightness +5
+bindsym XF86MonBrightnessDown exec --no-startup-id $keys brightness -5
+bindsym XF86TouchpadToggle exec --no-startup-id $keys touchpad
+bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
+bindsym XF86AudioPause exec --no-startup-id playerctl play-pause
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 
 # -------------------------------------------
 # Custom Key Bindings
 # -------------------------------------------
 bindsym $mod+Shift+period exec systemctl suspend
-bindsym Ctrl+Print exec grim -g "$(slurp)" - | wl-copy
-bindsym Print exec grim - | wl-copy
-bindsym $mod+Ctrl+l exec swaylock -f
-bindsym $mod+x exec swaylock -f
+bindsym $mod+Ctrl+Shift+period exec --no-startup-id ~/.config/sway/hibernate.sh
+# F9 in Minecraft holds left click until pressed again (Minecraft runs under Xwayland, xdotool reaches it).
+bindsym F9 exec --no-startup-id ~/dotfiles/minecraft/hold-attack.sh
+# Screenshots via flameshot, same bindings as i3 (needs xdg-desktop-portal-wlr, installed by setup.sh).
+# Region/GUI capture:
+bindsym Ctrl+Print exec --no-startup-id env QT_OPENGL=software flameshot gui
+# Instant full capture to clipboard + ~/Pictures/Screenshots:
+bindsym Print exec --no-startup-id flameshot full -c -p ~/Pictures/Screenshots/
+# Lock screen (swaylock, Catppuccin)
+bindsym $mod+Ctrl+l exec --no-startup-id ~/.config/sway/lock.sh
+bindsym $mod+x exec --no-startup-id ~/.config/sway/lock.sh
 
 # Clipboard history (cliphist + dmenu)
-bindsym $mod+Shift+v exec cliphist list | dmenu -l 15 | cliphist decode | wl-copy
+bindsym $mod+Shift+v exec --no-startup-id cliphist list | dmenu -l 15 | cliphist decode | wl-copy
 
 # -------------------------------------------
 # Autostart
 # -------------------------------------------
+# Make the Wayland session env available to dbus-activated and systemd user services. The
+# xdg-desktop-portal-wlr backend needs WAYLAND_DISPLAY to take screenshots, and flameshot v15
+# captures only through that portal, so without this flameshot errors with "backend did not respond".
+exec --no-startup-id dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
+exec --no-startup-id systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
+# Restart the portals once the env is imported, in case they autostarted earlier without it.
+exec --no-startup-id sh -c 'sleep 1; systemctl --user restart xdg-desktop-portal xdg-desktop-portal-wlr'
+
+# Notification daemon: keys.sh popups and app notifications need one running.
+exec --no-startup-id dunst
+# Status bar (waybar, for a working system-tray menu).
+exec --no-startup-id waybar
+exec --no-startup-id gnome-settings-daemon
 exec --no-startup-id nm-applet --indicator
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec --no-startup-id gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
+# Quote the whole command: sway splits an unquoted exec line on commas, so pkcs11,secrets,ssh
+# would be parsed as three separate commands ("Unknown/invalid command 'secrets'").
+exec --no-startup-id "gnome-keyring-daemon --start --components=pkcs11,secrets,ssh"
 exec --no-startup-id blueman-applet
+# flameshot daemon: needed for its tray icon to appear in the bar and for captures to be ready.
+exec --no-startup-id flameshot
+# Lock before any suspend/hibernate, so the machine always wakes to the lock screen (replaces xss-lock).
+exec --no-startup-id swayidle -w before-sleep ~/.config/sway/lock.sh
+# Clipboard history watchers
 exec --no-startup-id wl-paste --type text --watch cliphist store
 exec --no-startup-id wl-paste --type image --watch cliphist store
 exec --no-startup-id mechvibes --disable-gpu --no-sandbox
 exec --no-startup-id pactl load-module module-null-sink sink_name=OBS_VirtualMic sink_properties=device.description=OBS_VirtualMic
+# exec, not exec_always: this opens apps and moves workspaces, so running it on every reload
+# (mod+Shift+r/c) would relaunch everything and jump focus. Login-only; reload just refreshes.
 exec --no-startup-id ~/.config/sway/startup.sh

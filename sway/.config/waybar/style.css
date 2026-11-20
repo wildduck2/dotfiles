@@ -1,0 +1,88 @@
+/* waybar matched to the swaybar/i3status look: flat Catppuccin Mocha, one accent colour per
+   module, no divider lines (plain spacing), default-style workspace slots, clean tray. */
+
+* {
+  font-family: "Berkeley Mono Trial", "JetBrainsMono Nerd Font", monospace;
+  font-size: 16px;
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+}
+
+window#waybar {
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+}
+
+tooltip {
+  background-color: #11111b;
+  border: 1px solid #45475a;
+}
+tooltip label { color: #cdd6f4; }
+
+/* Workspaces: flat tight buttons like swaybar, mauve when focused */
+#workspaces {
+  margin: 0;
+  padding: 0;
+}
+#workspaces button {
+  color: #cdd6f4;
+  background-color: #1e1e2e;
+  padding: 0 5px;
+  margin: 0;
+  min-width: 0;
+}
+#workspaces button.focused,
+#workspaces button.visible {
+  background-color: #cba6f7;
+  color: #11111b;
+}
+#workspaces button.urgent {
+  background-color: #f38ba8;
+  color: #11111b;
+}
+
+/* Status blocks: plain spacing, no divider lines */
+#network, #battery, #disk, #memory, #cpu, #pulseaudio, #clock {
+  padding: 0 8px;
+}
+
+/* Tray: even spacing, small right margin, themed dropdown menus */
+#tray {
+  padding: 0 8px;
+}
+#tray menu {
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+  border: 1px solid #45475a;
+  padding: 4px 0;
+}
+#tray menu menuitem {
+  padding: 5px 16px;
+  min-height: 0;
+}
+#tray menu menuitem:hover {
+  background-color: #313244;
+  color: #cdd6f4;
+}
+#tray menu separator {
+  background-color: #45475a;
+  min-height: 1px;
+}
+
+/* One accent colour per module (same as the i3status bar) */
+#network           { color: #89dceb; }
+#battery           { color: #a6e3a1; }
+#battery.warning   { color: #f9e2af; }
+#battery.critical  { color: #f38ba8; }
+#disk              { color: #cba6f7; }
+#memory            { color: #f9e2af; }
+#cpu               { color: #94e2d5; }
+#pulseaudio        { color: #f5c2e7; }
+#pulseaudio.muted  { color: #6c7086; }
+#clock.date        { color: #fab387; }
+#clock.named       { color: #89b4fa; }
+#clock.time        { color: #b4befe; }

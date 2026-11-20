@@ -42,6 +42,7 @@ Available modules:
   claude       Claude Code (global CLAUDE.md, settings, skills, superpowers plugin)
   audio        PipeWire Bluetooth audio (A2DP music, mSBC calls, auto profile switch)
   power        Hibernation that survives days in Windows (swapfile as big as RAM, resume= in GRUB)
+  minecraft    World snapshots every 10 minutes (keeps 2 h, then hourly for a day, daily for a week) -- opt-in
   net          Firewall (LAN trusted) + sshd + ~/.ssh/config
   bash         Bash shell config (.bashrc, .bash_profile)
   zsh          ZSH shell (Oh My Zsh, Zinit, fzf, zoxide, NVM)
@@ -56,8 +57,8 @@ Available modules:
   picom        Compositor (GLX backend, blur, opacity)
   nvim         Neovim IDE (74 plugins, 16 LSPs, formatters, linters)
   emacs        Doom Emacs IDE (Tokyo Night, LSP, full IDE) -- opt-in, not part of full install
-  i3           i3 window manager (Catppuccin, gaps, lock, chrome, discord, OBS, yaak)
-  sway         Sway Wayland compositor (i3-compatible, same config, same bar)
+  sway         Sway Wayland compositor -- DEFAULT session (Catppuccin, waybar, flameshot, lock)
+  i3           i3 window manager -- X11 fallback (Catppuccin, gaps, lock, chrome, discord, OBS)
   hyprland     Hyprland Wayland compositor (Catppuccin, HyprFlux, rofi, swaync, wlogout)
   duck-bash    Utility scripts (git, docker, fzf-tmux, cleanup)
   htop         Process viewer
@@ -70,7 +71,7 @@ Available modules:
 
 Full install order:
   base -> bash -> zsh -> tmux -> yazi -> kitty -> terminator -> picom
-       -> nvim -> i3 -> duck-bash -> htop -> neofetch
+       -> nvim -> sway -> duck-bash -> htop -> neofetch
 
 Requirements:
   - Arch Linux with pacman
@@ -153,6 +154,7 @@ setup_base() {
 setup_claude()     { bash "$DOTFILES_DIR/claude/setup.sh"; }
 setup_audio()      { bash "$DOTFILES_DIR/audio/setup.sh"; }
 setup_power()      { bash "$DOTFILES_DIR/power/setup.sh"; }
+setup_minecraft()  { bash "$DOTFILES_DIR/minecraft/setup.sh"; }
 setup_net()        { bash "$DOTFILES_DIR/net/setup.sh"; }
 setup_bash()       { bash "$DOTFILES_DIR/bash/setup.sh"; }
 setup_zsh()        { bash "$DOTFILES_DIR/zsh/setup.sh"; }
@@ -295,7 +297,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
   # Validate all module names first
   for module in "${MODULES[@]}"; do
     case "$module" in
-      base|claude|audio|power|net|bash|zsh|tmux|yazi|ani-cli|nushell|yaak|pacsea|kitty|terminator|picom|nvim|emacs|i3|sway|hyprland|htop|btop|neofetch|duck-bash|mechvibes|obs-studio|banana-cursor|theme) ;;
+      base|claude|audio|power|minecraft|net|bash|zsh|tmux|yazi|ani-cli|nushell|yaak|pacsea|kitty|terminator|picom|nvim|emacs|i3|sway|hyprland|htop|btop|neofetch|duck-bash|mechvibes|obs-studio|banana-cursor|theme) ;;
       *) err "Unknown module: $module"
          echo "Available: ${ALL_MODULES[*]}"
          echo "Run ./setup.sh --help for details"
@@ -317,6 +319,7 @@ if [[ ${#MODULES[@]} -gt 0 ]]; then
       claude)     setup_base && setup_claude ;;
       audio)      setup_base && setup_audio ;;
       power)      setup_base && setup_power ;;
+      minecraft)  setup_base && setup_minecraft ;;
       net)        setup_base && setup_net ;;
       bash)       setup_base && setup_bash ;;
       zsh)        setup_base && setup_zsh ;;
@@ -413,13 +416,13 @@ setup_picom
 # 6. Editor (heaviest -- languages, LSPs, formatters, linters)
 setup_nvim
 
-# 7. Desktop environment (depends on picom, terminator, fonts)
-setup_i3
-
-# 7b. Sway (Wayland i3 drop-in replacement)
+# 7. Desktop environment: Sway (Wayland) is the default session
 setup_sway
 
-# 7c. Hyprland (Wayland alternative, can coexist with i3)
+# 7b. i3 (X11 fallback, kept so you can switch back anytime)
+setup_i3
+
+# 7c. Hyprland (Wayland alternative, can coexist)
 setup_hyprland
 
 # 8. Utility scripts
@@ -458,8 +461,8 @@ echo ""
 echo "Next steps:"
 echo "  1. Restart your shell or run: exec zsh"
 echo "  2. Launch nvim -- plugins auto-install on first run"
-echo "  3. Log out and select i3 as your session (if using i3)"
-echo "  4. Place wallpaper at ~/.config/i3/bgs/bg.jpg"
+echo "  3. Log out and select Sway as your session (i3 is kept as an X11 fallback)"
+echo "  4. Place wallpaper at ~/.config/sway/bgs/bg.jpg"
 echo "  5. Run 'claude' to configure Claude Code API key"
 echo "  6. Run 'rustup update' to get latest Rust toolchain"
 echo ""

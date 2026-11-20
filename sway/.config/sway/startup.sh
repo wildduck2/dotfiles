@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Sway startup layout — open apps on specific workspaces/monitors
+# Sway startup layout - open apps on specific workspaces/monitors
 #
 # Layout:
 #   Workspace 1 → external monitor → Google Chrome
@@ -9,18 +9,18 @@
 
 sleep 2
 
-# Auto-detect monitors via swaymsg
-PRIMARY=$(swaymsg -t get_outputs -r | jq -r '.[] | select(.focused == true) | .name')
-EXTERNAL=$(swaymsg -t get_outputs -r | jq -r '.[] | select(.focused == false) | .name' | head -1)
+# Detect monitors by name, not focus: the laptop panel is always eDP-*, the external is
+# the other output. Focus at login is nondeterministic and used to flip the two screens.
+LAPTOP=$(swaymsg -t get_outputs -r | jq -r '.[] | select(.name | startswith("eDP")) | .name' | head -1)
+EXTERNAL=$(swaymsg -t get_outputs -r | jq -r '.[] | select(.name | startswith("eDP") | not) | .name' | head -1)
 
-if [[ -z "$EXTERNAL" ]]; then
-  EXTERNAL="$PRIMARY"
-fi
+[[ -z "$EXTERNAL" ]] && EXTERNAL="$LAPTOP"   # laptop only, no external attached
+[[ -z "$LAPTOP" ]] && LAPTOP="$EXTERNAL"
 
-# Assign workspaces to monitors
+# External is the left screen (positioned at x=0), so low workspaces live there and flow right.
 swaymsg "workspace 1, move workspace to output $EXTERNAL"
 swaymsg "workspace 2, move workspace to output $EXTERNAL"
-swaymsg "workspace 5, move workspace to output $PRIMARY"
+swaymsg "workspace 5, move workspace to output $LAPTOP"
 
 sleep 1
 
@@ -53,6 +53,17 @@ launch_on_workspace 2 "kitty" kitty
 
 # Focus workspace 1
 swaymsg 'workspace 1'
+
+# Warm the screenshot portal + flameshot so the FIRST real capture is fast. Cold start
+# (lazy xdg-desktop-portal-wlr activation + flameshot init) is ~10s+; this throwaway
+# capture pays that cost in the background at login instead.
+(
+  sleep 4
+  d=$(mktemp -d)
+  flameshot full -p "$d/" &>/dev/null
+  rm -rf "$d"
+) &
+disown
 
 # Discord: launch last on workspace 5
 if ! swaymsg -t get_tree | jq -e '.. | select(.window_properties?.class? == "discord" or .app_id? == "discord")' &>/dev/null; then

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Sway Lock Screen — swaylock with Catppuccin Mocha
+# Sway Lock Screen - swaylock with Catppuccin Mocha
 swaylock -f \
   --color 1e1e2e \
   --inside-color 1e1e2e \
