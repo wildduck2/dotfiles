@@ -28,7 +28,7 @@
         },
         "deinterlace_mode": 0,
         "deinterlace_field_order": 0,
-        "monitoring_type": 0,
+        "monitoring_type": 2,
         "private_settings": {}
     },
     "AuxAudioDevice1": {
@@ -38,12 +38,12 @@
         "id": "pulse_input_capture",
         "versioned_id": "pulse_input_capture",
         "settings": {
-            "device_id": "alsa_input.usb-3142_fifine_Microphone-00.analog-stereo"
+            "device_id": "alsa_input.pci-0000_6a_00.6.HiFi__Mic2__source"
         },
         "mixers": 255,
         "sync": 0,
         "flags": 0,
-        "volume": 1.0,
+        "volume": 0.4087885618209839,
         "balance": 0.5,
         "enabled": true,
         "muted": false,
@@ -59,7 +59,7 @@
         },
         "deinterlace_mode": 0,
         "deinterlace_field_order": 0,
-        "monitoring_type": 0,
+        "monitoring_type": 2,
         "private_settings": {},
         "filters": [
             {
@@ -230,7 +230,7 @@
             },
             "deinterlace_mode": 0,
             "deinterlace_field_order": 0,
-            "monitoring_type": 0,
+            "monitoring_type": 2,
             "private_settings": {}
         },
         {
@@ -277,7 +277,7 @@
             "volume": 1.0,
             "balance": 0.5,
             "enabled": true,
-            "muted": false,
+            "muted": true,
             "push-to-mute": false,
             "push-to-mute-delay": 0,
             "push-to-talk": false,
@@ -631,7 +631,7 @@
                     {
                         "name": "MONITOR_2",
                         "source_uuid": "d5c1b765-092b-4cea-a386-218f2a091bce",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -686,7 +686,7 @@
                     {
                         "name": "MONITOR_1",
                         "source_uuid": "4e87eaff-6524-4467-97f4-306433ecd1b9",
-                        "visible": false,
+                        "visible": true,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -1663,7 +1663,7 @@
                     {
                         "name": "MONITOR_2",
                         "source_uuid": "d5c1b765-092b-4cea-a386-218f2a091bce",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -1718,7 +1718,7 @@
                     {
                         "name": "MONITOR_1",
                         "source_uuid": "4e87eaff-6524-4467-97f4-306433ecd1b9",
-                        "visible": false,
+                        "visible": true,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -2579,7 +2579,7 @@
                     {
                         "name": "MONITOR_2",
                         "source_uuid": "d5c1b765-092b-4cea-a386-218f2a091bce",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -2634,7 +2634,7 @@
                     {
                         "name": "MONITOR_1",
                         "source_uuid": "4e87eaff-6524-4467-97f4-306433ecd1b9",
-                        "visible": false,
+                        "visible": true,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -2939,7 +2939,7 @@
     "saved_projectors": [],
     "preview_locked": false,
     "scaling_enabled": false,
-    "scaling_level": -13,
+    "scaling_level": -2,
     "scaling_off_x": 0.0,
     "scaling_off_y": 0.0,
     "virtual-camera": {

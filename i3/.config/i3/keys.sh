@@ -64,11 +64,15 @@ mute)
   speaker
   ;;
 mic)
-  wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
-  if [[ $(wpctl get-volume @DEFAULT_AUDIO_SOURCE@) == *MUTED* ]]; then
-    show notification-microphone-sensitivity-muted "Microphone off" "$(described sources)"
+  # Mutes every microphone, not only the default: apps often record from the laptop mic while a headset is the default.
+  [[ $(wpctl get-volume @DEFAULT_AUDIO_SOURCE@) == *MUTED* ]] && muted=0 || muted=1
+  pactl list short sources | awk '$2 !~ /\.monitor$/ { print $2 }' | while read -r source; do
+    pactl set-source-mute "$source" "$muted"
+  done
+  if ((muted)); then
+    show notification-microphone-sensitivity-muted "Microphones off" "$(described sources)"
   else
-    show notification-microphone-sensitivity-high "Microphone on" "$(described sources)"
+    show notification-microphone-sensitivity-high "Microphones on" "$(described sources)"
   fi
   ;;
 brightness) brightness "${2:-+5}" ;;

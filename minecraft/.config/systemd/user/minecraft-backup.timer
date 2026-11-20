@@ -1,0 +1,9 @@
+[Unit]
+Description=Minecraft world snapshot every 10 minutes
+
+[Timer]
+OnCalendar=*:0/10
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target

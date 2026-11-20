@@ -50,6 +50,14 @@ tooltip label { color: #cdd6f4; }
   padding: 0 8px;
 }
 
+/* No hover highlight: the scroll handlers make these modules interactive, so GTK would
+   otherwise paint a button hover behind the text. Keep them flat. */
+#network, #battery, #disk, #memory, #cpu, #pulseaudio, #clock,
+#network:hover, #battery:hover, #disk:hover, #memory:hover, #cpu:hover,
+#pulseaudio:hover, #clock:hover {
+  background-color: transparent;
+}
+
 /* Tray: even spacing, small right margin, themed dropdown menus */
 #tray {
   padding: 0 8px;

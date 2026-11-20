@@ -8,6 +8,5 @@ asus-keys\.sh
 internal-mic\.sh
 key-probe\.py
 hwdb
-
-
-
+backup\.py
+hold-attack\.sh

@@ -19,7 +19,7 @@
       "WebFetch(domain:raw.githubusercontent.com)"
     ]
   },
-  "model": "claude-opus-4-8",
+  "model": "opus",
   "hooks": {
     "PostToolUse": [
       {

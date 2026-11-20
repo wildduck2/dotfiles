@@ -3,7 +3,9 @@
   "position": "top",
   "height": 26,
   "spacing": 0,
-  "modules-left": ["sway/workspaces"],
+  "modules-left": [
+    "sway/workspaces"
+  ],
   "modules-right": [
     "network",
     "battery",
@@ -16,66 +18,81 @@
     "clock#time",
     "tray"
   ],
-
   "sway/workspaces": {
     "disable-scroll": false,
     "format": "{name}"
   },
-
   "network": {
     "interval": 5,
     "format-wifi": "W: {essid} {signalStrength}% {ipaddr}",
     "format-ethernet": "E: {ipaddr}",
     "format-disconnected": "W: down",
-    "tooltip-format": "{ifname}: {ipaddr}"
+    "tooltip": false,
+    "on-scroll-up": "swaymsg workspace prev_on_output",
+    "on-scroll-down": "swaymsg workspace next_on_output"
   },
-
   "battery": {
     "interval": 5,
     "format": "BAT: {capacity}%",
     "format-full": "BAT: FULL {capacity}%",
     "format-charging": "BAT: CHR {capacity}%",
     "format-plugged": "BAT: FULL {capacity}%",
-    "states": { "warning": 20, "critical": 10 }
+    "states": {
+      "warning": 20,
+      "critical": 10
+    },
+    "on-scroll-up": "swaymsg workspace prev_on_output",
+    "on-scroll-down": "swaymsg workspace next_on_output"
   },
-
   "disk": {
     "interval": 30,
     "path": "/",
-    "format": "DISK: {free}"
+    "format": "DISK: {free}",
+    "tooltip": false,
+    "on-scroll-up": "swaymsg workspace prev_on_output",
+    "on-scroll-down": "swaymsg workspace next_on_output"
   },
-
   "memory": {
     "interval": 5,
-    "format": "MEM: {percentage}% ({used:0.1f} GiB / {total:0.1f} GiB)"
+    "format": "MEM: {percentage}% ({used:0.1f} GiB / {total:0.1f} GiB)",
+    "tooltip": false,
+    "on-scroll-up": "swaymsg workspace prev_on_output",
+    "on-scroll-down": "swaymsg workspace next_on_output"
   },
-
   "cpu": {
     "interval": 5,
-    "format": "CPU: {usage}%"
+    "format": "CPU: {usage}%",
+    "tooltip": false,
+    "on-scroll-up": "swaymsg workspace prev_on_output",
+    "on-scroll-down": "swaymsg workspace next_on_output"
   },
-
   "pulseaudio": {
     "format": "VOL: {volume}%",
     "format-muted": "VOL: muted",
+    "tooltip": false,
     "on-click": "pavucontrol"
   },
-
   "clock#date": {
     "interval": 60,
-    "format": "{:%m-%d-%Y}"
+    "format": "{:%m-%d-%Y}",
+    "tooltip": false,
+    "on-scroll-up": "swaymsg workspace prev_on_output",
+    "on-scroll-down": "swaymsg workspace next_on_output"
   },
-
   "clock#named": {
     "interval": 60,
-    "format": "{:%a %d %b %Y}"
+    "format": "{:%a %d %b %Y}",
+    "tooltip": false,
+    "on-scroll-up": "swaymsg workspace prev_on_output",
+    "on-scroll-down": "swaymsg workspace next_on_output"
   },
-
   "clock#time": {
     "interval": 1,
-    "format": "{:%I:%M:%S %p}"
+    "format": "{:%I:%M:%S %p}",
+    "tooltip": false,
+    "on-scroll-up": "swaymsg workspace prev_on_output",
+    "on-scroll-down": "swaymsg workspace next_on_output"
   },
-
   "tray": {
     "icon-size": 20,
     "spacing": 6

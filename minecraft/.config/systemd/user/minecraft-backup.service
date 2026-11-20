@@ -1,0 +1,8 @@
+[Unit]
+Description=Minecraft world snapshot
+
+[Service]
+Type=oneshot
+ExecStart=%h/dotfiles/minecraft/backup.py
+Nice=19
+IOSchedulingClass=idle

@@ -1,96 +1,100 @@
 {
   "layer": "top",
   "position": "top",
+  "height": 26,
   "spacing": 0,
-  "fixed-center": true,
-  "ipc": true,
-
-  "modules-left": ["hyprland/workspaces"],
-  "modules-center": [],
+  "modules-left": [
+    "sway/workspaces"
+  ],
   "modules-right": [
     "network",
     "battery",
     "disk",
     "memory",
     "cpu",
-    "temperature",
     "pulseaudio",
-    "clock",
+    "clock#date",
+    "clock#named",
+    "clock#time",
     "tray"
   ],
-
-  "hyprland/workspaces": {
-    "format": "{id}",
-    "on-click": "activate",
-    "on-scroll-up": "hyprctl dispatch workspace e-1",
-    "on-scroll-down": "hyprctl dispatch workspace e+1",
-    "sort-by-number": true,
-    "all-outputs": false,
-    "active-only": false,
-    "disable-scroll": false
+  "sway/workspaces": {
+    "disable-scroll": false,
+    "format": "{name}"
   },
-
   "network": {
-    "format-wifi": "W: {essid} {signalStrength}%",
+    "interval": 5,
+    "format-wifi": "W: {essid} {signalStrength}% {ipaddr}",
     "format-ethernet": "E: {ipaddr}",
     "format-disconnected": "W: down",
-    "tooltip-format-wifi": "{essid} {signalStrength}%\n{ipaddr}/{cidr}",
-    "tooltip-format-ethernet": "{ifname}\n{ipaddr}/{cidr}"
+    "tooltip": false,
+    "on-scroll-up": "swaymsg workspace prev_on_output",
+    "on-scroll-down": "swaymsg workspace next_on_output"
   },
-
   "battery": {
+    "interval": 5,
+    "format": "BAT: {capacity}%",
+    "format-full": "BAT: FULL {capacity}%",
+    "format-charging": "BAT: CHR {capacity}%",
+    "format-plugged": "BAT: FULL {capacity}%",
     "states": {
-      "warning": 30,
-      "critical": 15
+      "warning": 20,
+      "critical": 10
     },
-    "format": "BAT: {status} {capacity}% {time}",
-    "format-charging": "BAT: Charging {capacity}%",
-    "format-plugged": "BAT: Plugged {capacity}%",
-    "format-time": "{H}h {M}m"
+    "on-scroll-up": "swaymsg workspace prev_on_output",
+    "on-scroll-down": "swaymsg workspace next_on_output"
   },
-
   "disk": {
-    "format": "DISK: {free}",
+    "interval": 30,
     "path": "/",
-    "interval": 30
+    "format": "DISK: {free}",
+    "tooltip": false,
+    "on-scroll-up": "swaymsg workspace prev_on_output",
+    "on-scroll-down": "swaymsg workspace next_on_output"
   },
-
   "memory": {
-    "format": "MEM: {used:0.1f}G / {total:0.1f}G",
-    "interval": 5
+    "interval": 5,
+    "format": "MEM: {percentage}% ({used:0.1f} GiB / {total:0.1f} GiB)",
+    "tooltip": false,
+    "on-scroll-up": "swaymsg workspace prev_on_output",
+    "on-scroll-down": "swaymsg workspace next_on_output"
   },
-
   "cpu": {
+    "interval": 5,
     "format": "CPU: {usage}%",
-    "interval": 5
+    "tooltip": false,
+    "on-scroll-up": "swaymsg workspace prev_on_output",
+    "on-scroll-down": "swaymsg workspace next_on_output"
   },
-
-  "temperature": {
-    "interval": 10,
-    "critical-threshold": 82,
-    "format": "{temperatureC}°C",
-    "format-critical": "{temperatureC}°C!",
-    "tooltip": true
-  },
-
   "pulseaudio": {
     "format": "VOL: {volume}%",
     "format-muted": "VOL: muted",
-    "on-click": "$HOME/.config/hypr/scripts/Volume.sh --toggle",
-    "on-click-right": "pavucontrol",
-    "on-scroll-up": "$HOME/.config/hypr/scripts/Volume.sh --inc",
-    "on-scroll-down": "$HOME/.config/hypr/scripts/Volume.sh --dec",
-    "scroll-step": 5
+    "tooltip": false,
+    "on-click": "pavucontrol"
   },
-
-  "clock": {
-    "format": "{:%Y-%m-%d %H:%M:%S}",
+  "clock#date": {
+    "interval": 60,
+    "format": "{:%m-%d-%Y}",
+    "tooltip": false,
+    "on-scroll-up": "swaymsg workspace prev_on_output",
+    "on-scroll-down": "swaymsg workspace next_on_output"
+  },
+  "clock#named": {
+    "interval": 60,
+    "format": "{:%a %d %b %Y}",
+    "tooltip": false,
+    "on-scroll-up": "swaymsg workspace prev_on_output",
+    "on-scroll-down": "swaymsg workspace next_on_output"
+  },
+  "clock#time": {
     "interval": 1,
-    "tooltip-format": "<tt><small>{calendar}</small></tt>"
+    "format": "{:%I:%M:%S %p}",
+    "tooltip": false,
+    "on-scroll-up": "swaymsg workspace prev_on_output",
+    "on-scroll-down": "swaymsg workspace next_on_output"
   },
-
   "tray": {
-    "icon-size": 16,
-    "spacing": 8
+    "icon-size": 20,
+    "spacing": 6
   }
 }

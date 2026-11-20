@@ -62,6 +62,10 @@ for_window [class=".*"] border pixel 0
 # X11 overlay (dimmed whole screen) instead of being tiled as an ordinary window.
 for_window [app_id="flameshot"] floating enable, border none, fullscreen enable
 
+# ROG Control Center: float it centered, like the hyprland settings rule.
+for_window [app_id="rog-control-center"] floating enable, border normal, move position center
+for_window [title="^ROG Control"] floating enable, border normal, move position center
+
 # Use Mouse+$mod to drag floating windows
 floating_modifier $mod
 
@@ -109,8 +113,10 @@ workspace 5 output eDP-1
 # -------------------------------------------
 bindsym $mod+Return exec terminator
 bindsym $mod+q kill
-# dmenu: Mod+d for apps, Mod+Shift+d for all binaries
-bindsym $mod+d exec --no-startup-id dmenu_path | dmenu | xargs swaymsg exec --
+# Mod+d: launch desktop apps by their real name (Files, Firefox, ...) via j4-dmenu-desktop.
+# dmenu_path only lists PATH binaries, so GUI apps whose .desktop Name differs from the
+# binary (nautilus -> "Files") never showed. Mod+Shift+d keeps the raw-binary runner.
+bindsym $mod+d exec --no-startup-id j4-dmenu-desktop --dmenu='dmenu -i' --term='kitty'
 bindsym $mod+Shift+d exec --no-startup-id dmenu_run
 
 # Quick-launch apps

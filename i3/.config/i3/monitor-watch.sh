@@ -9,7 +9,8 @@ last=""
 size=""
 while :; do
     state=$(xrandr --current)
-    now=$(echo "$state" | awk '$2=="connected"{print $1}' | sort | tr '\n' ' ')
+    # The largest mode is included because a monitor can show up before its EDID is read.
+    now=$(echo "$state" | awk '$2=="connected"{o=$1; getline; print o, $1}' | sort | tr '\n' ' ')
     if [ "$now" != "$last" ]; then
         "$HOME/.config/i3/monitor-setup.sh"
         last=$now

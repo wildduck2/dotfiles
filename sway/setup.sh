@@ -18,7 +18,7 @@ install_yay
 info "Installing Sway and Wayland desktop packages"
 pkg_install \
   sway swaylock swayidle swaybg xdg-desktop-portal-wlr \
-  i3status dmenu \
+  i3status dmenu j4-dmenu-desktop \
   flameshot xdg-desktop-portal-gtk wl-clipboard cliphist \
   brightnessctl \
   pipewire pipewire-pulse pavucontrol \

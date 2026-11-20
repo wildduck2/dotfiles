@@ -1,138 +1,96 @@
-/* Waybar — i3 flat layout, HyprFlux colors */
-
-@import "style/catppuccin-themes/mocha.css";
+/* waybar matched to the swaybar/i3status look: flat Catppuccin Mocha, one accent colour per
+   module, no divider lines (plain spacing), default-style workspace slots, clean tray. */
 
 * {
-  font-family: "Berkeley Mono Trial", "JetBrainsMono Nerd Font";
-  font-weight: bold;
-  font-size: 14px;
+  font-family: "Berkeley Mono Trial", "JetBrainsMono Nerd Font", monospace;
+  font-size: 16px;
   min-height: 0;
   border: none;
   border-radius: 0;
-}
-
-window#waybar {
-  background-color: #0e0e16;
-  color: @text;
-}
-
-/* --- Workspaces (left, flat like i3) --- */
-
-#workspaces {
+  box-shadow: none;
   margin: 0;
   padding: 0;
 }
 
+window#waybar {
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+}
+
+tooltip {
+  background-color: #11111b;
+  border: 1px solid #45475a;
+}
+tooltip label { color: #cdd6f4; }
+
+/* Workspaces: flat tight buttons like swaybar, mauve when focused */
+#workspaces {
+  margin: 0;
+  padding: 0;
+}
 #workspaces button {
-  padding: 0 6px;
-  min-width: 20px;
-  color: @text;
-  background: transparent;
-  border-radius: 0;
-  min-height: 0;
+  color: #cdd6f4;
+  background-color: #1e1e2e;
+  padding: 0 5px;
+  margin: 0;
+  min-width: 0;
 }
-
-#workspaces button.active {
-  color: @crust;
-  background-color: @mauve;
+#workspaces button.focused,
+#workspaces button.visible {
+  background-color: #cba6f7;
+  color: #11111b;
 }
-
 #workspaces button.urgent {
-  color: @crust;
-  background-color: @red;
+  background-color: #f38ba8;
+  color: #11111b;
 }
 
-/* --- Right side modules (all inline) --- */
-
-#network,
-#battery,
-#disk,
-#memory,
-#cpu,
-#temperature,
-#pulseaudio,
-#clock,
-#tray {
+/* Status blocks: plain spacing, no divider lines */
+#network, #battery, #disk, #memory, #cpu, #pulseaudio, #clock {
   padding: 0 8px;
 }
 
-#network {
-  color: @teal;
+/* No hover highlight: the scroll handlers make these modules interactive, so GTK would
+   otherwise paint a button hover behind the text. Keep them flat. */
+#network, #battery, #disk, #memory, #cpu, #pulseaudio, #clock,
+#network:hover, #battery:hover, #disk:hover, #memory:hover, #cpu:hover,
+#pulseaudio:hover, #clock:hover {
+  background-color: transparent;
 }
 
-#network.disconnected,
-#network.disabled {
-  color: @red;
-}
-
-#battery {
-  color: @green;
-}
-
-#battery.warning {
-  color: @yellow;
-}
-
-#battery.critical:not(.charging) {
-  background-color: @red;
-  color: @crust;
-}
-
-#disk {
-  color: @sapphire;
-}
-
-#memory {
-  color: @sky;
-}
-
-#cpu {
-  color: @green;
-}
-
-#temperature {
-  color: @teal;
-}
-
-#temperature.critical {
-  background-color: @red;
-  color: @crust;
-}
-
-#pulseaudio {
-  color: @green;
-}
-
-#pulseaudio.muted {
-  color: @red;
-}
-
-#clock {
-  color: @text;
-}
-
+/* Tray: even spacing, small right margin, themed dropdown menus */
 #tray {
-  padding: 0 6px;
+  padding: 0 8px;
+}
+#tray menu {
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+  border: 1px solid #45475a;
+  padding: 4px 0;
+}
+#tray menu menuitem {
+  padding: 5px 16px;
+  min-height: 0;
+}
+#tray menu menuitem:hover {
+  background-color: #313244;
+  color: #cdd6f4;
+}
+#tray menu separator {
+  background-color: #45475a;
+  min-height: 1px;
 }
 
-#tray > .passive {
-  -gtk-icon-effect: dim;
-}
-
-#tray > .needs-attention {
-  -gtk-icon-effect: highlight;
-}
-
-/* --- Tooltip --- */
-
-tooltip {
-  background-color: #0e0e16;
-  border: 1px solid @surface1;
-  border-radius: 0;
-  color: @text;
-}
-
-tooltip label {
-  color: @text;
-  padding: 4px 8px;
-}
+/* One accent colour per module (same as the i3status bar) */
+#network           { color: #89dceb; }
+#battery           { color: #a6e3a1; }
+#battery.warning   { color: #f9e2af; }
+#battery.critical  { color: #f38ba8; }
+#disk              { color: #cba6f7; }
+#memory            { color: #f9e2af; }
+#cpu               { color: #94e2d5; }
+#pulseaudio        { color: #f5c2e7; }
+#pulseaudio.muted  { color: #6c7086; }
+#clock.date        { color: #fab387; }
+#clock.named       { color: #89b4fa; }
+#clock.time        { color: #b4befe; }

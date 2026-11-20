@@ -198,6 +198,8 @@ bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 # -------------------------------------------
 bindsym $mod+Shift+period exec systemctl suspend
 bindsym $mod+Ctrl+Shift+period exec --no-startup-id ~/.config/i3/hibernate.sh
+# F9 in Minecraft holds left click until pressed again (dotfiles/minecraft).
+bindsym F9 exec --no-startup-id ~/dotfiles/minecraft/hold-attack.sh
 # Interactive selection spanning both screens (QT_OPENGL=software avoids Qt6 multi-monitor segfault)
 bindsym Ctrl+Print exec --no-startup-id env QT_OPENGL=software flameshot gui
 # Instant capture of BOTH screens (full virtual desktop) to clipboard + ~/Pictures/Screenshots
@@ -222,6 +224,7 @@ exec --no-startup-id nm-applet
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
 exec --no-startup-id blueman-applet
+exec --no-startup-id flameshot
 # exec --no-startup-id trayer --edge top --align right --SetDockType true --expand true --widthtype request
 exec --no-startup-id ~/.config/i3/monitor-watch.sh
 

@@ -1,2 +1,4 @@
 Xcursor.theme: Banana-Blue
 Xcursor.size: 24
+! Pinned so apps keep the same size whichever GPU drives the panel (X guesses 75 or 191 dpi otherwise).
+Xft.dpi: 96

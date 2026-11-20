@@ -1,0 +1,11 @@
+[Unit]
+Description=Minecraft on Discord while the game runs
+
+[Service]
+ExecStart=%h/dotfiles/minecraft/discord-presence.py
+Restart=always
+RestartSec=10
+Nice=19
+
+[Install]
+WantedBy=default.target

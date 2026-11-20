@@ -31,3 +31,7 @@ banana-cursor/.icons/default/cursors
 # Only the ssh config is tracked; keys and known_hosts never belong here
 net/.ssh/*
 !net/.ssh/config
+
+# Python bytecode cache
+__pycache__/
+*.pyc
